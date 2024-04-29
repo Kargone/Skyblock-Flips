@@ -1,0 +1,211 @@
+{
+    "data": {
+        "username": "",
+        "sell-orders": {
+            "item-name": {
+                "total-sold-amount": 0,
+                "total-sold-dollars": 0,
+                "total-selling-amount": 0,
+                "total-selling-dollars": 0,
+                "total-percent-completed": 0,
+                "average-price-bought": 0,
+                "price-sold": 0,
+                "current-profit": 0,
+                "current-sell-price": 0,
+                "amount-below-sell": 0,
+                "total-projected-profit": 0,
+                "total-profit-missed": 0,
+                "total-insta-profit": 0,
+                "total-insta-profit-below-current": 0,
+                "earliest-time-bought": "",
+                "sell-order-place-time": "",
+                "sub-orders": {
+                    "partial-sold-amount": 0,
+                    "partial-sold-dollars": 0,
+                    "partial-selling-amount": 0,
+                    "partial-selling-dollars": 0,
+                    "partial-percent-completed": 0,
+                    "price-bought": 0,
+                    "price-sold": 0,
+                    "current-profit": 0,
+                    "current-sell-price": 0,
+                    "amount-below-sell": 0,
+                    "partial-projected-profit": 0,
+                    "partial-profit-missed": 0,
+                    "partial-insta-profit": 0,
+                    "partial-insta-profit-below-current": 0,
+                    "time-bought": "",
+                    "sell-order-place-time": ""
+                }
+            },
+            "total-sold-amount": 0,
+            "total-sold-dollars": 0,
+            "total-selling-amount": 0,
+            "total-selling-dollars": 0,
+            "total-percent-completed": 0
+        },
+        "buy-orders": {
+            "item-name": {
+                "bought-amount": 0,
+                "bought-dollars": 0,
+                "buying-amount": 0,
+                "buying-dollars": 0,
+                "percent-completed": 0,
+                "price-buying": 0,
+                "amount-above-buy": 0,
+                "projected-profit": 0,
+                "weighted-projected-profit": 0,
+                "buy-order-place-time": ""
+            },
+            "total-bought-amount": 0,
+            "total-bought-dollars": 0,
+            "total-buying-amount": 0,
+            "total-buying-dollars": 0,
+            "total-percent-completed": 0,
+            "total-projected-profit": 0
+        },
+        "bazaar-to-buy-orders": {
+            "item-name": {
+                "ignored": true,
+                "current-buy-price": 0,
+                "current-sell-price": 0,
+                "amount-to-buy": 0,
+                "max-amount": 0,
+                "projected-profit": 0,
+                "buy-weight": 0,
+                "sell-weight": 0,
+                "weighted-projected-profit": 0
+            }
+        },
+        "short-term-investments": {
+            "item-name": {
+                "type": "short-term or crafting-material",
+                "total-amount": 0,
+                "total-dollars": 0,
+                "average-price-bought": 0,
+                "current-profit": 0,
+                "sell-weight": 0,
+                "weighted-current-profit": 0,
+                "current-sell-price": 0,
+                "total-insta-profit": 0,
+                "total-insta-profit-below-current": 0,
+                "earliest-time-bought": "",
+                "sub-orders": {
+                    "partial-amount": 0,
+                    "partial-dollars": 0,
+                    "price-bought": 0,
+                    "current-profit": 0,
+                    "sell-weight": 0,
+                    "weighted-current-profit": 0,
+                    "current-sell-price": 0,
+                    "partial-insta-profit": 0,
+                    "partial-insta-profit-below-current": 0,
+                    "time-bought": ""
+                }
+            },
+            "total-dollars": 0
+        },
+        "long-term-investments": {
+            "item-name": {
+                "type": "long-term",
+                "total-amount": 0,
+                "total-dollars": 0,
+                "average-price-bought": 0,
+                "current-profit": 0,
+                "sell-weight": 0,
+                "weighted-current-profit": 0,
+                "current-sell-price": 0,
+                "total-insta-profit": 0,
+                "total-insta-profit-below-current": 0,
+                "earliest-time-bought": "",
+                "sub-orders": {
+                    "partial-amount": 0,
+                    "partial-dollars": 0,
+                    "price-bought": 0,
+                    "current-profit": 0,
+                    "sell-weight": 0,
+                    "weighted-current-profit": 0,
+                    "current-sell-price": 0,
+                    "partial-insta-profit": 0,
+                    "partial-insta-profit-below-current": 0,
+                    "time-bought": ""
+                }
+            },
+            "total-dollars": 0
+        },
+        "auction-house": {
+            "item-name": {
+                "auction-id": "",
+                "material-cost": 0,
+                "auction-fees": 0,
+                "total-cost": 0,
+                "price-selling": 0,
+                "current-sell-price": 0,
+                "sold": true,
+                "current-amount-below": 0,
+                "projected-profit": 0,
+                "date-placed": ""
+            },
+            "total-amount": 0,
+            "total-sold-dollars": 0,
+            "total-selling-dollars": 0,
+            "percent-completed": 0
+        },
+        "forge": {
+            "item-name": {
+                "crafted": true,
+                "craft-price": 0,
+                "auction-fees": 0,
+                "current-sell-price": 0,
+                "sell-price": 0,
+                "profit": 0,
+                "materials": {
+                    "item-name": {
+                        "cost": 0,
+                        "amount": 0,
+                        "date-bought": ""
+                    }
+                }
+            }
+        },
+        "all-products": {
+            "item-name": {
+                "total-amount": 0,
+                "total-dollars": 0,
+                "current-buy-price": 0,
+                "current-sell-price": 0,
+                "buy-weight": 0,
+                "sell-weight": 0,
+                "max-amount": 0,
+                "total-profit-made": 0,
+                "bazaar-meta-link": "",
+                "image-link": "",
+                "total-sold": 0,
+                "crafting-materials": {
+                    "item-name": {
+                        "amount": 0
+                    }
+                }
+            }
+        },
+        "daily-profits": {
+            "date": {
+                "daily-profit": 0,
+                "forge-profit": 0,
+                "auction-house-profit": 0,
+                "bazaar-profit": 0,
+                "trades": {
+                    "item-name": {
+                        "count": 0,
+                        "bought": 0,
+                        "sold": 0,
+                        "profit-per-unit": 0,
+                        "total-profit": 0,
+                        "date-bought": "",
+                        "date-sold": ""
+                    }
+                }
+            }
+        }
+    }
+}
