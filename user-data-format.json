@@ -1,62 +1,70 @@
-{
+{   
     "data": {
         "username": "",
-        "sell-orders": {
-            "item-name": {
-                "total-sold-amount": 0,
-                "total-sold-dollars": 0,
-                "total-selling-amount": 0,
-                "total-selling-dollars": 0,
-                "total-percent-completed": 0,
-                "average-price-bought": 0,
-                "price-sold": 0,
-                "current-profit": 0,
-                "current-sell-price": 0,
-                "amount-below-sell": 0,
-                "total-projected-profit": 0,
-                "total-profit-missed": 0,
-                "total-insta-profit": 0,
-                "total-insta-profit-below-current": 0,
-                "earliest-time-bought": "",
-                "sell-order-place-time": "",
-                "sub-orders": {
-                    "partial-sold-amount": 0,
-                    "partial-sold-dollars": 0,
-                    "partial-selling-amount": 0,
-                    "partial-selling-dollars": 0,
-                    "partial-percent-completed": 0,
-                    "price-bought": 0,
+        "sell-order-overview": {
+            "sell-orders": [
+                {
+                    "item-name": "",
+                    "total-sold-amount": 0,
+                    "total-sold-dollars": 0,
+                    "total-selling-amount": 0,
+                    "total-selling-dollars": 0,
+                    "total-percent-completed": 0,
+                    "average-price-bought": 0,
                     "price-sold": 0,
                     "current-profit": 0,
                     "current-sell-price": 0,
                     "amount-below-sell": 0,
-                    "partial-projected-profit": 0,
-                    "partial-profit-missed": 0,
-                    "partial-insta-profit": 0,
-                    "partial-insta-profit-below-current": 0,
-                    "time-bought": "",
-                    "sell-order-place-time": ""
+                    "total-projected-profit": 0,
+                    "total-profit-missed": 0,
+                    "total-insta-profit": 0,
+                    "total-insta-profit-below-current": 0,
+                    "earliest-time-bought": "",
+                    "sell-order-place-time": "",
+                    "sub-orders": [
+                        {
+                            "partial-sold-amount": 0,
+                            "partial-sold-dollars": 0,
+                            "partial-selling-amount": 0,
+                            "partial-selling-dollars": 0,
+                            "partial-percent-completed": 0,
+                            "price-bought": 0,
+                            "price-sold": 0,
+                            "current-profit": 0,
+                            "current-sell-price": 0,
+                            "amount-below-sell": 0,
+                            "partial-projected-profit": 0,
+                            "partial-profit-missed": 0,
+                            "partial-insta-profit": 0,
+                            "partial-insta-profit-below-current": 0,
+                            "time-bought": "",
+                            "sell-order-place-time": ""
+                        }
+                    ]
                 }
-            },
+            ],
             "total-sold-amount": 0,
             "total-sold-dollars": 0,
             "total-selling-amount": 0,
             "total-selling-dollars": 0,
             "total-percent-completed": 0
         },
-        "buy-orders": {
-            "item-name": {
-                "bought-amount": 0,
-                "bought-dollars": 0,
-                "buying-amount": 0,
-                "buying-dollars": 0,
-                "percent-completed": 0,
-                "price-buying": 0,
-                "amount-above-buy": 0,
-                "projected-profit": 0,
-                "weighted-projected-profit": 0,
-                "buy-order-place-time": ""
-            },
+        "buy-order-overview": {
+            "buy-orders": [
+                {
+                    "item-name": "",
+                    "bought-amount": 0,
+                    "bought-dollars": 0,
+                    "buying-amount": 0,
+                    "buying-dollars": 0,
+                    "percent-completed": 0,
+                    "price-buying": 0,
+                    "amount-above-buy": 0,
+                    "projected-profit": 0,
+                    "weighted-projected-profit": 0,
+                    "buy-order-place-time": ""
+                }
+            ],
             "total-bought-amount": 0,
             "total-bought-dollars": 0,
             "total-buying-amount": 0,
@@ -90,18 +98,20 @@
                 "total-insta-profit": 0,
                 "total-insta-profit-below-current": 0,
                 "earliest-time-bought": "",
-                "sub-orders": {
-                    "partial-amount": 0,
-                    "partial-dollars": 0,
-                    "price-bought": 0,
-                    "current-profit": 0,
-                    "sell-weight": 0,
-                    "weighted-current-profit": 0,
-                    "current-sell-price": 0,
-                    "partial-insta-profit": 0,
-                    "partial-insta-profit-below-current": 0,
-                    "time-bought": ""
-                }
+                "sub-orders": [
+                    {
+                        "partial-amount": 0,
+                        "partial-dollars": 0,
+                        "price-bought": 0,
+                        "current-profit": 0,
+                        "sell-weight": 0,
+                        "weighted-current-profit": 0,
+                        "current-sell-price": 0,
+                        "partial-insta-profit": 0,
+                        "partial-insta-profit-below-current": 0,
+                        "time-bought": ""
+                    }
+                ]
             },
             "total-dollars": 0
         },
@@ -118,34 +128,39 @@
                 "total-insta-profit": 0,
                 "total-insta-profit-below-current": 0,
                 "earliest-time-bought": "",
-                "sub-orders": {
-                    "partial-amount": 0,
-                    "partial-dollars": 0,
-                    "price-bought": 0,
-                    "current-profit": 0,
-                    "sell-weight": 0,
-                    "weighted-current-profit": 0,
-                    "current-sell-price": 0,
-                    "partial-insta-profit": 0,
-                    "partial-insta-profit-below-current": 0,
-                    "time-bought": ""
-                }
+                "sub-orders": [
+                    {
+                        "partial-amount": 0,
+                        "partial-dollars": 0,
+                        "price-bought": 0,
+                        "current-profit": 0,
+                        "sell-weight": 0,
+                        "weighted-current-profit": 0,
+                        "current-sell-price": 0,
+                        "partial-insta-profit": 0,
+                        "partial-insta-profit-below-current": 0,
+                        "time-bought": ""
+                    }
+                ]
             },
             "total-dollars": 0
         },
         "auction-house": {
-            "item-name": {
-                "auction-id": "",
-                "material-cost": 0,
-                "auction-fees": 0,
-                "total-cost": 0,
-                "price-selling": 0,
-                "current-sell-price": 0,
-                "sold": true,
-                "current-amount-below": 0,
-                "projected-profit": 0,
-                "date-placed": ""
-            },
+            "auctions": [
+                {
+                    "item-name": "",
+                    "auction-id": "",
+                    "material-cost": 0,
+                    "auction-fees": 0,
+                    "total-cost": 0,
+                    "price-selling": 0,
+                    "current-sell-price": 0,
+                    "sold": true,
+                    "current-amount-below": 0,
+                    "projected-profit": 0,
+                    "date-placed": ""
+                }
+            ],
             "total-amount": 0,
             "total-sold-dollars": 0,
             "total-selling-dollars": 0,

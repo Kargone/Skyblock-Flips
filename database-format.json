@@ -8,61 +8,77 @@
             },
             "data": {
                 "username": "",
-                "sell-orders": {
-                    "item-name": {
-                        "price-sold": 0,
-                        "earliest-time-bought": "",
-                        "sell-order-place-time": "",
-                        "sub-orders": {
-                            "partial-sold-amount": 0,
-                            "partial-selling-amount": 0,
-                            "price-bought": 0,
-                            "projected-profit": 0,
-                            "time-bought": "",
-                            "sell-order-place-time": ""
+                "sell-order-overview": {
+                    "sell-orders": [
+                        {
+                            "item-name": "",
+                            "price-sold": 0,
+                            "earliest-time-bought": "",
+                            "sell-order-place-time": "",
+                            "sub-orders": [
+                                {
+                                    "partial-sold-amount": 0,
+                                    "partial-selling-amount": 0,
+                                    "price-bought": 0,
+                                    "projected-profit": 0,
+                                    "time-bought": "",
+                                    "sell-order-place-time": ""
+                                }
+                            ]
                         }
-                    }
+                    ]
                 },
                 "buy-orders": {
-                    "item-name": {
-                        "bought-amount": 0,
-                        "buying-amount": 0,
-                        "price-buying": 0,
-                        "projected-profit": 0,
-                        "buy-order-place-time": ""
-                    }
+                    "buy-order-overview": [
+                        {
+                            "item-name": "",
+                            "bought-amount": 0,
+                            "buying-amount": 0,
+                            "price-buying": 0,
+                            "projected-profit": 0,
+                            "buy-order-place-time": ""
+                        }
+                    ]
                 },
                 "short-term-investments": {
                     "item-name": {
                         "type": "short-term or crafting-material",
-                        "sub-orders": {
-                            "partial-amount": 0,
-                            "price-bought": 0,
-                            "time-bought": ""
-                        }
+                        "sub-orders": [
+                            {
+                                "partial-amount": 0,
+                                "price-bought": 0,
+                                "time-bought": ""
+                            }
+                        ]
                     }
                 },
                 "long-term-investments": {
                     "item-name": {
                         "type": "long-term",
-                        "sub-orders": {
-                            "partial-amount": 0,
-                            "price-bought": 0,
-                            "time-bought": ""
+                        "sub-orders": [
+                            {
+                                "partial-amount": 0,
+                                "price-bought": 0,
+                                "time-bought": ""
+                            }
+                        ]
+                    }
+                },
+                "auction-house-overview": {
+                    "auctions": [
+                        {
+                            "item-name": "",
+                            "auction-id": "",
+                            "material-cost": 0,
+                            "price-selling": 0,
+                            "sold": true,
+                            "date-placed": ""
                         }
-                    }
+                    ]
                 },
-                "auction-house": {
-                    "item-name": {
-                        "auction-id": "",
-                        "material-cost": 0,
-                        "price-selling": 0,
-                        "sold": true,
-                        "date-placed": ""
-                    }
-                },
-                "forge": {
-                    "item-name": {
+                "forge": [
+                    {
+                        "item-name": "",
                         "crafted": true,
                         "sell-price": 0,
                         "materials": {
@@ -73,7 +89,7 @@
                             }
                         }
                     }
-                },
+                ],
                 "all-products": {
                     "item-name": {
                         "total-amount": 0,
