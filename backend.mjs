@@ -150,6 +150,14 @@ class ProcesTrade {
                 parseFloat(this.message.slice(price_string_start, price_string_end).replaceAll(',', '')),
                 this.message.slice(name_string_start, name_string_end)
             );
+        } else if (this.message.includes('[Bazaar] Cancelled!') &&
+                   this.message.includes('Buy Order!')) {
+            this.type = "buy-order-cancel";
+            const amount_string_start = findEnd(this.message, 'Refunded ');
+            const amount_string_end = this.message.indexOf(' coins');
+            this.buyOrderCancel(
+                parseInt(this.message.slice(amount_string_start, amount_string_end).replaceAll(',', ''))
+            );
         } else if (this.message.includes('[Bazaar] Sell Offer Setup!')) {
             this.type = "sell-order-setup";
             const amount_string_start = findEnd(this.message, 'Setup! ');
@@ -185,6 +193,17 @@ class ProcesTrade {
             this.sellOrderClaim(
                 parseInt(this.message.slice(amount_string_start, amount_string_end).replaceAll(',', '')),
                 parseFloat(this.message.slice(price_string_start, price_string_end).replaceAll(',', '')),
+                this.message.slice(name_string_start, name_string_end)
+            );
+        } else if (this.message.includes('[Bazaar] Cancelled!') &&
+                   this.message.includes('Sell offer!')) {
+            this.type = "sell-order-cancel";
+            const amount_string_start = findEnd(this.message, 'Refunded ');
+            const amount_string_end = this.message.indexOf('x ');
+            const name_string_start = findEnd(this.message, 'x ');
+            const name_string_end = this.message.indexOf(' from ');
+            this.sellOrderCancel(
+                parseInt(this.message.slice(amount_string_start, amount_string_end).replaceAll(',', '')),
                 this.message.slice(name_string_start, name_string_end)
             );
         } else if (this.message.includes('You sold')) {
@@ -408,7 +427,7 @@ class ProcesTrade {
 
         throw 'Failed to claim a buy order';
     }
-    buyOrderCancel() {
+    buyOrderCancel(amount) {
         
     }
     sellOrderSetup(amount, price, name) {
@@ -536,7 +555,7 @@ class ProcesTrade {
     sellOrderClaim(amount, price, name) {
         
     }
-    sellOrderCancel() {
+    sellOrderCancel(amount, name) {
 
     }
     npcSell(amount, price, name) {
