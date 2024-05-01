@@ -81,7 +81,7 @@ function copy(value) {
 }
 
 /////////////////////////////////////////////////////////////////////////
-// add weight adjustments, order cancels
+// add weight adjustments, add a sorting thing by price, constanly update the sell/buy orders
 class ProcesTrade {
     constructor(trade_message) {
         this.message = trade_message;
@@ -314,7 +314,7 @@ class ProcesTrade {
                         return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now());
                     } else {
                         // just remove the suborder
-                        trader_data[invesment_type][name]["sub-order"].splice(0, 1);
+                        trader_data[invesment_type][name]["sub-orders"].splice(0, 1);
 
                         // calculate the profit for just this sell order
                         date_bought = subOrder["time-bought"];
@@ -397,7 +397,7 @@ class ProcesTrade {
             }
         }
 
-        throw 'Failed to fill a buy order';
+        throw 'ERROR: Failed to fill a buy order';
     }
     buyOrderClaim(amount, price, name) {
         // get the current buy orders
@@ -425,7 +425,7 @@ class ProcesTrade {
             }
         }
 
-        throw 'Failed to claim a buy order';
+        throw 'ERROR: Failed to claim a buy order';
     }
     buyOrderCancel(dollars) {
         // this one's a little more sketchy bc it depends on the bought-amout being accurate
@@ -446,7 +446,7 @@ class ProcesTrade {
             }
         }
 
-        throw 'Failed to cancel a buy order';
+        throw 'ERROR: Failed to cancel a buy order';
     }
     sellOrderSetup(amount, price, name) {
         // get the hypixel api name and the current sell order price
@@ -529,7 +529,7 @@ class ProcesTrade {
                     }
 
                     // just remove the suborder
-                    trader_data[invesment_type][name]["sub-order"].splice(0, 1);
+                    trader_data[invesment_type][name]["sub-orders"].splice(0, 1);
 
                     // calculate the profit for just this sell order
                     date_bought = buySubOrder["time-bought"];
@@ -568,13 +568,108 @@ class ProcesTrade {
             }
         }
 
-        throw 'Failed to fill a sell order';
+        throw 'ERROR: Failed to fill a sell order';
     }
     sellOrderClaim(amount, price, name) {
+        // get the current sell orders
+        const sellOrders = trader_data["sell-order-overview"]["sell-orders"];
         
+        // index that the sell order that was claimed will be at
+        let current_sell_order_index = -1;
+
+        // find the index of the sell order that was just claimed
+        for (const sellOrderIndex of Object.keys(sellOrders)) {
+            const sellOrder = sellOrders[sellOrderIndex];
+            if (sellOrder["item-name"] === name &&
+                sellOrder["price-sold"] === price) {
+                current_sell_order_index = sellOrderIndex;
+            }
+        }
+        if (current_sell_order_index === -1 || sellOrders.length === 0) throw 'ERROR: No sell order found to claim';
+
+        // adjust the amounts to reflect the sell claim
+        let suborders = trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"];
+        while (suborders.length > 0) {
+            const subOrder = suborders[0];
+
+            // go through each suborder
+            if (subOrder["partial-amount"] > amount) {
+                // then just subtract from the current suborder
+                trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"][0]["partial-amount"] -= amount;
+                
+                // calculate the profit from the sell order
+                date_bought = subOrder["time-bought"];
+                return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now());
+            } else {
+                // determine if the last suborder is bought out
+                if (trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"].length <= 1) {
+                    // remove the whole order
+                    trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index] = undefined;
+
+                    // calculate the profit from the sell order
+                    date_bought = subOrder["time-bought"];
+                    return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now());
+                } else {
+                    // just remove the suborder
+                    trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"].splice(0, 1);
+
+                    // calculate the profit for just this sell order
+                    date_bought = subOrder["time-bought"];
+                    this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now());
+                }
+            }
+        }
+        throw 'ERROR: More insta selling that in investments';
     }
     sellOrderCancel(amount, name) {
+        // get the current sell orders
+        const sellOrders = trader_data["sell-order-overview"]["sell-orders"];
+        
+        // index that the sell order that was claimed will be at
+        let current_sell_order_index = -1;
 
+        // find the index of the sell order that was just claimed
+        for (const sellOrderIndex of Object.keys(sellOrders)) {
+            const sellOrder = sellOrders[sellOrderIndex];
+
+            // total up the amount that is unsold for each suborder
+            let totalUnsold = 0;
+            for (const subSellOrderIndex of Object.keys(sellOrder["sub-orders"])) {
+                totalUnsold += sellOrder["sub-orders"][subSellOrderIndex]["partial-selling-amount"] - sellOrder["sub-orders"][subSellOrderIndex]["partial-sold-amount"];
+            }
+
+            // check that the unsold amounts and name are the same as the current sell order 
+            if (sellOrder["item-name"] === name &&
+                totalUnsold === amount) {
+                current_sell_order_index = sellOrderIndex;
+            }
+        }
+        if (current_sell_order_index === -1 || sellOrders.length === 0) throw 'ERROR: No sell order found to cancel';
+
+        const currentSellOrder = sellOrders[current_sell_order_index];
+        const invesment_type = product_list[name]["type"] + "s"; 
+        for (const subSellOrder of currentSellOrder["sub-orders"]) {
+            if (trader_data[invesment_type][name] != undefined) {
+                trader_data[invesment_type][name]["sub-orders"].push({
+                    "partial-amount": subSellOrder["partial-selling-amount"] - subSellOrder["partial-sold-amount"],
+                    "price-bought": subSellOrder["price-bought"],
+                    "time-bought": subSellOrder["time-bought"]
+                });
+            } else {
+                trader_data[invesment_type][name] = {
+                    "type": product_list[name]["type"],
+                    "sub-orders": [
+                        {
+                            "partial-amount": subSellOrder["partial-selling-amount"] - subSellOrder["partial-sold-amount"],
+                            "price-bought": subSellOrder["price-bought"],
+                            "time-bought": subSellOrder["time-bought"]
+                        }
+                    ]
+                }
+            }
+        }
+
+        return 'Sell order cancelled';
     }
     npcSell(amount, price, name) {
         
@@ -603,6 +698,10 @@ async function updateBazaarData() {
     bazaar_data = await response.json();
     bazaar_data = bazaar_data['products'];
 }
-  
 
-new ProcesTrade('[Bazaar] Bought 1,000x Carrot for 123.1 coins!');
+for (const testMesage of [
+    ''
+]) {
+    new ProcesTrade(testMesage);
+    console.log(trader_data);
+}
