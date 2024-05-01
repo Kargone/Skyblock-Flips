@@ -209,17 +209,18 @@
                 "forge-profit": 0,
                 "auction-house-profit": 0,
                 "bazaar-profit": 0,
-                "trades": {
-                    "item-name": {
+                "trades": [
+                    {
+                        "item-name": "",
                         "count": 0,
-                        "bought": 0,
-                        "sold": 0,
+                        "buy-price": 0,
+                        "sell-price": 0,
                         "profit-per-unit": 0,
                         "total-profit": 0,
                         "date-bought": "",
                         "date-sold": ""
                     }
-                }
+                ]
             }
         }
     }

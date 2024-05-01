@@ -1,6 +1,7 @@
 {
     "Carrot": {
-        "api_name": "CARROT",
-        "type": "crafting-material"
+        "api-name": "CARROT",
+        "type": "short-term-investment",
+        "has-weights": true
     }
 }
