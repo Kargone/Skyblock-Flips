@@ -427,8 +427,26 @@ class ProcesTrade {
 
         throw 'Failed to claim a buy order';
     }
-    buyOrderCancel(amount) {
+    buyOrderCancel(dollars) {
+        // this one's a little more sketchy bc it depends on the bought-amout being accurate
+
+        // get the current buy orders
+        const buyOrders = trader_data['buy-order-overview']['buy-orders'];
         
+        // find a current buy order that matches the coins that would be left on the order
+        for (let buyOrderIndex = 0; buyOrderIndex < buyOrders.length; buyOrderIndex++) {
+            const buyOrder = buyOrders[buyOrderIndex];
+            const unbought_amount = buyOrder["buying-amount"] - buyOrder["bought-amount"];
+            const unbought_dollars = unbought_amount * buyOrder["price-buying"];
+            if (unbought_dollars - 1000 < dollars &&
+                dollars < unbought_amount + 1000) {
+                // remove that order
+                trader_data['buy-order-overview']['buy-orders'][buyOrderIndex] = undefined;
+                return 'Buy order claiming completed';
+            }
+        }
+
+        throw 'Failed to cancel a buy order';
     }
     sellOrderSetup(amount, price, name) {
         // get the hypixel api name and the current sell order price
