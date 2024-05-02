@@ -1,6 +1,16 @@
 {
     "Carrot": {
-        "api-name": "CARROT",
+        "api-name": "CARROT_ITEM",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Tasty Cheese": {
+        "api-name": "CHEESE_FUEL",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Diamond Essence": {
+        "api-name": "ESSENCE_DIAMOND",
         "type": "short-term-investment",
         "has-weights": true
     }
