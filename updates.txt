@@ -1,0 +1,8 @@
+Fixed the earleist time bought for sell orders
+Fixed some constant names
+Added total selling amount to database sell orders
+Fixed projected profit
+Fixed a problem with buy order claim
+Fixed difference bewteen sell order place times in sub and overall order
+Fixed sell order profit projection
+Fixed profit per unit calc on daily trades tracker

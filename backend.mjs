@@ -16,6 +16,13 @@
 // // Initialize Firebase
 // const app = initializeApp(firebaseConfig);
 
+/////////////////////////////////////////////////////////////////////////
+// add weight adjustments
+// add a sorting thing by price
+// constanly update the sell/buy orders
+// order flipped
+// daily profit date thing
+
 import product_list from './product-list.json' with { type: "json" };
 
 let bazaar_data = {};
@@ -94,8 +101,6 @@ function copy(value) {
     return JSON.parse(JSON.stringify(value));
 }
 
-/////////////////////////////////////////////////////////////////////////
-// add weight adjustments, add a sorting thing by price, constanly update the sell/buy orders, order flipped
 class ProcesTrade {
     constructor(trade_message) {
         this.message = trade_message;
@@ -261,20 +266,20 @@ class ProcesTrade {
     }
     instaBuy(amount, price, name, time_bought = Date.now()) {
         // get the investment type but add "s" to format for trader_data
-        const invesment_type = product_list[name]["type"] + "s"; 
+        const invesmentType = product_list[name]["type"] + "s"; 
 
         // look for any invesments that might already be the same name
-        if (Object.keys(trader_data[invesment_type]).indexOf(name) != -1) {
+        if (Object.keys(trader_data[invesmentType]).indexOf(name) != -1) {
             // apenend a new order to suborders
-            trader_data[invesment_type][name]["sub-orders"].push({
+            trader_data[invesmentType][name]["sub-orders"].push({
                 "partial-amount": amount,
                 "price-bought": price,
                 "time-bought": time_bought
             });
         } else {
             // create a new order
-            trader_data[invesment_type][name] = {
-                "type": product_list[name],
+            trader_data[invesmentType][name] = {
+                "type": product_list[name]["type"],
                 "sub-orders": [
                     {
                         "partial-amount": amount,
@@ -288,34 +293,34 @@ class ProcesTrade {
         return 'Instabuy completed';
     }
     instaSell(amount, price, name) {
-        const invesment_type = product_list[name]["type"] + "s"; 
+        const invesmentType = product_list[name]["type"] + "s"; 
 
         // look for any invesments that might already be the same name
-        if (Object.keys(trader_data[invesment_type]).indexOf(name) != -1) {
+        if (Object.keys(trader_data[invesmentType]).indexOf(name) != -1) {
             // adjust the amounts to reflect the sel
-            let suborders = trader_data[invesment_type][name]["sub-orders"];
+            let suborders = trader_data[invesmentType][name]["sub-orders"];
             while (suborders.length > 0) {
                 const subOrder = suborders[0];
                 // go through each suborder
                 if (subOrder["partial-amount"] > amount) {
                     // then just subtract from the current suborder
-                    trader_data[invesment_type][name]["sub-orders"][0]["partial-amount"] -= amount;
+                    trader_data[invesmentType][name]["sub-orders"][0]["partial-amount"] -= amount;
                     
                     // calculate the profit from the sell order
                     date_bought = subOrder["time-bought"];
                     return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now());
                 } else {
                     // determine if the last suborder is bought out
-                    if (trader_data[invesment_type][name]["sub-orders"].length <= 1) {
+                    if (trader_data[invesmentType][name]["sub-orders"].length <= 1) {
                         // remove the whole order
-                        trader_data[invesment_type][name] = undefined;
+                        trader_data[invesmentType][name] = undefined;
 
                         // calculate the profit from the sell order
                         date_bought = subOrder["time-bought"];
                         return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now());
                     } else {
                         // just remove the suborder
-                        trader_data[invesment_type][name]["sub-orders"].splice(0, 1);
+                        trader_data[invesmentType][name]["sub-orders"].splice(0, 1);
 
                         // calculate the profit for just this sell order
                         date_bought = subOrder["time-bought"];
@@ -330,8 +335,9 @@ class ProcesTrade {
     }
     addProfit(amount, name, buy_price, sell_price, date_bought, date_sold, type = 'bazaar') {
         // calculate the current profit
-        const profit_per_unit = (sell_price - buy_price);
-        const profit = amount * profit_per_unit;
+        const bazaarFeesPerUnit = sell_price * 0.01; 
+        const profitPerUnit = (sell_price - buy_price) - bazaarFeesPerUnit;
+        const profit = amount * profitPerUnit;
         
         // add the profit to the daily profits stuff
         trader_data["all-products"][name]["total-profit-made"] += profit;
@@ -347,7 +353,7 @@ class ProcesTrade {
                 // update a trade that already exists
                 trader_data["daily-profits"]["date"]["trades"][tradeIndex]["count"] += amount; 
                 const current_amount = trader_data["daily-profits"]["date"]["trades"][tradeIndex]["count"];
-                trader_data["daily-profits"]["date"]["trades"][tradeIndex]["total-profit"] = current_amount * profit_per_unit;
+                trader_data["daily-profits"]["date"]["trades"][tradeIndex]["total-profit"] = current_amount * profitPerUnit;
             }
         }
         // add a new trade since no if statments in for loop triggered
@@ -356,7 +362,7 @@ class ProcesTrade {
             "count": amount,
             "buy-price": buy_price,
             "sell-price": sell_price,
-            "profit-per-unit": profit_per_unit,
+            "profit-per-unit": profitPerUnit,
             "total-profit": profit,
             "date-bought": date_bought,
             "date-sold": date_sold
@@ -367,7 +373,8 @@ class ProcesTrade {
     buyOrderSetup(amount, price, name) {
         // get the hypixel api name and the current sell order price
         const api_name = product_list[name]['api-name'];
-        const current_resell_price = bazaar_data[api_name]["quick_status"]["buyPrice"];
+        const currentResellPrice = Math.round(bazaar_data[api_name]["quick_status"]["buyPrice"] * 10) / 10;
+        const bazaarFees = currentResellPrice * 0.01 * amount;
 
         // add the buy order
         trader_data['buy-order-overview']['buy-orders'].push({
@@ -375,7 +382,7 @@ class ProcesTrade {
             "bought-amount": 0,
             "buying-amount": amount,
             "price-buying": price,
-            "projected-profit": Math.round((price - current_resell_price) * amount),
+            "projected-profit": Math.round((currentResellPrice - price) * amount - bazaarFees),
             "buy-order-place-time": Date.now()
         });
 
@@ -449,54 +456,54 @@ class ProcesTrade {
         throw 'ERROR: Failed to cancel a buy order';
     }
     sellOrderSetup(amount, price, name) {
-        // get the hypixel api name and the current sell order price
-        const api_name = product_list[name]['api-name'];
-        const current_resell_price = bazaar_data[api_name]["quick_status"]["sellPrice"];
-        const invesment_type = product_list[name]["type"] + "s"; 
-        const earliest_time_bought = "0";
+        const resellPrice = price;
+        const invesmentType = product_list[name]["type"] + "s"; 
+        const sellOrderPlaceTime = Date.now();
+        let earliest_time_bought = "10000000000000000000000000000";
+        let total_selling_amount = 0;
 
         let sell_sub_orders = [];
-        let buy_sub_orders = trader_data[invesment_type][name]["sub-orders"];
+        let buy_sub_orders = trader_data[invesmentType][name]["sub-orders"];
 
         while (buy_sub_orders.length > 0) {
             const buySubOrder = buy_sub_orders[0];
             // go through each suborder
             if (buySubOrder["partial-amount"] > amount) {
                 // then just subtract from the current suborder
-                trader_data[invesment_type][name]["sub-orders"][0]["partial-amount"] -= amount;
+                trader_data[invesmentType][name]["sub-orders"][0]["partial-amount"] -= amount;
 
                 // add the new sub sell order
-                const projected_profit_per_unit = Math.round(buySubOrder["price-bought"] - current_resell_price*10)/10;
+                const bazaarFeesPerUnit = resellPrice * 0.01;
+                const projectedProfitPerUnit = Math.round((resellPrice - buySubOrder["price-bought"] - bazaarFeesPerUnit) * 10) / 10;
+                total_selling_amount += trader_data[invesmentType][name]["sub-orders"][0]["partial-amount"];
                 sell_sub_orders.push({
                     "partial-sold-amount": 0,
-                    "partial-selling-amount": trader_data[invesment_type][name]["sub-orders"][0]["partial-amount"],
+                    "partial-selling-amount": trader_data[invesmentType][name]["sub-orders"][0]["partial-amount"],
                     "price-bought": buySubOrder["price-bought"],
-                    "projected-profit": projected_profit_per_unit * trader_data[invesment_type][name]["sub-orders"][0]["partial-amount"],
+                    "projected-profit": projectedProfitPerUnit * trader_data[invesmentType][name]["sub-orders"][0]["partial-amount"],
                     "time-bought": buySubOrder["time-bought"],
-                    "sell-order-place-time": Date.now()
+                    "sell-order-place-time": sellOrderPlaceTime
                 });
 
                 // update earliest time bought
                 if (parseInt(buySubOrder["time-bought"]) < parseInt(earliest_time_bought)) {
                     earliest_time_bought = buySubOrder["time-bought"];
                 }
-                
-                // calculate the profit from the sell order
-                const date_bought = buySubOrder["time-bought"];
-                this.addProfit(amount, name, buySubOrder["price-bought"], price, date_bought, Date.now());
                 break;
             } else {
                 // determine if the last suborder is bought out
-                if (trader_data[invesment_type][name]["sub-orders"].length <= 1) {
+                if (trader_data[invesmentType][name]["sub-orders"].length <= 1) {
                     // add the new sub sell order
-                    const projected_profit_per_unit = Math.round(buySubOrder["price-bought"] - current_resell_price*10)/10;
+                    const bazaarFeesPerUnit = resellPrice * 0.01;
+                    const projectedProfitPerUnit = Math.round((resellPrice - buySubOrder["price-bought"] - bazaarFeesPerUnit) * 10) / 10;
+                    total_selling_amount += buySubOrder["partial-amount"];
                     sell_sub_orders.push({
                         "partial-sold-amount": 0,
                         "partial-selling-amount": buySubOrder["partial-amount"],
                         "price-bought": buySubOrder["price-bought"],
-                        "projected-profit": projected_profit_per_unit * buySubOrder["partial-amount"],
+                        "projected-profit": projectedProfitPerUnit * buySubOrder["partial-amount"],
                         "time-bought": buySubOrder["time-bought"],
-                        "sell-order-place-time": Date.now()
+                        "sell-order-place-time": sellOrderPlaceTime
                     });
 
                     // update earliest time bought
@@ -505,22 +512,20 @@ class ProcesTrade {
                     }
 
                     // remove the whole order
-                    trader_data[invesment_type][name] = undefined;
-                    
-                    // calculate the profit from the sell order
-                    const date_bought = buySubOrder["time-bought"];
-                    this.addProfit(amount, name, buySubOrder["price-bought"], price, date_bought, Date.now());
+                    trader_data[invesmentType][name] = undefined;
                     break;
                 } else {
                     // add the new sub sell order
-                    const projected_profit_per_unit = Math.round(buySubOrder["price-bought"] - current_resell_price*10)/10;
+                    const bazaarFeesPerUnit = resellPrice * 0.01;
+                    const projectedProfitPerUnit = Math.round((resellPrice - buySubOrder["price-bought"] - bazaarFeesPerUnit) * 10) / 10;
+                    total_selling_amount += buySubOrder["partial-amount"];
                     sell_sub_orders.push({
                         "partial-sold-amount": 0,
                         "partial-selling-amount": buySubOrder["partial-amount"],
                         "price-bought": buySubOrder["price-bought"],
-                        "projected-profit": projected_profit_per_unit * buySubOrder["partial-amount"],
+                        "projected-profit": projectedProfitPerUnit * buySubOrder["partial-amount"],
                         "time-bought": buySubOrder["time-bought"],
-                        "sell-order-place-time": Date.now()
+                        "sell-order-place-time": sellOrderPlaceTime
                     });
 
                     // update earliest time bought
@@ -529,11 +534,7 @@ class ProcesTrade {
                     }
 
                     // just remove the suborder
-                    trader_data[invesment_type][name]["sub-orders"].splice(0, 1);
-
-                    // calculate the profit for just this sell order
-                    const date_bought = buySubOrder["time-bought"];
-                    this.addProfit(amount, name, buySubOrder["price-bought"], price, date_bought, Date.now());
+                    trader_data[invesmentType][name]["sub-orders"].splice(0, 1);
                 }
             }
         }
@@ -543,7 +544,8 @@ class ProcesTrade {
             "item-name": name,
             "price-sold": price,
             "earliest-time-bought": earliest_time_bought,
-            "sell-order-place-time": Date.now(),
+            "sell-order-place-time": sellOrderPlaceTime,
+            "total-selling-amount": total_selling_amount,
             "sub-orders": sell_sub_orders
         });
 
@@ -557,7 +559,7 @@ class ProcesTrade {
         for (let sellOrderIndex = 0; sellOrderIndex < sellOrders.length; sellOrderIndex++) {
             const sellOrder = sellOrders[sellOrderIndex];
             if (sellOrder["item-name"] === name &&
-                sellOrder["amount-selling"] === amount) {
+                sellOrder["total-selling-amount"] === amount) {
                 // alter the bought and selling amounts to reflect that the order has filled
                 for (const subSellOrderIndex of Object.keys(trader_data['sell-order-overview']['sell-orders'][sellOrderIndex]["sub-orders"])) {
                     trader_data['sell-order-overview']['sell-orders'][sellOrderIndex]["sub-orders"][subSellOrderIndex]["partial-sold-amount"] =
@@ -593,10 +595,11 @@ class ProcesTrade {
             const subOrder = suborders[0];
 
             // go through each suborder
-            if (subOrder["partial-amount"] > amount) {
+            if (subOrder["partial-selling-amount"] > amount) {
                 // then just subtract from the current suborder
-                trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"][0]["partial-amount"] -= amount;
-                
+                trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"][0]["partial-selling-amount"] -= amount;
+                trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"][0]["partial-sold-amount"] -= amount;
+
                 // calculate the profit from the sell order
                 const date_bought = subOrder["time-bought"];
                 return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now());
@@ -647,16 +650,16 @@ class ProcesTrade {
         if (current_sell_order_index === -1 || sellOrders.length === 0) throw 'ERROR: No sell order found to cancel';
 
         const currentSellOrder = sellOrders[current_sell_order_index];
-        const invesment_type = product_list[name]["type"] + "s"; 
+        const invesmentType = product_list[name]["type"] + "s"; 
         for (const subSellOrder of currentSellOrder["sub-orders"]) {
-            if (trader_data[invesment_type][name] != undefined) {
-                trader_data[invesment_type][name]["sub-orders"].push({
+            if (trader_data[invesmentType][name] != undefined) {
+                trader_data[invesmentType][name]["sub-orders"].push({
                     "partial-amount": subSellOrder["partial-selling-amount"] - subSellOrder["partial-sold-amount"],
                     "price-bought": subSellOrder["price-bought"],
                     "time-bought": subSellOrder["time-bought"]
                 });
             } else {
-                trader_data[invesment_type][name] = {
+                trader_data[invesmentType][name] = {
                     "type": product_list[name]["type"],
                     "sub-orders": [
                         {
@@ -668,6 +671,8 @@ class ProcesTrade {
                 }
             }
         }
+
+        trader_data["sell-order-overview"]["sell-orders"].splice(current_sell_order_index, 1);
 
         return 'Sell order cancelled';
     }
@@ -719,6 +724,6 @@ setTimeout(() => {
         '[Bazaar] Your Sell Offer for 3x Carrot was filled!'
     ]) {
         new ProcesTrade(testMesage);
-        console.log(JSON.parse(JSON.stringify(trader_data)));
-    }    
+    }
+    console.log('Orders done successfully');
 }, 1000);
