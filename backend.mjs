@@ -677,7 +677,7 @@ class ProcesTrade {
         return 'Sell order cancelled';
     }
     npcSell(amount, price, name) {
-        
+        // hi
     }
     auctionCreation(price, name) {
         
