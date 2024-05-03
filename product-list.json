@@ -13,5 +13,10 @@
         "api-name": "ESSENCE_DIAMOND",
         "type": "short-term-investment",
         "has-weights": true
+    },
+    "⸕ Fine Amber Gemstone": {
+        "api-name": "FINE_AMBER_GEM",
+        "type": "short-term-investment",
+        "has-weights": true
     }
 }

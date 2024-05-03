@@ -16,13 +16,6 @@
 // // Initialize Firebase
 // const app = initializeApp(firebaseConfig);
 
-/////////////////////////////////////////////////////////////////////////
-// add weight adjustments
-// add a sorting thing by price
-// constanly update the sell/buy orders
-// order flipped
-// daily profit date thing
-
 import product_list from './product-list.json' with { type: "json" };
 
 let bazaar_data = {};
@@ -67,6 +60,15 @@ let trader_data = {
             "total-profit-made": 0,
             "total-sold": 0,
             "crafting-materials": "none"
+        },
+        "⸕ Fine Amber Gemstone": {
+            "total-amount": 0,
+            "buy-weight": 0,
+            "sell-weight": 0,
+            "max-amount": 0,
+            "total-profit-made": 0,
+            "total-sold": 0,
+            "crafting-materials": "none"
         }
     },
     "daily-profits": {
@@ -100,6 +102,13 @@ function findEnd(string, substring) {
 function copy(value) {
     return JSON.parse(JSON.stringify(value));
 }
+
+// function withinBounds() {
+//     if () {
+//         return true;
+//     }
+//     return false;
+// }
 
 class ProcesTrade {
     constructor(trade_message) {
@@ -463,31 +472,31 @@ class ProcesTrade {
         let total_selling_amount = 0;
 
         let sell_sub_orders = [];
-        let buy_sub_orders = trader_data[invesmentType][name]["sub-orders"];
+        const investmentSubOrders = trader_data[invesmentType][name]["sub-orders"];
 
-        while (buy_sub_orders.length > 0) {
-            const buySubOrder = buy_sub_orders[0];
+        while (investmentSubOrders.length > 0) {
+            const investmentSubOrder = investmentSubOrders[0];
             // go through each suborder
-            if (buySubOrder["partial-amount"] > amount) {
+            if (investmentSubOrder["partial-amount"] > amount) {
                 // then just subtract from the current suborder
                 trader_data[invesmentType][name]["sub-orders"][0]["partial-amount"] -= amount;
 
                 // add the new sub sell order
                 const bazaarFeesPerUnit = resellPrice * 0.01;
-                const projectedProfitPerUnit = Math.round((resellPrice - buySubOrder["price-bought"] - bazaarFeesPerUnit) * 10) / 10;
+                const projectedProfitPerUnit = Math.round((resellPrice - investmentSubOrder["price-bought"] - bazaarFeesPerUnit) * 10) / 10;
                 total_selling_amount += trader_data[invesmentType][name]["sub-orders"][0]["partial-amount"];
                 sell_sub_orders.push({
                     "partial-sold-amount": 0,
                     "partial-selling-amount": trader_data[invesmentType][name]["sub-orders"][0]["partial-amount"],
-                    "price-bought": buySubOrder["price-bought"],
+                    "price-bought": investmentSubOrder["price-bought"],
                     "projected-profit": projectedProfitPerUnit * trader_data[invesmentType][name]["sub-orders"][0]["partial-amount"],
-                    "time-bought": buySubOrder["time-bought"],
+                    "time-bought": investmentSubOrder["time-bought"],
                     "sell-order-place-time": sellOrderPlaceTime
                 });
 
                 // update earliest time bought
-                if (parseInt(buySubOrder["time-bought"]) < parseInt(earliest_time_bought)) {
-                    earliest_time_bought = buySubOrder["time-bought"];
+                if (parseInt(investmentSubOrder["time-bought"]) < parseInt(earliest_time_bought)) {
+                    earliest_time_bought = investmentSubOrder["time-bought"];
                 }
                 break;
             } else {
@@ -495,20 +504,20 @@ class ProcesTrade {
                 if (trader_data[invesmentType][name]["sub-orders"].length <= 1) {
                     // add the new sub sell order
                     const bazaarFeesPerUnit = resellPrice * 0.01;
-                    const projectedProfitPerUnit = Math.round((resellPrice - buySubOrder["price-bought"] - bazaarFeesPerUnit) * 10) / 10;
-                    total_selling_amount += buySubOrder["partial-amount"];
+                    const projectedProfitPerUnit = Math.round((resellPrice - investmentSubOrder["price-bought"] - bazaarFeesPerUnit) * 10) / 10;
+                    total_selling_amount += investmentSubOrder["partial-amount"];
                     sell_sub_orders.push({
                         "partial-sold-amount": 0,
-                        "partial-selling-amount": buySubOrder["partial-amount"],
-                        "price-bought": buySubOrder["price-bought"],
-                        "projected-profit": projectedProfitPerUnit * buySubOrder["partial-amount"],
-                        "time-bought": buySubOrder["time-bought"],
+                        "partial-selling-amount": investmentSubOrder["partial-amount"],
+                        "price-bought": investmentSubOrder["price-bought"],
+                        "projected-profit": projectedProfitPerUnit * investmentSubOrder["partial-amount"],
+                        "time-bought": investmentSubOrder["time-bought"],
                         "sell-order-place-time": sellOrderPlaceTime
                     });
 
                     // update earliest time bought
-                    if (parseInt(buySubOrder["time-bought"]) < parseInt(earliest_time_bought)) {
-                        earliest_time_bought = buySubOrder["time-bought"];
+                    if (parseInt(investmentSubOrder["time-bought"]) < parseInt(earliest_time_bought)) {
+                        earliest_time_bought = investmentSubOrder["time-bought"];
                     }
 
                     // remove the whole order
@@ -517,20 +526,20 @@ class ProcesTrade {
                 } else {
                     // add the new sub sell order
                     const bazaarFeesPerUnit = resellPrice * 0.01;
-                    const projectedProfitPerUnit = Math.round((resellPrice - buySubOrder["price-bought"] - bazaarFeesPerUnit) * 10) / 10;
-                    total_selling_amount += buySubOrder["partial-amount"];
+                    const projectedProfitPerUnit = Math.round((resellPrice - investmentSubOrder["price-bought"] - bazaarFeesPerUnit) * 10) / 10;
+                    total_selling_amount += investmentSubOrder["partial-amount"];
                     sell_sub_orders.push({
                         "partial-sold-amount": 0,
-                        "partial-selling-amount": buySubOrder["partial-amount"],
-                        "price-bought": buySubOrder["price-bought"],
-                        "projected-profit": projectedProfitPerUnit * buySubOrder["partial-amount"],
-                        "time-bought": buySubOrder["time-bought"],
+                        "partial-selling-amount": investmentSubOrder["partial-amount"],
+                        "price-bought": investmentSubOrder["price-bought"],
+                        "projected-profit": projectedProfitPerUnit * investmentSubOrder["partial-amount"],
+                        "time-bought": investmentSubOrder["time-bought"],
                         "sell-order-place-time": sellOrderPlaceTime
                     });
 
                     // update earliest time bought
-                    if (parseInt(buySubOrder["time-bought"]) < parseInt(earliest_time_bought)) {
-                        earliest_time_bought = buySubOrder["time-bought"];
+                    if (parseInt(investmentSubOrder["time-bought"]) < parseInt(earliest_time_bought)) {
+                        earliest_time_bought = investmentSubOrder["time-bought"];
                     }
 
                     // just remove the suborder
@@ -583,7 +592,7 @@ class ProcesTrade {
         for (const sellOrderIndex of Object.keys(sellOrders)) {
             const sellOrder = sellOrders[sellOrderIndex];
             if (sellOrder["item-name"] === name &&
-                sellOrder["price-sold"] === price) {
+                Math.round(sellOrder["price-sold"]) === Math.round(price)) {
                 current_sell_order_index = sellOrderIndex;
             }
         }
@@ -598,7 +607,7 @@ class ProcesTrade {
             if (subOrder["partial-selling-amount"] > amount) {
                 // then just subtract from the current suborder
                 trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"][0]["partial-selling-amount"] -= amount;
-                trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"][0]["partial-sold-amount"] -= amount;
+                // trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"][0]["partial-sold-amount"] -= amount;
 
                 // calculate the profit from the sell order
                 const date_bought = subOrder["time-bought"];
@@ -707,21 +716,16 @@ async function updateBazaarData() {
 updateBazaarData();
 setTimeout(() => {
     for (const testMesage of [
-        '[Bazaar] Buy Order Setup! 3,000x Tasty Cheese for 7,521,000 coins.',
-        '[Bazaar] Buy Order Setup! 70,000x Diamond Essence for 48,412,000 coins.',
-        '[Bazaar] Claimed 1,494x Tasty Cheese worth 3,745,458 coins bought for 2,507 each!',
-        '[Bazaar] Your Buy Order for 70,000x Diamond Essence was filled!',
-        '[Bazaar] Sell Offer Setup! 1,494x Tasty Cheese for 5,145,650 coins.',
-        '[Bazaar] Cancelled! Refunded 1,494x Tasty Cheese from cancelling Sell Offer!',
-        '[Bazaar] Cancelled! Refunded 3,775,542 coins from cancelling Buy Order!',
-        '[Bazaar] Claimed 70,000x Diamond Essence worth 48,412,000 coins bought for 691.6 each!',
-        '[Bazaar] Sell Offer Setup! 70,000x Diamond Essence for 50,776,110 coins.',
-        '[Bazaar] Claimed 362,686 coins from selling 500x Diamond Essence at 732.7 each!',
-        '[Bazaar] Bought 1x Carrot for 5.7 coins!',
-        '[Bazaar] Bought 1x Carrot for 5.8 coins!',
-        '[Bazaar] Bought 1x Carrot for 5.8 coins!',
-        '[Bazaar] Sell Offer Setup! 3x Carrot for 16.6 coins.',
-        '[Bazaar] Your Sell Offer for 3x Carrot was filled!'
+        '[Bazaar] Buy Order Setup! 2,000x ⸕ Fine Amber Gemstone for 50,000,000 coins.',
+        '[Bazaar] Claimed 1,932x ⸕ Fine Amber Gemstone worth 48,300,000 coins bought for 25000 each!',
+        '[Bazaar] Cancelled! Refunded 1,700,000 coins from cancelling Buy Order!',
+        '[Bazaar] Sell Offer Setup! 1,932x ⸕ Fine Amber Gemstone for 61,205,377 coins.',
+        '[Bazaar] Claimed 57,435,481 coins from selling 1,813x ⸕ Fine Amber Gemstone at 32,000 each!',
+        '[Bazaar] Claimed 633,596 coins from selling 20x ⸕ Fine Amber Gemstone at 32,000 each!',
+        '[Bazaar] Claimed 665,276 coins from selling 21x ⸕ Fine Amber Gemstone at 32,000 each!',
+        '[Bazaar] Cancelled! Refunded 78x ⸕ Fine Amber Gemstone from cancelling Sell Offer!',
+        '[Bazaar] Sell Offer Setup! 78x ⸕ Fine Amber Gemstone for 2,471,017 coins.',
+        '[Bazaar] Your Sell Offer for 78x ⸕ Fine Amber Gemstone was filled!'
     ]) {
         new ProcesTrade(testMesage);
     }

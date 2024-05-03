@@ -1,0 +1,15 @@
+Soon:
+Account for auto fees being take out of sell claim orders
+Order flipped method
+Better way of setting orders to undefined
+
+Auto update the product list in trader data when a product cannot be found
+Order the sell orders by price before going through them in the sell order claim, to account for rounding errors make it fill the first order first
+
+Later:
+Add weight adjustments
+Add a sorting thing by price
+Constanly update the sell/buy orders
+Daily profit date thing
+Add firebase
+Update the partial sold amount
