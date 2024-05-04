@@ -33,44 +33,7 @@ let trader_data = {
         "auction-house": []
     },
     "forge": [],
-    "all-products": {
-        "Diamond Essence": {
-            "total-amount": 0,
-            "buy-weight": 0,
-            "sell-weight": 0,
-            "max-amount": 0,
-            "total-profit-made": 0,
-            "total-sold": 0,
-            "crafting-materials": "none"
-        },
-        "Tasty Cheese": {
-            "total-amount": 0,
-            "buy-weight": 0,
-            "sell-weight": 0,
-            "max-amount": 0,
-            "total-profit-made": 0,
-            "total-sold": 0,
-            "crafting-materials": "none"
-        },
-        "Carrot": {
-            "total-amount": 0,
-            "buy-weight": 0,
-            "sell-weight": 0,
-            "max-amount": 0,
-            "total-profit-made": 0,
-            "total-sold": 0,
-            "crafting-materials": "none"
-        },
-        "⸕ Fine Amber Gemstone": {
-            "total-amount": 0,
-            "buy-weight": 0,
-            "sell-weight": 0,
-            "max-amount": 0,
-            "total-profit-made": 0,
-            "total-sold": 0,
-            "crafting-materials": "none"
-        }
-    },
+    "all-products": {},
     "daily-profits": {
         "date": {
             "daily-profit": 0,
@@ -103,12 +66,36 @@ function copy(value) {
     return JSON.parse(JSON.stringify(value));
 }
 
-// function withinBounds() {
-//     if () {
-//         return true;
-//     }
-//     return false;
-// }
+class Sort {
+    constructor(object, key1, key2 = '') {
+        this.key1 = key1;
+        this.key2 = key2;
+        if (key2 != '') {
+            return object.sort(this.compareFn1);
+        } else {
+            return object.sort(this.compareFn2);
+        }
+    }
+    compareFn1() {
+        key1 = this.key1;
+        if (a[key1] < b[key1]) {
+            return -1;
+        } else if (a[key1] > b[key1]) {
+            return 1;
+        }
+        return 0;
+    }
+    compareFn2() {
+        key1 = this.key1;
+        key2 = this.key2;
+        if (a[key1][key2] < b[key1][key2]) {
+            return -1;
+        } else if (a[key1][key2] > b[key1][key2]) {
+            return 1;
+        }
+        return 0;
+    }
+}
 
 class ProcesTrade {
     constructor(trade_message) {
@@ -191,7 +178,7 @@ class ProcesTrade {
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
             const totalPrice = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            this.sellOrderSetup(amount, Math.round(totalPrice/amount*10)/10, nameString);
+            this.sellOrderSetup(amount, Math.round(totalPrice/amount/0.99*10)/10, nameString);
         } else if (this.message.includes('[Bazaar] Your Sell Offer for')) {
             this.type = "sell-order-fill";
             const amountStringStart = findEnd(this.message, 'for ');
@@ -211,7 +198,7 @@ class ProcesTrade {
             const nameStringStart = findEnd(this.message, 'x ');
             const nameStringEnd = this.message.indexOf(' at ');
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
-            const pricePerUnit = Math.round(parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''))*0.99*10)/10;
+            const pricePerUnit = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
             this.sellOrderClaim(amount, pricePerUnit, nameString);
         } else if (this.message.includes('[Bazaar] Cancelled!') &&
@@ -224,6 +211,18 @@ class ProcesTrade {
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
             this.sellOrderCancel(amount, nameString);
+        } else if (this.message.includes('[Bazaar] Order Flipped!')) {
+            this.type = "order-flipped";
+            const amountStringStart = findEnd(this.message, 'Flipped! ');
+            const amountStringEnd = this.message.indexOf('x ');
+            const profitStringStart = findEnd(this.message, 'for ');
+            const profitStringEnd = this.message.indexOf(' coins')
+            const nameStringStart = findEnd(this.message, 'x ');
+            const nameStringEnd = this.message.indexOf(' for ');
+            const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
+            const profitString = parseFloat(this.message.slice(profitStringStart, profitStringEnd).replaceAll(',', ''));
+            const nameString = this.message.slice(nameStringStart, nameStringEnd);
+            this.sellOrderClaim(amount, nameString, profitString);
         } else if (this.message.includes('You sold')) {
             this.type = "npc-sell";
             const amountStringStart = findEnd(this.message, ' x');
@@ -322,7 +321,7 @@ class ProcesTrade {
                     // determine if the last suborder is bought out
                     if (trader_data[invesmentType][name]["sub-orders"].length <= 1) {
                         // remove the whole order
-                        trader_data[invesmentType][name] = undefined;
+                        delete trader_data[invesmentType][name];
 
                         // calculate the profit from the sell order
                         date_bought = subOrder["time-bought"];
@@ -344,12 +343,29 @@ class ProcesTrade {
     }
     addProfit(amount, name, buy_price, sell_price, date_bought, date_sold, type = 'bazaar') {
         // calculate the current profit
-        const bazaarFeesPerUnit = sell_price * 0.01; 
-        const profitPerUnit = (sell_price - buy_price) - bazaarFeesPerUnit;
+        let profitPerUnit;
+        if (type === 'bazaar') {
+            const bazaarFeesPerUnit = sell_price * 0.01; 
+            profitPerUnit = (sell_price - buy_price) - bazaarFeesPerUnit;
+        } else {
+            profitPerUnit = (sell_price - buy_price);
+        }
         const profit = amount * profitPerUnit;
         
         // add the profit to the daily profits stuff
+        if (Object.keys(trader_data["all-products"]).indexOf(name) === -1) {
+            trader_data["all-products"][name] = {
+                "total-amount": 0,
+                "buy-weight": 0,
+                "sell-weight": 0,
+                "max-amount": 2000,
+                "total-profit-made": 0,
+                "total-sold": 0,
+                "crafting-materials": "none"
+            };
+        }
         trader_data["all-products"][name]["total-profit-made"] += profit;
+        trader_data["all-products"][name]["total-sold"] += amount;
         trader_data["daily-profits"]["date"]["daily-profit"] += profit;
         trader_data["daily-profits"]["date"][`${type}-profit`] += profit;
         
@@ -363,6 +379,7 @@ class ProcesTrade {
                 trader_data["daily-profits"]["date"]["trades"][tradeIndex]["count"] += amount; 
                 const current_amount = trader_data["daily-profits"]["date"]["trades"][tradeIndex]["count"];
                 trader_data["daily-profits"]["date"]["trades"][tradeIndex]["total-profit"] = current_amount * profitPerUnit;
+                return 'Instasell completed';
             }
         }
         // add a new trade since no if statments in for loop triggered
@@ -521,7 +538,7 @@ class ProcesTrade {
                     }
 
                     // remove the whole order
-                    trader_data[invesmentType][name] = undefined;
+                    delete trader_data[invesmentType][name];
                     break;
                 } else {
                     // add the new sub sell order
@@ -581,7 +598,7 @@ class ProcesTrade {
 
         throw 'ERROR: Failed to fill a sell order';
     }
-    sellOrderClaim(amount, price, name) {
+    sellOrderClaim(amount, price_sold, name) {
         // get the current sell orders
         const sellOrders = trader_data["sell-order-overview"]["sell-orders"];
         
@@ -591,9 +608,9 @@ class ProcesTrade {
         // find the index of the sell order that was just claimed
         for (const sellOrderIndex of Object.keys(sellOrders)) {
             const sellOrder = sellOrders[sellOrderIndex];
-            if (sellOrder["item-name"] === name &&
-                Math.round(sellOrder["price-sold"]) === Math.round(price)) {
+            if (sellOrder["item-name"] === name && sellOrder["price-sold"] === price_sold) {
                 current_sell_order_index = sellOrderIndex;
+                break;
             }
         }
         if (current_sell_order_index === -1 || sellOrders.length === 0) throw 'ERROR: No sell order found to claim';
@@ -607,11 +624,11 @@ class ProcesTrade {
             if (subOrder["partial-selling-amount"] > amount) {
                 // then just subtract from the current suborder
                 trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"][0]["partial-selling-amount"] -= amount;
-                // trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"][0]["partial-sold-amount"] -= amount;
+                trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"][0]["partial-sold-amount"] = 0;
 
                 // calculate the profit from the sell order
                 const date_bought = subOrder["time-bought"];
-                return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now());
+                return this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, Date.now());
             } else {
                 // determine if the last suborder is bought out
                 if (trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"].length <= 1) {
@@ -620,14 +637,14 @@ class ProcesTrade {
 
                     // calculate the profit from the sell order
                     const date_bought = subOrder["time-bought"];
-                    return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now());
+                    return this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, Date.now());
                 } else {
                     // just remove the suborder
                     trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"].splice(0, 1);
 
                     // calculate the profit for just this sell order
                     const date_bought = subOrder["time-bought"];
-                    this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now());
+                    this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, Date.now());
                 }
             }
         }
@@ -685,8 +702,33 @@ class ProcesTrade {
 
         return 'Sell order cancelled';
     }
+    orderFlipped(amount, name, profit) {
+        // get the buy orders
+        const buyOrders = trader_data["buy-order-overview"]["buy-orders"];
+        let current_buy_order_index = -1;
+
+        // go through each and find which one matches the flip
+        for (const buyOrderIndex of Object.keys(buyOrders)) {
+            const buyOrder = buyOrders[buyOrderIndex];
+            if (buyOrder["item-name"] === name && buyOrder["buying-amount"] === amount) {
+                current_buy_order_index = buyOrderIndex;
+            }
+        }
+        if (current_buy_order_index === -1 || buyOrders.length === 0) throw 'ERROR: No buy order found to flip';
+
+        const currentBuyOrder = buyOrders[current_buy_order_index];
+        const priceBought = currentBuyOrder["price-buying"];
+        const profitPerUnit = profit / amount;
+
+        this.buyOrderClaim(amount, amount * priceBought, name);
+        this.sellOrderSetup(amount, (priceBought + profitPerUnit) * amount, name);
+
+        return 'Buy order flipped';
+    }
     npcSell(amount, price, name) {
-        // hi
+        this.instaSell(amount, price, name);
+
+        return 'NPC sell completed';
     }
     auctionCreation(price, name) {
         
@@ -716,16 +758,21 @@ async function updateBazaarData() {
 updateBazaarData();
 setTimeout(() => {
     for (const testMesage of [
-        '[Bazaar] Buy Order Setup! 2,000x ⸕ Fine Amber Gemstone for 50,000,000 coins.',
-        '[Bazaar] Claimed 1,932x ⸕ Fine Amber Gemstone worth 48,300,000 coins bought for 25000 each!',
-        '[Bazaar] Cancelled! Refunded 1,700,000 coins from cancelling Buy Order!',
-        '[Bazaar] Sell Offer Setup! 1,932x ⸕ Fine Amber Gemstone for 61,205,377 coins.',
-        '[Bazaar] Claimed 57,435,481 coins from selling 1,813x ⸕ Fine Amber Gemstone at 32,000 each!',
-        '[Bazaar] Claimed 633,596 coins from selling 20x ⸕ Fine Amber Gemstone at 32,000 each!',
-        '[Bazaar] Claimed 665,276 coins from selling 21x ⸕ Fine Amber Gemstone at 32,000 each!',
-        '[Bazaar] Cancelled! Refunded 78x ⸕ Fine Amber Gemstone from cancelling Sell Offer!',
-        '[Bazaar] Sell Offer Setup! 78x ⸕ Fine Amber Gemstone for 2,471,017 coins.',
-        '[Bazaar] Your Sell Offer for 78x ⸕ Fine Amber Gemstone was filled!'
+'[Bazaar] Buy Order Setup! 3,000x Tasty Cheese for 7,515,600 coins.',
+'[Bazaar] Buy Order Setup! 70,000x Diamond Essence for 48,412,000 coins.',
+'[Bazaar] Claimed 1,494x Tasty Cheese worth 3,742,769 coins bought for 2,505.2 each!',
+'[Bazaar] Your Buy Order for 70,000x Diamond Essence was filled!',
+'[Bazaar] Sell Offer Setup! 1,494x Tasty Cheese for 5,145,650 coins.',
+'[Bazaar] Cancelled! Refunded 1,494x Tasty Cheese from cancelling Sell Offer!',
+'[Bazaar] Cancelled! Refunded 3,772,831 coins from cancelling Buy Order!',
+'[Bazaar] Claimed 70,000x Diamond Essence worth 48,412,000 coins bought for 691.6 each!',
+'[Bazaar] Sell Offer Setup! 70,000x Diamond Essence for 50,776,110 coins.',
+'[Bazaar] Claimed 362,686 coins from selling 500x Diamond Essence at 732.7 each!',
+'[Bazaar] Bought 1x Carrot for 5.7 coins!',
+'[Bazaar] Bought 1x Carrot for 5.8 coins!',
+'[Bazaar] Bought 1x Carrot for 5.8 coins!',
+'[Bazaar] Sell Offer Setup! 3x Carrot for 16.6 coins.',
+'[Bazaar] Your Sell Offer for 3x Carrot was filled!'
     ]) {
         new ProcesTrade(testMesage);
     }

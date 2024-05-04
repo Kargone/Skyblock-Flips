@@ -1,3 +1,6 @@
-Added todo file
-Fixed some sell claim order stuff
-Added different test cases
+Fixed sell order claims not updating already existing trades in daily profits
+Added the old tests cases back into todo.txt
+Created a better way of making investments undefined
+All products is now updated on a new product being added, and not created init
+Total sold in all products updates
+Testing sort function

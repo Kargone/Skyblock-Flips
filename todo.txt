@@ -1,10 +1,12 @@
-Soon:
-Account for auto fees being take out of sell claim orders
+Testing needed for:
 Order flipped method
-Better way of setting orders to undefined
+Npc sell method
+Debug the new add profit amount, and sell order claim price sold checking
+Account for auto fees being take out of sell claim orders
+Sort function
 
-Auto update the product list in trader data when a product cannot be found
-Order the sell orders by price before going through them in the sell order claim, to account for rounding errors make it fill the first order first
+Soon:
+Order the sell orders by date in case of dupe orders
 
 Later:
 Add weight adjustments
@@ -12,4 +14,31 @@ Add a sorting thing by price
 Constanly update the sell/buy orders
 Daily profit date thing
 Add firebase
-Update the partial sold amount
+Finish the other methods
+
+'[Bazaar] Buy Order Setup! 3,000x Tasty Cheese for 7,515,600 coins.',
+'[Bazaar] Buy Order Setup! 70,000x Diamond Essence for 48,412,000 coins.',
+'[Bazaar] Claimed 1,494x Tasty Cheese worth 3,742,769 coins bought for 2,505.2 each!',
+'[Bazaar] Your Buy Order for 70,000x Diamond Essence was filled!',
+'[Bazaar] Sell Offer Setup! 1,494x Tasty Cheese for 5,145,650 coins.',
+'[Bazaar] Cancelled! Refunded 1,494x Tasty Cheese from cancelling Sell Offer!',
+'[Bazaar] Cancelled! Refunded 3,772,831 coins from cancelling Buy Order!',
+'[Bazaar] Claimed 70,000x Diamond Essence worth 48,412,000 coins bought for 691.6 each!',
+'[Bazaar] Sell Offer Setup! 70,000x Diamond Essence for 50,776,110 coins.',
+'[Bazaar] Claimed 362,686 coins from selling 500x Diamond Essence at 732.7 each!',
+'[Bazaar] Bought 1x Carrot for 5.7 coins!',
+'[Bazaar] Bought 1x Carrot for 5.8 coins!',
+'[Bazaar] Bought 1x Carrot for 5.8 coins!',
+'[Bazaar] Sell Offer Setup! 3x Carrot for 16.6 coins.',
+'[Bazaar] Your Sell Offer for 3x Carrot was filled!'
+
+'[Bazaar] Buy Order Setup! 2,000x ⸕ Fine Amber Gemstone for 50,000,000 coins.',
+'[Bazaar] Claimed 1,932x ⸕ Fine Amber Gemstone worth 48,300,000 coins bought for 25000 each!',
+'[Bazaar] Cancelled! Refunded 1,700,000 coins from cancelling Buy Order!',
+'[Bazaar] Sell Offer Setup! 1,932x ⸕ Fine Amber Gemstone for 61,205,377 coins.',
+'[Bazaar] Claimed 57,435,481 coins from selling 1,813x ⸕ Fine Amber Gemstone at 32,000 each!',
+'[Bazaar] Claimed 633,596 coins from selling 20x ⸕ Fine Amber Gemstone at 32,000 each!',
+'[Bazaar] Claimed 665,276 coins from selling 21x ⸕ Fine Amber Gemstone at 32,000 each!',
+'[Bazaar] Cancelled! Refunded 78x ⸕ Fine Amber Gemstone from cancelling Sell Offer!',
+'[Bazaar] Sell Offer Setup! 78x ⸕ Fine Amber Gemstone for 2,471,017 coins.',
+'[Bazaar] Your Sell Offer for 78x ⸕ Fine Amber Gemstone was filled!'
