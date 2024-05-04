@@ -68,32 +68,31 @@ function copy(value) {
 
 class Sort {
     constructor(object, key1, key2 = '') {
-        this.key1 = key1;
-        this.key2 = key2;
-        if (key2 != '') {
-            return object.sort(this.compareFn1);
+        if (key2 === '') {
+            return object.sort(this.compareFn1(key1));
         } else {
-            return object.sort(this.compareFn2);
+            return object.sort(this.compareFn2(key1, key2));
         }
     }
-    compareFn1() {
-        key1 = this.key1;
-        if (a[key1] < b[key1]) {
-            return -1;
-        } else if (a[key1] > b[key1]) {
-            return 1;
+    compareFn1(key1) {
+        return function(a, b) {
+            if (a[key1] < b[key1]) {
+                return -1;
+            } else if (a[key1] > b[key1]) {
+                return 1;
+            }
+            return 0;
         }
-        return 0;
     }
-    compareFn2() {
-        key1 = this.key1;
-        key2 = this.key2;
-        if (a[key1][key2] < b[key1][key2]) {
-            return -1;
-        } else if (a[key1][key2] > b[key1][key2]) {
-            return 1;
+    compareFn2(key1, key2) {
+        return function(a, b) {
+            if (a[key1][key2] < b[key1][key2]) {
+                return -1;
+            } else if (a[key1][key2] > b[key1][key2]) {
+                return 1;
+            }
+            return 0;
         }
-        return 0;
     }
 }
 
@@ -123,7 +122,7 @@ class ProcesTrade {
             const nameStringStart = findEnd(this.message, 'x ');
             const nameStringEnd = this.message.indexOf(' for');
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
-            const pricePerUnit = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
+            const pricePerUnit = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''))/amount;
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
             this.instaSell(amount, pricePerUnit, nameString);
         } else if (this.message.includes('[Bazaar] Buy Order Setup!')) {
@@ -222,7 +221,7 @@ class ProcesTrade {
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
             const profitString = parseFloat(this.message.slice(profitStringStart, profitStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            this.sellOrderClaim(amount, nameString, profitString);
+            this.orderFlipped(amount, nameString, profitString);
         } else if (this.message.includes('You sold')) {
             this.type = "npc-sell";
             const amountStringStart = findEnd(this.message, ' x');
@@ -232,7 +231,7 @@ class ProcesTrade {
             const nameStringStart = findEnd(this.message, 'sold ');
             const nameStringEnd = this.message.indexOf(' x');
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
-            const totalPrice = parseFloat(this.message.slice(priceStringStart, priceStringEnd)).replaceAll(',', '');
+            const totalPrice = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
             this.npcSell(amount, totalPrice/amount, nameString);
         } else if (this.message.includes('created a BIN auction for')) {
@@ -315,7 +314,7 @@ class ProcesTrade {
                     trader_data[invesmentType][name]["sub-orders"][0]["partial-amount"] -= amount;
                     
                     // calculate the profit from the sell order
-                    date_bought = subOrder["time-bought"];
+                    const date_bought = subOrder["time-bought"];
                     return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now());
                 } else {
                     // determine if the last suborder is bought out
@@ -324,14 +323,14 @@ class ProcesTrade {
                         delete trader_data[invesmentType][name];
 
                         // calculate the profit from the sell order
-                        date_bought = subOrder["time-bought"];
+                        const date_bought = subOrder["time-bought"];
                         return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now());
                     } else {
                         // just remove the suborder
                         trader_data[invesmentType][name]["sub-orders"].splice(0, 1);
 
                         // calculate the profit for just this sell order
-                        date_bought = subOrder["time-bought"];
+                        const date_bought = subOrder["time-bought"];
                         this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now());
                     }
                 }
@@ -440,8 +439,7 @@ class ProcesTrade {
         // find a current buy order that matches the name and buying price as an order already placed
         for (let buyOrderIndex = 0; buyOrderIndex < buyOrders.length; buyOrderIndex++) {
             const buyOrder = buyOrders[buyOrderIndex];
-            if (buyOrder["item-name"] === name &&
-                buyOrder["price-buying"] === price) {
+            if (buyOrder["item-name"] === name && (Math.ceil(buyOrder["price-buying"]) === price || buyOrder["price-buying"] === price || Math.floor(buyOrder["price-buying"]) === price)) {
                 // add the products claimed to the investments
                 this.instaBuy(amount, price, name, buyOrder["buy-order-place-time"]);
                 
@@ -608,7 +606,7 @@ class ProcesTrade {
         // find the index of the sell order that was just claimed
         for (const sellOrderIndex of Object.keys(sellOrders)) {
             const sellOrder = sellOrders[sellOrderIndex];
-            if (sellOrder["item-name"] === name && sellOrder["price-sold"] === price_sold) {
+            if (sellOrder["item-name"] === name && (Math.ceil(sellOrder["price-sold"]) === price_sold || sellOrder["price-sold"] === price_sold || Math.floor(sellOrder["price-sold"]) === price_sold)) {
                 current_sell_order_index = sellOrderIndex;
                 break;
             }
@@ -720,8 +718,8 @@ class ProcesTrade {
         const priceBought = currentBuyOrder["price-buying"];
         const profitPerUnit = profit / amount;
 
-        this.buyOrderClaim(amount, amount * priceBought, name);
-        this.sellOrderSetup(amount, (priceBought + profitPerUnit) * amount, name);
+        this.buyOrderClaim(amount, priceBought, name);
+        this.sellOrderSetup(amount, (priceBought + profitPerUnit), name);
 
         return 'Buy order flipped';
     }
@@ -758,21 +756,66 @@ async function updateBazaarData() {
 updateBazaarData();
 setTimeout(() => {
     for (const testMesage of [
-'[Bazaar] Buy Order Setup! 3,000x Tasty Cheese for 7,515,600 coins.',
-'[Bazaar] Buy Order Setup! 70,000x Diamond Essence for 48,412,000 coins.',
-'[Bazaar] Claimed 1,494x Tasty Cheese worth 3,742,769 coins bought for 2,505.2 each!',
-'[Bazaar] Your Buy Order for 70,000x Diamond Essence was filled!',
-'[Bazaar] Sell Offer Setup! 1,494x Tasty Cheese for 5,145,650 coins.',
-'[Bazaar] Cancelled! Refunded 1,494x Tasty Cheese from cancelling Sell Offer!',
-'[Bazaar] Cancelled! Refunded 3,772,831 coins from cancelling Buy Order!',
-'[Bazaar] Claimed 70,000x Diamond Essence worth 48,412,000 coins bought for 691.6 each!',
-'[Bazaar] Sell Offer Setup! 70,000x Diamond Essence for 50,776,110 coins.',
-'[Bazaar] Claimed 362,686 coins from selling 500x Diamond Essence at 732.7 each!',
-'[Bazaar] Bought 1x Carrot for 5.7 coins!',
-'[Bazaar] Bought 1x Carrot for 5.8 coins!',
-'[Bazaar] Bought 1x Carrot for 5.8 coins!',
-'[Bazaar] Sell Offer Setup! 3x Carrot for 16.6 coins.',
-'[Bazaar] Your Sell Offer for 3x Carrot was filled!'
+        "[Bazaar] Buy Order Setup! 2,000x Golden Tooth for 162,974,600 coins.",
+        "[Bazaar] Buy Order Setup! 8,000x Enchanted Leather for 51,104,000 coins.",
+        "[Bazaar] Buy Order Setup! 1,000x Griffin Feather for 139,370,900 coins.",
+        "[Bazaar] Buy Order Setup! 200x Poison Sample for 211,263,760 coins.",
+        "[Bazaar] Buy Order Setup! 200x Arachne's Fang for 69,001,060 coins.",
+        "[Bazaar] Buy Order Setup! 3,000x Silver Magmafish for 77,379,300 coins.",
+        "[Bazaar] Buy Order Setup! 200x Gold Magmafish for 461,447,220 coins.",
+        "[Bazaar] Buy Order Setup! 1,000x Ectoplasm for 154,574,700 coins.",
+        "[Bazaar] Buy Order Setup! 4,000x Holy Dragon Fragment for 30,391,600 coins.",
+        "[Bazaar] Buy Order Setup! 3,000x Enchanted Slime Block for 376,873,200 coins.",
+        "[Bazaar] Buy Order Setup! 4,000x Tasty Cheese for 10,826,000 coins.",
+        "[Bazaar] Buy Order Setup! 2,000x Enchanted Rabbit Hide for 33,033,000 coins.",
+        "[Bazaar] Buy Order Setup! 2,000x ☘ Fine Jade Gemstone for 60,583,200 coins.",
+        "[Bazaar] Buy Order Setup! 2,000x ✎ Fine Sapphire Gemstone for 60,347,400 coins.",
+        "[Bazaar] Claimed 47x Arachne's Fang worth 16,215,249 coins bought for 345,005 each!",
+        "[Bazaar] Cancelled! Refunded 52,785,811 coins from cancelling Buy Order!",
+        "[Bazaar] Claimed 2,000x Golden Tooth worth 162,974,600 coins bought for 81,487 each!",
+        "[Bazaar] Claimed 466x Griffin Feather worth 64,946,839 coins bought for 139,371 each!",
+        "[Bazaar] Cancelled! Refunded 74,424,061 coins from cancelling Buy Order!",
+        "[Bazaar] Sell Offer Setup! 466x Griffin Feather for 66,033,993 coins.",
+        "[Bazaar] Order Flipped! 200x Gold Magmafish for 42,152,780 coins of total expected profit.",
+        "[Bazaar] Cancelled! Refunded 211,263,760 coins from cancelling Buy Order!",
+        "[Bazaar] Claimed 690x Silver Magmafish worth 17,797,239 coins bought for 25,793 each!",
+        "[Bazaar] Sell Offer Setup! 690x Silver Magmafish for 18,990,043 coins.",
+        "[Bazaar] Cancelled! Refunded 59,582,061 coins from cancelling Buy Order!",
+        "[Bazaar] Claimed 535x ✎ Fine Sapphire Gemstone worth 16,142,930 coins bought for 30,174 each!",
+        "[Bazaar] Sell Offer Setup! 535x ✎ Fine Sapphire Gemstone for 18,491,300 coins.",
+        "[Bazaar] Cancelled! Refunded 44,204,470 coins from cancelling Buy Order!",
+        "[Bazaar] Order Flipped! 2,000x ☘ Fine Jade Gemstone for 2,394,800 coins of total expected profit.",
+        "[Bazaar] Claimed 511x Holy Dragon Fragment worth 3,882,527 coins bought for 7,597.9 each!",
+        "[Bazaar] Cancelled! Refunded 26,509,073 coins from cancelling Buy Order!",
+        "[Bazaar] Sell Offer Setup! 511x Holy Dragon Fragment for 4,402,154 coins.",
+        "[Bazaar] Claimed 44x Ectoplasm worth 6,801,287 coins bought for 154,575 each!",
+        "[Bazaar] Cancelled! Refunded 147,773,413 coins from cancelling Buy Order!",
+        "[Bazaar] Claimed 956x Tasty Cheese worth 2,587,414 coins bought for 2,706.5 each!",
+        "[Bazaar] Sell Offer Setup! 956x Tasty Cheese for 3,727,743 coins.",
+        "[Bazaar] Cancelled! Refunded 8,238,586 coins from cancelling Buy Order!",
+        "[Bazaar] Claimed 1,978x Enchanted Slime Block worth 248,485,063 coins bought for 125,624 each!",
+        "You sold Enchanted Slime Block x58 for 7,424,000 Coins!",
+        "You sold Enchanted Slime Block x64 for 8,192,000 Coins!",
+        "[Bazaar] Cancelled! Refunded 128,388,137 coins from cancelling Buy Order!",
+        "[Bazaar] Claimed 934x Enchanted Rabbit Hide worth 15,426,411 coins bought for 16,516 each!",
+        "[Bazaar] Sell Offer Setup! 934x Enchanted Rabbit Hide for 17,229,467 coins.",
+        "[Bazaar] Cancelled! Refunded 17,606,589 coins from cancelling Buy Order!",
+        "[Bazaar] Claimed 2,176x Enchanted Leather worth 13,900,288 coins bought for 6,388 each!",
+        "[Bazaar] Claimed 2,176x Enchanted Leather worth 13,900,288 coins bought for 6,388 each!",
+        "[Bazaar] Claimed 2,176x Enchanted Leather worth 13,900,288 coins bought for 6,388 each!",
+        "[Bazaar] Claimed 1,472x Enchanted Leather worth 9,403,136 coins bought for 6,388 each!",
+        "[Bazaar] Sold 23x Enchanted Leather for 147,037 coins!",
+        "[Bazaar] Claimed 3,727,743 coins from selling 956x Tasty Cheese at 3,938.7 each!",
+        "[Bazaar] Claimed 18,990,043 coins from selling 690x Silver Magmafish at 27,800 each!",
+        "[Bazaar] Claimed 7,478,460 coins from selling 3x Gold Magmafish at 2,518,000 each!",
+        "[Bazaar] Cancelled! Refunded 197x Gold Magmafish from cancelling Sell Offer!",
+        "[Bazaar] Claimed 4,402,154 coins from selling 511x Holy Dragon Fragment at 8,701.8 each!",
+        "[Bazaar] Claimed 66,033,993 coins from selling 466x Griffin Feather at 143,135 each!",
+        "[Bazaar] Claimed 18,491,300 coins from selling 535x ✎ Fine Sapphire Gemstone at 34,912 each!",
+        "[Bazaar] Claimed 59,947,814 coins from selling 1,923x ☘ Fine Jade Gemstone at 31,489 each!",
+        "[Bazaar] Cancelled! Refunded 77x ☘ Fine Jade Gemstone from cancelling Sell Offer!",
+        "[Bazaar] Claimed 17,229,467 coins from selling 934x Enchanted Rabbit Hide at 18,633 each!",
+        "[Bazaar] Sell Offer Setup! 197x Gold Magmafish for 475,828,928 coins."
     ]) {
         new ProcesTrade(testMesage);
     }

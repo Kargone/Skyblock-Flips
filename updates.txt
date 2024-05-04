@@ -1,6 +1,6 @@
-Fixed sell order claims not updating already existing trades in daily profits
-Added the old tests cases back into todo.txt
-Created a better way of making investments undefined
-All products is now updated on a new product being added, and not created init
-Total sold in all products updates
-Testing sort function
+Fixed the order flipped function, and how the constructor called it
+When claiming, made the sell and buy orders match the price claimed at be within a coin
+Added new test cases
+Fixed date_bought not being defined
+Finalized sort class
+Added more products in product list

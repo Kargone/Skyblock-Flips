@@ -14,8 +14,68 @@
         "type": "short-term-investment",
         "has-weights": true
     },
-    "⸕ Fine Amber Gemstone": {
-        "api-name": "FINE_AMBER_GEM",
+    "Golden Tooth": {
+        "api-name": "GOLDEN_TOOTH",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Enchanted Leather": {
+        "api-name": "ENCHANTED_LEATHER",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Griffin Feather": {
+        "api-name": "GRIFFIN_FEATHER",
+        "type": "long-term-investment",
+        "has-weights": true
+    },
+    "Poison Sample": {
+        "api-name": "POISON_SAMPLE",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Arachne's Fang": {
+        "api-name": "ARACHNE_FANG",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Silver Magmafish": {
+        "api-name": "MAGMA_FISH_SILVER",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Gold Magmafish": {
+        "api-name": "MAGMA_FISH_GOLD",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Ectoplasm": {
+        "api-name": "ECTOPLASM",
+        "type": "long-term-investment",
+        "has-weights": true
+    },
+    "Holy Dragon Fragment": {
+        "api-name": "HOLY_FRAGMENT",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Enchanted Slime Block": {
+        "api-name": "ENCHANTED_SLIME_BLOCK",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Enchanted Rabbit Hide": {
+        "api-name": "ENCHANTED_RABBIT_HIDE",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "☘ Fine Jade Gemstone": {
+        "api-name": "FINE_JADE_GEM",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "✎ Fine Sapphire Gemstone": {
+        "api-name": "FINE_SAPPHIRE_GEM",
         "type": "short-term-investment",
         "has-weights": true
     }
