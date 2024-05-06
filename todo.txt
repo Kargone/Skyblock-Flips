@@ -1,17 +1,16 @@
-Testing needed for:
-Account for auto fees being take out of sell claim orders
+Testing:
+Order the sell orders by date in case of dupe orders
 
 Soon:
-Order the sell orders by date in case of dupe orders
 Support for crafting material type
-NPC sell has no fees
 
 Later:
+Change weight to average amount sold
 Add weight adjustments
-Add a sorting thing by price
 Constanly update the sell/buy orders
 Daily profit date thing
 Add firebase
+Add the http server
 Finish the other methods
 
 "[Bazaar] Buy Order Setup! 2,000x Golden Tooth for 162,974,600 coins.",

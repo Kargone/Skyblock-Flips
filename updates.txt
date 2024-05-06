@@ -1,6 +1,2 @@
-Fixed the order flipped function, and how the constructor called it
-When claiming, made the sell and buy orders match the price claimed at be within a coin
-Added new test cases
-Fixed date_bought not being defined
-Finalized sort class
-Added more products in product list
+Accounted for fees already being taken out
+NPC sell has no fees

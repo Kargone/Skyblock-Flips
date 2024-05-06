@@ -67,31 +67,53 @@ function copy(value) {
 }
 
 class Sort {
-    constructor(object, key1, key2 = '') {
+    constructor(object, increasing = true, key1, key2 = '') {
         if (key2 === '') {
-            return object.sort(this.compareFn1(key1));
+            return object.sort(this.compareFn1(key1, increasing));
         } else {
-            return object.sort(this.compareFn2(key1, key2));
+            return object.sort(this.compareFn2(key1, key2, increasing));
         }
     }
-    compareFn1(key1) {
-        return function(a, b) {
-            if (a[key1] < b[key1]) {
-                return -1;
-            } else if (a[key1] > b[key1]) {
-                return 1;
+    compareFn1(key1, increasing) {
+        if (increasing) {
+            return function(a, b) {
+                if (a[key1] < b[key1]) {
+                    return -1;
+                } else if (a[key1] > b[key1]) {
+                    return 1;
+                }
+                return 0;
             }
-            return 0;
+        } else {
+            return function(a, b) {
+                if (a[key1] < b[key1]) {
+                    return 1;
+                } else if (a[key1] > b[key1]) {
+                    return -1;
+                }
+                return 0;
+            }
         }
     }
-    compareFn2(key1, key2) {
-        return function(a, b) {
-            if (a[key1][key2] < b[key1][key2]) {
-                return -1;
-            } else if (a[key1][key2] > b[key1][key2]) {
-                return 1;
+    compareFn2(key1, key2, increasing) {
+        if (increasing) {
+            return function(a, b) {
+                if (a[key1][key2] < b[key1][key2]) {
+                    return -1;
+                } else if (a[key1][key2] > b[key1][key2]) {
+                    return 1;
+                }
+                return 0;
             }
-            return 0;
+        } else {
+            return function(a, b) {
+                if (a[key1][key2] < b[key1][key2]) {
+                    return 1;
+                } else if (a[key1][key2] > b[key1][key2]) {
+                    return -1;
+                }
+                return 0;
+            }
         }
     }
 }
@@ -299,7 +321,7 @@ class ProcesTrade {
 
         return 'Instabuy completed';
     }
-    instaSell(amount, price, name) {
+    instaSell(amount, price, name, doBazaarFees = true) {
         const invesmentType = product_list[name]["type"] + "s"; 
 
         // look for any invesments that might already be the same name
@@ -315,7 +337,7 @@ class ProcesTrade {
                     
                     // calculate the profit from the sell order
                     const date_bought = subOrder["time-bought"];
-                    return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now());
+                    return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees);
                 } else {
                     // determine if the last suborder is bought out
                     if (trader_data[invesmentType][name]["sub-orders"].length <= 1) {
@@ -324,14 +346,14 @@ class ProcesTrade {
 
                         // calculate the profit from the sell order
                         const date_bought = subOrder["time-bought"];
-                        return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now());
+                        return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees);
                     } else {
                         // just remove the suborder
                         trader_data[invesmentType][name]["sub-orders"].splice(0, 1);
 
                         // calculate the profit for just this sell order
                         const date_bought = subOrder["time-bought"];
-                        this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now());
+                        this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees);
                     }
                 }
             }
@@ -340,10 +362,10 @@ class ProcesTrade {
             throw 'ERROR: No investment found for insta sell';
         }
     }
-    addProfit(amount, name, buy_price, sell_price, date_bought, date_sold, type = 'bazaar') {
+    addProfit(amount, name, buy_price, sell_price, date_bought, date_sold, doFees, type = 'bazaar') {
         // calculate the current profit
         let profitPerUnit;
-        if (type === 'bazaar') {
+        if (type === 'bazaar' && doFees) {
             const bazaarFeesPerUnit = sell_price * 0.01; 
             profitPerUnit = (sell_price - buy_price) - bazaarFeesPerUnit;
         } else {
@@ -598,7 +620,7 @@ class ProcesTrade {
     }
     sellOrderClaim(amount, price_sold, name) {
         // get the current sell orders
-        const sellOrders = trader_data["sell-order-overview"]["sell-orders"];
+        const sellOrders = new Sort(trader_data["sell-order-overview"]["sell-orders"], false, "sell-order-place-time");
         
         // index that the sell order that was claimed will be at
         let current_sell_order_index = -1;
@@ -626,7 +648,7 @@ class ProcesTrade {
 
                 // calculate the profit from the sell order
                 const date_bought = subOrder["time-bought"];
-                return this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, Date.now());
+                return this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true);
             } else {
                 // determine if the last suborder is bought out
                 if (trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"].length <= 1) {
@@ -635,14 +657,14 @@ class ProcesTrade {
 
                     // calculate the profit from the sell order
                     const date_bought = subOrder["time-bought"];
-                    return this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, Date.now());
+                    return this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true);
                 } else {
                     // just remove the suborder
                     trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"].splice(0, 1);
 
                     // calculate the profit for just this sell order
                     const date_bought = subOrder["time-bought"];
-                    this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, Date.now());
+                    this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true);
                 }
             }
         }
@@ -724,7 +746,7 @@ class ProcesTrade {
         return 'Buy order flipped';
     }
     npcSell(amount, price, name) {
-        this.instaSell(amount, price, name);
+        this.instaSell(amount, price, name, false);
 
         return 'NPC sell completed';
     }
