@@ -1,2 +1,3 @@
-Accounted for fees already being taken out
-NPC sell has no fees
+Added test files for http post requests in javascript
+Started working on post requests in java
+Reorganized the files

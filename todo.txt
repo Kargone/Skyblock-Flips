@@ -1,5 +1,9 @@
 Testing:
 Order the sell orders by date in case of dupe orders
+Run npm install -g http
+Install extension pack for java in vs code
+Download the java jdk and add it to the path variables
+Add java_home to system variable C:\Program Files\Java\jdk-22\
 
 Soon:
 Support for crafting material type
