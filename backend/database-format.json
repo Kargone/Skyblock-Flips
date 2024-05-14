@@ -93,17 +93,23 @@
                 ],
                 "all-products": {
                     "item-name": {
-                        "total-amount": 0,
-                        "buy-weight": 0,
-                        "sell-weight": 0,
-                        "max-amount": 0,
+                        "current-amount": 0,
+                        "buy-order-stats": {
+                            "total-buy-orders-created": 0,
+                            "total-buy-amount-claimed": 0,
+                            "total-buy-amount-placed-for-buying": 0,
+                            "buy-average": 0
+                        },
+                        "sell-order-stats": {
+                            "total-sell-orders-created": 0,
+                            "total-sell-amount-claimed": 0,
+                            "total-sell-amount-placed-for-selling": 0,
+                            "sell-average": 0
+                        },
+                        "max-amount": 2000,
                         "total-profit-made": 0,
                         "total-sold": 0,
-                        "crafting-materials": {
-                            "item-name": {
-                                "amount": 0
-                            }
-                        }
+                        "crafting-materials": "none"
                     }
                 },
                 "daily-profits": {

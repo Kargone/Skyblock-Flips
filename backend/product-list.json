@@ -21,7 +21,7 @@
     },
     "Enchanted Leather": {
         "api-name": "ENCHANTED_LEATHER",
-        "type": "short-term-investment",
+        "type": "crafting-material",
         "has-weights": true
     },
     "Griffin Feather": {
@@ -31,12 +31,12 @@
     },
     "Poison Sample": {
         "api-name": "POISON_SAMPLE",
-        "type": "short-term-investment",
+        "type": "crafting-material",
         "has-weights": true
     },
     "Arachne's Fang": {
         "api-name": "ARACHNE_FANG",
-        "type": "short-term-investment",
+        "type": "crafting-material",
         "has-weights": true
     },
     "Silver Magmafish": {

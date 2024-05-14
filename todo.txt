@@ -1,22 +1,26 @@
 Testing:
 Order the sell orders by date in case of dupe orders
-Run npm install -g http
-Install extension pack for java in vs code
-Download the java jdk and add it to the path variables
-Add java_home to system variable C:\Program Files\Java\jdk-22\
+Support for crafting material type
+Average adjustments (instaBuy, addProfit, sellOrderClaim, buyOrderClaim)
+Daily profit date thing
 
 Soon:
-Support for crafting material type
+Determine suborder structure for auctions
+Finish auctionCreation
+Finish auctionClaim
+Finish auctionCancel
+Finish supercraft
 
 Later:
-Change weight to average amount sold
-Add weight adjustments
+Order the buy orders by price for sell order setup
+Forge and crafting materials
 Constanly update the sell/buy orders
-Daily profit date thing
 Add firebase
 Add the http server
-Finish the other methods
+Auction id
+Base sell order claim on who which sell order has the closet unclamed sell amount
 
+Test case 1:
 "[Bazaar] Buy Order Setup! 2,000x Golden Tooth for 162,974,600 coins.",
 "[Bazaar] Buy Order Setup! 8,000x Enchanted Leather for 51,104,000 coins.",
 "[Bazaar] Buy Order Setup! 1,000x Griffin Feather for 139,370,900 coins.",

@@ -1,3 +1,7 @@
-Added test files for http post requests in javascript
-Started working on post requests in java
-Reorganized the files
+Removed the java file as it is being worked on somewhere else
+Added function to get the investment type
+Changed 'weight' to 'average'
+Added updates to buy and sell average
+Reworked the all-products structure, and edited the database structures
+Fixed the date for daily-profit only being the 'date' key
+Some of the auction methods are filled out

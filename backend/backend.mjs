@@ -30,19 +30,11 @@ let trader_data = {
     "short-term-investments": {},
     "long-term-investments": {},
     "auction-house-overview": {
-        "auction-house": []
+        "auctions": []
     },
     "forge": [],
     "all-products": {},
-    "daily-profits": {
-        "date": {
-            "daily-profit": 0,
-            "forge-profit": 0,
-            "auction-house-profit": 0,
-            "bazaar-profit": 0,
-            "trades": []
-        }
-    }
+    "daily-profits": {}
 };
 
 class Main {
@@ -64,6 +56,28 @@ function findEnd(string, substring) {
 // copys a value to prevent linkage of objects
 function copy(value) {
     return JSON.parse(JSON.stringify(value));
+}
+
+function getInvestmentType(product_list_type) {
+    if (product_list_type === "long-term-investment") {
+        return "long-term-investments";
+    } else if (product_list_type === "auction-product") {
+        return "long-term-investments";
+    } else if (product_list_type === "short-term-investment") {
+        return "short-term-investments";
+    } else if (product_list_type === "crafting-material") {
+        return "short-term-investments";
+    } else {
+        throw "ERROR: Invalid Investment Type";
+    }
+}
+
+// Create a function such that whatever utc time code is inputed
+// it returns a date code such that it is the same day but 12:00 am
+function morningTime(time_code) {
+    const extraTime = time_code % (86400 * 1000);
+    const offset = 3600 * 5 * 1000;
+    return time_code - extraTime + offset;
 }
 
 class Sort {
@@ -295,7 +309,8 @@ class ProcesTrade {
     }
     instaBuy(amount, price, name, time_bought = Date.now()) {
         // get the investment type but add "s" to format for trader_data
-        const invesmentType = product_list[name]["type"] + "s"; 
+        const invesmentType = getInvestmentType(product_list[name]["type"]);
+        
 
         // look for any invesments that might already be the same name
         if (Object.keys(trader_data[invesmentType]).indexOf(name) != -1) {
@@ -319,10 +334,35 @@ class ProcesTrade {
             }
         }
 
+        // add the amount to current amount
+        if (Object.keys(trader_data["all-products"]).indexOf(name) === -1) {
+            trader_data["all-products"][name] = {
+                "current-amount": amount,
+                "buy-order-stats": {
+                    "total-buy-orders-created": 0,
+                    "total-buy-amount-claimed": 0,
+                    "total-buy-amount-placed-for-buying": 0,
+                    "buy-average": 0
+                },
+                "sell-order-stats": {
+                    "total-sell-orders-created": 0,
+                    "total-sell-amount-claimed": 0,
+                    "total-sell-amount-placed-for-selling": 0,
+                    "sell-average": 0
+                },
+                "max-amount": 2000,
+                "total-profit-made": 0,
+                "total-sold": 0,
+                "crafting-materials": "none"
+            };
+        } else {
+            trader_data["all-products"][name]["current-amount"] += amount;
+        }
+
         return 'Instabuy completed';
     }
     instaSell(amount, price, name, doBazaarFees = true) {
-        const invesmentType = product_list[name]["type"] + "s"; 
+        const invesmentType = getInvestmentType(product_list[name]["type"]); 
 
         // look for any invesments that might already be the same name
         if (Object.keys(trader_data[invesmentType]).indexOf(name) != -1) {
@@ -363,6 +403,8 @@ class ProcesTrade {
         }
     }
     addProfit(amount, name, buy_price, sell_price, date_bought, date_sold, doFees, type = 'bazaar') {
+        const dateOfTransaction = morningTime(Date.now()).toString();
+
         // calculate the current profit
         let profitPerUnit;
         if (type === 'bazaar' && doFees) {
@@ -376,35 +418,51 @@ class ProcesTrade {
         // add the profit to the daily profits stuff
         if (Object.keys(trader_data["all-products"]).indexOf(name) === -1) {
             trader_data["all-products"][name] = {
-                "total-amount": 0,
-                "buy-weight": 0,
-                "sell-weight": 0,
+                "current-amount": 0,
+                "buy-order-stats": {
+                    "total-buy-orders-created": 1,
+                    "total-buy-amount-claimed": 0,
+                    "total-buy-amount-placed-for-buying": 0,
+                    "buy-average": 0
+                },
+                "sell-order-stats": {
+                    "total-sell-orders-created": 0,
+                    "total-sell-amount-claimed": 0,
+                    "total-sell-amount-placed-for-selling": 0,
+                    "sell-average": 0
+                },
                 "max-amount": 2000,
                 "total-profit-made": 0,
                 "total-sold": 0,
                 "crafting-materials": "none"
             };
+        } else {
+            trader_data["all-products"][name]["current-amount"] -= amount;
         }
+
+        trader_data["all-products"][name]["current-amount"] -= amount;
         trader_data["all-products"][name]["total-profit-made"] += profit;
         trader_data["all-products"][name]["total-sold"] += amount;
-        trader_data["daily-profits"]["date"]["daily-profit"] += profit;
-        trader_data["daily-profits"]["date"][`${type}-profit`] += profit;
+        trader_data["daily-profits"][dateOfTransaction]["daily-profit"] += profit;
+        trader_data["daily-profits"][dateOfTransaction][`${type}-profit`] += profit;
         
         // update the trades for today
-        for (const tradeIndex of Object.keys(trader_data["daily-profits"]["date"]["trades"])) {
-            const trade = trader_data["daily-profits"]["date"]["trades"][tradeIndex];
+        for (const tradeIndex of Object.keys(trader_data["daily-profits"][dateOfTransaction]["trades"])) {
+            const trade = trader_data["daily-profits"][dateOfTransaction]["trades"][tradeIndex];
             if (trade["item-name"] === name &&
                 trade["buy-price"] === buy_price &&
                 trade["sell-price"] === sell_price) {
                 // update a trade that already exists
-                trader_data["daily-profits"]["date"]["trades"][tradeIndex]["count"] += amount; 
-                const current_amount = trader_data["daily-profits"]["date"]["trades"][tradeIndex]["count"];
-                trader_data["daily-profits"]["date"]["trades"][tradeIndex]["total-profit"] = current_amount * profitPerUnit;
-                return 'Instasell completed';
+                trader_data["daily-profits"][dateOfTransaction]["trades"][tradeIndex]["count"] += amount; 
+                const current_amount = trader_data["daily-profits"][dateOfTransaction]["trades"][tradeIndex]["count"];
+                trader_data["daily-profits"][dateOfTransaction]["trades"][tradeIndex]["total-profit"] = current_amount * profitPerUnit;
+                
+                return 'Addprofit completed';
             }
         }
+
         // add a new trade since no if statments in for loop triggered
-        trader_data["daily-profits"]["date"]["trades"].push({
+        trader_data["daily-profits"][dateOfTransaction]["trades"].push({
             "item-name": name,
             "count": amount,
             "buy-price": buy_price,
@@ -413,9 +471,9 @@ class ProcesTrade {
             "total-profit": profit,
             "date-bought": date_bought,
             "date-sold": date_sold
-        })
+        });
 
-        return 'Instasell completed';
+        return 'Addprofit completed';
     }
     buyOrderSetup(amount, price, name) {
         // get the hypixel api name and the current sell order price
@@ -475,6 +533,36 @@ class ProcesTrade {
                     trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["buying-amount"] -= amount;
                 }
 
+                // add the buy order claim amounts
+                if (Object.keys(trader_data["all-products"]).indexOf(name) === -1) {
+                    trader_data["all-products"][name] = {
+                        "current-amount": 0, // will be added to in instaBuy
+                        "buy-order-stats": {
+                            "total-buy-orders-created": 1,
+                            "total-buy-amount-claimed": 0,
+                            "total-buy-amount-placed-for-buying": 0,
+                            "buy-average": 0
+                        },
+                        "sell-order-stats": {
+                            "total-sell-orders-created": 0,
+                            "total-sell-amount-claimed": 0,
+                            "total-sell-amount-placed-for-selling": 0,
+                            "sell-average": 0
+                        },
+                        "max-amount": 2000,
+                        "total-profit-made": 0,
+                        "total-sold": 0,
+                        "crafting-materials": "none"
+                    };
+                } else {
+                    trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"] += 1;
+                    trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-claimed"] += amount;
+                    trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-placed-for-buying"] += buyOrder["buying-amount"];
+                    trader_data["all-products"][name]["buy-order-stats"]["buy-average"] += 
+                        trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-claimed"] /
+                        trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"];
+                }
+
                 return 'Buy order claiming completed';
             }
         }
@@ -503,7 +591,7 @@ class ProcesTrade {
     }
     sellOrderSetup(amount, price, name) {
         const resellPrice = price;
-        const invesmentType = product_list[name]["type"] + "s"; 
+        const invesmentType = getInvestmentType(product_list[name]["type"]); 
         const sellOrderPlaceTime = Date.now();
         let earliest_time_bought = "10000000000000000000000000000";
         let total_selling_amount = 0;
@@ -648,6 +736,9 @@ class ProcesTrade {
 
                 // calculate the profit from the sell order
                 const date_bought = subOrder["time-bought"];
+
+                addSellClaimToProducts(name, amount, subOrder["partial-selling-amount"], true);
+
                 return this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true);
             } else {
                 // determine if the last suborder is bought out
@@ -657,6 +748,9 @@ class ProcesTrade {
 
                     // calculate the profit from the sell order
                     const date_bought = subOrder["time-bought"];
+
+                    addSellClaimToProducts(name, amount, subOrder["partial-selling-amount"], true);
+
                     return this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true);
                 } else {
                     // just remove the suborder
@@ -664,11 +758,53 @@ class ProcesTrade {
 
                     // calculate the profit for just this sell order
                     const date_bought = subOrder["time-bought"];
+
+                    addSellClaimToProducts(name, amount, subOrder["partial-selling-amount"], false);
+
                     this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true);
                 }
             }
         }
         throw 'ERROR: More insta selling that in investments';
+
+        function addSellClaimToProducts(name, amount, orderSellAmount, orderFilled) {
+            let changeOrderCountBy = 0
+            if (orderFilled) changeOrderCountBy = 1;
+
+            // add the claim into the sell order stuff
+            if (Object.keys(trader_data["all-products"]).indexOf(name) === -1) {
+                trader_data["all-products"][name] = {
+                    "current-amount": 0, // will be added to in addProfit
+                    "buy-order-stats": {
+                        "total-buy-orders-created": 0,
+                        "total-buy-amount-claimed": 0,
+                        "total-buy-amount-placed-for-buying": 0,
+                        "buy-average": 0
+                    },
+                    "sell-order-stats": {
+                        "total-sell-orders-created": changeOrderCountBy,
+                        "total-sell-amount-claimed": amount,
+                        "total-sell-amount-placed-for-selling": orderSellAmount,
+                        "sell-average": 0
+                    },
+                    "max-amount": 2000,
+                    "total-profit-made": 0,
+                    "total-sold": 0,
+                    "crafting-materials": "none"
+                };
+
+                console.log('This is weird, im making product data on a sell order before its even been bought before.')
+            } else {
+                trader_data["all-products"][name]["sell-order-stats"]["total-sell-orders-created"] += changeOrderCountBy;
+                trader_data["all-products"][name]["sell-order-stats"]["total-sell-amount-claimed"] += amount;
+                trader_data["all-products"][name]["sell-order-stats"]["total-sell-amount-placed-for-selling"] += orderSellAmount;
+                if (changeOrderCountBy === 1) {
+                    trader_data["all-products"][name]["sell-order-stats"]["sell-average"] += 
+                        trader_data["all-products"][name]["sell-order-stats"]["total-sell-amount-claimed"] /
+                        trader_data["all-products"][name]["sell-order-stats"]["total-sell-orders-created"];
+                }
+            }
+        }
     }
     sellOrderCancel(amount, name) {
         // get the current sell orders
@@ -696,7 +832,7 @@ class ProcesTrade {
         if (current_sell_order_index === -1 || sellOrders.length === 0) throw 'ERROR: No sell order found to cancel';
 
         const currentSellOrder = sellOrders[current_sell_order_index];
-        const invesmentType = product_list[name]["type"] + "s"; 
+        const invesmentType = getInvestmentType(product_list[name]["type"]); 
         for (const subSellOrder of currentSellOrder["sub-orders"]) {
             if (trader_data[invesmentType][name] != undefined) {
                 trader_data[invesmentType][name]["sub-orders"].push({
@@ -751,23 +887,46 @@ class ProcesTrade {
         return 'NPC sell completed';
     }
     auctionCreation(price, name) {
+        /////////////////////// remove crafting materials from short term investments if no item can be found
         
+        // remove the product from the long term investments by highest cost
+        
+
+        trader_data["auction-house-overview"]["auctions"].push({
+            "item-name": name,
+            "auction-id": "idk",
+            "material-cost": 0,
+            "price-selling": price,
+            "sold": false,
+            "date-placed": Date.now()
+        });
+
+
+        return 'Auction created';
     }
     auctionClaim(price, name) {
-        
+        // make sure to account for creation fee
     }
     auctionCancel(name) {
         
     }
     supercraft(name) {
+        // determine if product has already been created
+        if (Object.keys(trader_data["long-term-investments"]).indexOf(name) != -1) {
+            trader_data["long-term-investments"][name]["sub-orders"].push({
 
+            });
+        } else {
+
+        }
+
+
+        return 'Supercraft successful';
     }
 }
 
 const update_seconds = 5;
-setInterval(() => {
-    updateBazaarData();
-}, update_seconds * 1000);
+setInterval(updateBazaarData, update_seconds * 1000);
 
 async function updateBazaarData() {
     const response = await fetch("https://api.hypixel.net/v2/skyblock/bazaar");
