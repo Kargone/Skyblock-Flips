@@ -2,23 +2,49 @@ Testing:
 Order the sell orders by date in case of dupe orders
 Support for crafting material type
 Average adjustments (instaBuy, addProfit, sellOrderClaim, buyOrderClaim)
-Daily profit date thing
 
 Soon:
-Determine suborder structure for auctions
 Finish auctionCreation
 Finish auctionClaim
 Finish auctionCancel
 Finish supercraft
 
 Later:
+Change the fill order methods
 Order the buy orders by price for sell order setup
 Forge and crafting materials
 Constanly update the sell/buy orders
 Add firebase
-Add the http server
 Auction id
 Base sell order claim on who which sell order has the closet unclamed sell amount
+
+Bazaar buy, Auction crafts:
+Golden tooth.
+Enchanted Leather.
+Enchanted Ink sack.
+Shark tooth
+Lush Berries.
+Enchanted Lush Berries.
+Poison Sample.
+Arachane's Fang.
+
+Bazaar flips:
+Jacobs ticket.
+Silver Magmafish.
+Ectoplasm.
+Griffin Feather.
+Gold Magmafish.
+Red Gifts.
+Dragon Fragments.
+Agarimoo Tongue.
+Squash.
+Cropie.
+Enchanted Red Sand.
+Gemstones.
+Rabbit hide.
+Purple Candy.
+Tasty Cheese.
+Essence.
 
 Test case 1:
 "[Bazaar] Buy Order Setup! 2,000x Golden Tooth for 162,974,600 coins.",
@@ -81,3 +107,196 @@ Test case 1:
 "[Bazaar] Cancelled! Refunded 77x ☘ Fine Jade Gemstone from cancelling Sell Offer!",
 "[Bazaar] Claimed 17,229,467 coins from selling 934x Enchanted Rabbit Hide at 18,633 each!",
 "[Bazaar] Sell Offer Setup! 197x Gold Magmafish for 475,828,928 coins."
+
+Data from POST: [Bazaar] Cancelling order...
+Data from POST: [Bazaar] Cancelled! Refunded 1x Great White Shark Tooth from cancelling Sell Offer!
+Data from POST: [Bazaar] Cancelling order...
+Data from POST: [Bazaar] Cancelled! Refunded 1,410x ? Fine Amethyst Gemstone from cancelling Sell Offer!
+Data from POST: [Bazaar] Putting goods in escrow...
+Data from POST: [Bazaar] Submitting sell offer...
+Data from POST: [Bazaar] Sell Offer Setup! 1,410x ? Fine Amethyst Gemstone for 40,476,773 coins.
+Data from POST: You collected 13,850,100 coins from selling Vaccine Artifact to [MVP+] KuronaFPS in an auction!
+Data from POST: You collected 13,850,100 coins from selling Vaccine Artifact to MR_M0H0 in an auction!
+Data from POST: You collected 16,622,100 coins from selling Lush Artifact to [MVP+] Koothh in an auction!
+Data from POST: You collected 16,622,100 coins from selling Lush Artifact to [MVP++] glockhcrdt in an auction!
+Data from POST: You collected 9,395,100 coins from selling Red Claw Artifact to [MVP+] _Swyn_ in an auction!
+Data from POST: You collected 9,395,100 coins from selling Red Claw Artifact to [MVP] pix_el in an auction!
+Data from POST: You collected 9,395,100 coins from selling Red Claw Artifact to [MVP+] SaufBalance in an auction!
+Data from POST: You collected 9,395,100 coins from selling Red Claw Artifact to [MVP] catgirlMommy_ in an auction!
+Data from POST: You cancelled your auction for Lush Artifact!
+Data from POST: You cancelled your auction for Lush Artifact!
+Data from POST: [Bazaar] Claiming order...
+Data from POST: [Bazaar] Claimed 9,432,273 coins from selling 1,232x Young Dragon Fragment at 7,733.4 each!
+Data from POST: [Bazaar] Claiming order...
+Data from POST: [Bazaar] Claimed 11,431,973 coins from selling 1,482x Unstable Dragon Fragment at 7,791.8 each!
+Data from POST: [Bazaar] Claiming order...
+Data from POST: [Bazaar] Claimed 40,091,436 coins from selling 63,000x Undead Essence at 642.8 each!
+Data from POST: [Bazaar] Claiming order...
+Data from POST: [Bazaar] Claimed 54,294,174 coins from selling 2,000x ? Fine Amber Gemstone at 27,421 each!
+Data from POST: [Bazaar] Claiming order...
+Data from POST: [Bazaar] Claimed 5,222,614 coins from selling 72x Tiger Shark Tooth at 73,269 each!
+Data from POST: [Bazaar] Cancelling order...
+Data from POST: [Bazaar] Cancelled! Refunded 362x Blue Shark Tooth from cancelling Sell Offer!
+Data from POST: [Bazaar] Putting goods in escrow...
+Data from POST: [Bazaar] Submitting sell offer...
+Data from POST: [Bazaar] Sell Offer Setup! 362x Blue Shark Tooth for 26,523,775 coins.
+Data from POST: [Bazaar] Cancelling order...
+Data from POST: [Bazaar] Cancelled! Refunded 2,240x Cropie from cancelling Sell Offer!
+Data from POST: [Bazaar] Putting goods in escrow...
+Data from POST: [Bazaar] Submitting sell offer...
+Data from POST: [Bazaar] Sell Offer Setup! 2,240x Cropie for 55,712,765 coins.
+Data from POST: [Bazaar] Cancelling order...
+Data from POST: [Bazaar] Cancelled! Refunded 1,621x Cropie from cancelling Sell Offer!
+Data from POST: [Bazaar] Putting goods in escrow...
+Data from POST: [Bazaar] Submitting sell offer...
+Data from POST: [Bazaar] Sell Offer Setup! 1,621x Cropie for 40,316,979 coins.
+Data from POST: [Bazaar] Cancelling order...
+Data from POST: [Bazaar] Cancelled! Refunded 287x Ectoplasm from cancelling Sell Offer!
+Data from POST: [Bazaar] Claiming order...
+Data from POST: [Bazaar] Claimed 33x Ectoplasm worth 5,339,776 coins bought for 161,811 each!
+Data from POST: [Bazaar] Cancelling order...
+Data from POST: [Bazaar] Cancelled! Refunded 1,612,774,224 coins from cancelling Buy Order!
+Data from POST: [Bazaar] Putting goods in escrow...
+Data from POST: [Bazaar] Submitting sell offer...
+Data from POST: [Bazaar] Sell Offer Setup! 320x Ectoplasm for 64,938,900 coins.
+Data from POST: [Bazaar] Cancelling order...
+Data from POST: [Bazaar] Cancelled! Refunded 527x Enchanted Rabbit Hide from cancelling Sell Offer!
+Data from POST: [Bazaar] Putting goods in escrow...
+Data from POST: [Bazaar] Submitting sell offer...
+Data from POST: [Bazaar] Sell Offer Setup! 527x Enchanted Rabbit Hide for 6,916,366 coins.
+Data from POST: [Bazaar] Claiming order...
+Data from POST: [Bazaar] Claimed 10,277,081 coins from selling 358x ? Fine Amethyst Gemstone at 28,997 each!
+Data from POST: [Bazaar] Cancelling order...
+Data from POST: [Bazaar] Cancelled! Refunded 1,052x ? Fine Amethyst Gemstone from cancelling Sell Offer!
+Data from POST: [Bazaar] Putting goods in escrow...
+Data from POST: [Bazaar] Submitting sell offer...
+Data from POST: [Bazaar] Sell Offer Setup! 1,052x ? Fine Amethyst Gemstone for 30,199,796 coins.
+Data from POST: [Bazaar] Cancelling order...
+Data from POST: [Bazaar] Cancelled! Refunded 2,104x Nurse Shark Tooth from cancelling Sell Offer!
+Data from POST: [Bazaar] Putting goods in escrow...
+Data from POST: [Bazaar] Submitting sell offer...
+Data from POST: [Bazaar] Sell Offer Setup! 2,104x Nurse Shark Tooth for 64,560,304 coins.
+Data from POST: [Bazaar] Cancelling order...
+Data from POST: [Bazaar] Cancelled! Refunded 2,039x Tiger Shark Tooth from cancelling Sell Offer!
+Data from POST: [Bazaar] Putting goods in escrow...
+Data from POST: [Bazaar] Submitting sell offer...
+Data from POST: [Bazaar] Sell Offer Setup! 2,039x Tiger Shark Tooth for 147,898,912 coins.
+Data from POST: [Bazaar] Claiming order...
+Data from POST: [Bazaar] Claimed 1,301x Tasty Cheese worth 4,217,452 coins bought for 3,241.7 each!
+Data from POST: [Bazaar] Putting goods in escrow...
+Data from POST: [Bazaar] Submitting sell offer...
+Data from POST: [Bazaar] Sell Offer Setup! 2,240x Tasty Cheese for 10,286,116 coins.
+Data from POST: [Bazaar] Putting goods in escrow...
+Data from POST: [Bazaar] Submitting sell offer...
+Data from POST: [Bazaar] Sell Offer Setup! 2,240x Tasty Cheese for 10,285,894 coins.
+Data from POST: [Bazaar] Claiming order...
+Data from POST: [Bazaar] Claimed 2,000x Enchanted Cooked Mutton worth 260,024,400 coins bought for 130,012 each!
+Data from POST: [Bazaar] Putting goods in escrow...
+Data from POST: [Bazaar] Submitting sell offer...
+Data from POST: [Bazaar] Sell Offer Setup! 2,000x Enchanted Cooked Mutton for 268,092,990 coins.
+Data from POST: [Bazaar] Cancelling order...
+Data from POST: [Bazaar] Cancelled! Refunded 251,296,206 coins from cancelling Buy Order!
+Data from POST: [Bazaar] Claiming order...
+Data from POST: [Bazaar] Claimed 1,641x Enchanted Slime Block worth 207,055,801 coins bought for 126,177 each!
+Data from POST: [Bazaar] Cancelling order...
+Data from POST: [Bazaar] Cancelled! Refunded 423,827,199 coins from cancelling Buy Order!
+Data from POST: [Bazaar] Cancelling order...
+Data from POST: [Bazaar] Cancelled! Refunded 320x Ectoplasm from cancelling Sell Offer!
+Data from POST: [Bazaar] Putting goods in escrow...
+Data from POST: [Bazaar] Submitting sell offer...
+Data from POST: [Bazaar] Sell Offer Setup! 329x Ectoplasm for 66,765,241 coins.
+Data from POST: [Bazaar] Putting goods in escrow...
+Data from POST: [Bazaar] Submitting sell offer...
+Data from POST: [Bazaar] Sell Offer Setup! 24x Gold Magmafish for 51,141,164 coins.
+Data from POST: [Bazaar] Executing instant sell...
+Data from POST: [Bazaar] Sold 1x ? Fine Amethyst Gemstone for 25,446 coins!
+Data from POST: [Bazaar] Sold 6x Purple Candy for 153,050 coins!
+Data from POST: [Bazaar] Claiming order...
+Data from POST: [Bazaar] Claimed 67,102x Dragon Essence worth 213,874,205 coins bought for 3,187.3 each!
+Data from POST: [Bazaar] Claiming order...
+Data from POST: [Bazaar] Claimed 35,160x Gold Essence worth 49,086,876 coins bought for 1,396.1 each!
+Data from POST: [Bazaar] Cancelling order...
+Data from POST: [Bazaar] Cancelled! Refunded 67,026,784 coins from cancelling Buy Order!
+Data from POST: [Bazaar] Order Flipped! 4,000x ? Fine Sapphire Gemstone for 4,042,000 coins of total expected profit.
+Data from POST: [Bazaar] Cancelling order...
+Data from POST: [Bazaar] Cancelled! Refunded 354,925,386 coins from cancelling Buy Order!
+Data from POST: [Bazaar] Order Flipped! 4,000x Mutant Nether Wart for 6,154,400 coins of total expected profit.
+Data from POST: [Bazaar] Order Flipped! 5,000x Squash for 11,124,000 coins of total expected profit.
+Data from POST: [Bazaar] Claiming order...
+Data from POST: [Bazaar] Claimed 2,240x ? Fine Jade Gemstone worth 57,901,536 coins bought for 25,849 each!
+Data from POST: [Bazaar] Putting goods in escrow...
+Data from POST: [Bazaar] Submitting sell offer...
+Data from POST: [Bazaar] Sell Offer Setup! 2,240x ? Fine Jade Gemstone for 60,044,625 coins.
+Data from POST: [Bazaar] Claiming order...
+Data from POST: [Bazaar] Claimed 2,240x ? Fine Jade Gemstone worth 57,901,536 coins bought for 25,849 each!
+Data from POST: [Bazaar] You don't have the space required to claim that!
+Data from POST: [Bazaar] Putting goods in escrow...
+Data from POST: [Bazaar] Submitting sell offer...
+Data from POST: [Bazaar] Sell Offer Setup! 2,240x ? Fine Jade Gemstone for 60,044,403 coins.
+Data from POST: [Bazaar] Claiming order...
+Data from POST: [Bazaar] Claimed 69x ? Fine Jade Gemstone worth 1,783,574 coins bought for 25,849 each!
+Data from POST: [Bazaar] Cancelling order...
+Data from POST: [Bazaar] Cancelled! Refunded 11,657,854 coins from cancelling Buy Order!
+Data from POST: You cancelled your auction for Mithril-Infused Fuel Tank!
+Data from POST: You cancelled your auction for Mithril-Infused Fuel Tank!
+Data from POST: [Bazaar] Putting goods in escrow...
+Data from POST: [Bazaar] Submitting sell offer...
+Data from POST: [Bazaar] Sell Offer Setup! 35x Great White Shark Tooth for 64,200,116 coins.
+Data from POST: [MVP+] Kargone created a BIN auction for Mithril-Infused Fuel Tank at 13,990,000 coins!
+Data from POST: [MVP+] Kargone created a BIN auction for Mithril-Infused Fuel Tank at 13,990,000 coins!
+Data from POST: [MVP+] Kargone created a BIN auction for Mithril-Infused Fuel Tank at 13,990,000 coins!
+Data from POST: [MVP+] Kargone created a BIN auction for Vaccine Artifact at 13,190,000 coins!
+Data from POST: [MVP+] Kargone created a BIN auction for Vaccine Artifact at 13,190,000 coins!
+Data from POST: [MVP+] Kargone created a BIN auction for Vaccine Artifact at 13,190,000 coins!
+Data from POST: [MVP+] Kargone created a BIN auction for Red Claw Artifact at 9,680,000 coins!
+Data from POST: [MVP+] Kargone created a BIN auction for Red Claw Artifact at 9,680,000 coins!
+Data from POST: [MVP+] Kargone created a BIN auction for Red Claw Artifact at 9,680,000 coins!
+Data from POST: [MVP+] Kargone created a BIN auction for Red Claw Artifact at 9,680,000 coins!
+Data from POST: [MVP+] Kargone created a BIN auction for Lush Artifact at 16,740,000 coins!
+Data from POST: [MVP+] Kargone created a BIN auction for Lush Artifact at 16,740,000 coins!
+Data from POST: [MVP+] Kargone created a BIN auction for Lush Artifact at 16,740,000 coins!
+Data from POST: [MVP+] Kargone created a BIN auction for Lush Artifact at 16,740,000 coins!
+Data from POST: You sold Whipped Magma Cream x64 for 13,107,200 Coins!
+Data from POST: You sold Whipped Magma Cream x64 for 13,107,200 Coins!
+Data from POST: You sold Whipped Magma Cream x64 for 13,107,200 Coins!
+Data from POST: You sold Whipped Magma Cream x53 for 10,854,400 Coins!
+Data from POST: You sold Enchanted Slime Block x41 for 5,248,000 Coins!
+Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
+Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
+Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
+Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
+Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
+Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
+Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
+Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
+Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
+Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
+Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
+Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
+Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
+Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
+Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
+Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
+Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
+Data from POST: You Supercrafted Red Claw Ring!
+Data from POST: You Supercrafted Red Claw Ring!
+Data from POST: You Supercrafted Red Claw Ring!
+Data from POST: You Supercrafted Red Claw Ring!
+Data from POST: You Supercrafted Red Claw Ring!
+Data from POST: You Supercrafted Red Claw Ring!
+Data from POST: You Supercrafted Red Claw Ring!
+Data from POST: You Supercrafted Red Claw Ring!
+Data from POST: You Supercrafted Red Claw Ring!
+Data from POST: You Supercrafted Red Claw Ring!
+Data from POST: You Supercrafted Red Claw Ring!
+Data from POST: You Supercrafted Red Claw Artifact!
+Data from POST: You Supercrafted Red Claw Artifact!
+Data from POST: You Supercrafted Red Claw Artifact!
+Data from POST: You Supercrafted Red Claw Artifact!
+Data from POST: You Supercrafted Red Claw Artifact!
+Data from POST: You Supercrafted Red Claw Artifact!
+Data from POST: You Supercrafted Red Claw Artifact!
+Data from POST: You Supercrafted Red Claw Artifact!
+Data from POST: You Supercrafted Red Claw Artifact!
+Data from POST: You Supercrafted Red Claw Artifact!
+Data from POST: You Supercrafted Red Claw Artifact!

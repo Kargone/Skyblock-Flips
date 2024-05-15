@@ -9,8 +9,43 @@
         "type": "short-term-investment",
         "has-weights": true
     },
-    "Diamond Essence": {
-        "api-name": "ESSENCE_DIAMOND",
+    "Ice Essence": {
+        "api-name": "ESSENCE_ICE",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Red Gift": {
+        "api-name": "RED_GIFT",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Crimson Essence": {
+        "api-name": "ESSENCE_CRIMSON",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Gold Essence": {
+        "api-name": "ESSENCE_GOLD",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Dragon Essence": {
+        "api-name": "ESSENCE_DRAGON",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Undead Essence": {
+        "api-name": "ESSENCE_UNDEAD",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Spider Essence": {
+        "api-name": "ESSENCE_SPIDER",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Wither Essence": {
+        "api-name": "ESSENCE_WITHER",
         "type": "short-term-investment",
         "has-weights": true
     },
@@ -69,13 +104,118 @@
         "type": "short-term-investment",
         "has-weights": true
     },
-    "☘ Fine Jade Gemstone": {
+    "? Fine Jade Gemstone": {
         "api-name": "FINE_JADE_GEM",
         "type": "short-term-investment",
         "has-weights": true
     },
-    "✎ Fine Sapphire Gemstone": {
+    "? Fine Sapphire Gemstone": {
         "api-name": "FINE_SAPPHIRE_GEM",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Enchanted Wet Sponge": {
+        "api-name": "ENCHANTED_WET_SPONGE",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Slime Block": {
+        "api-name": "SLIME_BLOCK",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Purple Candy": {
+        "api-name": "PURPLE_CANDY",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Enchanted Red Mushroom Block": {
+        "api-name": "ENCHANTED_HUGE_MUSHROOM_2",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Enchanted Brown Mushroom Block": {
+        "api-name": "ENCHANTED_HUGE_MUSHROOM_1",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Enchanted Red Sand": {
+        "api-name": "ENCHANTED_RED_SAND",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Squash": {
+        "api-name": "SQUASH",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Cropie": {
+        "api-name": "CROPIE",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Agarimoo Tongue": {
+        "api-name": "AGARIMOO_TONGUE",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Jacob's Ticket": {
+        "api-name": "JACOBS_TICKET",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Young Dragon Fragment": {
+        "api-name": "YOUNG_FRAGMENT",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Unstable Dragon Fragment": {
+        "api-name": "UNSTABLE_FRAGMENT",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Enchanted Ink Sac": {
+        "api-name": "ENCHANTED_INK_SACK",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Enchanted Lush Berberis": {
+        "api-name": "ENCHANTED_LUSH_BERBERIS",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Lush Berberis": {
+        "api-name": "LUSH_BERBERIS",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "? Fine Jasper Gemstone": {
+        "api-name": "FINE_JASPER_GEM",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "? Fine Amethyst Gemstone": {
+        "api-name": "FINE_AMETHYST_GEM",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "? Fine Ruby Gemstone": {
+        "api-name": "FINE_RUBY_GEM",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "? Fine Amber Gemstone": {
+        "api-name": "FINE_AMBER_GEM",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "? Fine Topaz Gemstone": {
+        "api-name": "FINE_TOPAZ_GEM",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Mutant Nether Wart": {
+        "api-name": "MUTANT_NETHER_STALK",
         "type": "short-term-investment",
         "has-weights": true
     }

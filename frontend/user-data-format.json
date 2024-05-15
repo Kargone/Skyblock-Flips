@@ -116,7 +116,7 @@
             "total-dollars": 0
         },
         "long-term-investments": {
-            "item-name": {
+            "item-name-bz": {
                 "type": "long-term",
                 "total-amount": 0,
                 "total-dollars": 0,
@@ -139,6 +139,24 @@
                         "current-sell-price": 0,
                         "partial-insta-profit": 0,
                         "partial-insta-profit-below-current": 0,
+                        "time-bought": ""
+                    }
+                ]
+            },
+            "item-name-ah": {
+                "type": "auction-product",
+                "total-amount": 0,
+                "total-dollars": 0,
+                "average-price-bought": 0,
+                "current-profit": 0,
+                "current-sell-price": 0,
+                "earliest-time-bought": "",
+                "sub-orders": [
+                    {
+                        "partial-amount": 1,
+                        "price-crafted": 0,
+                        "current-profit": 0,
+                        "current-sell-price": 0,
                         "time-bought": ""
                     }
                 ]

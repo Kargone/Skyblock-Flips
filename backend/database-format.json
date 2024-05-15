@@ -54,12 +54,22 @@
                     }
                 },
                 "long-term-investments": {
-                    "item-name": {
+                    "item-name-bz": {
                         "type": "long-term",
                         "sub-orders": [
                             {
                                 "partial-amount": 0,
                                 "price-bought": 0,
+                                "time-bought": ""
+                            }
+                        ]
+                    },
+                    "item-name-ah": {
+                        "type": "auction-product",
+                        "sub-orders": [
+                            {
+                                "partial-amount": 1,
+                                "price-crafted": 0,
                                 "time-bought": ""
                             }
                         ]

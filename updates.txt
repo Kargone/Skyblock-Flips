@@ -1,7 +1,8 @@
-Removed the java file as it is being worked on somewhere else
-Added function to get the investment type
-Changed 'weight' to 'average'
-Added updates to buy and sell average
-Reworked the all-products structure, and edited the database structures
-Fixed the date for daily-profit only being the 'date' key
-Some of the auction methods are filled out
+Added initalization of daily profits for the current date
+Intergrated the server and trade processing togther
+Added trader-data.json to store trader data across sessions
+Added a file for applying test cases and seperated that file from the server one
+Added a case for nontrade messages
+Added a getItemNames file to get the product ids of bazaar items
+Added more products to product-list
+Update the format files to include auction house products as long term investments
