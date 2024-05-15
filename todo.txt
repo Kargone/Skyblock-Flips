@@ -3,20 +3,27 @@ Order the sell orders by date in case of dupe orders
 Support for crafting material type
 Average adjustments (instaBuy, addProfit, sellOrderClaim, buyOrderClaim)
 
+Supercraft method
+AuctionCreation method
+AuctionCancel method
+AuctionClaim method
+
 Soon:
-Finish auctionCreation
-Finish auctionClaim
-Finish auctionCancel
-Finish supercraft
+Add methods to backend after testing complete
+
 
 Later:
-Change the fill order methods
-Order the buy orders by price for sell order setup
+Add auction types to product list with crafting materials
+
 Forge and crafting materials
-Constanly update the sell/buy orders
-Add firebase
-Auction id
+Change the fill order methods
+Order the buy orders by price for sell order setup, insta sell, and crafting material use
 Base sell order claim on who which sell order has the closet unclamed sell amount
+Auction id
+Add firebase
+Constanly update the sell/buy orders
+
+-------------------------------------------
 
 Bazaar buy, Auction crafts:
 Golden tooth.

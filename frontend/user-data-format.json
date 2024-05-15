@@ -176,7 +176,8 @@
                     "sold": true,
                     "current-amount-below": 0,
                     "projected-profit": 0,
-                    "date-placed": ""
+                    "date-placed": "",
+                    "time-crafted": ""
                 }
             ],
             "total-amount": 0,

@@ -83,7 +83,8 @@
                             "material-cost": 0,
                             "price-selling": 0,
                             "sold": true,
-                            "date-placed": ""
+                            "date-placed": "",
+                            "time-crafted": ""
                         }
                     ]
                 },

@@ -1,8 +1,6 @@
-Added initalization of daily profits for the current date
-Intergrated the server and trade processing togther
-Added trader-data.json to store trader data across sessions
-Added a file for applying test cases and seperated that file from the server one
-Added a case for nontrade messages
-Added a getItemNames file to get the product ids of bazaar items
-Added more products to product-list
-Update the format files to include auction house products as long term investments
+Created supercraft method on proccess trade
+Created auction created mehtod on proccess trade
+Added time crafted to auctions
+Created auction cancel method on proccess trade
+Created auction claimed method on proccess trade
+Added a replace all for trade messages with � character

@@ -135,8 +135,11 @@ class Sort {
 
 class ProcesTrade {
     constructor(trade_message) {
+        trade_message = trade_message.replaceAll('�', '');
+
         this.message = trade_message;
         this.messageArray = this.message.split('');
+        
         // determine message type
         if (this.message.includes('[Bazaar] Bought')) {
             this.type = "insta-buy";
@@ -395,10 +398,14 @@ class ProcesTrade {
                         // remove the whole order
                         delete trader_data[invesmentType][name];
 
+                        if (amount > subOrder["partial-amount"]) throw 'ERROR: More insta selling that in investments';
+
                         // calculate the profit from the sell order
                         const date_bought = subOrder["time-bought"];
                         return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees);
                     } else {
+                        amount -= subOrder["partial-amount"];
+
                         // just remove the suborder
                         trader_data[invesmentType][name]["sub-orders"].splice(0, 1);
 
@@ -408,7 +415,7 @@ class ProcesTrade {
                     }
                 }
             }
-            throw 'ERROR: More insta selling that in investments';
+            throw 'ERROR: Something wrong with suborders when instaselling';
         } else {
             throw 'ERROR: No investment found for insta sell';
         }
@@ -909,41 +916,207 @@ class ProcesTrade {
         return 'NPC sell completed';
     }
     auctionCreation(price, name) {
-        /////////////////////// remove crafting materials from short term investments if no item can be found
-        
+        // automatically create product if none can already be found
+        if (Object.keys(trader_data["long-term-investments"]).indexOf(name) === -1) {
+            console.log("Product was not found already in investments to create an auction for.");
+
+            console.log(`Supercrafting ${name}`);
+            this.supercraft(name);
+        }
+
         // remove the product from the long term investments by highest cost
+        trader_data["long-term-investments"][name]["sub-orders"] = new Sort(trader_data["long-term-investments"][name]["sub-orders"], false, "price-bought");
         
+        const currentProducts = trader_data["long-term-investments"][name]["sub-orders"];
+        const removedInvestment = currentProducts[0];
+
+        if (currentProducts.length <= 1) {
+            delete trader_data["long-term-investments"][name];
+        } else {
+            trader_data["long-term-investments"][name]["sub-orders"].splice(0, 1);
+        }
 
         trader_data["auction-house-overview"]["auctions"].push({
             "item-name": name,
             "auction-id": "idk",
-            "material-cost": 0,
+            "material-cost": removedInvestment["price-bought"],
             "price-selling": price,
             "sold": false,
-            "date-placed": Date.now()
+            "date-placed": Date.now(),
+            "time-crafted": removedInvestment["time-bought"]
         });
 
 
         return 'Auction created';
     }
     auctionClaim(price, name) {
-        // make sure to account for creation fee
+        const priceSold = price/0.99;
+
+        // remove auction
+        const auctions = trader_data["auction-house-overview"]["auctions"];
+        let current_auction_index = -1;
+
+        for (const auctionIndex of auctions) {
+            const auction = auctions[auctionIndex];
+            if (auction["item-name"] === name && auction["price-selling"] === Math.round(priceSold)) {
+                current_auction_index = auctionIndex;
+                break;
+            }
+        }
+        
+        if (current_auction_index === -1) throw 'ERROR: Auction not found to claim';
+
+        // remove the auction from 'auctions'
+        const removedAuction = trader_data["auction-house-overview"]["auctions"].splice(current_auction_index, 1);
+        
+        // add auction fee to daily profit
+        const auctionFees = calcAuctionFee(removedAuction["price-selling"]) + priceSold * 0.01;
+        this.addProfit(1, name, removedAuction["material-cost"] + auctionFees, priceSold, removedAuction["date-placed"], Date.now(), false, "auction-house");
+
+        return 'Auction claimed';
+
+        function calcAuctionFee(price_sold) {
+            if (price_sold > 100000000) {
+                return price_sold * 0.025;
+            } else if (price_sold > 10000000) {
+                return price_sold * 0.02;
+            } else {
+                return price_sold * 0.01;
+            }
+        }
     }
     auctionCancel(name) {
+        // find the first occurance of the auction
+        const auctions = trader_data["auction-house-overview"]["auctions"];
+        let current_auction_index = -1;
+
+        for (const auctionIndex of auctions) {
+            const auction = auctions[auctionIndex];
+            if (auction["item-name"] === name) {
+                current_auction_index = auctionIndex;
+                break;
+            }
+        }
+
+        if (current_auction_index === -1) throw 'ERROR: Auction not found to cancel';
         
+        // remove the auction from 'auctions'
+        const removedAuction = trader_data["auction-house-overview"]["auctions"].splice(current_auction_index, 1);
+
+        // add auction fee to daily profit
+        const auctionFees = calcAuctionFee(removedAuction["price-selling"]);
+        this.addProfit(1, name, auctionFees, 0, removedAuction["date-placed"], "Did not sell", false, "auction-house");
+
+        // Put the auction back into long term investments
+        const productTypeAlreadyCreated = Object.keys(trader_data["long-term-investments"]).indexOf(name) != -1;
+        if (productTypeAlreadyCreated) {
+            trader_data["long-term-investments"][name]["sub-orders"].push({
+                "partial-amount": 1,
+                "price-crafted": removedAuction["material-cost"],
+                "time-bought": removedAuction["time-crafted"]
+            });
+        } else {
+            trader_data["long-term-investments"][name] = {
+                "type": "auction-product",
+                "sub-orders": [
+                    {
+                        "partial-amount": 1,
+                        "price-crafted": removedAuction["material-cost"],
+                        "time-bought": removedAuction["time-crafted"]
+                    }
+                ]
+            }
+        }
+
+        return 'Auction cancelled';
+
+        function calcAuctionFee(price_not_sold) {
+            if (price_not_sold > 100000000) {
+                return price_not_sold * 0.025;
+            } else if (price_not_sold > 10000000) {
+                return price_not_sold * 0.02;
+            } else {
+                return price_not_sold * 0.01;
+            }
+        }
     }
     supercraft(name) {
         // determine if product has already been created
-        if (Object.keys(trader_data["long-term-investments"]).indexOf(name) != -1) {
-            trader_data["long-term-investments"][name]["sub-orders"].push({
+        const productTypeAlreadyCreated = Object.keys(trader_data["long-term-investments"]).indexOf(name) != -1;
 
-            });
-        } else {
+        // determine the crafting materials
+        const craftingMaterials = product_list[name]["crafting-materials"];
 
+        const dateSupercrafted = Date.now();
+
+        let total_cost_of_product = 0;
+
+        for (const craftingMaterialName in Object.keys(craftingMaterials)) {
+            total_cost_of_product += removeCraftingMaterialFromInvestments(craftingMaterialName, craftingMaterials[craftingMaterialName]);
         }
 
 
+        if (productTypeAlreadyCreated) {
+            trader_data["long-term-investments"][name]["sub-orders"].push({
+                "partial-amount": 1,
+                "price-crafted": total_cost_of_product,
+                "time-bought": dateSupercrafted
+            });
+        } else {
+            trader_data["long-term-investments"][name] = {
+                "type": "auction-product",
+                "sub-orders": [
+                    {
+                        "partial-amount": 1,
+                        "price-crafted": total_cost_of_product,
+                        "time-bought": dateSupercrafted
+                    }
+                ]
+            }
+        }
+
         return 'Supercraft successful';
+
+        function removeCraftingMaterialFromInvestments(name, amount) {
+            const invesmentType = getInvestmentType(product_list[name]["type"]); 
+
+            if (Object.keys(trader_data[invesmentType]).indexOf(name) === -1) throw 'ERROR: Crafting material not found in investments';
+
+            let suborders = trader_data[invesmentType][name]["sub-orders"];            
+            let material_cost = 0;
+
+            while (suborders.length > 0) {
+                const subOrder = suborders[0];
+
+                // go through each suborder
+                if (subOrder["partial-amount"] > amount) {
+                    material_cost += amount * subOrder["price-bought"];
+                    
+                    // then just subtract from the current suborder
+                    trader_data[invesmentType][name]["sub-orders"][0]["partial-amount"] -= amount;
+
+                    return material_cost;
+                } else if (trader_data[invesmentType][name]["sub-orders"].length <= 1) {
+                    material_cost += amount * subOrder["price-bought"];
+                    
+                    // remove the whole order
+                    delete trader_data[invesmentType][name];
+
+                    if (amount > subOrder["partial-amount"]) throw 'ERROR: More crafting materials needed then in investments'; 
+
+                    return material_cost;
+                } else {
+                    amount -= subOrder["partial-amount"];
+                    material_cost += subOrder["partial-amount"] * subOrder["price-bought"];
+
+                    // just remove the suborder
+                    trader_data[invesmentType][name]["sub-orders"].splice(0, 1);
+
+                }
+            }
+
+            throw 'ERROR: Something wrong with suborders when removing crafting materials from investments'; 
+        }
     }
 }
 
