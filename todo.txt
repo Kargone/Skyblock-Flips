@@ -1,20 +1,12 @@
 Testing:
 Order the sell orders by date in case of dupe orders
-Support for crafting material type
-Average adjustments (instaBuy, addProfit, sellOrderClaim, buyOrderClaim)
-
-Supercraft method
-AuctionCreation method
-AuctionCancel method
-AuctionClaim method
 
 Soon:
-Add methods to backend after testing complete
-
+Average updates on buy and sell order cancel with 0
+Update all products sold and profit made with auctions 
 
 Later:
 Add auction types to product list with crafting materials
-
 Forge and crafting materials
 Change the fill order methods
 Order the buy orders by price for sell order setup, insta sell, and crafting material use
@@ -22,6 +14,12 @@ Base sell order claim on who which sell order has the closet unclamed sell amoun
 Auction id
 Add firebase
 Constanly update the sell/buy orders
+Add the extra jade gem to investments
+
+Beastmaster Crest Rarity problems
+Red claw egg 
+Bat person talisman
+Spider talisman
 
 -------------------------------------------
 
@@ -53,257 +51,12 @@ Purple Candy.
 Tasty Cheese.
 Essence.
 
-Test case 1:
-"[Bazaar] Buy Order Setup! 2,000x Golden Tooth for 162,974,600 coins.",
-"[Bazaar] Buy Order Setup! 8,000x Enchanted Leather for 51,104,000 coins.",
-"[Bazaar] Buy Order Setup! 1,000x Griffin Feather for 139,370,900 coins.",
-"[Bazaar] Buy Order Setup! 200x Poison Sample for 211,263,760 coins.",
-"[Bazaar] Buy Order Setup! 200x Arachne's Fang for 69,001,060 coins.",
-"[Bazaar] Buy Order Setup! 3,000x Silver Magmafish for 77,379,300 coins.",
-"[Bazaar] Buy Order Setup! 200x Gold Magmafish for 461,447,220 coins.",
-"[Bazaar] Buy Order Setup! 1,000x Ectoplasm for 154,574,700 coins.",
-"[Bazaar] Buy Order Setup! 4,000x Holy Dragon Fragment for 30,391,600 coins.",
-"[Bazaar] Buy Order Setup! 3,000x Enchanted Slime Block for 376,873,200 coins.",
-"[Bazaar] Buy Order Setup! 4,000x Tasty Cheese for 10,826,000 coins.",
-"[Bazaar] Buy Order Setup! 2,000x Enchanted Rabbit Hide for 33,033,000 coins.",
-"[Bazaar] Buy Order Setup! 2,000x ☘ Fine Jade Gemstone for 60,583,200 coins.",
-"[Bazaar] Buy Order Setup! 2,000x ✎ Fine Sapphire Gemstone for 60,347,400 coins.",
-"[Bazaar] Claimed 47x Arachne's Fang worth 16,215,249 coins bought for 345,005 each!",
-"[Bazaar] Cancelled! Refunded 52,785,811 coins from cancelling Buy Order!",
-"[Bazaar] Claimed 2,000x Golden Tooth worth 162,974,600 coins bought for 81,487 each!",
-"[Bazaar] Claimed 466x Griffin Feather worth 64,946,839 coins bought for 139,371 each!",
-"[Bazaar] Cancelled! Refunded 74,424,061 coins from cancelling Buy Order!",
-"[Bazaar] Sell Offer Setup! 466x Griffin Feather for 66,033,993 coins.",
-"[Bazaar] Order Flipped! 200x Gold Magmafish for 42,152,780 coins of total expected profit.",
-"[Bazaar] Cancelled! Refunded 211,263,760 coins from cancelling Buy Order!",
-"[Bazaar] Claimed 690x Silver Magmafish worth 17,797,239 coins bought for 25,793 each!",
-"[Bazaar] Sell Offer Setup! 690x Silver Magmafish for 18,990,043 coins.",
-"[Bazaar] Cancelled! Refunded 59,582,061 coins from cancelling Buy Order!",
-"[Bazaar] Claimed 535x ✎ Fine Sapphire Gemstone worth 16,142,930 coins bought for 30,174 each!",
-"[Bazaar] Sell Offer Setup! 535x ✎ Fine Sapphire Gemstone for 18,491,300 coins.",
-"[Bazaar] Cancelled! Refunded 44,204,470 coins from cancelling Buy Order!",
-"[Bazaar] Order Flipped! 2,000x ☘ Fine Jade Gemstone for 2,394,800 coins of total expected profit.",
-"[Bazaar] Claimed 511x Holy Dragon Fragment worth 3,882,527 coins bought for 7,597.9 each!",
-"[Bazaar] Cancelled! Refunded 26,509,073 coins from cancelling Buy Order!",
-"[Bazaar] Sell Offer Setup! 511x Holy Dragon Fragment for 4,402,154 coins.",
-"[Bazaar] Claimed 44x Ectoplasm worth 6,801,287 coins bought for 154,575 each!",
-"[Bazaar] Cancelled! Refunded 147,773,413 coins from cancelling Buy Order!",
-"[Bazaar] Claimed 956x Tasty Cheese worth 2,587,414 coins bought for 2,706.5 each!",
-"[Bazaar] Sell Offer Setup! 956x Tasty Cheese for 3,727,743 coins.",
-"[Bazaar] Cancelled! Refunded 8,238,586 coins from cancelling Buy Order!",
-"[Bazaar] Claimed 1,978x Enchanted Slime Block worth 248,485,063 coins bought for 125,624 each!",
-"You sold Enchanted Slime Block x58 for 7,424,000 Coins!",
-"You sold Enchanted Slime Block x64 for 8,192,000 Coins!",
-"[Bazaar] Cancelled! Refunded 128,388,137 coins from cancelling Buy Order!",
-"[Bazaar] Claimed 934x Enchanted Rabbit Hide worth 15,426,411 coins bought for 16,516 each!",
-"[Bazaar] Sell Offer Setup! 934x Enchanted Rabbit Hide for 17,229,467 coins.",
-"[Bazaar] Cancelled! Refunded 17,606,589 coins from cancelling Buy Order!",
-"[Bazaar] Claimed 2,176x Enchanted Leather worth 13,900,288 coins bought for 6,388 each!",
-"[Bazaar] Claimed 2,176x Enchanted Leather worth 13,900,288 coins bought for 6,388 each!",
-"[Bazaar] Claimed 2,176x Enchanted Leather worth 13,900,288 coins bought for 6,388 each!",
-"[Bazaar] Claimed 1,472x Enchanted Leather worth 9,403,136 coins bought for 6,388 each!",
-"[Bazaar] Sold 23x Enchanted Leather for 147,037 coins!",
-"[Bazaar] Claimed 3,727,743 coins from selling 956x Tasty Cheese at 3,938.7 each!",
-"[Bazaar] Claimed 18,990,043 coins from selling 690x Silver Magmafish at 27,800 each!",
-"[Bazaar] Claimed 7,478,460 coins from selling 3x Gold Magmafish at 2,518,000 each!",
-"[Bazaar] Cancelled! Refunded 197x Gold Magmafish from cancelling Sell Offer!",
-"[Bazaar] Claimed 4,402,154 coins from selling 511x Holy Dragon Fragment at 8,701.8 each!",
-"[Bazaar] Claimed 66,033,993 coins from selling 466x Griffin Feather at 143,135 each!",
-"[Bazaar] Claimed 18,491,300 coins from selling 535x ✎ Fine Sapphire Gemstone at 34,912 each!",
-"[Bazaar] Claimed 59,947,814 coins from selling 1,923x ☘ Fine Jade Gemstone at 31,489 each!",
-"[Bazaar] Cancelled! Refunded 77x ☘ Fine Jade Gemstone from cancelling Sell Offer!",
-"[Bazaar] Claimed 17,229,467 coins from selling 934x Enchanted Rabbit Hide at 18,633 each!",
-"[Bazaar] Sell Offer Setup! 197x Gold Magmafish for 475,828,928 coins."
-
-Data from POST: [Bazaar] Cancelling order...
-Data from POST: [Bazaar] Cancelled! Refunded 1x Great White Shark Tooth from cancelling Sell Offer!
-Data from POST: [Bazaar] Cancelling order...
-Data from POST: [Bazaar] Cancelled! Refunded 1,410x ? Fine Amethyst Gemstone from cancelling Sell Offer!
-Data from POST: [Bazaar] Putting goods in escrow...
-Data from POST: [Bazaar] Submitting sell offer...
-Data from POST: [Bazaar] Sell Offer Setup! 1,410x ? Fine Amethyst Gemstone for 40,476,773 coins.
-Data from POST: You collected 13,850,100 coins from selling Vaccine Artifact to [MVP+] KuronaFPS in an auction!
-Data from POST: You collected 13,850,100 coins from selling Vaccine Artifact to MR_M0H0 in an auction!
-Data from POST: You collected 16,622,100 coins from selling Lush Artifact to [MVP+] Koothh in an auction!
-Data from POST: You collected 16,622,100 coins from selling Lush Artifact to [MVP++] glockhcrdt in an auction!
-Data from POST: You collected 9,395,100 coins from selling Red Claw Artifact to [MVP+] _Swyn_ in an auction!
-Data from POST: You collected 9,395,100 coins from selling Red Claw Artifact to [MVP] pix_el in an auction!
-Data from POST: You collected 9,395,100 coins from selling Red Claw Artifact to [MVP+] SaufBalance in an auction!
-Data from POST: You collected 9,395,100 coins from selling Red Claw Artifact to [MVP] catgirlMommy_ in an auction!
-Data from POST: You cancelled your auction for Lush Artifact!
-Data from POST: You cancelled your auction for Lush Artifact!
-Data from POST: [Bazaar] Claiming order...
-Data from POST: [Bazaar] Claimed 9,432,273 coins from selling 1,232x Young Dragon Fragment at 7,733.4 each!
-Data from POST: [Bazaar] Claiming order...
-Data from POST: [Bazaar] Claimed 11,431,973 coins from selling 1,482x Unstable Dragon Fragment at 7,791.8 each!
-Data from POST: [Bazaar] Claiming order...
-Data from POST: [Bazaar] Claimed 40,091,436 coins from selling 63,000x Undead Essence at 642.8 each!
-Data from POST: [Bazaar] Claiming order...
-Data from POST: [Bazaar] Claimed 54,294,174 coins from selling 2,000x ? Fine Amber Gemstone at 27,421 each!
-Data from POST: [Bazaar] Claiming order...
-Data from POST: [Bazaar] Claimed 5,222,614 coins from selling 72x Tiger Shark Tooth at 73,269 each!
-Data from POST: [Bazaar] Cancelling order...
-Data from POST: [Bazaar] Cancelled! Refunded 362x Blue Shark Tooth from cancelling Sell Offer!
-Data from POST: [Bazaar] Putting goods in escrow...
-Data from POST: [Bazaar] Submitting sell offer...
-Data from POST: [Bazaar] Sell Offer Setup! 362x Blue Shark Tooth for 26,523,775 coins.
-Data from POST: [Bazaar] Cancelling order...
-Data from POST: [Bazaar] Cancelled! Refunded 2,240x Cropie from cancelling Sell Offer!
-Data from POST: [Bazaar] Putting goods in escrow...
-Data from POST: [Bazaar] Submitting sell offer...
-Data from POST: [Bazaar] Sell Offer Setup! 2,240x Cropie for 55,712,765 coins.
-Data from POST: [Bazaar] Cancelling order...
-Data from POST: [Bazaar] Cancelled! Refunded 1,621x Cropie from cancelling Sell Offer!
-Data from POST: [Bazaar] Putting goods in escrow...
-Data from POST: [Bazaar] Submitting sell offer...
-Data from POST: [Bazaar] Sell Offer Setup! 1,621x Cropie for 40,316,979 coins.
-Data from POST: [Bazaar] Cancelling order...
-Data from POST: [Bazaar] Cancelled! Refunded 287x Ectoplasm from cancelling Sell Offer!
-Data from POST: [Bazaar] Claiming order...
-Data from POST: [Bazaar] Claimed 33x Ectoplasm worth 5,339,776 coins bought for 161,811 each!
-Data from POST: [Bazaar] Cancelling order...
-Data from POST: [Bazaar] Cancelled! Refunded 1,612,774,224 coins from cancelling Buy Order!
-Data from POST: [Bazaar] Putting goods in escrow...
-Data from POST: [Bazaar] Submitting sell offer...
-Data from POST: [Bazaar] Sell Offer Setup! 320x Ectoplasm for 64,938,900 coins.
-Data from POST: [Bazaar] Cancelling order...
-Data from POST: [Bazaar] Cancelled! Refunded 527x Enchanted Rabbit Hide from cancelling Sell Offer!
-Data from POST: [Bazaar] Putting goods in escrow...
-Data from POST: [Bazaar] Submitting sell offer...
-Data from POST: [Bazaar] Sell Offer Setup! 527x Enchanted Rabbit Hide for 6,916,366 coins.
-Data from POST: [Bazaar] Claiming order...
-Data from POST: [Bazaar] Claimed 10,277,081 coins from selling 358x ? Fine Amethyst Gemstone at 28,997 each!
-Data from POST: [Bazaar] Cancelling order...
-Data from POST: [Bazaar] Cancelled! Refunded 1,052x ? Fine Amethyst Gemstone from cancelling Sell Offer!
-Data from POST: [Bazaar] Putting goods in escrow...
-Data from POST: [Bazaar] Submitting sell offer...
-Data from POST: [Bazaar] Sell Offer Setup! 1,052x ? Fine Amethyst Gemstone for 30,199,796 coins.
-Data from POST: [Bazaar] Cancelling order...
-Data from POST: [Bazaar] Cancelled! Refunded 2,104x Nurse Shark Tooth from cancelling Sell Offer!
-Data from POST: [Bazaar] Putting goods in escrow...
-Data from POST: [Bazaar] Submitting sell offer...
-Data from POST: [Bazaar] Sell Offer Setup! 2,104x Nurse Shark Tooth for 64,560,304 coins.
-Data from POST: [Bazaar] Cancelling order...
-Data from POST: [Bazaar] Cancelled! Refunded 2,039x Tiger Shark Tooth from cancelling Sell Offer!
-Data from POST: [Bazaar] Putting goods in escrow...
-Data from POST: [Bazaar] Submitting sell offer...
-Data from POST: [Bazaar] Sell Offer Setup! 2,039x Tiger Shark Tooth for 147,898,912 coins.
-Data from POST: [Bazaar] Claiming order...
-Data from POST: [Bazaar] Claimed 1,301x Tasty Cheese worth 4,217,452 coins bought for 3,241.7 each!
-Data from POST: [Bazaar] Putting goods in escrow...
-Data from POST: [Bazaar] Submitting sell offer...
-Data from POST: [Bazaar] Sell Offer Setup! 2,240x Tasty Cheese for 10,286,116 coins.
-Data from POST: [Bazaar] Putting goods in escrow...
-Data from POST: [Bazaar] Submitting sell offer...
-Data from POST: [Bazaar] Sell Offer Setup! 2,240x Tasty Cheese for 10,285,894 coins.
-Data from POST: [Bazaar] Claiming order...
-Data from POST: [Bazaar] Claimed 2,000x Enchanted Cooked Mutton worth 260,024,400 coins bought for 130,012 each!
-Data from POST: [Bazaar] Putting goods in escrow...
-Data from POST: [Bazaar] Submitting sell offer...
-Data from POST: [Bazaar] Sell Offer Setup! 2,000x Enchanted Cooked Mutton for 268,092,990 coins.
-Data from POST: [Bazaar] Cancelling order...
-Data from POST: [Bazaar] Cancelled! Refunded 251,296,206 coins from cancelling Buy Order!
-Data from POST: [Bazaar] Claiming order...
-Data from POST: [Bazaar] Claimed 1,641x Enchanted Slime Block worth 207,055,801 coins bought for 126,177 each!
-Data from POST: [Bazaar] Cancelling order...
-Data from POST: [Bazaar] Cancelled! Refunded 423,827,199 coins from cancelling Buy Order!
-Data from POST: [Bazaar] Cancelling order...
-Data from POST: [Bazaar] Cancelled! Refunded 320x Ectoplasm from cancelling Sell Offer!
-Data from POST: [Bazaar] Putting goods in escrow...
-Data from POST: [Bazaar] Submitting sell offer...
-Data from POST: [Bazaar] Sell Offer Setup! 329x Ectoplasm for 66,765,241 coins.
-Data from POST: [Bazaar] Putting goods in escrow...
-Data from POST: [Bazaar] Submitting sell offer...
-Data from POST: [Bazaar] Sell Offer Setup! 24x Gold Magmafish for 51,141,164 coins.
-Data from POST: [Bazaar] Executing instant sell...
-Data from POST: [Bazaar] Sold 1x ? Fine Amethyst Gemstone for 25,446 coins!
-Data from POST: [Bazaar] Sold 6x Purple Candy for 153,050 coins!
-Data from POST: [Bazaar] Claiming order...
-Data from POST: [Bazaar] Claimed 67,102x Dragon Essence worth 213,874,205 coins bought for 3,187.3 each!
-Data from POST: [Bazaar] Claiming order...
-Data from POST: [Bazaar] Claimed 35,160x Gold Essence worth 49,086,876 coins bought for 1,396.1 each!
-Data from POST: [Bazaar] Cancelling order...
-Data from POST: [Bazaar] Cancelled! Refunded 67,026,784 coins from cancelling Buy Order!
-Data from POST: [Bazaar] Order Flipped! 4,000x ? Fine Sapphire Gemstone for 4,042,000 coins of total expected profit.
-Data from POST: [Bazaar] Cancelling order...
-Data from POST: [Bazaar] Cancelled! Refunded 354,925,386 coins from cancelling Buy Order!
-Data from POST: [Bazaar] Order Flipped! 4,000x Mutant Nether Wart for 6,154,400 coins of total expected profit.
-Data from POST: [Bazaar] Order Flipped! 5,000x Squash for 11,124,000 coins of total expected profit.
-Data from POST: [Bazaar] Claiming order...
-Data from POST: [Bazaar] Claimed 2,240x ? Fine Jade Gemstone worth 57,901,536 coins bought for 25,849 each!
-Data from POST: [Bazaar] Putting goods in escrow...
-Data from POST: [Bazaar] Submitting sell offer...
-Data from POST: [Bazaar] Sell Offer Setup! 2,240x ? Fine Jade Gemstone for 60,044,625 coins.
-Data from POST: [Bazaar] Claiming order...
-Data from POST: [Bazaar] Claimed 2,240x ? Fine Jade Gemstone worth 57,901,536 coins bought for 25,849 each!
-Data from POST: [Bazaar] You don't have the space required to claim that!
-Data from POST: [Bazaar] Putting goods in escrow...
-Data from POST: [Bazaar] Submitting sell offer...
-Data from POST: [Bazaar] Sell Offer Setup! 2,240x ? Fine Jade Gemstone for 60,044,403 coins.
-Data from POST: [Bazaar] Claiming order...
-Data from POST: [Bazaar] Claimed 69x ? Fine Jade Gemstone worth 1,783,574 coins bought for 25,849 each!
-Data from POST: [Bazaar] Cancelling order...
-Data from POST: [Bazaar] Cancelled! Refunded 11,657,854 coins from cancelling Buy Order!
-Data from POST: You cancelled your auction for Mithril-Infused Fuel Tank!
-Data from POST: You cancelled your auction for Mithril-Infused Fuel Tank!
-Data from POST: [Bazaar] Putting goods in escrow...
-Data from POST: [Bazaar] Submitting sell offer...
-Data from POST: [Bazaar] Sell Offer Setup! 35x Great White Shark Tooth for 64,200,116 coins.
-Data from POST: [MVP+] Kargone created a BIN auction for Mithril-Infused Fuel Tank at 13,990,000 coins!
-Data from POST: [MVP+] Kargone created a BIN auction for Mithril-Infused Fuel Tank at 13,990,000 coins!
-Data from POST: [MVP+] Kargone created a BIN auction for Mithril-Infused Fuel Tank at 13,990,000 coins!
-Data from POST: [MVP+] Kargone created a BIN auction for Vaccine Artifact at 13,190,000 coins!
-Data from POST: [MVP+] Kargone created a BIN auction for Vaccine Artifact at 13,190,000 coins!
-Data from POST: [MVP+] Kargone created a BIN auction for Vaccine Artifact at 13,190,000 coins!
-Data from POST: [MVP+] Kargone created a BIN auction for Red Claw Artifact at 9,680,000 coins!
-Data from POST: [MVP+] Kargone created a BIN auction for Red Claw Artifact at 9,680,000 coins!
-Data from POST: [MVP+] Kargone created a BIN auction for Red Claw Artifact at 9,680,000 coins!
-Data from POST: [MVP+] Kargone created a BIN auction for Red Claw Artifact at 9,680,000 coins!
-Data from POST: [MVP+] Kargone created a BIN auction for Lush Artifact at 16,740,000 coins!
-Data from POST: [MVP+] Kargone created a BIN auction for Lush Artifact at 16,740,000 coins!
-Data from POST: [MVP+] Kargone created a BIN auction for Lush Artifact at 16,740,000 coins!
-Data from POST: [MVP+] Kargone created a BIN auction for Lush Artifact at 16,740,000 coins!
-Data from POST: You sold Whipped Magma Cream x64 for 13,107,200 Coins!
-Data from POST: You sold Whipped Magma Cream x64 for 13,107,200 Coins!
-Data from POST: You sold Whipped Magma Cream x64 for 13,107,200 Coins!
-Data from POST: You sold Whipped Magma Cream x53 for 10,854,400 Coins!
-Data from POST: You sold Enchanted Slime Block x41 for 5,248,000 Coins!
-Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
-Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
-Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
-Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
-Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
-Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
-Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
-Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
-Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
-Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
-Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
-Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
-Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
-Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
-Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
-Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
-Data from POST: You sold Enchanted Slime Block x64 for 8,192,000 Coins!
-Data from POST: You Supercrafted Red Claw Ring!
-Data from POST: You Supercrafted Red Claw Ring!
-Data from POST: You Supercrafted Red Claw Ring!
-Data from POST: You Supercrafted Red Claw Ring!
-Data from POST: You Supercrafted Red Claw Ring!
-Data from POST: You Supercrafted Red Claw Ring!
-Data from POST: You Supercrafted Red Claw Ring!
-Data from POST: You Supercrafted Red Claw Ring!
-Data from POST: You Supercrafted Red Claw Ring!
-Data from POST: You Supercrafted Red Claw Ring!
-Data from POST: You Supercrafted Red Claw Ring!
-Data from POST: You Supercrafted Red Claw Artifact!
-Data from POST: You Supercrafted Red Claw Artifact!
-Data from POST: You Supercrafted Red Claw Artifact!
-Data from POST: You Supercrafted Red Claw Artifact!
-Data from POST: You Supercrafted Red Claw Artifact!
-Data from POST: You Supercrafted Red Claw Artifact!
-Data from POST: You Supercrafted Red Claw Artifact!
-Data from POST: You Supercrafted Red Claw Artifact!
-Data from POST: You Supercrafted Red Claw Artifact!
-Data from POST: You Supercrafted Red Claw Artifact!
-Data from POST: You Supercrafted Red Claw Artifact!
+Beastmaster Crest
+Spiked Arocitsty
+Lush Artifact
+Razor-Sharp Shark Necklace
+Vaccine Artifact
+Red Claw Artifact
+Bat Person Talisman
+Spider Talisman
+Speed Ring

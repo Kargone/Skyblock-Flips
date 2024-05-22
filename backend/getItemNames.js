@@ -18,5 +18,6 @@ async function getItemNames(name_array) {
 }
 
 getItemNames([
-    "Mutant Nether Wart"
+    "Enchanted Sugar",
+    "Enchanted Sugar Cane"
 ]);

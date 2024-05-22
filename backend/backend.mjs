@@ -100,8 +100,21 @@ class Sort {
 
 class ProcesTrade {
     constructor(trade_message) {
+        for (const character of [
+            '�9',
+            '�7',
+            '�6',
+            '�5',
+            '�e',
+            '�c',
+            '�a'
+        ]) {
+            trade_message = trade_message.replaceAll(character, '');
+        }
+
         this.message = trade_message;
         this.messageArray = this.message.split('');
+        
         // determine message type
         if (this.message.includes('[Bazaar] Bought')) {
             this.type = "insta-buy";
@@ -112,7 +125,7 @@ class ProcesTrade {
             const nameStringStart = findEnd(this.message, 'x ');
             const nameStringEnd = this.message.indexOf(' for');
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
-            const pricePerUnit = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
+            const pricePerUnit = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', '')) / amount;
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
             this.instaBuy(amount, pricePerUnit, nameString);
         } else if (this.message.includes('[Bazaar] Sold')) {
@@ -194,7 +207,7 @@ class ProcesTrade {
             this.type = "sell-order-claim";
             const amountStringStart = findEnd(this.message, 'selling ');
             const amountStringEnd = this.message.indexOf('x');
-            const priceStringStart = findEnd(this.message, 'at ');
+            const priceStringStart = findEnd(this.message, ' at ');
             const priceStringEnd = this.message.indexOf(' each!')
             const nameStringStart = findEnd(this.message, 'x ');
             const nameStringEnd = this.message.indexOf(' at ');
@@ -272,18 +285,20 @@ class ProcesTrade {
             this.message.includes('Submitting sell offer...') ||
             this.message.includes('Cancelling order...') ||
             this.message.includes('Executing instant sell...') ||
-            this.message.includes('Submitting buy order...')
+            this.message.includes('Submitting buy order...') ||
+            this.message.includes('You cancelled the trade!')
         ) {
             return 'Nontrade message';
         } else {
-            console.log("ERROR: Invalid trade message: ", this.message);
-            return 'ERROR: Invalid trade message: ' + this.message;
+            return console.log('ERROR: Invalid trade message: ' + this.message);
         }
 
         console.log("Completed trade message: ", this.message);
         return 'Completed trade mesage';
     }
     instaBuy(amount, price, name, time_bought = Date.now()) {
+        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+
         // get the investment type but add "s" to format for trader_data
         const invesmentType = getInvestmentType(product_list[name]["type"]);
         
@@ -338,6 +353,8 @@ class ProcesTrade {
         return 'Instabuy completed';
     }
     instaSell(amount, price, name, doBazaarFees = true) {
+        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+
         const invesmentType = getInvestmentType(product_list[name]["type"]); 
 
         // look for any invesments that might already be the same name
@@ -346,6 +363,9 @@ class ProcesTrade {
             let suborders = trader_data[invesmentType][name]["sub-orders"];
             while (suborders.length > 0) {
                 const subOrder = suborders[0];
+
+                if (amount === 0) return;
+
                 // go through each suborder
                 if (subOrder["partial-amount"] > amount) {
                     // then just subtract from the current suborder
@@ -353,32 +373,46 @@ class ProcesTrade {
                     
                     // calculate the profit from the sell order
                     const date_bought = subOrder["time-bought"];
+
+                    trader_data["all-products"][name]["current-amount"] -= amount;
                     return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees);
                 } else {
                     // determine if the last suborder is bought out
                     if (trader_data[invesmentType][name]["sub-orders"].length <= 1) {
+                        amount -= subOrder["partial-amount"];
+
+                        if (amount > 0) throw 'ERROR: More instasold then found in investments';
+
                         // remove the whole order
                         delete trader_data[invesmentType][name];
 
                         // calculate the profit from the sell order
                         const date_bought = subOrder["time-bought"];
-                        return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees);
+
+                        trader_data["all-products"][name]["current-amount"] -= subOrder["partial-amount"];
+                        return this.addProfit(subOrder["partial-amount"], name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees);
                     } else {
+                        amount -= subOrder["partial-amount"];
+
                         // just remove the suborder
                         trader_data[invesmentType][name]["sub-orders"].splice(0, 1);
 
                         // calculate the profit for just this sell order
                         const date_bought = subOrder["time-bought"];
-                        this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees);
+
+                        trader_data["all-products"][name]["current-amount"] -= subOrder["partial-amount"];
+                        this.addProfit(subOrder["partial-amount"], name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees);
                     }
                 }
             }
-            return 'ERROR: More insta selling that in investments';
+            throw 'ERROR: More insta selling that in investments';
         } else {
-            return 'ERROR: No investment found for insta sell';
+            throw 'ERROR: No investment found for insta sell';
         }
     }
     addProfit(amount, name, buy_price, sell_price, date_bought, date_sold, doFees, type = 'bazaar') {
+        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+
         const dateOfTransaction = morningTime(Date.now()).toString();
 
         // calculate the current profit
@@ -412,11 +446,8 @@ class ProcesTrade {
                 "total-sold": 0,
                 "crafting-materials": "none"
             };
-        } else {
-            trader_data["all-products"][name]["current-amount"] -= amount;
         }
 
-        trader_data["all-products"][name]["current-amount"] -= amount;
         trader_data["all-products"][name]["total-profit-made"] += profit;
         trader_data["all-products"][name]["total-sold"] += amount;
         
@@ -463,6 +494,8 @@ class ProcesTrade {
         return 'Addprofit completed';
     }
     buyOrderSetup(amount, price, name) {
+        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+
         // get the hypixel api name and the current sell order price
         const api_name = product_list[name]['api-name'];
         const currentResellPrice = Math.round(bazaar_data[api_name]["quick_status"]["buyPrice"] * 10) / 10;
@@ -481,6 +514,8 @@ class ProcesTrade {
         return 'Buy order setup completed';
     }
     buyOrderFill(amount, name) {
+        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+
         // get the current buy orders
         const buyOrders = trader_data['buy-order-overview']['buy-orders'];
         
@@ -497,9 +532,11 @@ class ProcesTrade {
             }
         }
 
-        return 'ERROR: Failed to fill a buy order';
+        throw 'ERROR: Failed to fill a buy order';
     }
     buyOrderClaim(amount, price, name) {
+        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+
         // get the current buy orders
         const buyOrders = trader_data['buy-order-overview']['buy-orders'];
         
@@ -544,8 +581,8 @@ class ProcesTrade {
                 } else {
                     trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"] += 1;
                     trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-claimed"] += amount;
-                    trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-placed-for-buying"] += buyOrder["buying-amount"];
-                    trader_data["all-products"][name]["buy-order-stats"]["buy-average"] += 
+                    trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-placed-for-buying"] += buyOrder["buying-amount"] + amount;
+                    trader_data["all-products"][name]["buy-order-stats"]["buy-average"] = 
                         trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-claimed"] /
                         trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"];
                 }
@@ -554,7 +591,7 @@ class ProcesTrade {
             }
         }
 
-        return 'ERROR: Failed to claim a buy order';
+        throw 'ERROR: Failed to claim a buy order';
     }
     buyOrderCancel(dollars) {
         // this one's a little more sketchy bc it depends on the bought-amout being accurate
@@ -574,9 +611,11 @@ class ProcesTrade {
             }
         }
 
-        return 'ERROR: Failed to cancel a buy order';
+        throw 'ERROR: Failed to cancel a buy order';
     }
     sellOrderSetup(amount, price, name) {
+        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+
         const resellPrice = price;
         const invesmentType = getInvestmentType(product_list[name]["type"]); 
         const sellOrderPlaceTime = Date.now();
@@ -584,10 +623,13 @@ class ProcesTrade {
         let total_selling_amount = 0;
 
         let sell_sub_orders = [];
+        trader_data[invesmentType][name]["sub-orders"] = new Sort(trader_data[invesmentType][name]["sub-orders"], false, "price-bought");
         const investmentSubOrders = trader_data[invesmentType][name]["sub-orders"];
 
         while (investmentSubOrders.length > 0) {
             const investmentSubOrder = investmentSubOrders[0];
+            if (amount === 0) break;
+            
             // go through each suborder
             if (investmentSubOrder["partial-amount"] > amount) {
                 // then just subtract from the current suborder
@@ -596,12 +638,12 @@ class ProcesTrade {
                 // add the new sub sell order
                 const bazaarFeesPerUnit = resellPrice * 0.01;
                 const projectedProfitPerUnit = Math.round((resellPrice - investmentSubOrder["price-bought"] - bazaarFeesPerUnit) * 10) / 10;
-                total_selling_amount += trader_data[invesmentType][name]["sub-orders"][0]["partial-amount"];
+                total_selling_amount += amount;
                 sell_sub_orders.push({
                     "partial-sold-amount": 0,
-                    "partial-selling-amount": trader_data[invesmentType][name]["sub-orders"][0]["partial-amount"],
+                    "partial-selling-amount": amount,
                     "price-bought": investmentSubOrder["price-bought"],
-                    "projected-profit": projectedProfitPerUnit * trader_data[invesmentType][name]["sub-orders"][0]["partial-amount"],
+                    "projected-profit": projectedProfitPerUnit * amount,
                     "time-bought": investmentSubOrder["time-bought"],
                     "sell-order-place-time": sellOrderPlaceTime
                 });
@@ -610,10 +652,16 @@ class ProcesTrade {
                 if (parseInt(investmentSubOrder["time-bought"]) < parseInt(earliest_time_bought)) {
                     earliest_time_bought = investmentSubOrder["time-bought"];
                 }
+
+                trader_data["all-products"][name]["current-amount"] -= amount;
                 break;
             } else {
                 // determine if the last suborder is bought out
                 if (trader_data[invesmentType][name]["sub-orders"].length <= 1) {
+                    amount -= investmentSubOrder["partial-amount"];
+
+                    if (amount > 0) throw 'ERROR: Sell order setup requires more products then found in investments';
+                    
                     // add the new sub sell order
                     const bazaarFeesPerUnit = resellPrice * 0.01;
                     const projectedProfitPerUnit = Math.round((resellPrice - investmentSubOrder["price-bought"] - bazaarFeesPerUnit) * 10) / 10;
@@ -634,8 +682,12 @@ class ProcesTrade {
 
                     // remove the whole order
                     delete trader_data[invesmentType][name];
+
+                    trader_data["all-products"][name]["current-amount"] -= investmentSubOrder["partial-amount"];
                     break;
                 } else {
+                    amount -= investmentSubOrder["partial-amount"];
+
                     // add the new sub sell order
                     const bazaarFeesPerUnit = resellPrice * 0.01;
                     const projectedProfitPerUnit = Math.round((resellPrice - investmentSubOrder["price-bought"] - bazaarFeesPerUnit) * 10) / 10;
@@ -656,6 +708,8 @@ class ProcesTrade {
 
                     // just remove the suborder
                     trader_data[invesmentType][name]["sub-orders"].splice(0, 1);
+
+                    trader_data["all-products"][name]["current-amount"] -= investmentSubOrder["partial-amount"];
                 }
             }
         }
@@ -673,6 +727,8 @@ class ProcesTrade {
         return 'Sell order setup completed';
     }
     sellOrderFill(amount, name) {
+        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+
         // get the current sell orders
         const sellOrders = trader_data['sell-order-overview']['sell-orders'];
         
@@ -691,9 +747,11 @@ class ProcesTrade {
             }
         }
 
-        return 'ERROR: Failed to fill a sell order';
+        throw 'ERROR: Failed to fill a sell order';
     }
     sellOrderClaim(amount, price_sold, name) {
+        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+
         // get the current sell orders
         const sellOrders = new Sort(trader_data["sell-order-overview"]["sell-orders"], false, "sell-order-place-time");
         
@@ -703,17 +761,19 @@ class ProcesTrade {
         // find the index of the sell order that was just claimed
         for (const sellOrderIndex of Object.keys(sellOrders)) {
             const sellOrder = sellOrders[sellOrderIndex];
-            if (sellOrder["item-name"] === name && (Math.ceil(sellOrder["price-sold"]) === price_sold || sellOrder["price-sold"] === price_sold || Math.floor(sellOrder["price-sold"]) === price_sold)) {
+            if (sellOrder["item-name"] === name && (Math.ceil(sellOrder["price-sold"]) === price_sold || Math.round(sellOrder["price-sold"] * 10) / 10 === price_sold || Math.floor(sellOrder["price-sold"]) === price_sold)) {
                 current_sell_order_index = sellOrderIndex;
                 break;
             }
         }
-        if (current_sell_order_index === -1 || sellOrders.length === 0) return 'ERROR: No sell order found to claim';
+        if (current_sell_order_index === -1 || sellOrders.length === 0) throw 'ERROR: No sell order found to claim';
 
         // adjust the amounts to reflect the sell claim
         let suborders = trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"];
         while (suborders.length > 0) {
             const subOrder = suborders[0];
+
+            if (subOrder["partial-selling-amount"] === 0) return;
 
             // go through each suborder
             if (subOrder["partial-selling-amount"] > amount) {
@@ -724,40 +784,43 @@ class ProcesTrade {
                 // calculate the profit from the sell order
                 const date_bought = subOrder["time-bought"];
 
-                addSellClaimToProducts(name, amount, subOrder["partial-selling-amount"], true);
+                addSellClaimToProducts(amount, name, subOrder["partial-selling-amount"], true);
 
                 return this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true);
             } else {
                 // determine if the last suborder is bought out
                 if (trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"].length <= 1) {
+                    amount -= subOrder["partial-selling-amount"];
+                    if (amount > 0) throw 'ERROR: Amount still left over to claim from sell order after order has been completly filled';
+                    
                     // remove the whole order
                     trader_data["sell-order-overview"]["sell-orders"].splice(current_sell_order_index, 1);
 
                     // calculate the profit from the sell order
                     const date_bought = subOrder["time-bought"];
 
-                    addSellClaimToProducts(name, amount, subOrder["partial-selling-amount"], true);
+                    addSellClaimToProducts(subOrder["partial-selling-amount"], name, subOrder["partial-selling-amount"], true);
 
-                    return this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true);
+
+                    return this.addProfit(subOrder["partial-selling-amount"], name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true);
                 } else {
+                    amount -= subOrder["partial-selling-amount"];
+
                     // just remove the suborder
                     trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"].splice(0, 1);
 
                     // calculate the profit for just this sell order
                     const date_bought = subOrder["time-bought"];
 
-                    addSellClaimToProducts(name, amount, subOrder["partial-selling-amount"], false);
+                    addSellClaimToProducts(subOrder["partial-selling-amount"], name, subOrder["partial-selling-amount"], amount === 0);
 
-                    this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true);
+                    this.addProfit(subOrder["partial-selling-amount"], name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true);
                 }
             }
         }
-        return 'ERROR: More insta selling that in investments';
+        throw 'ERROR: More sell order claiming then that in the sell order';
 
-        function addSellClaimToProducts(name, amount, orderSellAmount, orderFilled) {
-            let changeOrderCountBy = 0
-            if (orderFilled) changeOrderCountBy = 1;
-
+        function addSellClaimToProducts(amount, name, orderSellAmount, orderFilled) {
             // add the claim into the sell order stuff
             if (Object.keys(trader_data["all-products"]).indexOf(name) === -1) {
                 trader_data["all-products"][name] = {
@@ -769,9 +832,9 @@ class ProcesTrade {
                         "buy-average": 0
                     },
                     "sell-order-stats": {
-                        "total-sell-orders-created": changeOrderCountBy,
+                        "total-sell-orders-created": orderFilled ? 1 : 0,
                         "total-sell-amount-claimed": amount,
-                        "total-sell-amount-placed-for-selling": orderSellAmount,
+                        "total-sell-amount-placed-for-selling": orderFilled ? orderSellAmount : 0,
                         "sell-average": 0
                     },
                     "max-amount": 2000,
@@ -782,11 +845,11 @@ class ProcesTrade {
 
                 console.log('This is weird, im making product data on a sell order before its even been bought before.')
             } else {
-                trader_data["all-products"][name]["sell-order-stats"]["total-sell-orders-created"] += changeOrderCountBy;
                 trader_data["all-products"][name]["sell-order-stats"]["total-sell-amount-claimed"] += amount;
-                trader_data["all-products"][name]["sell-order-stats"]["total-sell-amount-placed-for-selling"] += orderSellAmount;
-                if (changeOrderCountBy === 1) {
-                    trader_data["all-products"][name]["sell-order-stats"]["sell-average"] += 
+                if (orderFilled) {
+                    trader_data["all-products"][name]["sell-order-stats"]["total-sell-orders-created"] += 1;
+                    trader_data["all-products"][name]["sell-order-stats"]["total-sell-amount-placed-for-selling"] += orderSellAmount;
+                    trader_data["all-products"][name]["sell-order-stats"]["sell-average"] = 
                         trader_data["all-products"][name]["sell-order-stats"]["total-sell-amount-claimed"] /
                         trader_data["all-products"][name]["sell-order-stats"]["total-sell-orders-created"];
                 }
@@ -794,6 +857,8 @@ class ProcesTrade {
         }
     }
     sellOrderCancel(amount, name) {
+        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+
         // get the current sell orders
         const sellOrders = trader_data["sell-order-overview"]["sell-orders"];
         
@@ -816,7 +881,7 @@ class ProcesTrade {
                 current_sell_order_index = sellOrderIndex;
             }
         }
-        if (current_sell_order_index === -1 || sellOrders.length === 0) return 'ERROR: No sell order found to cancel';
+        if (current_sell_order_index === -1 || sellOrders.length === 0) throw 'ERROR: No sell order found to cancel';
 
         const currentSellOrder = sellOrders[current_sell_order_index];
         const invesmentType = getInvestmentType(product_list[name]["type"]); 
@@ -846,6 +911,8 @@ class ProcesTrade {
         return 'Sell order cancelled';
     }
     orderFlipped(amount, name, profit) {
+        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+
         // get the buy orders
         const buyOrders = trader_data["buy-order-overview"]["buy-orders"];
         let current_buy_order_index = -1;
@@ -857,7 +924,7 @@ class ProcesTrade {
                 current_buy_order_index = buyOrderIndex;
             }
         }
-        if (current_buy_order_index === -1 || buyOrders.length === 0) return 'ERROR: No buy order found to flip';
+        if (current_buy_order_index === -1 || buyOrders.length === 0) throw 'ERROR: No buy order found to flip';
 
         const currentBuyOrder = buyOrders[current_buy_order_index];
         const priceBought = currentBuyOrder["price-buying"];
@@ -869,46 +936,240 @@ class ProcesTrade {
         return 'Buy order flipped';
     }
     npcSell(amount, price, name) {
+        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+
         this.instaSell(amount, price, name, false);
 
         return 'NPC sell completed';
     }
     auctionCreation(price, name) {
-        /////////////////////// remove crafting materials from short term investments if no item can be found
-        
+        // automatically create product if none can already be found
+        if (Object.keys(trader_data["long-term-investments"]).indexOf(name) === -1) {
+            console.log("Product was not found already in investments to create an auction for.");
+
+            console.log(`Supercrafting ${name}`);
+            this.supercraft(name);
+        }
+
         // remove the product from the long term investments by highest cost
+        trader_data["long-term-investments"][name]["sub-orders"] = new Sort(trader_data["long-term-investments"][name]["sub-orders"], false, "price-bought");
         
+        const currentProducts = trader_data["long-term-investments"][name]["sub-orders"];
+        const removedInvestment = currentProducts[0];
+
+        if (currentProducts.length <= 1) {
+            delete trader_data["long-term-investments"][name];
+        } else if (currentProducts[0]["partial-amount"] === 1) {
+            trader_data["long-term-investments"][name]["sub-orders"].splice(0, 1);
+        } else {
+            trader_data["long-term-investments"][name]["sub-orders"][0]["partial-amount"] -= 1;
+        }
 
         trader_data["auction-house-overview"]["auctions"].push({
             "item-name": name,
             "auction-id": "idk",
-            "material-cost": 0,
+            "material-cost": removedInvestment["price-crafted"],
             "price-selling": price,
             "sold": false,
-            "date-placed": Date.now()
+            "date-placed": Date.now(),
+            "time-crafted": removedInvestment["time-bought"]
         });
 
+        trader_data["all-products"][name]["current-amount"] -= 1;
 
         return 'Auction created';
     }
     auctionClaim(price, name) {
-        // make sure to account for creation fee
+        const priceSold = price/0.99;
+
+        // remove auction
+        const auctions = trader_data["auction-house-overview"]["auctions"];
+        let current_auction_index = -1;
+
+        for (const auctionIndex in auctions) {
+            const auction = auctions[auctionIndex];
+            if (auction["item-name"] === name && auction["price-selling"] === Math.round(priceSold)) {
+                current_auction_index = auctionIndex;
+                break;
+            }
+        }
+        
+        if (current_auction_index === -1) throw 'ERROR: Auction not found to claim';
+
+        // remove the auction from 'auctions'
+        const removedAuction = trader_data["auction-house-overview"]["auctions"].splice(current_auction_index, 1)[0];
+        
+        // add auction fee to daily profit
+        const auctionFees = calcAuctionFee(removedAuction["price-selling"]) + priceSold * 0.01;
+        this.addProfit(1, name, removedAuction["material-cost"] + auctionFees, priceSold, removedAuction["date-placed"], Date.now(), false, "auction-house");
+
+        return 'Auction claimed';
+
+        function calcAuctionFee(price_sold) {
+            if (price_sold > 100000000) {
+                return price_sold * 0.025;
+            } else if (price_sold > 10000000) {
+                return price_sold * 0.02;
+            } else {
+                return price_sold * 0.01;
+            }
+        }
     }
     auctionCancel(name) {
-        
-    }
-    supercraft(name) {
-        // determine if product has already been created
-        if (Object.keys(trader_data["long-term-investments"]).indexOf(name) != -1) {
-            trader_data["long-term-investments"][name]["sub-orders"].push({
+        // find the first occurance of the auction
+        const auctions = trader_data["auction-house-overview"]["auctions"];
+        let current_auction_index = -1;
 
+        for (const auctionIndex in auctions) {
+            const auction = auctions[auctionIndex];
+            if (auction["item-name"] === name) {
+                current_auction_index = auctionIndex;
+                break;
+            }
+        }
+
+        if (current_auction_index === -1) throw 'ERROR: Auction not found to cancel';
+        
+        // remove the auction from 'auctions'
+        const removedAuction = trader_data["auction-house-overview"]["auctions"].splice(current_auction_index, 1)[0];
+
+        // add auction fee to daily profit
+        const auctionFees = calcAuctionFee(removedAuction["price-selling"]);
+        this.addProfit(1, name, auctionFees, 0, removedAuction["date-placed"], "Did not sell", false, "auction-house");
+
+        // Put the auction back into long term investments
+        const productTypeAlreadyCreated = Object.keys(trader_data["long-term-investments"]).indexOf(name) != -1;
+        if (productTypeAlreadyCreated) {
+            trader_data["long-term-investments"][name]["sub-orders"].push({
+                "partial-amount": 1,
+                "price-crafted": removedAuction["material-cost"],
+                "time-bought": removedAuction["time-crafted"]
             });
         } else {
+            trader_data["long-term-investments"][name] = {
+                "type": "auction-product",
+                "sub-orders": [
+                    {
+                        "partial-amount": 1,
+                        "price-crafted": removedAuction["material-cost"],
+                        "time-bought": removedAuction["time-crafted"]
+                    }
+                ]
+            }
+        }
 
+        trader_data["all-products"][name]["current-amount"] += 1;
+
+        // adjust for the add profit increasing it
+        trader_data["all-products"][name]["total-sold"] -= 1;
+
+        return 'Auction cancelled';
+
+        function calcAuctionFee(price_not_sold) {
+            if (price_not_sold > 100000000) {
+                return price_not_sold * 0.025;
+            } else if (price_not_sold > 10000000) {
+                return price_not_sold * 0.02;
+            } else {
+                return price_not_sold * 0.01;
+            }
+        }
+    }
+    supercraft(name) {
+        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+
+        // determine if product has already been created
+        const productTypeAlreadyCreated = Object.keys(trader_data["long-term-investments"]).indexOf(name) != -1;
+
+        // determine the crafting materials
+        const craftingMaterials = product_list[name]["crafting-materials"];
+
+        const dateSupercrafted = Date.now();
+
+        let total_cost_of_product = 0;
+
+        for (const craftingMaterialName of Object.keys(craftingMaterials)) {
+            total_cost_of_product += removeCraftingMaterialFromInvestments(craftingMaterialName, craftingMaterials[craftingMaterialName]);
         }
 
 
+        if (productTypeAlreadyCreated) {
+            trader_data["long-term-investments"][name]["sub-orders"].push({
+                "partial-amount": 1,
+                "price-crafted": total_cost_of_product,
+                "time-bought": dateSupercrafted
+            });
+        } else {
+            trader_data["long-term-investments"][name] = {
+                "type": "auction-product",
+                "sub-orders": [
+                    {
+                        "partial-amount": 1,
+                        "price-crafted": total_cost_of_product,
+                        "time-bought": dateSupercrafted
+                    }
+                ]
+            }
+        }
+
+        // add the buy order claim amounts
+        if (Object.keys(trader_data["all-products"]).indexOf(name) === -1) {
+            trader_data["all-products"][name] = {
+                "current-amount": 1,
+                "total-profit-made": 0,
+                "total-sold": 0,
+                "crafting-materials": craftingMaterials
+            };
+        } else {
+            trader_data["all-products"][name]["current-amount"] += 1;
+        }
+
         return 'Supercraft successful';
+
+        function removeCraftingMaterialFromInvestments(name, amount) {
+            const invesmentType = getInvestmentType(product_list[name]["type"]); 
+
+            if (Object.keys(trader_data[invesmentType]).indexOf(name) === -1) throw 'ERROR: Crafting material not found in investments';
+
+            let suborders = trader_data[invesmentType][name]["sub-orders"];
+            let material_cost = 0;
+
+            trader_data["all-products"][name]["current-amount"] -= amount;
+
+            const priceBoughtKey = product_list[name]["type"] === 'auction-product' ? 'price-crafted' : 'price-bought';
+
+            while (suborders.length > 0) {
+                const subOrder = suborders[0];
+
+                // go through each suborder
+                if (subOrder["partial-amount"] > amount) {
+                    material_cost += amount * subOrder[priceBoughtKey];
+                    
+                    // then just subtract from the current suborder
+                    trader_data[invesmentType][name]["sub-orders"][0]["partial-amount"] -= amount;
+
+                    return material_cost;
+                } else if (trader_data[invesmentType][name]["sub-orders"].length <= 1) {
+                    material_cost += amount * subOrder[priceBoughtKey];
+                    
+                    // remove the whole order
+                    delete trader_data[invesmentType][name];
+
+                    if (amount > subOrder["partial-amount"]) throw 'ERROR: More crafting materials needed then in investments'; 
+
+                    return material_cost;
+                } else {
+                    amount -= subOrder["partial-amount"];
+                    material_cost += subOrder["partial-amount"] * subOrder[priceBoughtKey];
+
+                    // just remove the suborder
+                    trader_data[invesmentType][name]["sub-orders"].splice(0, 1);
+
+                }
+            }
+
+            throw 'ERROR: Something wrong with suborders when removing crafting materials from investments'; 
+        }
     }
 }
 
@@ -923,7 +1184,7 @@ async function updateBazaarData() {
         bazaar_data = await response.json();
         bazaar_data = bazaar_data['products'];
     } catch (e) {
-        console.log(e)
+        console.log('Fetch failed')
     }
 }
 
@@ -956,5 +1217,3 @@ let server = http.createServer(function (request, response) {
 
 server.listen(8000);
 console.log("Server running on port 8000");
-
-// some of the returns need to be changed back into throws

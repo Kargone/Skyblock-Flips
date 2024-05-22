@@ -9,6 +9,11 @@
         "type": "short-term-investment",
         "has-weights": true
     },
+    "Diamond Essence": {
+        "api-name": "ESSENCE_DIAMOND",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
     "Ice Essence": {
         "api-name": "ESSENCE_ICE",
         "type": "short-term-investment",
@@ -51,7 +56,7 @@
     },
     "Golden Tooth": {
         "api-name": "GOLDEN_TOOTH",
-        "type": "short-term-investment",
+        "type": "crafting-material",
         "has-weights": true
     },
     "Enchanted Leather": {
@@ -176,17 +181,17 @@
     },
     "Enchanted Ink Sac": {
         "api-name": "ENCHANTED_INK_SACK",
-        "type": "short-term-investment",
+        "type": "long-term-investment",
         "has-weights": true
     },
     "Enchanted Lush Berberis": {
         "api-name": "ENCHANTED_LUSH_BERBERIS",
-        "type": "short-term-investment",
+        "type": "crafting-material",
         "has-weights": true
     },
     "Lush Berberis": {
         "api-name": "LUSH_BERBERIS",
-        "type": "short-term-investment",
+        "type": "crafting-material",
         "has-weights": true
     },
     "? Fine Jasper Gemstone": {
@@ -216,6 +221,309 @@
     },
     "Mutant Nether Wart": {
         "api-name": "MUTANT_NETHER_STALK",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "? Fine Onyx Gemstone": {
+        "api-name": "FINE_ONYX_GEM",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "? Fine Peridot Gemstone": {
+        "api-name": "FINE_PERIDOT_GEM",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "? Fine Aquamarine Gemstone": {
+        "api-name": "FINE_AQUAMARINE_GEM",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "? Fine Citrine Gemstone": {
+        "api-name": "FINE_CITRINE_GEM",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Tiger Shark Tooth": {
+        "api-name": "TIGER_SHARK_TOOTH",
+        "type": "long-term-investment",
+        "has-weights": true
+    },
+    "Great White Shark Tooth": {
+        "api-name": "GREAT_WHITE_SHARK_TOOTH",
+        "type": "long-term-investment",
+        "has-weights": true
+    },
+    "Nurse Shark Tooth": {
+        "api-name": "NURSE_SHARK_TOOTH",
+        "type": "long-term-investment",
+        "has-weights": true
+    },
+    "Shark Fin": {
+        "api-name": "SHARK_FIN",
+        "type": "long-term-investment",
+        "has-weights": true
+    },
+    "Blue Shark Tooth": {
+        "api-name": "BLUE_SHARK_TOOTH",
+        "type": "long-term-investment",
+        "has-weights": true
+    },
+    "? Fine Opal Gemstone": {
+        "api-name": "FINE_OPAL_GEM",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Beastmaster Crest - Rare": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Ancient Claw": 376,
+            "Griffin Feather": 44
+        }
+    },
+    "Beastmaster Crest - Epic": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Beastmaster Crest - Rare": 1,
+            "Enchanted Ancient Claw": 4,
+            "Griffin Feather": 128
+        }
+    },
+    "Beastmaster Crest - Legendary": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Beastmaster Crest - Epic": 1,
+            "Enchanted Ancient Claw": 32,
+            "Griffin Feather": 256
+        }
+    },
+    "Enchanted Ancient Claw": {
+        "api-name": "ENCHANTED_ANCIENT_CLAW",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Ancient Claw": {
+        "api-name": "ANCIENT_CLAW",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Bait Ring": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Enchanted Ink Sac": 288
+        }
+    },
+    "Spiked Atrocity": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Bait Ring": 1,
+            "Spiked Bait": 128,
+            "Enchanted Ink Sac": 128
+        }
+    },
+    "Spiked Bait": {
+        "api-name": "SPIKED_BAIT",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Lush Talisman": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Lush Berberis": 576
+        }
+    },
+    "Lush Ring": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Lush Talisman": 1,
+            "Enchanted Lush Berberis": 64
+        }
+    },
+    "Lush Artifact": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Lush Ring": 1,
+            "Enchanted Lush Berberis": 512
+        }
+    },
+    "Raggedy Shark Tooth Necklace": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Shark Fin": 8,
+            "Nurse Shark Tooth": 1
+        }
+    },
+    "Dull Shark Tooth Necklace": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Raggedy Shark Tooth Necklace": 1,
+            "Nurse Shark Tooth": 4
+        }
+    },
+    "Honed Shark Tooth Necklace": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Dull Shark Tooth Necklace": 1,
+            "Blue Shark Tooth": 4
+        }
+    },
+    "Sharp Shark Tooth Necklace": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Honed Shark Tooth Necklace": 1,
+            "Tiger Shark Tooth": 4
+        }
+    },
+    "Razor-Sharp Shark Tooth Necklace": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Sharp Shark Tooth Necklace": 1,
+            "Great White Shark Tooth": 4
+        }
+    },
+    "Vaccine Ring": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Arachne's Fang": 8
+        }
+    },
+    "Vaccine Artifact": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Vaccine Ring": 1,
+            "Poison Sample": 8
+        }
+    },
+    "Red Claw Ring": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Enchanted Leather": 32,
+            "Golden Tooth": 8
+        }
+    },
+    "Red Claw Artifact": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Red Claw Ring": 1,
+            "Enchanted Leather": 128,
+            "Golden Tooth": 54
+        }
+    },
+    "Bat Person Ring": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Ectoplasm": 32,
+            "Spooky Shard": 4
+        }
+    },
+    "Bat Person Artifact": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Bat Person Ring": 1,
+            "Ectoplasm": 128,
+            "Spooky Shard": 16
+        }
+    },
+    "Spooky Shard": {
+        "api-name": "SPOOKY_SHARD",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Spider Ring": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Tarantula Web": 64
+        }
+    },
+    "Spider Artifact": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Spider Ring": 1,
+            "Tarantula Silk": 32,
+            "Enchanted Emerald": 32
+        }
+    },
+    "Enchanted Emerald": {
+        "api-name": "ENCHANTED_EMERALD",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Tarantula Web": {
+        "api-name": "TARANTULA_WEB",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Tarantula Silk": {
+        "api-name": "TARANTULA_SILK",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Speed Ring": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Enchanted Sugar": 96
+        }
+    },
+    "Speed Artifact": {
+        "api-name": "",
+        "type": "auction-product",
+        "has-weights": false,
+        "crafting-materials": {
+            "Speed Ring": 1,
+            "Enchanted Sugar Cane": 48
+        }
+    },
+    "Enchanted Sugar": {
+        "api-name": "ENCHANTED_SUGAR",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Enchanted Sugar Cane": {
+        "api-name": "ENCHANTED_SUGAR_CANE",
         "type": "short-term-investment",
         "has-weights": true
     }

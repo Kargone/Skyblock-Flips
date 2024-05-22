@@ -1,6 +1,8 @@
-Created supercraft method on proccess trade
-Created auction created mehtod on proccess trade
-Added time crafted to auctions
-Created auction cancel method on proccess trade
-Created auction claimed method on proccess trade
-Added a replace all for trade messages with � character
+Fixed some things with multi-suborders sell order claiming, settting up, and insta selling
+Of course been updating the trader data with the running of the program
+Also added some more products and auctions to product list
+Backend wont do orders for products not in the product list
+Fixed some problems with the current-amount and averages being updated in all-products
+Fixed total-selling-amount being calced incorrectly
+Added testCases.txt
+Finished supercraft, auction creation, auction claim, and auction cancel
