@@ -46,6 +46,15 @@ function morningTime(time_code) {
     return time_code - extraTime + offset;
 }
 
+function formatTradeMessage(trade_message) {
+    trade_message = trade_message.split('�');
+    for (const stringIndex in trade_message) {
+        if (stringIndex == 0) continue;
+        trade_message[stringIndex] = trade_message[stringIndex].slice(1);
+    }
+    return trade_message.join('');
+}
+
 class Sort {
     constructor(object, increasing = true, key1, key2 = '') {
         if (key2 === '') {
@@ -100,17 +109,7 @@ class Sort {
 
 class ProcesTrade {
     constructor(trade_message) {
-        for (const character of [
-            '�9',
-            '�7',
-            '�6',
-            '�5',
-            '�e',
-            '�c',
-            '�a'
-        ]) {
-            trade_message = trade_message.replaceAll(character, '');
-        }
+        trade_message = formatTradeMessage(trade_message);
 
         this.message = trade_message;
         this.messageArray = this.message.split('');
@@ -273,6 +272,24 @@ class ProcesTrade {
             const nameStringEnd = this.message.indexOf('!');
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
             this.auctionCancel(nameString);
+        } else if (this.message.includes('[Auction]')) {
+            this.type = "auction-sold";
+            const priceStringStart = findEnd(this.message, ' for ');
+            const priceStringEnd = this.message.indexOf(' coins ')
+            const nameStringStart = findEnd(this.message, ' bought ');
+            const nameStringEnd = this.message.indexOf(' for ');
+            const pricePerUnit = parseInt(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
+            const nameString = this.message.slice(nameStringStart, nameStringEnd);
+            this.auctionSold(pricePerUnit, nameString);
+        } else if (this.message.includes('You purchased')) {
+            this.type = "auction-bought";
+            const priceStringStart = findEnd(this.message, ' for ');
+            const priceStringEnd = this.message.indexOf('!')
+            const nameStringStart = findEnd(this.message, 'You purchased ');
+            const nameStringEnd = this.message.indexOf(' for ');
+            const pricePerUnit = parseInt(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
+            const nameString = this.message.slice(nameStringStart, nameStringEnd);
+            this.auctionBought(pricePerUnit, nameString);
         } else if (this.message.includes('You Supercrafted')) {
             this.type = "supercraft";
             const nameStringStart = findEnd(this.message, 'Supercrafted ');
@@ -361,6 +378,9 @@ class ProcesTrade {
         if (Object.keys(trader_data[invesmentType]).indexOf(name) != -1) {
             // adjust the amounts to reflect the sel
             let suborders = trader_data[invesmentType][name]["sub-orders"];
+
+            trader_data[invesmentType][name]["sub-orders"] = new Sort(trader_data[invesmentType][name]["sub-orders"], false, "price-bought");
+
             while (suborders.length > 0) {
                 const subOrder = suborders[0];
 
@@ -508,6 +528,7 @@ class ProcesTrade {
             "buying-amount": amount,
             "price-buying": price,
             "projected-profit": Math.round((currentResellPrice - price) * amount - bazaarFees),
+            "has-been-claimed": false,
             "buy-order-place-time": Date.now()
         });
 
@@ -544,6 +565,8 @@ class ProcesTrade {
         for (let buyOrderIndex = 0; buyOrderIndex < buyOrders.length; buyOrderIndex++) {
             const buyOrder = buyOrders[buyOrderIndex];
             if (buyOrder["item-name"] === name && (Math.ceil(buyOrder["price-buying"]) === price || buyOrder["price-buying"] === price || Math.floor(buyOrder["price-buying"]) === price)) {
+                trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["has-been-claimed"] = true;
+                
                 // add the products claimed to the investments
                 this.instaBuy(amount, price, name, buyOrder["buy-order-place-time"]);
                 
@@ -579,7 +602,7 @@ class ProcesTrade {
                         "crafting-materials": "none"
                     };
                 } else {
-                    trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"] += 1;
+                    if (amount != 2240) trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"] += 1;
                     trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-claimed"] += amount;
                     trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-placed-for-buying"] += buyOrder["buying-amount"] + amount;
                     trader_data["all-products"][name]["buy-order-stats"]["buy-average"] = 
@@ -606,8 +629,41 @@ class ProcesTrade {
             const unbought_dollars = unbought_amount * buyOrder["price-buying"];
             if (unbought_dollars - 1000 < dollars && dollars < unbought_dollars + 1000) {
                 // remove that order
-                trader_data['buy-order-overview']['buy-orders'].splice(buyOrderIndex, 1);
-                return 'Buy order claiming completed';
+                const removedOrder = trader_data['buy-order-overview']['buy-orders'].splice(buyOrderIndex, 1);
+
+                if (!removedOrder["has-been-claimed"]) {
+                    const name = removedOrder["item-name"];
+
+                    if (Object.keys(trader_data["all-products"]).indexOf(name) === -1) {
+                        trader_data["all-products"][name] = {
+                            "current-amount": 0,
+                            "buy-order-stats": {
+                                "total-buy-orders-created": 1,
+                                "total-buy-amount-claimed": 0,
+                                "total-buy-amount-placed-for-buying": removedOrder["buying-amount"],
+                                "buy-average": 0
+                            },
+                            "sell-order-stats": {
+                                "total-sell-orders-created": 0,
+                                "total-sell-amount-claimed": 0,
+                                "total-sell-amount-placed-for-selling": 0,
+                                "sell-average": 0
+                            },
+                            "max-amount": 2000,
+                            "total-profit-made": 0,
+                            "total-sold": 0,
+                            "crafting-materials": "none"
+                        };
+                    } else {
+                        trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"] += 1;
+                        trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-placed-for-buying"] += removedOrder["buying-amount"];
+                        trader_data["all-products"][name]["buy-order-stats"]["buy-average"] = 
+                            trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-claimed"] /
+                            trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"];
+                    }
+                }
+
+                return 'Buy order canceling completed';
             }
         }
 
@@ -719,8 +775,9 @@ class ProcesTrade {
             "item-name": name,
             "price-sold": price,
             "earliest-time-bought": earliest_time_bought,
-            "sell-order-place-time": sellOrderPlaceTime,
             "total-selling-amount": total_selling_amount,
+            "has-been-claimed": false,
+            "sell-order-place-time": sellOrderPlaceTime,
             "sub-orders": sell_sub_orders
         });
 
@@ -768,8 +825,11 @@ class ProcesTrade {
         }
         if (current_sell_order_index === -1 || sellOrders.length === 0) throw 'ERROR: No sell order found to claim';
 
+        trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["has-been-claimed"] = true;
+
         // adjust the amounts to reflect the sell claim
         let suborders = trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"];
+        
         while (suborders.length > 0) {
             const subOrder = suborders[0];
 
@@ -784,7 +844,7 @@ class ProcesTrade {
                 // calculate the profit from the sell order
                 const date_bought = subOrder["time-bought"];
 
-                addSellClaimToProducts(amount, name, subOrder["partial-selling-amount"], true);
+                addSellClaimToProducts(amount, name, subOrder["partial-selling-amount"], false);
 
                 return this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true);
             } else {
@@ -818,6 +878,7 @@ class ProcesTrade {
                 }
             }
         }
+        
         throw 'ERROR: More sell order claiming then that in the sell order';
 
         function addSellClaimToProducts(amount, name, orderSellAmount, orderFilled) {
@@ -882,6 +943,37 @@ class ProcesTrade {
             }
         }
         if (current_sell_order_index === -1 || sellOrders.length === 0) throw 'ERROR: No sell order found to cancel';
+
+        if (Object.keys(trader_data["all-products"]).indexOf(name) === -1) {
+            trader_data["all-products"][name] = {
+                "current-amount": 0,
+                "buy-order-stats": {
+                    "total-buy-orders-created": 0,
+                    "total-buy-amount-claimed": 0,
+                    "total-buy-amount-placed-for-buying": 0,
+                    "buy-average": 0
+                },
+                "sell-order-stats": {
+                    "total-sell-orders-created": 1,
+                    "total-sell-amount-claimed": 0,
+                    "total-sell-amount-placed-for-selling": amount,
+                    "sell-average": 0
+                },
+                "max-amount": 2000,
+                "total-profit-made": 0,
+                "total-sold": 0,
+                "crafting-materials": "none"
+            };
+
+            console.log('This is weird, im making product data on a sell order cancel before its even been bought before.')
+        } else {
+            trader_data["all-products"][name]["sell-order-stats"]["total-sell-orders-created"] += 1;
+            trader_data["all-products"][name]["sell-order-stats"]["total-sell-amount-placed-for-selling"] += amount;
+            trader_data["all-products"][name]["sell-order-stats"]["sell-average"] = 
+                trader_data["all-products"][name]["sell-order-stats"]["total-sell-amount-claimed"] /
+                trader_data["all-products"][name]["sell-order-stats"]["total-sell-orders-created"];
+            trader_data["all-products"][name]["current-amount"] += amount;
+        }
 
         const currentSellOrder = sellOrders[current_sell_order_index];
         const invesmentType = getInvestmentType(product_list[name]["type"]); 
@@ -953,7 +1045,6 @@ class ProcesTrade {
 
         // remove the product from the long term investments by highest cost
         trader_data["long-term-investments"][name]["sub-orders"] = new Sort(trader_data["long-term-investments"][name]["sub-orders"], false, "price-bought");
-        
         const currentProducts = trader_data["long-term-investments"][name]["sub-orders"];
         const removedInvestment = currentProducts[0];
 
@@ -1075,6 +1166,40 @@ class ProcesTrade {
             }
         }
     }
+    auctionSold(price, name) {
+        // find the first occurance of the auction
+        const auctions = trader_data["auction-house-overview"]["auctions"];
+        let current_auction_index = -1;
+
+        for (const auctionIndex in auctions) {
+            const auction = auctions[auctionIndex];
+            if (auction["item-name"] === name && auction["price-selling"] === price && !auction["sold"]) {
+                current_auction_index = auctionIndex;
+                break;
+            }
+        }
+
+        if (current_auction_index === -1) throw 'ERROR: Auction not found to set sold';
+        
+        trader_data["auction-house-overview"]["auctions"][current_auction_index]["sold"] = true;
+
+        return 'Auction successfully set sold';
+    }
+    auctionBought(price, name) {
+        if (Object.keys(trader_data["all-products"]).indexOf(name) === -1) {
+            trader_data["all-products"][name] = {
+                "current-amount": 0, // will be added in instabuy
+                "max-amount": 2000,
+                "total-profit-made": 0,
+                "total-sold": 0,
+                "crafting-materials": "none"
+            };
+        }
+
+        this.instaBuy(1, price, name);
+        
+        return 'Auction successfully bought';
+    }
     supercraft(name) {
         if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
 
@@ -1133,10 +1258,11 @@ class ProcesTrade {
 
             let suborders = trader_data[invesmentType][name]["sub-orders"];
             let material_cost = 0;
-
+            
             trader_data["all-products"][name]["current-amount"] -= amount;
-
+            
             const priceBoughtKey = product_list[name]["type"] === 'auction-product' ? 'price-crafted' : 'price-bought';
+            trader_data[invesmentType][name]["sub-orders"] = new Sort(trader_data[invesmentType][name]["sub-orders"], false, priceBoughtKey);
 
             while (suborders.length > 0) {
                 const subOrder = suborders[0];
@@ -1170,6 +1296,9 @@ class ProcesTrade {
 
             throw 'ERROR: Something wrong with suborders when removing crafting materials from investments'; 
         }
+    }
+    checkForForgeableItmes() {
+
     }
 }
 

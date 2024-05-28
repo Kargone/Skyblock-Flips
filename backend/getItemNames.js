@@ -18,6 +18,5 @@ async function getItemNames(name_array) {
 }
 
 getItemNames([
-    "Enchanted Sugar",
-    "Enchanted Sugar Cane"
+    "Enchanted Cooked Mutton"
 ]);

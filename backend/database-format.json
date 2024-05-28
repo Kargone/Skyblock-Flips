@@ -14,6 +14,7 @@
                             "item-name": "",
                             "price-sold": 0,
                             "total-selling-amount": "",
+                            "has-been-claimed": false,
                             "earliest-time-bought": "",
                             "sell-order-place-time": "",
                             "sub-orders": [
@@ -37,6 +38,7 @@
                             "buying-amount": 0,
                             "price-buying": 0,
                             "projected-profit": 0,
+                            "has-been-claimed": false,
                             "buy-order-place-time": ""
                         }
                     ]

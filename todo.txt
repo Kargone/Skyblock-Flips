@@ -1,25 +1,16 @@
 Testing:
-Order the sell orders by date in case of dupe orders
 
 Soon:
-Average updates on buy and sell order cancel with 0
-Update all products sold and profit made with auctions 
 
 Later:
-Add auction types to product list with crafting materials
 Forge and crafting materials
-Change the fill order methods
-Order the buy orders by price for sell order setup, insta sell, and crafting material use
-Base sell order claim on who which sell order has the closet unclamed sell amount
-Auction id
-Add firebase
 Constanly update the sell/buy orders
+Dont added another buy order created when materials are stil left to claim on order
+Base sell order claim on who which sell order has the closet unclamed sell amount
+Add firebase
 Add the extra jade gem to investments
 
 Beastmaster Crest Rarity problems
-Red claw egg 
-Bat person talisman
-Spider talisman
 
 -------------------------------------------
 

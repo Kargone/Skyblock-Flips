@@ -19,6 +19,7 @@
                     "total-profit-missed": 0,
                     "total-insta-profit": 0,
                     "total-insta-profit-below-current": 0,
+                    "has-been-claimed": false,
                     "earliest-time-bought": "",
                     "sell-order-place-time": "",
                     "sub-orders": [
@@ -62,6 +63,7 @@
                     "amount-above-buy": 0,
                     "projected-profit": 0,
                     "averaged-projected-profit": 0,
+                    "has-been-claimed": false,
                     "buy-order-place-time": ""
                 }
             ],

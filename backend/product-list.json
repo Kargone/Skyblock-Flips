@@ -439,6 +439,7 @@
         "has-weights": false,
         "crafting-materials": {
             "Red Claw Ring": 1,
+            "Red Claw Egg": 1,
             "Enchanted Leather": 128,
             "Golden Tooth": 54
         }
@@ -448,6 +449,7 @@
         "type": "auction-product",
         "has-weights": false,
         "crafting-materials": {
+            "Bat Person Talisman": 1,
             "Ectoplasm": 32,
             "Spooky Shard": 4
         }
@@ -472,6 +474,7 @@
         "type": "auction-product",
         "has-weights": false,
         "crafting-materials": {
+            "Spider Talisman": 1,
             "Tarantula Web": 64
         }
     },
@@ -524,6 +527,26 @@
     },
     "Enchanted Sugar Cane": {
         "api-name": "ENCHANTED_SUGAR_CANE",
+        "type": "short-term-investment",
+        "has-weights": true
+    },
+    "Red Claw Egg": {
+        "api-name": "",
+        "type": "crafting-material",
+        "has-weights": false
+    },
+    "Bat Person Talisman": {
+        "api-name": "",
+        "type": "crafting-material",
+        "has-weights": false
+    },
+    "Spider Talisman": {
+        "api-name": "",
+        "type": "crafting-material",
+        "has-weights": false
+    },
+    "Enchanted Cooked Mutton": {
+        "api-name": "ENCHANTED_COOKED_MUTTON",
         "type": "short-term-investment",
         "has-weights": true
     }
