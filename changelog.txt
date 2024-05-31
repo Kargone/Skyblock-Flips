@@ -1,0 +1,7 @@
+Constanly updates the sell/buy orders
+Fixed buy order counter going up when goods still need to be claimed
+Sell order claim is now based on the closet goods sold
+Reogranized the file struct
+Renamed updates to changelog
+
+This Project has reached End of Life

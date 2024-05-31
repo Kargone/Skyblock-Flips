@@ -58,6 +58,7 @@ function copy(value) {
     return JSON.parse(JSON.stringify(value));
 }
 
+// returns the investment type where the product will be stored in trader data
 function getInvestmentType(product_list_type) {
     if (product_list_type === "long-term-investment") {
         return "long-term-investments";
@@ -551,8 +552,8 @@ class ProcesTrade {
         if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
 
         // get the hypixel api name and the current sell order price
-        const api_name = product_list[name]['api-name'];
-        const currentResellPrice = Math.round(bazaar_data[api_name]["quick_status"]["buyPrice"] * 10) / 10;
+        const apiName = product_list[name]["api-name"];
+        const currentResellPrice = Math.round(bazaar_data[apiName]["quick_status"]["buyPrice"] * 10) / 10;
         const bazaarFees = currentResellPrice * 0.01 * amount;
 
         // add the buy order
@@ -1338,7 +1339,7 @@ class ProcesTrade {
 
 let bazaar_data = {};
 
-const update_seconds = 5;
+const update_seconds = 3;
 setInterval(updateBazaarData, update_seconds * 1000);
 
 async function updateBazaarData() {
@@ -1346,6 +1347,7 @@ async function updateBazaarData() {
         const response = await fetch("https://api.hypixel.net/v2/skyblock/bazaar");
         bazaar_data = await response.json();
         bazaar_data = bazaar_data['products'];
+        new UpdateOrderFillAmounts().updateOrders();
     } catch (e) {
         console.log('Fetch failed')
     }
@@ -1361,3 +1363,112 @@ setTimeout(() => {
     }
     console.log('Orders done successfully', trader_data);
 }, 1000);
+
+// price floats incorrect
+class UpdateOrderFillAmounts {
+    constructor() {}
+    updateOrders() {
+        const sellOrders = trader_data["sell-order-overview"]["sell-orders"];
+        for (const sellOrderIndex in sellOrders) this.updateSellOrderFillAmount(sellOrderIndex, sellOrders);
+
+        const buyOrders = trader_data["buy-order-overview"]["buy-orders"];
+        for (const buyOrderIndex in buyOrders) this.updateBuyOrderFillAmount(buyOrderIndex, buyOrders);
+    }
+    updateSellOrderFillAmount(sellOrderIndex, sellOrders) {
+        const sellOrder = sellOrders[sellOrderIndex];
+        const apiName = product_list[sellOrder["item-name"]]["api-name"];
+        const sellSummary = bazaar_data[apiName]["buy_summary"];
+        
+        // check the price range and if it is already filled
+        if (sellOrder["total-selling-amount"] === this.findTotalSold(sellOrder)) return ('Sell order already filled', sellOrder);
+
+        if (sellOrder["price-sold"] < sellSummary[0]["pricePerUnit"]) return ('Price sold is under the selling range', sellOrder);
+
+        if (sellOrder["price-sold"] > sellSummary[sellSummary.length - 1]["pricePerUnit"]) return ('Price sold is over the selling range', sellOrder);
+
+        let sell_order_sell_summary_index = -1;
+
+        for (const sellOrderIndex in sellSummary) {
+            const sellOrderSummary = sellSummary[sellOrderIndex];
+            if (sellOrderSummary["pricePerUnit"] === sellOrder["price-sold"]) {
+                sell_order_sell_summary_index = sellOrderIndex;
+                break;
+            }
+        }
+
+        if (sell_order_sell_summary_index === -1) return console.log('No sell order found to compare to', sellOrder);
+
+        if (sellSummary[sell_order_sell_summary_index]["orders"] > 1) return ('Sell order has multi order, not updating', sellOrder);
+
+        const amountLeftOnSellOrder = sellSummary[sell_order_sell_summary_index]["amount"];
+        const amountSold = sellOrder["total-selling-amount"] - amountLeftOnSellOrder;
+
+        trader_data["sell-order-overview"]["sell-orders"][sellOrderIndex] = this.updateSellOrderTraderData(amountSold, sellOrder);
+
+        return 'Completed the amount update for the sell order';
+    }
+    findTotalSold(sellOrder) {
+        const subOrders = sellOrder["sub-orders"];
+
+        let current_total = 0;
+
+        for (const subOrder of subOrders) {
+            current_total += subOrder["partial-sold-amount"]
+        }
+
+        return current_total;
+    }
+    updateSellOrderTraderData(amountSold, sellOrder) {
+        sellOrder["sub-orders"] = new Sort(sellOrder["sub-orders"], false, "price-bought");
+
+        const subOrders = sellOrder["sub-orders"];
+
+        for (const subOrderIndex in subOrders) {
+            const subOrder = subOrders[subOrderIndex];
+            if (subOrder["partial-selling-amount"] > amountSold) {
+                sellOrder["sub-orders"][subOrderIndex]["partial-sold-amount"] = amountSold;
+                amountSold = 0;
+            } else {
+                sellOrder["sub-orders"][subOrderIndex]["partial-sold-amount"] = subOrder["partial-selling-amount"];
+                amountSold -= subOrder["partial-selling-amount"];
+            }
+
+            if (amountSold === 0) break;
+        }
+
+        return sellOrder;
+    }
+    updateBuyOrderFillAmount(buyOrderIndex, buyOrders) {
+        const buyOrder = buyOrders[buyOrderIndex];
+        const apiName = product_list[buyOrder["item-name"]]["api-name"];
+        const buySummary = bazaar_data[apiName]["sell_summary"];
+
+        // check the price range and if it is already filled
+        if (buyOrder["buying-amount"] === buyOrder["bought-amount"]) return ('Buy order already filled', buyOrder);
+
+        if (buyOrder["price-buying"] < buySummary[buySummary.length - 1]["pricePerUnit"]) return ('Price buying is under the buying range', buyOrder);
+
+        if (buyOrder["price-buying"] > buySummary[0]["pricePerUnit"]) return ('Price buying is over the buying range', buyOrder);
+        
+        let buy_order_buy_summary_index = -1;
+        
+        for (const buyOrderIndex in buySummary) {
+            const buyOrderSummary = buySummary[buyOrderIndex];
+            if (buyOrderSummary["pricePerUnit"] === buyOrder["price-buying"]) {
+                buy_order_buy_summary_index = buyOrderIndex;
+                break;
+            }
+        }
+        
+        if (buy_order_buy_summary_index === -1) return console.log('No buy order found to compare to', buyOrder);
+        
+        if (buySummary[buy_order_buy_summary_index]["orders"] > 1) return ('Buy order has multi order, not updating', buyOrder);
+
+        const amountLeftOnBuyOrder = buySummary[buy_order_buy_summary_index]["amount"];
+        const amountSold = buyOrder["buying-amount"] - amountLeftOnBuyOrder;
+
+        trader_data["buy-order-overview"]["buy-orders"][buyOrderIndex]["bought-amount"] = amountSold;
+
+        return 'Completed the amount update for the buy order';
+    }
+}

@@ -1,8 +1,0 @@
-Orders the trader data by price-bought for sell order setup, auction creation, and insta selling to ensure that the most expensive items are sold off first
-Average now updates properly when sell or buy orders were cancelled with no goods claimed on them
-Added some auction buy products to product list
-Added and finished the Auction Sold method
-Added and finished the Auction bought method
-Added a new way to format the weird trade messages
-Fixed sell order cancel not updating current amount of products
-Added enchanted cooked mutton to product list

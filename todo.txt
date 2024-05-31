@@ -1,53 +1,10 @@
-Testing:
-
-Soon:
-
-Later:
-Forge and crafting materials
+Still needs Testing:
 Constanly update the sell/buy orders
 Dont added another buy order created when materials are stil left to claim on order
 Base sell order claim on who which sell order has the closet unclamed sell amount
+
+Unfinished:
+Forge and crafting materials
 Add firebase
-Add the extra jade gem to investments
-
+The frontend
 Beastmaster Crest Rarity problems
-
--------------------------------------------
-
-Bazaar buy, Auction crafts:
-Golden tooth.
-Enchanted Leather.
-Enchanted Ink sack.
-Shark tooth
-Lush Berries.
-Enchanted Lush Berries.
-Poison Sample.
-Arachane's Fang.
-
-Bazaar flips:
-Jacobs ticket.
-Silver Magmafish.
-Ectoplasm.
-Griffin Feather.
-Gold Magmafish.
-Red Gifts.
-Dragon Fragments.
-Agarimoo Tongue.
-Squash.
-Cropie.
-Enchanted Red Sand.
-Gemstones.
-Rabbit hide.
-Purple Candy.
-Tasty Cheese.
-Essence.
-
-Beastmaster Crest
-Spiked Arocitsty
-Lush Artifact
-Razor-Sharp Shark Necklace
-Vaccine Artifact
-Red Claw Artifact
-Bat Person Talisman
-Spider Talisman
-Speed Ring

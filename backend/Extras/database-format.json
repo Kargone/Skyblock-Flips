@@ -13,7 +13,7 @@
                         {
                             "item-name": "",
                             "price-sold": 0,
-                            "total-selling-amount": "",
+                            "total-selling-amount": 0,
                             "has-been-claimed": false,
                             "earliest-time-bought": "",
                             "sell-order-place-time": "",
