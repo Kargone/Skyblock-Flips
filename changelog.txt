@@ -1,7 +1,4 @@
-Constanly updates the sell/buy orders
-Fixed buy order counter going up when goods still need to be claimed
-Sell order claim is now based on the closet goods sold
-Reogranized the file struct
-Renamed updates to changelog
-
-This Project has reached End of Life
+Add the complete bazaar to product-list
+Made all the server logic work between http-server & testbackend.mjs
+Removed some unneeded file structure
+Started testing again

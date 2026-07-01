@@ -1,5 +1,7 @@
-const http = require('node:http');
+import Main from './backend.mjs';
+import http from 'node:http';
 
+const main = new Main();
 
 let server = http.createServer(function (request, response) {
     response.writeHead(200, { "Content-Type": "text\plain" });
@@ -8,7 +10,9 @@ let server = http.createServer(function (request, response) {
     }
     else if (request.method == "POST") {
         request.on('data', function(data) {
-            console.log('Data: ' + data)
+            console.log('Data: ' + data);
+
+            main.submitTrade(data.toString());
         });
         response.end("received POST request.");
     }

@@ -3,6 +3,16 @@ Constanly update the sell/buy orders
 Dont added another buy order created when materials are stil left to claim on order
 Base sell order claim on who which sell order has the closet unclamed sell amount
 
+
+
+Constanly updates the sell/buy orders
+Fixed buy order counter going up when goods still need to be claimed
+Sell order claim is now based on the closet goods sold
+Reogranized the file struct
+Renamed updates to changelog
+
+
+
 Unfinished:
 Forge and crafting materials
 Add firebase

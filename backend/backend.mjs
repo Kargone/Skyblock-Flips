@@ -1,14 +1,99 @@
-import product_list from './product-list.json' with { type: "json" };
-import trader_data from './trader-data.json' with { type: "json" };
+import { EventEmitter } from 'events';
 import fs from 'node:fs';
-import http from 'node:http';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
-class Main {
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+// // Import the functions you need from the SDKs you need
+// import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js'
+// // TODO: Add SDKs for Firebase products that you want to use
+// // https://firebase.google.com/docs/web/setup#available-libraries
+
+// // Your web app's Firebase configuration
+// const firebaseConfig = {
+//     apiKey: "AIzaSyDrWRQ8CY4Saxuyuyq0Gh8Px6e1tIH0zFg",
+//     authDomain: "skyblock-flips.firebaseapp.com",
+//     projectId: "skyblock-flips",
+//     storageBucket: "skyblock-flips.appspot.com",
+//     messagingSenderId: "574210914225",
+//     appId: "1:574210914225:web:d1d543d3d2867edb4aaf90"
+// };
+
+// // Initialize Firebase
+// const app = initializeApp(firebaseConfig);
+
+// let trader_data = {
+//     "username": "Kargone",
+//     "sell-order-overview": {
+//         "sell-orders": []
+//     },
+//     "buy-order-overview": {
+//         "buy-orders": []
+//     },
+//     "short-term-investments": {},
+//     "long-term-investments": {},
+//     "auction-house-overview": {
+//         "auctions": []
+//     },
+//     "forge": [],
+//     "all-products": {},
+//     "daily-profits": {}
+// };
+
+// setTimeout(() => {
+//     for (const testMesage of [
+//         "You Supercrafted Red Claw Ring!"
+//     ]) {
+//         new ProcesTrade(testMesage);
+//     }
+//     console.log('Orders done successfully', trader_data);
+// }, 1000);
+
+import product_list from './product-list.json' with { type: "json" };
+
+// Load trader_data manually so we can modify and write it back
+const traderDataPath = path.join(__dirname, 'trader-data.json');
+let trader_data;
+
+try {
+    const data = fs.readFileSync(traderDataPath, 'utf8');
+    trader_data = JSON.parse(data);
+} catch (err) {
+    console.error('Error loading trader data:', err);
+    trader_data = {
+        "username": "Kargone",
+        "sell-order-overview": { "sell-orders": [] },
+        "buy-order-overview": { "buy-orders": [] },
+        "short-term-investments": {},
+        "long-term-investments": {},
+        "auction-house-overview": { "auctions": [] },
+        "forge": [],
+        "all-products": {},
+        "daily-profits": {}
+    };
+}
+
+class Main extends EventEmitter {
     constructor() {
+        super();
         this.listenForTrades();
     }
     listenForTrades() {
-
+        // Listen for 'tradeMessage' events and process them
+        this.on('tradeMessage', (tradeMessage) => {
+            try {
+                const trade = new ProcesTrade(tradeMessage);
+                console.log(`Successfully processed trade: ${tradeMessage}`);
+            } catch (error) {
+                console.error(`Error processing trade message: ${error}`);
+            }
+        });
+        console.log('Trade listener initialized');
+    }
+    // Public method for HTTP server or other sources to submit trade messages
+    submitTrade(tradeMessage) {
+        this.emit('tradeMessage', tradeMessage);
     }
 }
 
@@ -310,6 +395,9 @@ class ProcesTrade {
         } else {
             return console.log('ERROR: Invalid trade message: ' + this.message);
         }
+        
+
+
 
         console.log("Completed trade message: ", this.message);
         return 'Completed trade mesage';
@@ -379,7 +467,7 @@ class ProcesTrade {
         if (Object.keys(trader_data[invesmentType]).indexOf(name) != -1) {
             // adjust the amounts to reflect the sel
             let suborders = trader_data[invesmentType][name]["sub-orders"];
-
+            
             trader_data[invesmentType][name]["sub-orders"] = new Sort(trader_data[invesmentType][name]["sub-orders"], false, "price-bought");
 
             while (suborders.length > 0) {
@@ -577,9 +665,7 @@ class ProcesTrade {
                     trader_data['buy-order-overview']['buy-orders'].splice(buyOrderIndex, 1);
                 } else {
                     // alter the buying and bought amounts
-                    trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["bought-amount"] -= amount;
-                    if (trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["bought-amount"] < 0) 
-                        trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["bought-amount"] = 0;
+                    trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["bought-amount"] = 0;
                     trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["buying-amount"] -= amount;
                 }
 
@@ -605,7 +691,7 @@ class ProcesTrade {
                         "crafting-materials": "none"
                     };
                 } else {
-                    if (amount != 2240 && trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["bought-amount"] === 0) trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"] += 1;
+                    if (amount != 2240) trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"] += 1;
                     trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-claimed"] += amount;
                     trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-placed-for-buying"] += buyOrder["buying-amount"] + amount;
                     trader_data["all-products"][name]["buy-order-stats"]["buy-average"] = 
@@ -818,18 +904,12 @@ class ProcesTrade {
         // index that the sell order that was claimed will be at
         let current_sell_order_index = -1;
 
-        // the distance bewteen the sell order's goods sold and the current sell order's goods sold
-        let current_closet_distance = 1000000;
-
         // find the index of the sell order that was just claimed
         for (const sellOrderIndex of Object.keys(sellOrders)) {
             const sellOrder = sellOrders[sellOrderIndex];
             if (sellOrder["item-name"] === name && (Math.ceil(sellOrder["price-sold"]) === price_sold || Math.round(sellOrder["price-sold"] * 10) / 10 === price_sold || Math.floor(sellOrder["price-sold"]) === price_sold)) {
-                if (Math.abs(amount - findTotalSold(sellOrder)) < current_closet_distance) {
-                    current_sell_order_index = sellOrderIndex;
-                    current_closet_distance = Math.abs(amount - findTotalSold(sellOrder));
-                }
-                
+                current_sell_order_index = sellOrderIndex;
+                break;
             }
         }
         if (current_sell_order_index === -1 || sellOrders.length === 0) throw 'ERROR: No sell order found to claim';
@@ -848,9 +928,7 @@ class ProcesTrade {
             if (subOrder["partial-selling-amount"] > amount) {
                 // then just subtract from the current suborder
                 trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"][0]["partial-selling-amount"] -= amount;
-                trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"][0]["partial-sold-amount"] -= amount;
-                if (trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"][0]["partial-sold-amount"] < 0) 
-                    trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"][0]["partial-sold-amount"] = 0;
+                trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"][0]["partial-sold-amount"] = 0;
 
                 // calculate the profit from the sell order
                 const date_bought = subOrder["time-bought"];
@@ -926,17 +1004,6 @@ class ProcesTrade {
                         trader_data["all-products"][name]["sell-order-stats"]["total-sell-orders-created"];
                 }
             }
-        }
-        function findTotalSold(sellOrder) {
-            const subOrders = sellOrder["sub-orders"];
-    
-            let current_total = 0;
-    
-            for (const subOrder of subOrders) {
-                current_total += subOrder["partial-sold-amount"]
-            }
-    
-            return current_total;
         }
     }
     sellOrderCancel(amount, name) {
@@ -1280,9 +1347,9 @@ class ProcesTrade {
 
             let suborders = trader_data[invesmentType][name]["sub-orders"];
             let material_cost = 0;
-            
+
             trader_data["all-products"][name]["current-amount"] -= amount;
-            
+
             const priceBoughtKey = product_list[name]["type"] === 'auction-product' ? 'price-crafted' : 'price-bought';
             trader_data[invesmentType][name]["sub-orders"] = new Sort(trader_data[invesmentType][name]["sub-orders"], false, priceBoughtKey);
 
@@ -1342,33 +1409,8 @@ async function updateBazaarData() {
 
 updateBazaarData();
 
-let server = http.createServer(function (request, response) {
-    response.writeHead(200, { "Content-Type": "text\plain" });
-    if (request.method == "GET") {
-        response.end("received GET request.")
-    }
-    else if (request.method == "POST") {
-        request.on('data', function(data) {
-            console.log('Data from POST: ' + data)
-            new ProcesTrade(data.toString());
-            fs.writeFile(
-                "./trader-data.json", 
-                JSON.stringify(trader_data), 
-                function(err) {
-                    if (err) throw err;
-                    // console.log('Completed file write for trader data');
-                }
-            );
-        });
-        response.end("received POST request.");
-    }
-    else {
-        response.end("Undefined request.");
-    }
-});
-
-server.listen(8000);
-console.log("Server running on port 8000");
+// Export the Main class for use in other modules
+export default Main;
 
 // price floats incorrect
 class UpdateOrderFillAmounts {
@@ -1381,11 +1423,14 @@ class UpdateOrderFillAmounts {
         for (const buyOrderIndex in buyOrders) this.updateBuyOrderFillAmount(buyOrderIndex, buyOrders);
 
         fs.writeFile(
-            "./trader-data.json", 
-            JSON.stringify(trader_data), 
+            traderDataPath, 
+            JSON.stringify(trader_data, null, 2), 
             function(err) {
-                if (err) throw err;
-                // console.log('Completed file write for trader data');
+                if (err) {
+                    console.error('Error writing trader data file:', err);
+                    throw err;
+                }
+                console.log('Successfully wrote trader data to file');
             }
         );
     }
@@ -1400,7 +1445,7 @@ class UpdateOrderFillAmounts {
         if (sellOrder["price-sold"] < sellSummary[0]["pricePerUnit"]) return ('Price sold is under the selling range', sellOrder);
 
         if (sellOrder["price-sold"] > sellSummary[sellSummary.length - 1]["pricePerUnit"]) return ('Price sold is over the selling range', sellOrder);
-        
+
         let sell_order_sell_summary_index = -1;
 
         for (const sellOrderIndex in sellSummary) {
@@ -1466,7 +1511,7 @@ class UpdateOrderFillAmounts {
         if (buyOrder["price-buying"] > buySummary[0]["pricePerUnit"]) return ('Price buying is over the buying range', buyOrder);
         
         let buy_order_buy_summary_index = -1;
-
+        
         for (const buyOrderIndex in buySummary) {
             const buyOrderSummary = buySummary[buyOrderIndex];
             if (buyOrderSummary["pricePerUnit"] === buyOrder["price-buying"]) {
@@ -1474,7 +1519,7 @@ class UpdateOrderFillAmounts {
                 break;
             }
         }
-
+        
         if (buy_order_buy_summary_index === -1) return console.log('No buy order found to compare to', buyOrder);
         
         if (buySummary[buy_order_buy_summary_index]["orders"] > 1) return ('Buy order has multi order, not updating', buyOrder);

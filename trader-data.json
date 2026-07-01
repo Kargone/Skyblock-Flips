@@ -1,0 +1,48 @@
+{
+    "username": "Kargone",
+    "sell-order-overview": {
+        "sell-orders": []
+    },
+    "buy-order-overview": {
+        "buy-orders": []
+    },
+    "short-term-investments": {
+        "Carrot": {
+            "type": "short-term-investment",
+            "sub-orders": [
+                {
+                    "partial-amount": 64,
+                    "price-bought": 4,
+                    "time-bought": 1782887519190
+                }
+            ]
+        }
+    },
+    "long-term-investments": {},
+    "auction-house-overview": {
+        "auctions": []
+    },
+    "forge": [],
+    "all-products": {
+        "Carrot": {
+            "current-amount": 64,
+            "buy-order-stats": {
+                "total-buy-orders-created": 0,
+                "total-buy-amount-claimed": 0,
+                "total-buy-amount-placed-for-buying": 0,
+                "buy-average": 0
+            },
+            "sell-order-stats": {
+                "total-sell-orders-created": 0,
+                "total-sell-amount-claimed": 0,
+                "total-sell-amount-placed-for-selling": 0,
+                "sell-average": 0
+            },
+            "max-amount": 2000,
+            "total-profit-made": 0,
+            "total-sold": 0,
+            "crafting-materials": "none"
+        }
+    },
+    "daily-profits": {}
+}
