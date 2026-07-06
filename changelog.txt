@@ -1,4 +1,8 @@
-Add the complete bazaar to product-list
-Made all the server logic work between http-server & testbackend.mjs
-Removed some unneeded file structure
-Started testing again
+Disabled the http-client, not sure what it does yet
+Updated the produt list to be more accurate
+Changed the console logs to only show when trade completed
+Changed the buy/sell orders to fill completly when no order can be found
+Fixed an issues with sell order cancel
+Fixed having same time bought, and cost doesnt stack the same item type in investments
+Daily profit updates with local time instead of universal
+Started the front end

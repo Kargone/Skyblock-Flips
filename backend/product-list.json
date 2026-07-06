@@ -1990,3817 +1990,3817 @@
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Absorb I": {
+  "Absorb I": {
     "api-name": "ENCHANTMENT_ABSORB_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Aiming I": {
+  "Aiming I": {
     "api-name": "ENCHANTMENT_AIMING_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Aiming II": {
+  "Aiming II": {
     "api-name": "ENCHANTMENT_AIMING_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Aiming III": {
+  "Aiming III": {
     "api-name": "ENCHANTMENT_AIMING_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Aiming IV": {
+  "Aiming IV": {
     "api-name": "ENCHANTMENT_AIMING_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Aiming V": {
+  "Aiming V": {
     "api-name": "ENCHANTMENT_AIMING_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Angler I": {
+  "Angler I": {
     "api-name": "ENCHANTMENT_ANGLER_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Angler II": {
+  "Angler II": {
     "api-name": "ENCHANTMENT_ANGLER_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Angler III": {
+  "Angler III": {
     "api-name": "ENCHANTMENT_ANGLER_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Angler IV": {
+  "Angler IV": {
     "api-name": "ENCHANTMENT_ANGLER_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Angler V": {
+  "Angler V": {
     "api-name": "ENCHANTMENT_ANGLER_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Angler VI": {
+  "Angler VI": {
     "api-name": "ENCHANTMENT_ANGLER_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Aqua Affinity I": {
+  "Aqua Affinity I": {
     "api-name": "ENCHANTMENT_AQUA_AFFINITY_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Arcane I": {
+  "Arcane I": {
     "api-name": "ENCHANTMENT_ARCANE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Arcane II": {
+  "Arcane II": {
     "api-name": "ENCHANTMENT_ARCANE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Arcane III": {
+  "Arcane III": {
     "api-name": "ENCHANTMENT_ARCANE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Arcane IV": {
+  "Arcane IV": {
     "api-name": "ENCHANTMENT_ARCANE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Arcane V": {
+  "Arcane V": {
     "api-name": "ENCHANTMENT_ARCANE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Arcane VI": {
+  "Arcane VI": {
     "api-name": "ENCHANTMENT_ARCANE_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Bane Of Arthropods I": {
+  "Bane Of Arthropods I": {
     "api-name": "ENCHANTMENT_BANE_OF_ARTHROPODS_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Bane Of Arthropods II": {
+  "Bane Of Arthropods II": {
     "api-name": "ENCHANTMENT_BANE_OF_ARTHROPODS_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Bane Of Arthropods III": {
+  "Bane Of Arthropods III": {
     "api-name": "ENCHANTMENT_BANE_OF_ARTHROPODS_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Bane Of Arthropods IV": {
+  "Bane Of Arthropods IV": {
     "api-name": "ENCHANTMENT_BANE_OF_ARTHROPODS_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Bane Of Arthropods V": {
+  "Bane Of Arthropods V": {
     "api-name": "ENCHANTMENT_BANE_OF_ARTHROPODS_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Bane Of Arthropods VI": {
+  "Bane Of Arthropods VI": {
     "api-name": "ENCHANTMENT_BANE_OF_ARTHROPODS_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Bane Of Arthropods VII": {
+  "Bane Of Arthropods VII": {
     "api-name": "ENCHANTMENT_BANE_OF_ARTHROPODS_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Big Brain III": {
+  "Big Brain III": {
     "api-name": "ENCHANTMENT_BIG_BRAIN_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Big Brain IV": {
+  "Big Brain IV": {
     "api-name": "ENCHANTMENT_BIG_BRAIN_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Big Brain V": {
+  "Big Brain V": {
     "api-name": "ENCHANTMENT_BIG_BRAIN_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Blast Protection I": {
+  "Blast Protection I": {
     "api-name": "ENCHANTMENT_BLAST_PROTECTION_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Blast Protection II": {
+  "Blast Protection II": {
     "api-name": "ENCHANTMENT_BLAST_PROTECTION_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Blast Protection III": {
+  "Blast Protection III": {
     "api-name": "ENCHANTMENT_BLAST_PROTECTION_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Blast Protection IV": {
+  "Blast Protection IV": {
     "api-name": "ENCHANTMENT_BLAST_PROTECTION_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Blast Protection V": {
+  "Blast Protection V": {
     "api-name": "ENCHANTMENT_BLAST_PROTECTION_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Blast Protection VI": {
+  "Blast Protection VI": {
     "api-name": "ENCHANTMENT_BLAST_PROTECTION_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Blast Protection VII": {
+  "Blast Protection VII": {
     "api-name": "ENCHANTMENT_BLAST_PROTECTION_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Blessing I": {
+  "Blessing I": {
     "api-name": "ENCHANTMENT_BLESSING_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Blessing II": {
+  "Blessing II": {
     "api-name": "ENCHANTMENT_BLESSING_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Blessing III": {
+  "Blessing III": {
     "api-name": "ENCHANTMENT_BLESSING_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Blessing IV": {
+  "Blessing IV": {
     "api-name": "ENCHANTMENT_BLESSING_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Blessing V": {
+  "Blessing V": {
     "api-name": "ENCHANTMENT_BLESSING_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Blessing VI": {
+  "Blessing VI": {
     "api-name": "ENCHANTMENT_BLESSING_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Bug Blender I": {
+  "Bug Blender I": {
     "api-name": "ENCHANTMENT_BUG_BLENDER_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Bug Blender II": {
+  "Bug Blender II": {
     "api-name": "ENCHANTMENT_BUG_BLENDER_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Bug Blender III": {
+  "Bug Blender III": {
     "api-name": "ENCHANTMENT_BUG_BLENDER_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Bug Blender IV": {
+  "Bug Blender IV": {
     "api-name": "ENCHANTMENT_BUG_BLENDER_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Bug Blender V": {
+  "Bug Blender V": {
     "api-name": "ENCHANTMENT_BUG_BLENDER_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Caster I": {
+  "Caster I": {
     "api-name": "ENCHANTMENT_CASTER_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Caster II": {
+  "Caster II": {
     "api-name": "ENCHANTMENT_CASTER_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Caster III": {
+  "Caster III": {
     "api-name": "ENCHANTMENT_CASTER_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Caster IV": {
+  "Caster IV": {
     "api-name": "ENCHANTMENT_CASTER_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Caster V": {
+  "Caster V": {
     "api-name": "ENCHANTMENT_CASTER_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Caster VI": {
+  "Caster VI": {
     "api-name": "ENCHANTMENT_CASTER_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cayenne I": {
+  "Cayenne I": {
     "api-name": "ENCHANTMENT_CAYENNE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cayenne II": {
+  "Cayenne II": {
     "api-name": "ENCHANTMENT_CAYENNE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cayenne III": {
+  "Cayenne III": {
     "api-name": "ENCHANTMENT_CAYENNE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cayenne IV": {
+  "Cayenne IV": {
     "api-name": "ENCHANTMENT_CAYENNE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cayenne V": {
+  "Cayenne V": {
     "api-name": "ENCHANTMENT_CAYENNE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Champion I": {
+  "Champion I": {
     "api-name": "ENCHANTMENT_CHAMPION_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Champion II": {
+  "Champion II": {
     "api-name": "ENCHANTMENT_CHAMPION_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Champion III": {
+  "Champion III": {
     "api-name": "ENCHANTMENT_CHAMPION_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Champion IV": {
+  "Champion IV": {
     "api-name": "ENCHANTMENT_CHAMPION_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Champion IX": {
+  "Champion IX": {
     "api-name": "ENCHANTMENT_CHAMPION_9",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Champion V": {
+  "Champion V": {
     "api-name": "ENCHANTMENT_CHAMPION_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Champion VI": {
+  "Champion VI": {
     "api-name": "ENCHANTMENT_CHAMPION_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Champion VII": {
+  "Champion VII": {
     "api-name": "ENCHANTMENT_CHAMPION_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Champion VIII": {
+  "Champion VIII": {
     "api-name": "ENCHANTMENT_CHAMPION_8",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Champion X": {
+  "Champion X": {
     "api-name": "ENCHANTMENT_CHAMPION_10",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Chance I": {
+  "Chance I": {
     "api-name": "ENCHANTMENT_CHANCE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Chance II": {
+  "Chance II": {
     "api-name": "ENCHANTMENT_CHANCE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Chance III": {
+  "Chance III": {
     "api-name": "ENCHANTMENT_CHANCE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Chance IV": {
+  "Chance IV": {
     "api-name": "ENCHANTMENT_CHANCE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Chance V": {
+  "Chance V": {
     "api-name": "ENCHANTMENT_CHANCE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Charm I": {
+  "Charm I": {
     "api-name": "ENCHANTMENT_CHARM_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Charm II": {
+  "Charm II": {
     "api-name": "ENCHANTMENT_CHARM_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Charm III": {
+  "Charm III": {
     "api-name": "ENCHANTMENT_CHARM_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Charm IV": {
+  "Charm IV": {
     "api-name": "ENCHANTMENT_CHARM_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Charm V": {
+  "Charm V": {
     "api-name": "ENCHANTMENT_CHARM_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cleave I": {
+  "Cleave I": {
     "api-name": "ENCHANTMENT_CLEAVE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cleave II": {
+  "Cleave II": {
     "api-name": "ENCHANTMENT_CLEAVE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cleave III": {
+  "Cleave III": {
     "api-name": "ENCHANTMENT_CLEAVE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cleave IV": {
+  "Cleave IV": {
     "api-name": "ENCHANTMENT_CLEAVE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cleave V": {
+  "Cleave V": {
     "api-name": "ENCHANTMENT_CLEAVE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cleave VI": {
+  "Cleave VI": {
     "api-name": "ENCHANTMENT_CLEAVE_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Compact I": {
+  "Compact I": {
     "api-name": "ENCHANTMENT_COMPACT_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Compact II": {
+  "Compact II": {
     "api-name": "ENCHANTMENT_COMPACT_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Compact III": {
+  "Compact III": {
     "api-name": "ENCHANTMENT_COMPACT_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Compact IV": {
+  "Compact IV": {
     "api-name": "ENCHANTMENT_COMPACT_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Compact IX": {
+  "Compact IX": {
     "api-name": "ENCHANTMENT_COMPACT_9",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Compact V": {
+  "Compact V": {
     "api-name": "ENCHANTMENT_COMPACT_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Compact VI": {
+  "Compact VI": {
     "api-name": "ENCHANTMENT_COMPACT_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Compact VII": {
+  "Compact VII": {
     "api-name": "ENCHANTMENT_COMPACT_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Compact VIII": {
+  "Compact VIII": {
     "api-name": "ENCHANTMENT_COMPACT_8",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Compact X": {
+  "Compact X": {
     "api-name": "ENCHANTMENT_COMPACT_10",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Corruption I": {
+  "Corruption I": {
     "api-name": "ENCHANTMENT_CORRUPTION_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Corruption II": {
+  "Corruption II": {
     "api-name": "ENCHANTMENT_CORRUPTION_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Corruption III": {
+  "Corruption III": {
     "api-name": "ENCHANTMENT_CORRUPTION_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Corruption IV": {
+  "Corruption IV": {
     "api-name": "ENCHANTMENT_CORRUPTION_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Corruption V": {
+  "Corruption V": {
     "api-name": "ENCHANTMENT_CORRUPTION_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Counter Strike III": {
+  "Counter Strike III": {
     "api-name": "ENCHANTMENT_COUNTER_STRIKE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Counter Strike IV": {
+  "Counter Strike IV": {
     "api-name": "ENCHANTMENT_COUNTER_STRIKE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Counter Strike V": {
+  "Counter Strike V": {
     "api-name": "ENCHANTMENT_COUNTER_STRIKE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Critical I": {
+  "Critical I": {
     "api-name": "ENCHANTMENT_CRITICAL_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Critical II": {
+  "Critical II": {
     "api-name": "ENCHANTMENT_CRITICAL_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Critical III": {
+  "Critical III": {
     "api-name": "ENCHANTMENT_CRITICAL_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Critical IV": {
+  "Critical IV": {
     "api-name": "ENCHANTMENT_CRITICAL_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Critical V": {
+  "Critical V": {
     "api-name": "ENCHANTMENT_CRITICAL_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Critical VI": {
+  "Critical VI": {
     "api-name": "ENCHANTMENT_CRITICAL_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Critical VII": {
+  "Critical VII": {
     "api-name": "ENCHANTMENT_CRITICAL_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cubism I": {
+  "Cubism I": {
     "api-name": "ENCHANTMENT_CUBISM_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cubism II": {
+  "Cubism II": {
     "api-name": "ENCHANTMENT_CUBISM_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cubism III": {
+  "Cubism III": {
     "api-name": "ENCHANTMENT_CUBISM_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cubism IV": {
+  "Cubism IV": {
     "api-name": "ENCHANTMENT_CUBISM_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cubism V": {
+  "Cubism V": {
     "api-name": "ENCHANTMENT_CUBISM_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cubism VI": {
+  "Cubism VI": {
     "api-name": "ENCHANTMENT_CUBISM_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cultivating I": {
+  "Cultivating I": {
     "api-name": "ENCHANTMENT_CULTIVATING_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cultivating II": {
+  "Cultivating II": {
     "api-name": "ENCHANTMENT_CULTIVATING_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cultivating III": {
+  "Cultivating III": {
     "api-name": "ENCHANTMENT_CULTIVATING_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cultivating IV": {
+  "Cultivating IV": {
     "api-name": "ENCHANTMENT_CULTIVATING_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cultivating IX": {
+  "Cultivating IX": {
     "api-name": "ENCHANTMENT_CULTIVATING_9",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cultivating V": {
+  "Cultivating V": {
     "api-name": "ENCHANTMENT_CULTIVATING_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cultivating VI": {
+  "Cultivating VI": {
     "api-name": "ENCHANTMENT_CULTIVATING_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cultivating VII": {
+  "Cultivating VII": {
     "api-name": "ENCHANTMENT_CULTIVATING_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Cultivating VIII": {
+  "Cultivating VIII": {
     "api-name": "ENCHANTMENT_CULTIVATING_8",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Curse Of Vanishing 0": {
+  "Curse Of Vanishing 0": {
     "api-name": "ENCHANTMENT_CURSE_OF_VANISHING_0",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Dedication I": {
+  "Dedication I": {
     "api-name": "ENCHANTMENT_DEDICATION_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Dedication II": {
+  "Dedication II": {
     "api-name": "ENCHANTMENT_DEDICATION_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Dedication III": {
+  "Dedication III": {
     "api-name": "ENCHANTMENT_DEDICATION_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Dedication IV": {
+  "Dedication IV": {
     "api-name": "ENCHANTMENT_DEDICATION_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Delicate V": {
+  "Delicate V": {
     "api-name": "ENCHANTMENT_DELICATE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Depth Strider I": {
+  "Depth Strider I": {
     "api-name": "ENCHANTMENT_DEPTH_STRIDER_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Depth Strider II": {
+  "Depth Strider II": {
     "api-name": "ENCHANTMENT_DEPTH_STRIDER_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Depth Strider III": {
+  "Depth Strider III": {
     "api-name": "ENCHANTMENT_DEPTH_STRIDER_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Divine Gift I": {
+  "Divine Gift I": {
     "api-name": "ENCHANTMENT_DIVINE_GIFT_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Divine Gift II": {
+  "Divine Gift II": {
     "api-name": "ENCHANTMENT_DIVINE_GIFT_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Divine Gift III": {
+  "Divine Gift III": {
     "api-name": "ENCHANTMENT_DIVINE_GIFT_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Dragon Hunter I": {
+  "Dragon Hunter I": {
     "api-name": "ENCHANTMENT_DRAGON_HUNTER_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Dragon Hunter II": {
+  "Dragon Hunter II": {
     "api-name": "ENCHANTMENT_DRAGON_HUNTER_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Dragon Hunter III": {
+  "Dragon Hunter III": {
     "api-name": "ENCHANTMENT_DRAGON_HUNTER_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Dragon Hunter IV": {
+  "Dragon Hunter IV": {
     "api-name": "ENCHANTMENT_DRAGON_HUNTER_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Dragon Hunter V": {
+  "Dragon Hunter V": {
     "api-name": "ENCHANTMENT_DRAGON_HUNTER_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Dragon Hunter VI": {
+  "Dragon Hunter VI": {
     "api-name": "ENCHANTMENT_DRAGON_HUNTER_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Efficiency I": {
+  "Efficiency I": {
     "api-name": "ENCHANTMENT_EFFICIENCY_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Efficiency II": {
+  "Efficiency II": {
     "api-name": "ENCHANTMENT_EFFICIENCY_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Efficiency III": {
+  "Efficiency III": {
     "api-name": "ENCHANTMENT_EFFICIENCY_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Efficiency IV": {
+  "Efficiency IV": {
     "api-name": "ENCHANTMENT_EFFICIENCY_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Efficiency IX": {
+  "Efficiency IX": {
     "api-name": "ENCHANTMENT_EFFICIENCY_9",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Efficiency V": {
+  "Efficiency V": {
     "api-name": "ENCHANTMENT_EFFICIENCY_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Efficiency VI": {
+  "Efficiency VI": {
     "api-name": "ENCHANTMENT_EFFICIENCY_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Efficiency VII": {
+  "Efficiency VII": {
     "api-name": "ENCHANTMENT_EFFICIENCY_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Efficiency VIII": {
+  "Efficiency VIII": {
     "api-name": "ENCHANTMENT_EFFICIENCY_8",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Efficiency X": {
+  "Efficiency X": {
     "api-name": "ENCHANTMENT_EFFICIENCY_10",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ender Slayer I": {
+  "Ender Slayer I": {
     "api-name": "ENCHANTMENT_ENDER_SLAYER_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ender Slayer II": {
+  "Ender Slayer II": {
     "api-name": "ENCHANTMENT_ENDER_SLAYER_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ender Slayer III": {
+  "Ender Slayer III": {
     "api-name": "ENCHANTMENT_ENDER_SLAYER_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ender Slayer IV": {
+  "Ender Slayer IV": {
     "api-name": "ENCHANTMENT_ENDER_SLAYER_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ender Slayer V": {
+  "Ender Slayer V": {
     "api-name": "ENCHANTMENT_ENDER_SLAYER_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ender Slayer VI": {
+  "Ender Slayer VI": {
     "api-name": "ENCHANTMENT_ENDER_SLAYER_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ender Slayer VII": {
+  "Ender Slayer VII": {
     "api-name": "ENCHANTMENT_ENDER_SLAYER_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Execute I": {
+  "Execute I": {
     "api-name": "ENCHANTMENT_EXECUTE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Execute II": {
+  "Execute II": {
     "api-name": "ENCHANTMENT_EXECUTE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Execute III": {
+  "Execute III": {
     "api-name": "ENCHANTMENT_EXECUTE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Execute IV": {
+  "Execute IV": {
     "api-name": "ENCHANTMENT_EXECUTE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Execute V": {
+  "Execute V": {
     "api-name": "ENCHANTMENT_EXECUTE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Execute VI": {
+  "Execute VI": {
     "api-name": "ENCHANTMENT_EXECUTE_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Experience I": {
+  "Experience I": {
     "api-name": "ENCHANTMENT_EXPERIENCE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Experience II": {
+  "Experience II": {
     "api-name": "ENCHANTMENT_EXPERIENCE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Experience III": {
+  "Experience III": {
     "api-name": "ENCHANTMENT_EXPERIENCE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Experience IV": {
+  "Experience IV": {
     "api-name": "ENCHANTMENT_EXPERIENCE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Experience V": {
+  "Experience V": {
     "api-name": "ENCHANTMENT_EXPERIENCE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Expertise I": {
+  "Expertise I": {
     "api-name": "ENCHANTMENT_EXPERTISE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Expertise II": {
+  "Expertise II": {
     "api-name": "ENCHANTMENT_EXPERTISE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Expertise III": {
+  "Expertise III": {
     "api-name": "ENCHANTMENT_EXPERTISE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Expertise IV": {
+  "Expertise IV": {
     "api-name": "ENCHANTMENT_EXPERTISE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Expertise IX": {
+  "Expertise IX": {
     "api-name": "ENCHANTMENT_EXPERTISE_9",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Expertise V": {
+  "Expertise V": {
     "api-name": "ENCHANTMENT_EXPERTISE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Expertise VI": {
+  "Expertise VI": {
     "api-name": "ENCHANTMENT_EXPERTISE_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Expertise VII": {
+  "Expertise VII": {
     "api-name": "ENCHANTMENT_EXPERTISE_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Expertise VIII": {
+  "Expertise VIII": {
     "api-name": "ENCHANTMENT_EXPERTISE_8",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Expertise X": {
+  "Expertise X": {
     "api-name": "ENCHANTMENT_EXPERTISE_10",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Feast I": {
+  "Feast I": {
     "api-name": "ENCHANTMENT_FEAST_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Feast II": {
+  "Feast II": {
     "api-name": "ENCHANTMENT_FEAST_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Feast III": {
+  "Feast III": {
     "api-name": "ENCHANTMENT_FEAST_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Feast IV": {
+  "Feast IV": {
     "api-name": "ENCHANTMENT_FEAST_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Feast V": {
+  "Feast V": {
     "api-name": "ENCHANTMENT_FEAST_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Feather Falling 20": {
+  "Feather Falling 20": {
     "api-name": "ENCHANTMENT_FEATHER_FALLING_20",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Feather Falling I": {
+  "Feather Falling I": {
     "api-name": "ENCHANTMENT_FEATHER_FALLING_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Feather Falling II": {
+  "Feather Falling II": {
     "api-name": "ENCHANTMENT_FEATHER_FALLING_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Feather Falling III": {
+  "Feather Falling III": {
     "api-name": "ENCHANTMENT_FEATHER_FALLING_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Feather Falling IV": {
+  "Feather Falling IV": {
     "api-name": "ENCHANTMENT_FEATHER_FALLING_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Feather Falling IX": {
+  "Feather Falling IX": {
     "api-name": "ENCHANTMENT_FEATHER_FALLING_9",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Feather Falling V": {
+  "Feather Falling V": {
     "api-name": "ENCHANTMENT_FEATHER_FALLING_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Feather Falling VI": {
+  "Feather Falling VI": {
     "api-name": "ENCHANTMENT_FEATHER_FALLING_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Feather Falling VII": {
+  "Feather Falling VII": {
     "api-name": "ENCHANTMENT_FEATHER_FALLING_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Feather Falling VIII": {
+  "Feather Falling VIII": {
     "api-name": "ENCHANTMENT_FEATHER_FALLING_8",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Feather Falling X": {
+  "Feather Falling X": {
     "api-name": "ENCHANTMENT_FEATHER_FALLING_10",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ferocious Mana I": {
+  "Ferocious Mana I": {
     "api-name": "ENCHANTMENT_FEROCIOUS_MANA_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ferocious Mana II": {
+  "Ferocious Mana II": {
     "api-name": "ENCHANTMENT_FEROCIOUS_MANA_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ferocious Mana III": {
+  "Ferocious Mana III": {
     "api-name": "ENCHANTMENT_FEROCIOUS_MANA_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ferocious Mana IV": {
+  "Ferocious Mana IV": {
     "api-name": "ENCHANTMENT_FEROCIOUS_MANA_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ferocious Mana IX": {
+  "Ferocious Mana IX": {
     "api-name": "ENCHANTMENT_FEROCIOUS_MANA_9",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ferocious Mana V": {
+  "Ferocious Mana V": {
     "api-name": "ENCHANTMENT_FEROCIOUS_MANA_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ferocious Mana VI": {
+  "Ferocious Mana VI": {
     "api-name": "ENCHANTMENT_FEROCIOUS_MANA_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ferocious Mana VII": {
+  "Ferocious Mana VII": {
     "api-name": "ENCHANTMENT_FEROCIOUS_MANA_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ferocious Mana VIII": {
+  "Ferocious Mana VIII": {
     "api-name": "ENCHANTMENT_FEROCIOUS_MANA_8",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ferocious Mana X": {
+  "Ferocious Mana X": {
     "api-name": "ENCHANTMENT_FEROCIOUS_MANA_10",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Fire Aspect I": {
+  "Fire Aspect I": {
     "api-name": "ENCHANTMENT_FIRE_ASPECT_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Fire Aspect II": {
+  "Fire Aspect II": {
     "api-name": "ENCHANTMENT_FIRE_ASPECT_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Fire Aspect III": {
+  "Fire Aspect III": {
     "api-name": "ENCHANTMENT_FIRE_ASPECT_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Fire Protection I": {
+  "Fire Protection I": {
     "api-name": "ENCHANTMENT_FIRE_PROTECTION_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Fire Protection II": {
+  "Fire Protection II": {
     "api-name": "ENCHANTMENT_FIRE_PROTECTION_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Fire Protection III": {
+  "Fire Protection III": {
     "api-name": "ENCHANTMENT_FIRE_PROTECTION_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Fire Protection IV": {
+  "Fire Protection IV": {
     "api-name": "ENCHANTMENT_FIRE_PROTECTION_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Fire Protection V": {
+  "Fire Protection V": {
     "api-name": "ENCHANTMENT_FIRE_PROTECTION_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Fire Protection VI": {
+  "Fire Protection VI": {
     "api-name": "ENCHANTMENT_FIRE_PROTECTION_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Fire Protection VII": {
+  "Fire Protection VII": {
     "api-name": "ENCHANTMENT_FIRE_PROTECTION_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment First Strike I": {
+  "First Strike I": {
     "api-name": "ENCHANTMENT_FIRST_STRIKE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment First Strike II": {
+  "First Strike II": {
     "api-name": "ENCHANTMENT_FIRST_STRIKE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment First Strike III": {
+  "First Strike III": {
     "api-name": "ENCHANTMENT_FIRST_STRIKE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment First Strike IV": {
+  "First Strike IV": {
     "api-name": "ENCHANTMENT_FIRST_STRIKE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment First Strike V": {
+  "First Strike V": {
     "api-name": "ENCHANTMENT_FIRST_STRIKE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Flame I": {
+  "Flame I": {
     "api-name": "ENCHANTMENT_FLAME_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Flame II": {
+  "Flame II": {
     "api-name": "ENCHANTMENT_FLAME_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Forest Pledge III": {
+  "Forest Pledge III": {
     "api-name": "ENCHANTMENT_FOREST_PLEDGE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Forest Pledge IV": {
+  "Forest Pledge IV": {
     "api-name": "ENCHANTMENT_FOREST_PLEDGE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Forest Pledge V": {
+  "Forest Pledge V": {
     "api-name": "ENCHANTMENT_FOREST_PLEDGE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Fortune I": {
+  "Fortune I": {
     "api-name": "ENCHANTMENT_FORTUNE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Fortune II": {
+  "Fortune II": {
     "api-name": "ENCHANTMENT_FORTUNE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Fortune III": {
+  "Fortune III": {
     "api-name": "ENCHANTMENT_FORTUNE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Fortune IV": {
+  "Fortune IV": {
     "api-name": "ENCHANTMENT_FORTUNE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Frail I": {
+  "Frail I": {
     "api-name": "ENCHANTMENT_FRAIL_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Frail II": {
+  "Frail II": {
     "api-name": "ENCHANTMENT_FRAIL_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Frail III": {
+  "Frail III": {
     "api-name": "ENCHANTMENT_FRAIL_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Frail IV": {
+  "Frail IV": {
     "api-name": "ENCHANTMENT_FRAIL_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Frail V": {
+  "Frail V": {
     "api-name": "ENCHANTMENT_FRAIL_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Frail VI": {
+  "Frail VI": {
     "api-name": "ENCHANTMENT_FRAIL_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Frost Walker I": {
+  "Frost Walker I": {
     "api-name": "ENCHANTMENT_FROST_WALKER_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Frost Walker II": {
+  "Frost Walker II": {
     "api-name": "ENCHANTMENT_FROST_WALKER_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Giant Killer I": {
+  "Giant Killer I": {
     "api-name": "ENCHANTMENT_GIANT_KILLER_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Giant Killer II": {
+  "Giant Killer II": {
     "api-name": "ENCHANTMENT_GIANT_KILLER_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Giant Killer III": {
+  "Giant Killer III": {
     "api-name": "ENCHANTMENT_GIANT_KILLER_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Giant Killer IV": {
+  "Giant Killer IV": {
     "api-name": "ENCHANTMENT_GIANT_KILLER_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Giant Killer V": {
+  "Giant Killer V": {
     "api-name": "ENCHANTMENT_GIANT_KILLER_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Giant Killer VI": {
+  "Giant Killer VI": {
     "api-name": "ENCHANTMENT_GIANT_KILLER_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Giant Killer VII": {
+  "Giant Killer VII": {
     "api-name": "ENCHANTMENT_GIANT_KILLER_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Green Thumb I": {
+  "Green Thumb I": {
     "api-name": "ENCHANTMENT_GREEN_THUMB_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Green Thumb II": {
+  "Green Thumb II": {
     "api-name": "ENCHANTMENT_GREEN_THUMB_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Green Thumb III": {
+  "Green Thumb III": {
     "api-name": "ENCHANTMENT_GREEN_THUMB_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Green Thumb IV": {
+  "Green Thumb IV": {
     "api-name": "ENCHANTMENT_GREEN_THUMB_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Green Thumb V": {
+  "Green Thumb V": {
     "api-name": "ENCHANTMENT_GREEN_THUMB_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Growth I": {
+  "Growth I": {
     "api-name": "ENCHANTMENT_GROWTH_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Growth II": {
+  "Growth II": {
     "api-name": "ENCHANTMENT_GROWTH_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Growth III": {
+  "Growth III": {
     "api-name": "ENCHANTMENT_GROWTH_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Growth IV": {
+  "Growth IV": {
     "api-name": "ENCHANTMENT_GROWTH_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Growth V": {
+  "Growth V": {
     "api-name": "ENCHANTMENT_GROWTH_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Growth VI": {
+  "Growth VI": {
     "api-name": "ENCHANTMENT_GROWTH_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Growth VII": {
+  "Growth VII": {
     "api-name": "ENCHANTMENT_GROWTH_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Hardened Mana I": {
+  "Hardened Mana I": {
     "api-name": "ENCHANTMENT_HARDENED_MANA_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Hardened Mana II": {
+  "Hardened Mana II": {
     "api-name": "ENCHANTMENT_HARDENED_MANA_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Hardened Mana III": {
+  "Hardened Mana III": {
     "api-name": "ENCHANTMENT_HARDENED_MANA_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Hardened Mana IV": {
+  "Hardened Mana IV": {
     "api-name": "ENCHANTMENT_HARDENED_MANA_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Hardened Mana IX": {
+  "Hardened Mana IX": {
     "api-name": "ENCHANTMENT_HARDENED_MANA_9",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Hardened Mana V": {
+  "Hardened Mana V": {
     "api-name": "ENCHANTMENT_HARDENED_MANA_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Hardened Mana VI": {
+  "Hardened Mana VI": {
     "api-name": "ENCHANTMENT_HARDENED_MANA_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Hardened Mana VII": {
+  "Hardened Mana VII": {
     "api-name": "ENCHANTMENT_HARDENED_MANA_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Hardened Mana VIII": {
+  "Hardened Mana VIII": {
     "api-name": "ENCHANTMENT_HARDENED_MANA_8",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Hardened Mana X": {
+  "Hardened Mana X": {
     "api-name": "ENCHANTMENT_HARDENED_MANA_10",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Harvesting I": {
+  "Harvesting I": {
     "api-name": "ENCHANTMENT_HARVESTING_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Harvesting II": {
+  "Harvesting II": {
     "api-name": "ENCHANTMENT_HARVESTING_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Harvesting III": {
+  "Harvesting III": {
     "api-name": "ENCHANTMENT_HARVESTING_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Harvesting IV": {
+  "Harvesting IV": {
     "api-name": "ENCHANTMENT_HARVESTING_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Harvesting V": {
+  "Harvesting V": {
     "api-name": "ENCHANTMENT_HARVESTING_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Harvesting VI": {
+  "Harvesting VI": {
     "api-name": "ENCHANTMENT_HARVESTING_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Hecatomb I": {
+  "Hecatomb I": {
     "api-name": "ENCHANTMENT_HECATOMB_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Hecatomb II": {
+  "Hecatomb II": {
     "api-name": "ENCHANTMENT_HECATOMB_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Hecatomb III": {
+  "Hecatomb III": {
     "api-name": "ENCHANTMENT_HECATOMB_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Hecatomb IV": {
+  "Hecatomb IV": {
     "api-name": "ENCHANTMENT_HECATOMB_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Hecatomb IX": {
+  "Hecatomb IX": {
     "api-name": "ENCHANTMENT_HECATOMB_9",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Hecatomb V": {
+  "Hecatomb V": {
     "api-name": "ENCHANTMENT_HECATOMB_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Hecatomb VI": {
+  "Hecatomb VI": {
     "api-name": "ENCHANTMENT_HECATOMB_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Hecatomb VII": {
+  "Hecatomb VII": {
     "api-name": "ENCHANTMENT_HECATOMB_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Hecatomb VIII": {
+  "Hecatomb VIII": {
     "api-name": "ENCHANTMENT_HECATOMB_8",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Hecatomb X": {
+  "Hecatomb X": {
     "api-name": "ENCHANTMENT_HECATOMB_10",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ice Cold I": {
+  "Ice Cold I": {
     "api-name": "ENCHANTMENT_ICE_COLD_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ice Cold II": {
+  "Ice Cold II": {
     "api-name": "ENCHANTMENT_ICE_COLD_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ice Cold III": {
+  "Ice Cold III": {
     "api-name": "ENCHANTMENT_ICE_COLD_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ice Cold IV": {
+  "Ice Cold IV": {
     "api-name": "ENCHANTMENT_ICE_COLD_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ice Cold V": {
+  "Ice Cold V": {
     "api-name": "ENCHANTMENT_ICE_COLD_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Impaling I": {
+  "Impaling I": {
     "api-name": "ENCHANTMENT_IMPALING_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Impaling II": {
+  "Impaling II": {
     "api-name": "ENCHANTMENT_IMPALING_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Impaling III": {
+  "Impaling III": {
     "api-name": "ENCHANTMENT_IMPALING_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Infinite Quiver I": {
+  "Infinite Quiver I": {
     "api-name": "ENCHANTMENT_INFINITE_QUIVER_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Infinite Quiver II": {
+  "Infinite Quiver II": {
     "api-name": "ENCHANTMENT_INFINITE_QUIVER_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Infinite Quiver III": {
+  "Infinite Quiver III": {
     "api-name": "ENCHANTMENT_INFINITE_QUIVER_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Infinite Quiver IV": {
+  "Infinite Quiver IV": {
     "api-name": "ENCHANTMENT_INFINITE_QUIVER_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Infinite Quiver IX": {
+  "Infinite Quiver IX": {
     "api-name": "ENCHANTMENT_INFINITE_QUIVER_9",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Infinite Quiver V": {
+  "Infinite Quiver V": {
     "api-name": "ENCHANTMENT_INFINITE_QUIVER_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Infinite Quiver VI": {
+  "Infinite Quiver VI": {
     "api-name": "ENCHANTMENT_INFINITE_QUIVER_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Infinite Quiver VII": {
+  "Infinite Quiver VII": {
     "api-name": "ENCHANTMENT_INFINITE_QUIVER_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Infinite Quiver VIII": {
+  "Infinite Quiver VIII": {
     "api-name": "ENCHANTMENT_INFINITE_QUIVER_8",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Infinite Quiver X": {
+  "Infinite Quiver X": {
     "api-name": "ENCHANTMENT_INFINITE_QUIVER_10",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Knockback I": {
+  "Knockback I": {
     "api-name": "ENCHANTMENT_KNOCKBACK_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Knockback II": {
+  "Knockback II": {
     "api-name": "ENCHANTMENT_KNOCKBACK_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Lapidary I": {
+  "Lapidary I": {
     "api-name": "ENCHANTMENT_LAPIDARY_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Lapidary II": {
+  "Lapidary II": {
     "api-name": "ENCHANTMENT_LAPIDARY_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Lapidary III": {
+  "Lapidary III": {
     "api-name": "ENCHANTMENT_LAPIDARY_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Lapidary IV": {
+  "Lapidary IV": {
     "api-name": "ENCHANTMENT_LAPIDARY_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Lapidary V": {
+  "Lapidary V": {
     "api-name": "ENCHANTMENT_LAPIDARY_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Lethality I": {
+  "Lethality I": {
     "api-name": "ENCHANTMENT_LETHALITY_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Lethality II": {
+  "Lethality II": {
     "api-name": "ENCHANTMENT_LETHALITY_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Lethality III": {
+  "Lethality III": {
     "api-name": "ENCHANTMENT_LETHALITY_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Lethality IV": {
+  "Lethality IV": {
     "api-name": "ENCHANTMENT_LETHALITY_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Lethality V": {
+  "Lethality V": {
     "api-name": "ENCHANTMENT_LETHALITY_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Lethality VI": {
+  "Lethality VI": {
     "api-name": "ENCHANTMENT_LETHALITY_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Life Steal I": {
+  "Life Steal I": {
     "api-name": "ENCHANTMENT_LIFE_STEAL_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Life Steal II": {
+  "Life Steal II": {
     "api-name": "ENCHANTMENT_LIFE_STEAL_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Life Steal III": {
+  "Life Steal III": {
     "api-name": "ENCHANTMENT_LIFE_STEAL_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Life Steal IV": {
+  "Life Steal IV": {
     "api-name": "ENCHANTMENT_LIFE_STEAL_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Life Steal V": {
+  "Life Steal V": {
     "api-name": "ENCHANTMENT_LIFE_STEAL_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Looting I": {
+  "Looting I": {
     "api-name": "ENCHANTMENT_LOOTING_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Looting II": {
+  "Looting II": {
     "api-name": "ENCHANTMENT_LOOTING_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Looting III": {
+  "Looting III": {
     "api-name": "ENCHANTMENT_LOOTING_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Looting IV": {
+  "Looting IV": {
     "api-name": "ENCHANTMENT_LOOTING_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Looting V": {
+  "Looting V": {
     "api-name": "ENCHANTMENT_LOOTING_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Luck I": {
+  "Luck I": {
     "api-name": "ENCHANTMENT_LUCK_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Luck II": {
+  "Luck II": {
     "api-name": "ENCHANTMENT_LUCK_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Luck III": {
+  "Luck III": {
     "api-name": "ENCHANTMENT_LUCK_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Luck IV": {
+  "Luck IV": {
     "api-name": "ENCHANTMENT_LUCK_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Luck Of The Sea I": {
+  "Luck Of The Sea I": {
     "api-name": "ENCHANTMENT_LUCK_OF_THE_SEA_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Luck Of The Sea II": {
+  "Luck Of The Sea II": {
     "api-name": "ENCHANTMENT_LUCK_OF_THE_SEA_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Luck Of The Sea III": {
+  "Luck Of The Sea III": {
     "api-name": "ENCHANTMENT_LUCK_OF_THE_SEA_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Luck Of The Sea IV": {
+  "Luck Of The Sea IV": {
     "api-name": "ENCHANTMENT_LUCK_OF_THE_SEA_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Luck Of The Sea V": {
+  "Luck Of The Sea V": {
     "api-name": "ENCHANTMENT_LUCK_OF_THE_SEA_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Luck Of The Sea VI": {
+  "Luck Of The Sea VI": {
     "api-name": "ENCHANTMENT_LUCK_OF_THE_SEA_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Luck V": {
+  "Luck V": {
     "api-name": "ENCHANTMENT_LUCK_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Luck VI": {
+  "Luck VI": {
     "api-name": "ENCHANTMENT_LUCK_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Luck VII": {
+  "Luck VII": {
     "api-name": "ENCHANTMENT_LUCK_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Lure I": {
+  "Lure I": {
     "api-name": "ENCHANTMENT_LURE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Lure II": {
+  "Lure II": {
     "api-name": "ENCHANTMENT_LURE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Lure III": {
+  "Lure III": {
     "api-name": "ENCHANTMENT_LURE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Lure IV": {
+  "Lure IV": {
     "api-name": "ENCHANTMENT_LURE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Lure V": {
+  "Lure V": {
     "api-name": "ENCHANTMENT_LURE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Lure VI": {
+  "Lure VI": {
     "api-name": "ENCHANTMENT_LURE_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Magmarizer VI": {
+  "Magmarizer VI": {
     "api-name": "ENCHANTMENT_MAGMARIZER_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Magnet I": {
+  "Magnet I": {
     "api-name": "ENCHANTMENT_MAGNET_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Magnet II": {
+  "Magnet II": {
     "api-name": "ENCHANTMENT_MAGNET_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Magnet III": {
+  "Magnet III": {
     "api-name": "ENCHANTMENT_MAGNET_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Magnet IV": {
+  "Magnet IV": {
     "api-name": "ENCHANTMENT_MAGNET_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Magnet V": {
+  "Magnet V": {
     "api-name": "ENCHANTMENT_MAGNET_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Magnet VI": {
+  "Magnet VI": {
     "api-name": "ENCHANTMENT_MAGNET_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Mana Steal I": {
+  "Mana Steal I": {
     "api-name": "ENCHANTMENT_MANA_STEAL_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Mana Steal II": {
+  "Mana Steal II": {
     "api-name": "ENCHANTMENT_MANA_STEAL_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Mana Steal III": {
+  "Mana Steal III": {
     "api-name": "ENCHANTMENT_MANA_STEAL_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Mana Vampire I": {
+  "Mana Vampire I": {
     "api-name": "ENCHANTMENT_MANA_VAMPIRE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Mana Vampire II": {
+  "Mana Vampire II": {
     "api-name": "ENCHANTMENT_MANA_VAMPIRE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Mana Vampire III": {
+  "Mana Vampire III": {
     "api-name": "ENCHANTMENT_MANA_VAMPIRE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Mana Vampire IV": {
+  "Mana Vampire IV": {
     "api-name": "ENCHANTMENT_MANA_VAMPIRE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Mana Vampire IX": {
+  "Mana Vampire IX": {
     "api-name": "ENCHANTMENT_MANA_VAMPIRE_9",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Mana Vampire V": {
+  "Mana Vampire V": {
     "api-name": "ENCHANTMENT_MANA_VAMPIRE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Mana Vampire VI": {
+  "Mana Vampire VI": {
     "api-name": "ENCHANTMENT_MANA_VAMPIRE_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Mana Vampire VII": {
+  "Mana Vampire VII": {
     "api-name": "ENCHANTMENT_MANA_VAMPIRE_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Mana Vampire VIII": {
+  "Mana Vampire VIII": {
     "api-name": "ENCHANTMENT_MANA_VAMPIRE_8",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Mana Vampire X": {
+  "Mana Vampire X": {
     "api-name": "ENCHANTMENT_MANA_VAMPIRE_10",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Overload I": {
+  "Overload I": {
     "api-name": "ENCHANTMENT_OVERLOAD_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Overload II": {
+  "Overload II": {
     "api-name": "ENCHANTMENT_OVERLOAD_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Overload III": {
+  "Overload III": {
     "api-name": "ENCHANTMENT_OVERLOAD_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Overload IV": {
+  "Overload IV": {
     "api-name": "ENCHANTMENT_OVERLOAD_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Overload V": {
+  "Overload V": {
     "api-name": "ENCHANTMENT_OVERLOAD_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Paleontologist I": {
+  "Paleontologist I": {
     "api-name": "ENCHANTMENT_PALEONTOLOGIST_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Paleontologist II": {
+  "Paleontologist II": {
     "api-name": "ENCHANTMENT_PALEONTOLOGIST_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Paleontologist III": {
+  "Paleontologist III": {
     "api-name": "ENCHANTMENT_PALEONTOLOGIST_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Paleontologist IV": {
+  "Paleontologist IV": {
     "api-name": "ENCHANTMENT_PALEONTOLOGIST_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Paleontologist V": {
+  "Paleontologist V": {
     "api-name": "ENCHANTMENT_PALEONTOLOGIST_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Pesterminator I": {
+  "Pesterminator I": {
     "api-name": "ENCHANTMENT_PESTERMINATOR_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Pesterminator II": {
+  "Pesterminator II": {
     "api-name": "ENCHANTMENT_PESTERMINATOR_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Pesterminator III": {
+  "Pesterminator III": {
     "api-name": "ENCHANTMENT_PESTERMINATOR_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Pesterminator IV": {
+  "Pesterminator IV": {
     "api-name": "ENCHANTMENT_PESTERMINATOR_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Pesterminator V": {
+  "Pesterminator V": {
     "api-name": "ENCHANTMENT_PESTERMINATOR_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Piercing I": {
+  "Piercing I": {
     "api-name": "ENCHANTMENT_PIERCING_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Piscary I": {
+  "Piscary I": {
     "api-name": "ENCHANTMENT_PISCARY_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Piscary II": {
+  "Piscary II": {
     "api-name": "ENCHANTMENT_PISCARY_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Piscary III": {
+  "Piscary III": {
     "api-name": "ENCHANTMENT_PISCARY_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Piscary IV": {
+  "Piscary IV": {
     "api-name": "ENCHANTMENT_PISCARY_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Piscary V": {
+  "Piscary V": {
     "api-name": "ENCHANTMENT_PISCARY_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Piscary VI": {
+  "Piscary VI": {
     "api-name": "ENCHANTMENT_PISCARY_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Power I": {
+  "Power I": {
     "api-name": "ENCHANTMENT_POWER_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Power II": {
+  "Power II": {
     "api-name": "ENCHANTMENT_POWER_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Power III": {
+  "Power III": {
     "api-name": "ENCHANTMENT_POWER_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Power IV": {
+  "Power IV": {
     "api-name": "ENCHANTMENT_POWER_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Power V": {
+  "Power V": {
     "api-name": "ENCHANTMENT_POWER_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Power VI": {
+  "Power VI": {
     "api-name": "ENCHANTMENT_POWER_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Power VII": {
+  "Power VII": {
     "api-name": "ENCHANTMENT_POWER_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Pristine I": {
+  "Pristine I": {
     "api-name": "ENCHANTMENT_PRISTINE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Pristine II": {
+  "Pristine II": {
     "api-name": "ENCHANTMENT_PRISTINE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Pristine III": {
+  "Pristine III": {
     "api-name": "ENCHANTMENT_PRISTINE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Pristine IV": {
+  "Pristine IV": {
     "api-name": "ENCHANTMENT_PRISTINE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Pristine V": {
+  "Pristine V": {
     "api-name": "ENCHANTMENT_PRISTINE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Projectile Protection I": {
+  "Projectile Protection I": {
     "api-name": "ENCHANTMENT_PROJECTILE_PROTECTION_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Projectile Protection II": {
+  "Projectile Protection II": {
     "api-name": "ENCHANTMENT_PROJECTILE_PROTECTION_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Projectile Protection III": {
+  "Projectile Protection III": {
     "api-name": "ENCHANTMENT_PROJECTILE_PROTECTION_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Projectile Protection IV": {
+  "Projectile Protection IV": {
     "api-name": "ENCHANTMENT_PROJECTILE_PROTECTION_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Projectile Protection V": {
+  "Projectile Protection V": {
     "api-name": "ENCHANTMENT_PROJECTILE_PROTECTION_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Projectile Protection VI": {
+  "Projectile Protection VI": {
     "api-name": "ENCHANTMENT_PROJECTILE_PROTECTION_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Projectile Protection VII": {
+  "Projectile Protection VII": {
     "api-name": "ENCHANTMENT_PROJECTILE_PROTECTION_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Prosecute I": {
+  "Prosecute I": {
     "api-name": "ENCHANTMENT_PROSECUTE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Prosecute II": {
+  "Prosecute II": {
     "api-name": "ENCHANTMENT_PROSECUTE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Prosecute III": {
+  "Prosecute III": {
     "api-name": "ENCHANTMENT_PROSECUTE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Prosecute IV": {
+  "Prosecute IV": {
     "api-name": "ENCHANTMENT_PROSECUTE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Prosecute V": {
+  "Prosecute V": {
     "api-name": "ENCHANTMENT_PROSECUTE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Prosecute VI": {
+  "Prosecute VI": {
     "api-name": "ENCHANTMENT_PROSECUTE_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Prosperity I": {
+  "Prosperity I": {
     "api-name": "ENCHANTMENT_PROSPERITY_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Prosperity II": {
+  "Prosperity II": {
     "api-name": "ENCHANTMENT_PROSPERITY_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Prosperity III": {
+  "Prosperity III": {
     "api-name": "ENCHANTMENT_PROSPERITY_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Prosperity IV": {
+  "Prosperity IV": {
     "api-name": "ENCHANTMENT_PROSPERITY_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Prosperity V": {
+  "Prosperity V": {
     "api-name": "ENCHANTMENT_PROSPERITY_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Protection I": {
+  "Protection I": {
     "api-name": "ENCHANTMENT_PROTECTION_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Protection II": {
+  "Protection II": {
     "api-name": "ENCHANTMENT_PROTECTION_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Protection III": {
+  "Protection III": {
     "api-name": "ENCHANTMENT_PROTECTION_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Protection IV": {
+  "Protection IV": {
     "api-name": "ENCHANTMENT_PROTECTION_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Protection V": {
+  "Protection V": {
     "api-name": "ENCHANTMENT_PROTECTION_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Protection VI": {
+  "Protection VI": {
     "api-name": "ENCHANTMENT_PROTECTION_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Protection VII": {
+  "Protection VII": {
     "api-name": "ENCHANTMENT_PROTECTION_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Punch I": {
+  "Punch I": {
     "api-name": "ENCHANTMENT_PUNCH_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Punch II": {
+  "Punch II": {
     "api-name": "ENCHANTMENT_PUNCH_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Quantum III": {
+  "Quantum III": {
     "api-name": "ENCHANTMENT_QUANTUM_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Quantum IV": {
+  "Quantum IV": {
     "api-name": "ENCHANTMENT_QUANTUM_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Quantum V": {
+  "Quantum V": {
     "api-name": "ENCHANTMENT_QUANTUM_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Quick Bite I": {
+  "Quick Bite I": {
     "api-name": "ENCHANTMENT_QUICK_BITE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Quick Bite II": {
+  "Quick Bite II": {
     "api-name": "ENCHANTMENT_QUICK_BITE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Quick Bite III": {
+  "Quick Bite III": {
     "api-name": "ENCHANTMENT_QUICK_BITE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Quick Bite IV": {
+  "Quick Bite IV": {
     "api-name": "ENCHANTMENT_QUICK_BITE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Quick Bite V": {
+  "Quick Bite V": {
     "api-name": "ENCHANTMENT_QUICK_BITE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Reflection I": {
+  "Reflection I": {
     "api-name": "ENCHANTMENT_REFLECTION_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Reflection II": {
+  "Reflection II": {
     "api-name": "ENCHANTMENT_REFLECTION_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Reflection III": {
+  "Reflection III": {
     "api-name": "ENCHANTMENT_REFLECTION_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Reflection IV": {
+  "Reflection IV": {
     "api-name": "ENCHANTMENT_REFLECTION_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Reflection V": {
+  "Reflection V": {
     "api-name": "ENCHANTMENT_REFLECTION_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Rejuvenate I": {
+  "Rejuvenate I": {
     "api-name": "ENCHANTMENT_REJUVENATE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Rejuvenate II": {
+  "Rejuvenate II": {
     "api-name": "ENCHANTMENT_REJUVENATE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Rejuvenate III": {
+  "Rejuvenate III": {
     "api-name": "ENCHANTMENT_REJUVENATE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Rejuvenate IV": {
+  "Rejuvenate IV": {
     "api-name": "ENCHANTMENT_REJUVENATE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Rejuvenate V": {
+  "Rejuvenate V": {
     "api-name": "ENCHANTMENT_REJUVENATE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Replenish I": {
+  "Replenish I": {
     "api-name": "ENCHANTMENT_REPLENISH_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Respiration I": {
+  "Respiration I": {
     "api-name": "ENCHANTMENT_RESPIRATION_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Respiration II": {
+  "Respiration II": {
     "api-name": "ENCHANTMENT_RESPIRATION_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Respiration III": {
+  "Respiration III": {
     "api-name": "ENCHANTMENT_RESPIRATION_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Respiration IV": {
+  "Respiration IV": {
     "api-name": "ENCHANTMENT_RESPIRATION_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Respite I": {
+  "Respite I": {
     "api-name": "ENCHANTMENT_RESPITE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Respite II": {
+  "Respite II": {
     "api-name": "ENCHANTMENT_RESPITE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Respite III": {
+  "Respite III": {
     "api-name": "ENCHANTMENT_RESPITE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Respite IV": {
+  "Respite IV": {
     "api-name": "ENCHANTMENT_RESPITE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Respite V": {
+  "Respite V": {
     "api-name": "ENCHANTMENT_RESPITE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Scavenger I": {
+  "Scavenger I": {
     "api-name": "ENCHANTMENT_SCAVENGER_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Scavenger II": {
+  "Scavenger II": {
     "api-name": "ENCHANTMENT_SCAVENGER_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Scavenger III": {
+  "Scavenger III": {
     "api-name": "ENCHANTMENT_SCAVENGER_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Scavenger IV": {
+  "Scavenger IV": {
     "api-name": "ENCHANTMENT_SCAVENGER_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Scavenger V": {
+  "Scavenger V": {
     "api-name": "ENCHANTMENT_SCAVENGER_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Scuba I": {
+  "Scuba I": {
     "api-name": "ENCHANTMENT_SCUBA_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Scuba II": {
+  "Scuba II": {
     "api-name": "ENCHANTMENT_SCUBA_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Scuba III": {
+  "Scuba III": {
     "api-name": "ENCHANTMENT_SCUBA_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Scuba IV": {
+  "Scuba IV": {
     "api-name": "ENCHANTMENT_SCUBA_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Scuba V": {
+  "Scuba V": {
     "api-name": "ENCHANTMENT_SCUBA_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Sharpness I": {
+  "Sharpness I": {
     "api-name": "ENCHANTMENT_SHARPNESS_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Sharpness II": {
+  "Sharpness II": {
     "api-name": "ENCHANTMENT_SHARPNESS_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Sharpness III": {
+  "Sharpness III": {
     "api-name": "ENCHANTMENT_SHARPNESS_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Sharpness IV": {
+  "Sharpness IV": {
     "api-name": "ENCHANTMENT_SHARPNESS_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Sharpness V": {
+  "Sharpness V": {
     "api-name": "ENCHANTMENT_SHARPNESS_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Sharpness VI": {
+  "Sharpness VI": {
     "api-name": "ENCHANTMENT_SHARPNESS_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Sharpness VII": {
+  "Sharpness VII": {
     "api-name": "ENCHANTMENT_SHARPNESS_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Silk Touch I": {
+  "Silk Touch I": {
     "api-name": "ENCHANTMENT_SILK_TOUCH_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Small Brain III": {
+  "Small Brain III": {
     "api-name": "ENCHANTMENT_SMALL_BRAIN_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Small Brain IV": {
+  "Small Brain IV": {
     "api-name": "ENCHANTMENT_SMALL_BRAIN_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Small Brain V": {
+  "Small Brain V": {
     "api-name": "ENCHANTMENT_SMALL_BRAIN_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Smarty Pants I": {
+  "Smarty Pants I": {
     "api-name": "ENCHANTMENT_SMARTY_PANTS_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Smarty Pants II": {
+  "Smarty Pants II": {
     "api-name": "ENCHANTMENT_SMARTY_PANTS_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Smarty Pants III": {
+  "Smarty Pants III": {
     "api-name": "ENCHANTMENT_SMARTY_PANTS_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Smarty Pants IV": {
+  "Smarty Pants IV": {
     "api-name": "ENCHANTMENT_SMARTY_PANTS_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Smarty Pants V": {
+  "Smarty Pants V": {
     "api-name": "ENCHANTMENT_SMARTY_PANTS_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Smelting Touch I": {
+  "Smelting Touch I": {
     "api-name": "ENCHANTMENT_SMELTING_TOUCH_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Smite I": {
+  "Smite I": {
     "api-name": "ENCHANTMENT_SMITE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Smite II": {
+  "Smite II": {
     "api-name": "ENCHANTMENT_SMITE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Smite III": {
+  "Smite III": {
     "api-name": "ENCHANTMENT_SMITE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Smite IV": {
+  "Smite IV": {
     "api-name": "ENCHANTMENT_SMITE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Smite V": {
+  "Smite V": {
     "api-name": "ENCHANTMENT_SMITE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Smite VI": {
+  "Smite VI": {
     "api-name": "ENCHANTMENT_SMITE_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Smite VII": {
+  "Smite VII": {
     "api-name": "ENCHANTMENT_SMITE_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Smoldering I": {
+  "Smoldering I": {
     "api-name": "ENCHANTMENT_SMOLDERING_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Smoldering II": {
+  "Smoldering II": {
     "api-name": "ENCHANTMENT_SMOLDERING_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Smoldering III": {
+  "Smoldering III": {
     "api-name": "ENCHANTMENT_SMOLDERING_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Smoldering IV": {
+  "Smoldering IV": {
     "api-name": "ENCHANTMENT_SMOLDERING_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Smoldering V": {
+  "Smoldering V": {
     "api-name": "ENCHANTMENT_SMOLDERING_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Snipe I": {
+  "Snipe I": {
     "api-name": "ENCHANTMENT_SNIPE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Snipe II": {
+  "Snipe II": {
     "api-name": "ENCHANTMENT_SNIPE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Snipe III": {
+  "Snipe III": {
     "api-name": "ENCHANTMENT_SNIPE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Snipe IV": {
+  "Snipe IV": {
     "api-name": "ENCHANTMENT_SNIPE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Spiked Hook I": {
+  "Spiked Hook I": {
     "api-name": "ENCHANTMENT_SPIKED_HOOK_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Spiked Hook II": {
+  "Spiked Hook II": {
     "api-name": "ENCHANTMENT_SPIKED_HOOK_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Spiked Hook III": {
+  "Spiked Hook III": {
     "api-name": "ENCHANTMENT_SPIKED_HOOK_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Spiked Hook IV": {
+  "Spiked Hook IV": {
     "api-name": "ENCHANTMENT_SPIKED_HOOK_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Spiked Hook V": {
+  "Spiked Hook V": {
     "api-name": "ENCHANTMENT_SPIKED_HOOK_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Spiked Hook VI": {
+  "Spiked Hook VI": {
     "api-name": "ENCHANTMENT_SPIKED_HOOK_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Stealth I": {
+  "Stealth I": {
     "api-name": "ENCHANTMENT_STEALTH_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Strong Mana I": {
+  "Strong Mana I": {
     "api-name": "ENCHANTMENT_STRONG_MANA_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Strong Mana II": {
+  "Strong Mana II": {
     "api-name": "ENCHANTMENT_STRONG_MANA_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Strong Mana III": {
+  "Strong Mana III": {
     "api-name": "ENCHANTMENT_STRONG_MANA_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Strong Mana IV": {
+  "Strong Mana IV": {
     "api-name": "ENCHANTMENT_STRONG_MANA_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Strong Mana IX": {
+  "Strong Mana IX": {
     "api-name": "ENCHANTMENT_STRONG_MANA_9",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Strong Mana V": {
+  "Strong Mana V": {
     "api-name": "ENCHANTMENT_STRONG_MANA_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Strong Mana VI": {
+  "Strong Mana VI": {
     "api-name": "ENCHANTMENT_STRONG_MANA_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Strong Mana VII": {
+  "Strong Mana VII": {
     "api-name": "ENCHANTMENT_STRONG_MANA_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Strong Mana VIII": {
+  "Strong Mana VIII": {
     "api-name": "ENCHANTMENT_STRONG_MANA_8",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Strong Mana X": {
+  "Strong Mana X": {
     "api-name": "ENCHANTMENT_STRONG_MANA_10",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Sugar Rush I": {
+  "Sugar Rush I": {
     "api-name": "ENCHANTMENT_SUGAR_RUSH_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Sugar Rush II": {
+  "Sugar Rush II": {
     "api-name": "ENCHANTMENT_SUGAR_RUSH_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Sugar Rush III": {
+  "Sugar Rush III": {
     "api-name": "ENCHANTMENT_SUGAR_RUSH_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Sunder I": {
+  "Sunder I": {
     "api-name": "ENCHANTMENT_SUNDER_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Sunder II": {
+  "Sunder II": {
     "api-name": "ENCHANTMENT_SUNDER_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Sunder III": {
+  "Sunder III": {
     "api-name": "ENCHANTMENT_SUNDER_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Sunder IV": {
+  "Sunder IV": {
     "api-name": "ENCHANTMENT_SUNDER_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Sunder V": {
+  "Sunder V": {
     "api-name": "ENCHANTMENT_SUNDER_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Sunder VI": {
+  "Sunder VI": {
     "api-name": "ENCHANTMENT_SUNDER_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Syphon I": {
+  "Syphon I": {
     "api-name": "ENCHANTMENT_SYPHON_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Syphon II": {
+  "Syphon II": {
     "api-name": "ENCHANTMENT_SYPHON_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Syphon III": {
+  "Syphon III": {
     "api-name": "ENCHANTMENT_SYPHON_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Syphon IV": {
+  "Syphon IV": {
     "api-name": "ENCHANTMENT_SYPHON_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Syphon V": {
+  "Syphon V": {
     "api-name": "ENCHANTMENT_SYPHON_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Tabasco I": {
+  "Tabasco I": {
     "api-name": "ENCHANTMENT_TABASCO_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Tabasco II": {
+  "Tabasco II": {
     "api-name": "ENCHANTMENT_TABASCO_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Tabasco III": {
+  "Tabasco III": {
     "api-name": "ENCHANTMENT_TABASCO_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Thorns I": {
+  "Thorns I": {
     "api-name": "ENCHANTMENT_THORNS_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Thorns II": {
+  "Thorns II": {
     "api-name": "ENCHANTMENT_THORNS_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Thorns III": {
+  "Thorns III": {
     "api-name": "ENCHANTMENT_THORNS_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Thunderbolt I": {
+  "Thunderbolt I": {
     "api-name": "ENCHANTMENT_THUNDERBOLT_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Thunderbolt II": {
+  "Thunderbolt II": {
     "api-name": "ENCHANTMENT_THUNDERBOLT_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Thunderbolt III": {
+  "Thunderbolt III": {
     "api-name": "ENCHANTMENT_THUNDERBOLT_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Thunderbolt IV": {
+  "Thunderbolt IV": {
     "api-name": "ENCHANTMENT_THUNDERBOLT_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Thunderbolt V": {
+  "Thunderbolt V": {
     "api-name": "ENCHANTMENT_THUNDERBOLT_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Thunderbolt VI": {
+  "Thunderbolt VI": {
     "api-name": "ENCHANTMENT_THUNDERBOLT_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Thunderbolt VII": {
+  "Thunderbolt VII": {
     "api-name": "ENCHANTMENT_THUNDERBOLT_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Thunderlord I": {
+  "Thunderlord I": {
     "api-name": "ENCHANTMENT_THUNDERLORD_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Thunderlord II": {
+  "Thunderlord II": {
     "api-name": "ENCHANTMENT_THUNDERLORD_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Thunderlord III": {
+  "Thunderlord III": {
     "api-name": "ENCHANTMENT_THUNDERLORD_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Thunderlord IV": {
+  "Thunderlord IV": {
     "api-name": "ENCHANTMENT_THUNDERLORD_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Thunderlord V": {
+  "Thunderlord V": {
     "api-name": "ENCHANTMENT_THUNDERLORD_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Thunderlord VI": {
+  "Thunderlord VI": {
     "api-name": "ENCHANTMENT_THUNDERLORD_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Thunderlord VII": {
+  "Thunderlord VII": {
     "api-name": "ENCHANTMENT_THUNDERLORD_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Tidal I": {
+  "Tidal I": {
     "api-name": "ENCHANTMENT_TIDAL_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Tidal II": {
+  "Tidal II": {
     "api-name": "ENCHANTMENT_TIDAL_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Tidal III": {
+  "Tidal III": {
     "api-name": "ENCHANTMENT_TIDAL_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Titan Killer I": {
+  "Titan Killer I": {
     "api-name": "ENCHANTMENT_TITAN_KILLER_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Titan Killer II": {
+  "Titan Killer II": {
     "api-name": "ENCHANTMENT_TITAN_KILLER_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Titan Killer III": {
+  "Titan Killer III": {
     "api-name": "ENCHANTMENT_TITAN_KILLER_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Titan Killer IV": {
+  "Titan Killer IV": {
     "api-name": "ENCHANTMENT_TITAN_KILLER_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Titan Killer V": {
+  "Titan Killer V": {
     "api-name": "ENCHANTMENT_TITAN_KILLER_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Titan Killer VI": {
+  "Titan Killer VI": {
     "api-name": "ENCHANTMENT_TITAN_KILLER_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Titan Killer VII": {
+  "Titan Killer VII": {
     "api-name": "ENCHANTMENT_TITAN_KILLER_7",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Toxophilite I": {
+  "Toxophilite I": {
     "api-name": "ENCHANTMENT_TOXOPHILITE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Transylvanian IV": {
+  "Transylvanian IV": {
     "api-name": "ENCHANTMENT_TRANSYLVANIAN_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Transylvanian V": {
+  "Transylvanian V": {
     "api-name": "ENCHANTMENT_TRANSYLVANIAN_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Triple Strike I": {
+  "Triple Strike I": {
     "api-name": "ENCHANTMENT_TRIPLE_STRIKE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Triple Strike II": {
+  "Triple Strike II": {
     "api-name": "ENCHANTMENT_TRIPLE_STRIKE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Triple Strike III": {
+  "Triple Strike III": {
     "api-name": "ENCHANTMENT_TRIPLE_STRIKE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Triple Strike IV": {
+  "Triple Strike IV": {
     "api-name": "ENCHANTMENT_TRIPLE_STRIKE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Triple Strike V": {
+  "Triple Strike V": {
     "api-name": "ENCHANTMENT_TRIPLE_STRIKE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment True Protection I": {
+  "True Protection I": {
     "api-name": "ENCHANTMENT_TRUE_PROTECTION_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Cactus I": {
+  "Turbo Cactus I": {
     "api-name": "ENCHANTMENT_TURBO_CACTUS_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Cactus II": {
+  "Turbo Cactus II": {
     "api-name": "ENCHANTMENT_TURBO_CACTUS_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Cactus III": {
+  "Turbo Cactus III": {
     "api-name": "ENCHANTMENT_TURBO_CACTUS_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Cactus IV": {
+  "Turbo Cactus IV": {
     "api-name": "ENCHANTMENT_TURBO_CACTUS_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Cactus V": {
+  "Turbo Cactus V": {
     "api-name": "ENCHANTMENT_TURBO_CACTUS_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Cane I": {
+  "Turbo Cane I": {
     "api-name": "ENCHANTMENT_TURBO_CANE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Cane II": {
+  "Turbo Cane II": {
     "api-name": "ENCHANTMENT_TURBO_CANE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Cane III": {
+  "Turbo Cane III": {
     "api-name": "ENCHANTMENT_TURBO_CANE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Cane IV": {
+  "Turbo Cane IV": {
     "api-name": "ENCHANTMENT_TURBO_CANE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Cane V": {
+  "Turbo Cane V": {
     "api-name": "ENCHANTMENT_TURBO_CANE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Carrot I": {
+  "Turbo Carrot I": {
     "api-name": "ENCHANTMENT_TURBO_CARROT_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Carrot II": {
+  "Turbo Carrot II": {
     "api-name": "ENCHANTMENT_TURBO_CARROT_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Carrot III": {
+  "Turbo Carrot III": {
     "api-name": "ENCHANTMENT_TURBO_CARROT_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Carrot IV": {
+  "Turbo Carrot IV": {
     "api-name": "ENCHANTMENT_TURBO_CARROT_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Carrot V": {
+  "Turbo Carrot V": {
     "api-name": "ENCHANTMENT_TURBO_CARROT_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Coco I": {
+  "Turbo Coco I": {
     "api-name": "ENCHANTMENT_TURBO_COCO_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Coco II": {
+  "Turbo Coco II": {
     "api-name": "ENCHANTMENT_TURBO_COCO_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Coco III": {
+  "Turbo Coco III": {
     "api-name": "ENCHANTMENT_TURBO_COCO_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Coco IV": {
+  "Turbo Coco IV": {
     "api-name": "ENCHANTMENT_TURBO_COCO_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Coco V": {
+  "Turbo Coco V": {
     "api-name": "ENCHANTMENT_TURBO_COCO_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Melon I": {
+  "Turbo Melon I": {
     "api-name": "ENCHANTMENT_TURBO_MELON_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Melon II": {
+  "Turbo Melon II": {
     "api-name": "ENCHANTMENT_TURBO_MELON_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Melon III": {
+  "Turbo Melon III": {
     "api-name": "ENCHANTMENT_TURBO_MELON_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Melon IV": {
+  "Turbo Melon IV": {
     "api-name": "ENCHANTMENT_TURBO_MELON_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Melon V": {
+  "Turbo Melon V": {
     "api-name": "ENCHANTMENT_TURBO_MELON_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Moonflower I": {
+  "Turbo Moonflower I": {
     "api-name": "ENCHANTMENT_TURBO_MOONFLOWER_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Moonflower II": {
+  "Turbo Moonflower II": {
     "api-name": "ENCHANTMENT_TURBO_MOONFLOWER_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Moonflower III": {
+  "Turbo Moonflower III": {
     "api-name": "ENCHANTMENT_TURBO_MOONFLOWER_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Moonflower IV": {
+  "Turbo Moonflower IV": {
     "api-name": "ENCHANTMENT_TURBO_MOONFLOWER_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Moonflower V": {
+  "Turbo Moonflower V": {
     "api-name": "ENCHANTMENT_TURBO_MOONFLOWER_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Mushrooms I": {
+  "Turbo Mushrooms I": {
     "api-name": "ENCHANTMENT_TURBO_MUSHROOMS_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Mushrooms II": {
+  "Turbo Mushrooms II": {
     "api-name": "ENCHANTMENT_TURBO_MUSHROOMS_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Mushrooms III": {
+  "Turbo Mushrooms III": {
     "api-name": "ENCHANTMENT_TURBO_MUSHROOMS_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Mushrooms IV": {
+  "Turbo Mushrooms IV": {
     "api-name": "ENCHANTMENT_TURBO_MUSHROOMS_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Mushrooms V": {
+  "Turbo Mushrooms V": {
     "api-name": "ENCHANTMENT_TURBO_MUSHROOMS_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Potato I": {
+  "Turbo Potato I": {
     "api-name": "ENCHANTMENT_TURBO_POTATO_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Potato II": {
+  "Turbo Potato II": {
     "api-name": "ENCHANTMENT_TURBO_POTATO_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Potato III": {
+  "Turbo Potato III": {
     "api-name": "ENCHANTMENT_TURBO_POTATO_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Potato IV": {
+  "Turbo Potato IV": {
     "api-name": "ENCHANTMENT_TURBO_POTATO_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Potato V": {
+  "Turbo Potato V": {
     "api-name": "ENCHANTMENT_TURBO_POTATO_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Pumpkin I": {
+  "Turbo Pumpkin I": {
     "api-name": "ENCHANTMENT_TURBO_PUMPKIN_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Pumpkin II": {
+  "Turbo Pumpkin II": {
     "api-name": "ENCHANTMENT_TURBO_PUMPKIN_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Pumpkin III": {
+  "Turbo Pumpkin III": {
     "api-name": "ENCHANTMENT_TURBO_PUMPKIN_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Pumpkin IV": {
+  "Turbo Pumpkin IV": {
     "api-name": "ENCHANTMENT_TURBO_PUMPKIN_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Pumpkin V": {
+  "Turbo Pumpkin V": {
     "api-name": "ENCHANTMENT_TURBO_PUMPKIN_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Rose I": {
+  "Turbo Rose I": {
     "api-name": "ENCHANTMENT_TURBO_ROSE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Rose II": {
+  "Turbo Rose II": {
     "api-name": "ENCHANTMENT_TURBO_ROSE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Rose III": {
+  "Turbo Rose III": {
     "api-name": "ENCHANTMENT_TURBO_ROSE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Rose IV": {
+  "Turbo Rose IV": {
     "api-name": "ENCHANTMENT_TURBO_ROSE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Rose V": {
+  "Turbo Rose V": {
     "api-name": "ENCHANTMENT_TURBO_ROSE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Sunflower I": {
+  "Turbo Sunflower I": {
     "api-name": "ENCHANTMENT_TURBO_SUNFLOWER_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Sunflower II": {
+  "Turbo Sunflower II": {
     "api-name": "ENCHANTMENT_TURBO_SUNFLOWER_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Sunflower III": {
+  "Turbo Sunflower III": {
     "api-name": "ENCHANTMENT_TURBO_SUNFLOWER_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Sunflower IV": {
+  "Turbo Sunflower IV": {
     "api-name": "ENCHANTMENT_TURBO_SUNFLOWER_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Sunflower V": {
+  "Turbo Sunflower V": {
     "api-name": "ENCHANTMENT_TURBO_SUNFLOWER_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Warts I": {
+  "Turbo Warts I": {
     "api-name": "ENCHANTMENT_TURBO_WARTS_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Warts II": {
+  "Turbo Warts II": {
     "api-name": "ENCHANTMENT_TURBO_WARTS_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Warts III": {
+  "Turbo Warts III": {
     "api-name": "ENCHANTMENT_TURBO_WARTS_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Warts IV": {
+  "Turbo Warts IV": {
     "api-name": "ENCHANTMENT_TURBO_WARTS_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Warts V": {
+  "Turbo Warts V": {
     "api-name": "ENCHANTMENT_TURBO_WARTS_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Wheat I": {
+  "Turbo Wheat I": {
     "api-name": "ENCHANTMENT_TURBO_WHEAT_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Wheat II": {
+  "Turbo Wheat II": {
     "api-name": "ENCHANTMENT_TURBO_WHEAT_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Wheat III": {
+  "Turbo Wheat III": {
     "api-name": "ENCHANTMENT_TURBO_WHEAT_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Wheat IV": {
+  "Turbo Wheat IV": {
     "api-name": "ENCHANTMENT_TURBO_WHEAT_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Turbo Wheat V": {
+  "Turbo Wheat V": {
     "api-name": "ENCHANTMENT_TURBO_WHEAT_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Bank I": {
+  "Ultimate Bank I": {
     "api-name": "ENCHANTMENT_ULTIMATE_BANK_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Bank II": {
+  "Ultimate Bank II": {
     "api-name": "ENCHANTMENT_ULTIMATE_BANK_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Bank III": {
+  "Ultimate Bank III": {
     "api-name": "ENCHANTMENT_ULTIMATE_BANK_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Bank IV": {
+  "Ultimate Bank IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_BANK_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Bank V": {
+  "Ultimate Bank V": {
     "api-name": "ENCHANTMENT_ULTIMATE_BANK_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Bobbin Time III": {
+  "Ultimate Bobbin Time III": {
     "api-name": "ENCHANTMENT_ULTIMATE_BOBBIN_TIME_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Bobbin Time IV": {
+  "Ultimate Bobbin Time IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_BOBBIN_TIME_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Bobbin Time V": {
+  "Ultimate Bobbin Time V": {
     "api-name": "ENCHANTMENT_ULTIMATE_BOBBIN_TIME_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Chimera I": {
+  "Ultimate Chimera I": {
     "api-name": "ENCHANTMENT_ULTIMATE_CHIMERA_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Chimera II": {
+  "Ultimate Chimera II": {
     "api-name": "ENCHANTMENT_ULTIMATE_CHIMERA_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Chimera III": {
+  "Ultimate Chimera III": {
     "api-name": "ENCHANTMENT_ULTIMATE_CHIMERA_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Chimera IV": {
+  "Ultimate Chimera IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_CHIMERA_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Chimera V": {
+  "Ultimate Chimera V": {
     "api-name": "ENCHANTMENT_ULTIMATE_CHIMERA_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Combo I": {
+  "Ultimate Combo I": {
     "api-name": "ENCHANTMENT_ULTIMATE_COMBO_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Combo II": {
+  "Ultimate Combo II": {
     "api-name": "ENCHANTMENT_ULTIMATE_COMBO_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Combo III": {
+  "Ultimate Combo III": {
     "api-name": "ENCHANTMENT_ULTIMATE_COMBO_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Combo IV": {
+  "Ultimate Combo IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_COMBO_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Combo V": {
+  "Ultimate Combo V": {
     "api-name": "ENCHANTMENT_ULTIMATE_COMBO_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Crop Fever I": {
+  "Ultimate Crop Fever I": {
     "api-name": "ENCHANTMENT_ULTIMATE_CROP_FEVER_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Crop Fever II": {
+  "Ultimate Crop Fever II": {
     "api-name": "ENCHANTMENT_ULTIMATE_CROP_FEVER_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Crop Fever III": {
+  "Ultimate Crop Fever III": {
     "api-name": "ENCHANTMENT_ULTIMATE_CROP_FEVER_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Crop Fever IV": {
+  "Ultimate Crop Fever IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_CROP_FEVER_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Crop Fever V": {
+  "Ultimate Crop Fever V": {
     "api-name": "ENCHANTMENT_ULTIMATE_CROP_FEVER_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Fatal Tempo I": {
+  "Ultimate Fatal Tempo I": {
     "api-name": "ENCHANTMENT_ULTIMATE_FATAL_TEMPO_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Fatal Tempo II": {
+  "Ultimate Fatal Tempo II": {
     "api-name": "ENCHANTMENT_ULTIMATE_FATAL_TEMPO_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Fatal Tempo III": {
+  "Ultimate Fatal Tempo III": {
     "api-name": "ENCHANTMENT_ULTIMATE_FATAL_TEMPO_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Fatal Tempo IV": {
+  "Ultimate Fatal Tempo IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_FATAL_TEMPO_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Fatal Tempo V": {
+  "Ultimate Fatal Tempo V": {
     "api-name": "ENCHANTMENT_ULTIMATE_FATAL_TEMPO_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate First Impression I": {
+  "Ultimate First Impression I": {
     "api-name": "ENCHANTMENT_ULTIMATE_FIRST_IMPRESSION_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate First Impression II": {
+  "Ultimate First Impression II": {
     "api-name": "ENCHANTMENT_ULTIMATE_FIRST_IMPRESSION_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate First Impression III": {
+  "Ultimate First Impression III": {
     "api-name": "ENCHANTMENT_ULTIMATE_FIRST_IMPRESSION_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate First Impression IV": {
+  "Ultimate First Impression IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_FIRST_IMPRESSION_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate First Impression V": {
+  "Ultimate First Impression V": {
     "api-name": "ENCHANTMENT_ULTIMATE_FIRST_IMPRESSION_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Flash I": {
+  "Ultimate Flash I": {
     "api-name": "ENCHANTMENT_ULTIMATE_FLASH_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Flash II": {
+  "Ultimate Flash II": {
     "api-name": "ENCHANTMENT_ULTIMATE_FLASH_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Flash III": {
+  "Ultimate Flash III": {
     "api-name": "ENCHANTMENT_ULTIMATE_FLASH_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Flash IV": {
+  "Ultimate Flash IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_FLASH_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Flash V": {
+  "Ultimate Flash V": {
     "api-name": "ENCHANTMENT_ULTIMATE_FLASH_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Flowstate I": {
+  "Ultimate Flowstate I": {
     "api-name": "ENCHANTMENT_ULTIMATE_FLOWSTATE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Flowstate II": {
+  "Ultimate Flowstate II": {
     "api-name": "ENCHANTMENT_ULTIMATE_FLOWSTATE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Flowstate III": {
+  "Ultimate Flowstate III": {
     "api-name": "ENCHANTMENT_ULTIMATE_FLOWSTATE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Habanero Tactics IV": {
+  "Ultimate Habanero Tactics IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_HABANERO_TACTICS_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Habanero Tactics V": {
+  "Ultimate Habanero Tactics V": {
     "api-name": "ENCHANTMENT_ULTIMATE_HABANERO_TACTICS_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Inferno I": {
+  "Ultimate Inferno I": {
     "api-name": "ENCHANTMENT_ULTIMATE_INFERNO_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Inferno II": {
+  "Ultimate Inferno II": {
     "api-name": "ENCHANTMENT_ULTIMATE_INFERNO_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Inferno III": {
+  "Ultimate Inferno III": {
     "api-name": "ENCHANTMENT_ULTIMATE_INFERNO_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Inferno IV": {
+  "Ultimate Inferno IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_INFERNO_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Inferno V": {
+  "Ultimate Inferno V": {
     "api-name": "ENCHANTMENT_ULTIMATE_INFERNO_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Jerry I": {
+  "Ultimate Jerry I": {
     "api-name": "ENCHANTMENT_ULTIMATE_JERRY_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Jerry II": {
+  "Ultimate Jerry II": {
     "api-name": "ENCHANTMENT_ULTIMATE_JERRY_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Jerry III": {
+  "Ultimate Jerry III": {
     "api-name": "ENCHANTMENT_ULTIMATE_JERRY_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Jerry IV": {
+  "Ultimate Jerry IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_JERRY_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Jerry V": {
+  "Ultimate Jerry V": {
     "api-name": "ENCHANTMENT_ULTIMATE_JERRY_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Last Stand I": {
+  "Ultimate Last Stand I": {
     "api-name": "ENCHANTMENT_ULTIMATE_LAST_STAND_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Last Stand II": {
+  "Ultimate Last Stand II": {
     "api-name": "ENCHANTMENT_ULTIMATE_LAST_STAND_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Last Stand III": {
+  "Ultimate Last Stand III": {
     "api-name": "ENCHANTMENT_ULTIMATE_LAST_STAND_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Last Stand IV": {
+  "Ultimate Last Stand IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_LAST_STAND_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Last Stand V": {
+  "Ultimate Last Stand V": {
     "api-name": "ENCHANTMENT_ULTIMATE_LAST_STAND_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Legion I": {
+  "Ultimate Legion I": {
     "api-name": "ENCHANTMENT_ULTIMATE_LEGION_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Legion II": {
+  "Ultimate Legion II": {
     "api-name": "ENCHANTMENT_ULTIMATE_LEGION_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Legion III": {
+  "Ultimate Legion III": {
     "api-name": "ENCHANTMENT_ULTIMATE_LEGION_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Legion IV": {
+  "Ultimate Legion IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_LEGION_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Legion V": {
+  "Ultimate Legion V": {
     "api-name": "ENCHANTMENT_ULTIMATE_LEGION_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Missile I": {
+  "Ultimate Missile I": {
     "api-name": "ENCHANTMENT_ULTIMATE_MISSILE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Missile II": {
+  "Ultimate Missile II": {
     "api-name": "ENCHANTMENT_ULTIMATE_MISSILE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Missile III": {
+  "Ultimate Missile III": {
     "api-name": "ENCHANTMENT_ULTIMATE_MISSILE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Missile IV": {
+  "Ultimate Missile IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_MISSILE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Missile V": {
+  "Ultimate Missile V": {
     "api-name": "ENCHANTMENT_ULTIMATE_MISSILE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate No Pain No Gain I": {
+  "Ultimate No Pain No Gain I": {
     "api-name": "ENCHANTMENT_ULTIMATE_NO_PAIN_NO_GAIN_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate No Pain No Gain II": {
+  "Ultimate No Pain No Gain II": {
     "api-name": "ENCHANTMENT_ULTIMATE_NO_PAIN_NO_GAIN_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate No Pain No Gain III": {
+  "Ultimate No Pain No Gain III": {
     "api-name": "ENCHANTMENT_ULTIMATE_NO_PAIN_NO_GAIN_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate No Pain No Gain IV": {
+  "Ultimate No Pain No Gain IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_NO_PAIN_NO_GAIN_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate No Pain No Gain V": {
+  "Ultimate No Pain No Gain V": {
     "api-name": "ENCHANTMENT_ULTIMATE_NO_PAIN_NO_GAIN_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate One For All 0": {
+  "Ultimate One For All 0": {
     "api-name": "ENCHANTMENT_ULTIMATE_ONE_FOR_ALL_0",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate One For All I": {
+  "Ultimate One For All I": {
     "api-name": "ENCHANTMENT_ULTIMATE_ONE_FOR_ALL_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Refrigerate I": {
+  "Ultimate Refrigerate I": {
     "api-name": "ENCHANTMENT_ULTIMATE_REFRIGERATE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Refrigerate II": {
+  "Ultimate Refrigerate II": {
     "api-name": "ENCHANTMENT_ULTIMATE_REFRIGERATE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Refrigerate III": {
+  "Ultimate Refrigerate III": {
     "api-name": "ENCHANTMENT_ULTIMATE_REFRIGERATE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Refrigerate IV": {
+  "Ultimate Refrigerate IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_REFRIGERATE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Refrigerate V": {
+  "Ultimate Refrigerate V": {
     "api-name": "ENCHANTMENT_ULTIMATE_REFRIGERATE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Reiterate I": {
+  "Ultimate Reiterate I": {
     "api-name": "ENCHANTMENT_ULTIMATE_REITERATE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Reiterate II": {
+  "Ultimate Reiterate II": {
     "api-name": "ENCHANTMENT_ULTIMATE_REITERATE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Reiterate III": {
+  "Ultimate Reiterate III": {
     "api-name": "ENCHANTMENT_ULTIMATE_REITERATE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Reiterate IV": {
+  "Ultimate Reiterate IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_REITERATE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Reiterate V": {
+  "Ultimate Reiterate V": {
     "api-name": "ENCHANTMENT_ULTIMATE_REITERATE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Rend I": {
+  "Ultimate Rend I": {
     "api-name": "ENCHANTMENT_ULTIMATE_REND_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Rend II": {
+  "Ultimate Rend II": {
     "api-name": "ENCHANTMENT_ULTIMATE_REND_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Rend III": {
+  "Ultimate Rend III": {
     "api-name": "ENCHANTMENT_ULTIMATE_REND_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Rend IV": {
+  "Ultimate Rend IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_REND_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Rend V": {
+  "Ultimate Rend V": {
     "api-name": "ENCHANTMENT_ULTIMATE_REND_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Soul Eater I": {
+  "Ultimate Soul Eater I": {
     "api-name": "ENCHANTMENT_ULTIMATE_SOUL_EATER_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Soul Eater II": {
+  "Ultimate Soul Eater II": {
     "api-name": "ENCHANTMENT_ULTIMATE_SOUL_EATER_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Soul Eater III": {
+  "Ultimate Soul Eater III": {
     "api-name": "ENCHANTMENT_ULTIMATE_SOUL_EATER_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Soul Eater IV": {
+  "Ultimate Soul Eater IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_SOUL_EATER_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Soul Eater V": {
+  "Ultimate Soul Eater V": {
     "api-name": "ENCHANTMENT_ULTIMATE_SOUL_EATER_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Sunset I": {
+  "Ultimate Sunset I": {
     "api-name": "ENCHANTMENT_ULTIMATE_SUNSET_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Sunset II": {
+  "Ultimate Sunset II": {
     "api-name": "ENCHANTMENT_ULTIMATE_SUNSET_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Sunset III": {
+  "Ultimate Sunset III": {
     "api-name": "ENCHANTMENT_ULTIMATE_SUNSET_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Sunset IV": {
+  "Ultimate Sunset IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_SUNSET_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Sunset V": {
+  "Ultimate Sunset V": {
     "api-name": "ENCHANTMENT_ULTIMATE_SUNSET_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Swarm I": {
+  "Ultimate Swarm I": {
     "api-name": "ENCHANTMENT_ULTIMATE_SWARM_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Swarm II": {
+  "Ultimate Swarm II": {
     "api-name": "ENCHANTMENT_ULTIMATE_SWARM_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Swarm III": {
+  "Ultimate Swarm III": {
     "api-name": "ENCHANTMENT_ULTIMATE_SWARM_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Swarm IV": {
+  "Ultimate Swarm IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_SWARM_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Swarm V": {
+  "Ultimate Swarm V": {
     "api-name": "ENCHANTMENT_ULTIMATE_SWARM_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate The One IV": {
+  "Ultimate The One IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_THE_ONE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate The One V": {
+  "Ultimate The One V": {
     "api-name": "ENCHANTMENT_ULTIMATE_THE_ONE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Wisdom I": {
+  "Ultimate Wisdom I": {
     "api-name": "ENCHANTMENT_ULTIMATE_WISDOM_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Wisdom II": {
+  "Ultimate Wisdom II": {
     "api-name": "ENCHANTMENT_ULTIMATE_WISDOM_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Wisdom III": {
+  "Ultimate Wisdom III": {
     "api-name": "ENCHANTMENT_ULTIMATE_WISDOM_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Wisdom IV": {
+  "Ultimate Wisdom IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_WISDOM_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Wisdom V": {
+  "Ultimate Wisdom V": {
     "api-name": "ENCHANTMENT_ULTIMATE_WISDOM_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Wise I": {
+  "Ultimate Wise I": {
     "api-name": "ENCHANTMENT_ULTIMATE_WISE_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Wise II": {
+  "Ultimate Wise II": {
     "api-name": "ENCHANTMENT_ULTIMATE_WISE_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Wise III": {
+  "Ultimate Wise III": {
     "api-name": "ENCHANTMENT_ULTIMATE_WISE_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Wise IV": {
+  "Ultimate Wise IV": {
     "api-name": "ENCHANTMENT_ULTIMATE_WISE_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Ultimate Wise V": {
+  "Ultimate Wise V": {
     "api-name": "ENCHANTMENT_ULTIMATE_WISE_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Vampirism I": {
+  "Vampirism I": {
     "api-name": "ENCHANTMENT_VAMPIRISM_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Vampirism II": {
+  "Vampirism II": {
     "api-name": "ENCHANTMENT_VAMPIRISM_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Vampirism III": {
+  "Vampirism III": {
     "api-name": "ENCHANTMENT_VAMPIRISM_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Vampirism IV": {
+  "Vampirism IV": {
     "api-name": "ENCHANTMENT_VAMPIRISM_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Vampirism V": {
+  "Vampirism V": {
     "api-name": "ENCHANTMENT_VAMPIRISM_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Vampirism VI": {
+  "Vampirism VI": {
     "api-name": "ENCHANTMENT_VAMPIRISM_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Venomous I": {
+  "Venomous I": {
     "api-name": "ENCHANTMENT_VENOMOUS_1",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Venomous II": {
+  "Venomous II": {
     "api-name": "ENCHANTMENT_VENOMOUS_2",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Venomous III": {
+  "Venomous III": {
     "api-name": "ENCHANTMENT_VENOMOUS_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Venomous IV": {
+  "Venomous IV": {
     "api-name": "ENCHANTMENT_VENOMOUS_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Venomous V": {
+  "Venomous V": {
     "api-name": "ENCHANTMENT_VENOMOUS_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Venomous VI": {
+  "Venomous VI": {
     "api-name": "ENCHANTMENT_VENOMOUS_6",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Vicious III": {
+  "Vicious III": {
     "api-name": "ENCHANTMENT_VICIOUS_3",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Vicious IV": {
+  "Vicious IV": {
     "api-name": "ENCHANTMENT_VICIOUS_4",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Vicious V": {
+  "Vicious V": {
     "api-name": "ENCHANTMENT_VICIOUS_5",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Enchantment Wither Hunter 0": {
+  "Wither Hunter 0": {
     "api-name": "ENCHANTMENT_WITHER_HUNTER_0",
     "type": "short-term-investment",
     "has-weights": true
@@ -9970,27 +9970,22 @@
     "type": "short-term-investment",
     "has-weights": true
   },
-  "§3Blue Goblin Egg": {
+  "Blue Goblin Egg": {
     "api-name": "GOBLIN_EGG_BLUE",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "§aGreen Goblin Egg": {
+  "Green Goblin Egg": {
     "api-name": "GOBLIN_EGG_GREEN",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "§cRed Gift": {
-    "api-name": "RED_GIFT",
-    "type": "short-term-investment",
-    "has-weights": true
-  },
-  "§cRed Goblin Egg": {
+  "Red Goblin Egg": {
     "api-name": "GOBLIN_EGG_RED",
     "type": "short-term-investment",
     "has-weights": true
   },
-  "§eYellow Goblin Egg": {
+  "Yellow Goblin Egg": {
     "api-name": "GOBLIN_EGG_YELLOW",
     "type": "short-term-investment",
     "has-weights": true

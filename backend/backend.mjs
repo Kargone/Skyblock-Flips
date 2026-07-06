@@ -84,7 +84,7 @@ class Main extends EventEmitter {
         this.on('tradeMessage', (tradeMessage) => {
             try {
                 const trade = new ProcesTrade(tradeMessage);
-                console.log(`Successfully processed trade: ${tradeMessage}`);
+                // console.log(`Successfully processed trade: ${tradeMessage}`);
             } catch (error) {
                 console.error(`Error processing trade message: ${error}`);
             }
@@ -127,9 +127,8 @@ function getInvestmentType(product_list_type) {
 // Create a function such that whatever utc time code is inputed
 // it returns a date code such that it is the same day but 12:00 am
 function morningTime(time_code) {
-    const extraTime = time_code % (86400 * 1000);
-    const offset = 3600 * 5 * 1000;
-    return time_code - extraTime + offset;
+    const now = new Date(time_code);
+    return new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
 }
 
 function formatTradeMessage(trade_message) {
@@ -411,12 +410,25 @@ class ProcesTrade {
 
         // look for any invesments that might already be the same name
         if (Object.keys(trader_data[invesmentType]).indexOf(name) != -1) {
-            // apenend a new order to suborders
-            trader_data[invesmentType][name]["sub-orders"].push({
-                "partial-amount": amount,
-                "price-bought": price,
-                "time-bought": time_bought
-            });
+            let found = false;
+            
+            // append a new order to suborders
+            for (const subOrderIndex of Object.keys(trader_data[invesmentType][name]["sub-orders"])) {
+                if (trader_data[invesmentType][name]["sub-orders"][subOrderIndex]["price-bought"] === price &&
+                    trader_data[invesmentType][name]["sub-orders"][subOrderIndex]["time-bought"] === time_bought) {
+                    trader_data[invesmentType][name]["sub-orders"][subOrderIndex]["partial-amount"] += amount;
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                trader_data[invesmentType][name]["sub-orders"].push({
+                    "partial-amount": amount,
+                    "price-bought": price,
+                    "time-bought": time_bought
+                });
+            }
         } else {
             // create a new order
             trader_data[invesmentType][name] = {
@@ -522,7 +534,8 @@ class ProcesTrade {
     addProfit(amount, name, buy_price, sell_price, date_bought, date_sold, doFees, type = 'bazaar') {
         if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
 
-        const dateOfTransaction = morningTime(Date.now()).toString();
+        const now = new Date();
+        const dateOfTransaction = morningTime(now.getTime()).toString();
 
         // calculate the current profit
         let profitPerUnit;
@@ -918,6 +931,9 @@ class ProcesTrade {
 
         // adjust the amounts to reflect the sell claim
         let suborders = trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"];
+
+        // subtract the amount from the total selling amount
+        trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["total-selling-amount"] -= amount;
         
         while (suborders.length > 0) {
             const subOrder = suborders[0];
@@ -1022,7 +1038,7 @@ class ProcesTrade {
             // total up the amount that is unsold for each suborder
             let totalUnsold = 0;
             for (const subSellOrderIndex of Object.keys(sellOrder["sub-orders"])) {
-                totalUnsold += sellOrder["sub-orders"][subSellOrderIndex]["partial-selling-amount"] - sellOrder["sub-orders"][subSellOrderIndex]["partial-sold-amount"];
+                totalUnsold += sellOrder["sub-orders"][subSellOrderIndex]["partial-selling-amount"];
             }
 
             // check that the unsold amounts and name are the same as the current sell order 
@@ -1068,11 +1084,25 @@ class ProcesTrade {
         const invesmentType = getInvestmentType(product_list[name]["type"]); 
         for (const subSellOrder of currentSellOrder["sub-orders"]) {
             if (trader_data[invesmentType][name] != undefined) {
-                trader_data[invesmentType][name]["sub-orders"].push({
-                    "partial-amount": subSellOrder["partial-selling-amount"] - subSellOrder["partial-sold-amount"],
-                    "price-bought": subSellOrder["price-bought"],
-                    "time-bought": subSellOrder["time-bought"]
-                });
+                let found = false;
+                
+                // append a new order to suborders
+                for (const subOrderIndex of Object.keys(trader_data[invesmentType][name]["sub-orders"])) {
+                    if (trader_data[invesmentType][name]["sub-orders"][subOrderIndex]["price-bought"] === price &&
+                        trader_data[invesmentType][name]["sub-orders"][subOrderIndex]["time-bought"] === time_bought) {
+                        trader_data[invesmentType][name]["sub-orders"][subOrderIndex]["partial-amount"] += amount;
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    trader_data[invesmentType][name]["sub-orders"].push({
+                        "partial-amount": amount,
+                        "price-bought": price,
+                        "time-bought": time_bought
+                    });
+                }
             } else {
                 trader_data[invesmentType][name] = {
                     "type": product_list[name]["type"],
@@ -1422,15 +1452,22 @@ class UpdateOrderFillAmounts {
         const buyOrders = trader_data["buy-order-overview"]["buy-orders"];
         for (const buyOrderIndex in buyOrders) this.updateBuyOrderFillAmount(buyOrderIndex, buyOrders);
 
+        // Atomic write: write to temp file first, then rename to avoid corruption on read
+        const tempPath = traderDataPath + '.tmp';
         fs.writeFile(
-            traderDataPath, 
+            tempPath, 
             JSON.stringify(trader_data, null, 2), 
             function(err) {
                 if (err) {
-                    console.error('Error writing trader data file:', err);
-                    throw err;
+                    console.error('Error writing temp trader data file:', err);
+                } else {
+                    // Atomic rename - replaces the original file
+                    fs.rename(tempPath, traderDataPath, function(renameErr) {
+                        if (renameErr) {
+                            console.error('Error renaming temp file:', renameErr);
+                        }
+                    });
                 }
-                console.log('Successfully wrote trader data to file');
             }
         );
     }
@@ -1456,7 +1493,13 @@ class UpdateOrderFillAmounts {
             }
         }
 
-        if (sell_order_sell_summary_index === -1) return console.log('No sell order found to compare to', sellOrder);
+        if (sell_order_sell_summary_index === -1) {
+            const amountSold = sellOrder["total-selling-amount"];
+
+            trader_data["sell-order-overview"]["sell-orders"][sellOrderIndex] = this.updateSellOrderTraderData(amountSold, sellOrder);
+
+            return 'Completed the amount update for the sell order';
+        }
 
         if (sellSummary[sell_order_sell_summary_index]["orders"] > 1) return ('Sell order has multi order, not updating', sellOrder);
 
@@ -1520,7 +1563,13 @@ class UpdateOrderFillAmounts {
             }
         }
         
-        if (buy_order_buy_summary_index === -1) return console.log('No buy order found to compare to', buyOrder);
+        if (buy_order_buy_summary_index === -1) {
+            const amountSold = buyOrder["buying-amount"];
+
+            trader_data["buy-order-overview"]["buy-orders"][buyOrderIndex]["bought-amount"] = amountSold;
+
+            return 'Completed the amount update for the buy order';
+        }
         
         if (buySummary[buy_order_buy_summary_index]["orders"] > 1) return ('Buy order has multi order, not updating', buyOrder);
 

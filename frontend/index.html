@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyblock Flips - Trader Dashboard</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Skyblock Flips Trader Dashboard</h1>
+            <p class="subtitle">Real-time trading data and profit tracking</p>
+        </header>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <h3>Total Daily Profit</h3>
+                <p class="stat-value" id="totalDailyProfit">-</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Items Flipped</h3>
+                <p class="stat-value" id="totalFlipped">-</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Profit</h3>
+                <p class="stat-value" id="totalProfit">-</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Order Worth</h3>
+                <p class="stat-value" id="totalOrderWorth">-</p>
+            </div>
+            <div class="stat-card">
+                <h3>Active Buy Orders</h3>
+                <p class="stat-value" id="activeBuyOrders">-</p>
+            </div>
+            <div class="stat-card">
+                <h3>Active Sell Orders</h3>
+                <p class="stat-value" id="activeSellOrders">-</p>
+            </div>
+        </div>
+
+        <section class="dashboard-section full-width bazaar-snapshot-section">
+            <h2>Bazaar Snapshot</h2>
+            <div class="table-container">
+                <table id="bazaarSnapshotTable">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Buy Price</th>
+                            <th>Sell Price</th>
+                            <th>Spread</th>
+                            <th>Volume</th>
+                        </tr>
+                    </thead>
+                    <tbody id="bazaarSnapshotBody">
+                        <tr><td colspan="5" class="empty">Bazaar data unavailable</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <div class="dashboard-grid">
+            <!-- Buy Orders Section -->
+            <section class="dashboard-section">
+                <h2>Buy Orders</h2>
+                <div class="table-container">
+                    <table id="buyOrdersTable">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Buy Price</th>
+                                <th>Progress</th>
+                                <th>Total Worth</th>
+                                <th>Placed</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="buyOrdersBody">
+                            <tr><td colspan="6" class="empty">No buy orders</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Sell Orders Section -->
+            <section class="dashboard-section">
+                <h2>Sell Orders</h2>
+                <div class="table-container">
+                    <table id="sellOrdersTable">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Sell Price</th>
+                                <th>Sold / Total</th>
+                                <th>Total Worth</th>
+                                <th>Placed</th>
+                                <th>Earliest Bought</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="sellOrdersBody">
+                            <tr><td colspan="7" class="empty">No sell orders</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Investments Section -->
+            <section class="dashboard-section">
+                <h2>Current Investments</h2>
+                <div class="table-container">
+                    <table id="investmentsTable">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Highest Price</th>
+                            </tr>
+                        </thead>
+                        <tbody id="investmentsBody">
+                            <tr><td colspan="4" class="empty">No investments</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Active Auctions Section -->
+            <section class="dashboard-section">
+                <h2>Active Auctions</h2>
+                <div class="table-container">
+                    <table id="auctionsTable">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Price</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody id="auctionsBody">
+                            <tr><td colspan="3" class="empty">No active auctions</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Daily Profits Section -->
+            <section class="dashboard-section">
+                <h2>Today's Profit Breakdown</h2>
+                <div class="profit-breakdown">
+                    <div class="profit-item">
+                        <span class="label">Bazaar Profit:</span>
+                        <span class="value" id="bazaarProfit">-</span>
+                    </div>
+                    <div class="profit-item">
+                        <span class="label">Auction House Profit:</span>
+                        <span class="value" id="auctionProfit">-</span>
+                    </div>
+                    <div class="profit-item">
+                        <span class="label">Forge Profit:</span>
+                        <span class="value" id="forgeProfit">-</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- All Products Section -->
+            <section class="dashboard-section full-width">
+                <h2>All Products</h2>
+                <div class="table-container">
+                    <table id="productsTable">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Amount</th>
+                                <th>Profit</th>
+                                <th>Sold</th>
+                            </tr>
+                        </thead>
+                        <tbody id="productsBody">
+                            <tr><td colspan="4" class="empty">No products</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p>Last updated: <span id="lastUpdate">-</span></p>
+            <p class="update-info">Updates every 1 second</p>
+        </footer>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

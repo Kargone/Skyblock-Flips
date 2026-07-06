@@ -3,56 +3,92 @@
   "sell-order-overview": {
     "sell-orders": [
       {
-        "item-name": "Enchanted Brown Mushroom",
-        "price-sold": 2188,
-        "earliest-time-bought": 1782939823859,
-        "total-selling-amount": 2240,
+        "item-name": "? Fine Onyx Gemstone",
+        "price-sold": 30652,
+        "earliest-time-bought": 1783233866448,
+        "total-selling-amount": 3000,
         "has-been-claimed": false,
-        "sell-order-place-time": 1782941701688,
+        "sell-order-place-time": 1783357108564,
         "sub-orders": [
           {
             "partial-sold-amount": 0,
-            "partial-selling-amount": 2240,
-            "price-bought": 1600.5,
-            "projected-profit": 1266944,
-            "time-bought": 1782939823859,
-            "sell-order-place-time": 1782941701688
+            "partial-selling-amount": 3000,
+            "price-bought": 24836.5,
+            "projected-profit": 16527000,
+            "time-bought": 1783233866448,
+            "sell-order-place-time": 1783357108564
           }
         ]
       },
       {
-        "item-name": "Enchanted Brown Mushroom",
-        "price-sold": 2187.6,
-        "earliest-time-bought": 1782939823859,
-        "total-selling-amount": 2240,
+        "item-name": "? Fine Amber Gemstone",
+        "price-sold": 29858,
+        "earliest-time-bought": 1783233818052,
+        "total-selling-amount": 3000,
         "has-been-claimed": false,
-        "sell-order-place-time": 1782941738954,
+        "sell-order-place-time": 1783357103080,
         "sub-orders": [
           {
-            "partial-sold-amount": 278,
-            "partial-selling-amount": 2240,
-            "price-bought": 1600.5,
-            "projected-profit": 1266048,
-            "time-bought": 1782939823859,
-            "sell-order-place-time": 1782941738954
+            "partial-sold-amount": 54,
+            "partial-selling-amount": 3000,
+            "price-bought": 26300.8,
+            "projected-profit": 9775800,
+            "time-bought": 1783233818052,
+            "sell-order-place-time": 1783357103080
           }
         ]
       },
       {
-        "item-name": "Enchanted Brown Mushroom",
-        "price-sold": 2187.5,
-        "earliest-time-bought": 1782939823859,
-        "total-selling-amount": 520,
+        "item-name": "Enchanted Lily Pad",
+        "price-sold": 6802,
+        "earliest-time-bought": 1783233693518,
+        "total-selling-amount": 5000,
         "has-been-claimed": false,
-        "sell-order-place-time": 1782941747505,
+        "sell-order-place-time": 1783357094374,
         "sub-orders": [
           {
-            "partial-sold-amount": 0,
-            "partial-selling-amount": 520,
-            "price-bought": 1600.5,
-            "projected-profit": 293852,
-            "time-bought": 1782939823859,
-            "sell-order-place-time": 1782941747505
+            "partial-sold-amount": 217,
+            "partial-selling-amount": 5000,
+            "price-bought": 5907.1,
+            "projected-profit": 4134500,
+            "time-bought": 1783233693518,
+            "sell-order-place-time": 1783357094374
+          }
+        ]
+      },
+      {
+        "item-name": "Glacite Jewel",
+        "price-sold": 26081,
+        "earliest-time-bought": 1783221726433,
+        "total-selling-amount": 506,
+        "has-been-claimed": false,
+        "sell-order-place-time": 1783356998541,
+        "sub-orders": [
+          {
+            "partial-sold-amount": 311,
+            "partial-selling-amount": 506,
+            "price-bought": 23875,
+            "projected-profit": 984271.2000000001,
+            "time-bought": 1783221726433,
+            "sell-order-place-time": 1783356998541
+          }
+        ]
+      },
+      {
+        "item-name": "? Fine Ruby Gemstone",
+        "price-sold": 28014,
+        "earliest-time-bought": 1783358403255,
+        "total-selling-amount": 4000,
+        "has-been-claimed": false,
+        "sell-order-place-time": 1783364804295,
+        "sub-orders": [
+          {
+            "partial-sold-amount": 448,
+            "partial-selling-amount": 4000,
+            "price-bought": 25109.1,
+            "projected-profit": 10499200,
+            "time-bought": 1783358403255,
+            "sell-order-place-time": 1783364804295
           }
         ]
       }
@@ -61,61 +97,326 @@
   "buy-order-overview": {
     "buy-orders": [
       {
-        "item-name": "Enchanted Acacia Log",
-        "bought-amount": 3019,
-        "buying-amount": 5000,
-        "price-buying": 1686,
-        "projected-profit": 5827980,
-        "has-been-claimed": false,
-        "buy-order-place-time": 1782939256276
-      },
-      {
-        "item-name": "Enchanted Slime Block",
+        "item-name": "Polished Pumpkin",
         "bought-amount": 0,
-        "buying-amount": 1000,
-        "price-buying": 61005.7,
-        "projected-profit": 57989627,
+        "buying-amount": 2000,
+        "price-buying": 250955,
+        "projected-profit": 3492722,
         "has-been-claimed": false,
-        "buy-order-place-time": 1782939791898
+        "buy-order-place-time": 1783358290426
       },
       {
-        "item-name": "Ectoplasm",
-        "bought-amount": 15,
-        "buying-amount": 500,
-        "price-buying": 175000.6,
-        "projected-profit": 6214140,
+        "item-name": "Enchanted Red Mushroom Block",
+        "bought-amount": 0,
+        "buying-amount": 2000,
+        "price-buying": 251217.6,
+        "projected-profit": 6914454,
         "has-been-claimed": false,
-        "buy-order-place-time": 1782939872600
+        "buy-order-place-time": 1783358306804
       },
       {
-        "item-name": "Azure Shard",
-        "bought-amount": 683,
+        "item-name": "Enchanted Brown Mushroom Block",
+        "bought-amount": 16,
+        "buying-amount": 2000,
+        "price-buying": 250943,
+        "projected-profit": 12910634,
+        "has-been-claimed": false,
+        "buy-order-place-time": 1783358315484
+      },
+      {
+        "item-name": "Compacted Wild Rose",
+        "bought-amount": 1638,
+        "buying-amount": 2000,
+        "price-buying": 100070.7,
+        "projected-profit": 6646434,
+        "has-been-claimed": false,
+        "buy-order-place-time": 1783358323081
+      },
+      {
+        "item-name": "Squash",
+        "bought-amount": 2080,
+        "buying-amount": 4000,
+        "price-buying": 73211.3,
+        "projected-profit": 5736028,
+        "has-been-claimed": false,
+        "buy-order-place-time": 1783358349745
+      },
+      {
+        "item-name": "Compacted Moonflower",
+        "bought-amount": 0,
+        "buying-amount": 1749,
+        "price-buying": 106577.7,
+        "projected-profit": 5401158,
+        "has-been-claimed": true,
+        "buy-order-place-time": 1783358364790
+      },
+      {
+        "item-name": "? Fine Topaz Gemstone",
+        "bought-amount": 29,
         "buying-amount": 5000,
-        "price-buying": 2467.8,
-        "projected-profit": 6484860,
+        "price-buying": 27133.8,
+        "projected-profit": 22760205,
         "has-been-claimed": false,
-        "buy-order-place-time": 1782940469954
+        "buy-order-place-time": 1783358387361
+      },
+      {
+        "item-name": "? Fine Opal Gemstone",
+        "bought-amount": 0,
+        "buying-amount": 5000,
+        "price-buying": 28016.6,
+        "projected-profit": 36504290,
+        "has-been-claimed": false,
+        "buy-order-place-time": 1783358415617
+      },
+      {
+        "item-name": "Red Goblin Egg",
+        "bought-amount": 1094,
+        "buying-amount": 3000,
+        "price-buying": 23047.8,
+        "projected-profit": 19303497,
+        "has-been-claimed": false,
+        "buy-order-place-time": 1783358440029
+      },
+      {
+        "item-name": "Agarimoo Tongue",
+        "bought-amount": 0,
+        "buying-amount": 4000,
+        "price-buying": 9587.4,
+        "projected-profit": 17086440,
+        "has-been-claimed": false,
+        "buy-order-place-time": 1783358480832
+      },
+      {
+        "item-name": "Exportable Carrots",
+        "bought-amount": 305,
+        "buying-amount": 4000,
+        "price-buying": 9376.5,
+        "projected-profit": 19236444,
+        "has-been-claimed": false,
+        "buy-order-place-time": 1783358491356
+      },
+      {
+        "item-name": "Extremely Real Shuriken",
+        "bought-amount": 4,
+        "buying-amount": 1000,
+        "price-buying": 98987.6,
+        "projected-profit": 13745482,
+        "has-been-claimed": false,
+        "buy-order-place-time": 1783358507544
+      },
+      {
+        "item-name": "Whale Bait",
+        "bought-amount": 0,
+        "buying-amount": 5000,
+        "price-buying": 7818.9,
+        "projected-profit": 5417880,
+        "has-been-claimed": false,
+        "buy-order-place-time": 1783358558239
+      },
+      {
+        "item-name": "Orb of Energy",
+        "bought-amount": 809,
+        "buying-amount": 4000,
+        "price-buying": 7001.8,
+        "projected-profit": 15143732,
+        "has-been-claimed": false,
+        "buy-order-place-time": 1783358576883
+      },
+      {
+        "item-name": "Unstable Dragon Fragment",
+        "bought-amount": 4000,
+        "buying-amount": 4000,
+        "price-buying": 13585.2,
+        "projected-profit": 8836644,
+        "has-been-claimed": false,
+        "buy-order-place-time": 1783358647103
+      },
+      {
+        "item-name": "Strong Dragon Fragment",
+        "bought-amount": 65,
+        "buying-amount": 4000,
+        "price-buying": 26403.1,
+        "projected-profit": 36851768,
+        "has-been-claimed": false,
+        "buy-order-place-time": 1783358673977
+      },
+      {
+        "item-name": "Wise Dragon Fragment",
+        "bought-amount": 374,
+        "buying-amount": 4000,
+        "price-buying": 26444.2,
+        "projected-profit": 16361084,
+        "has-been-claimed": false,
+        "buy-order-place-time": 1783358686896
+      },
+      {
+        "item-name": "Silver Fang",
+        "bought-amount": 0,
+        "buying-amount": 10000,
+        "price-buying": 4,
+        "projected-profit": 87062180,
+        "has-been-claimed": false,
+        "buy-order-place-time": 1783358706494
+      },
+      {
+        "item-name": "Enchanted Packed Ice",
+        "bought-amount": 1,
+        "buying-amount": 4000,
+        "price-buying": 15107.2,
+        "projected-profit": 20364308,
+        "has-been-claimed": false,
+        "buy-order-place-time": 1783358778587
       }
     ]
   },
   "short-term-investments": {
-    "Titanic Experience Bottle": {
+    "Silver Lotus": {
+      "type": "short-term-investment",
+      "sub-orders": [
+        {
+          "partial-amount": 2876,
+          "price-bought": 10252,
+          "time-bought": 1783102815277
+        },
+        {
+          "partial-amount": 35,
+          "price-bought": 651.8,
+          "time-bought": 1783187004417
+        },
+        {
+          "partial-amount": 381,
+          "price-bought": 650.7,
+          "time-bought": 1783185984223
+        }
+      ]
+    },
+    "Sulphuric Coal": {
+      "type": "short-term-investment",
+      "sub-orders": [
+        {
+          "partial-amount": 5000,
+          "price-bought": 7301.4,
+          "time-bought": 1783103145257
+        }
+      ]
+    },
+    "Dwarven O's Ore Oats": {
       "type": "short-term-investment",
       "sub-orders": [
         {
           "partial-amount": 1,
-          "price-bought": 594502,
-          "time-bought": 1782939504775
+          "price-bought": 1099.6,
+          "time-bought": 1783221548027
         }
       ]
     },
-    "Booster Cookie": {
+    "? Fine Amber Gemstone": {
       "type": "short-term-investment",
       "sub-orders": [
         {
-          "partial-amount": 12,
-          "price-bought": 13880225.833333334,
-          "time-bought": 1782941902070
+          "partial-amount": 564,
+          "price-bought": 26300,
+          "time-bought": 1783221303265
+        }
+      ]
+    },
+    "? Fine Opal Gemstone": {
+      "type": "short-term-investment",
+      "sub-orders": [
+        {
+          "partial-amount": 367,
+          "price-bought": 26876,
+          "time-bought": 1783221329732
+        }
+      ]
+    },
+    "Salt Cube": {
+      "type": "short-term-investment",
+      "sub-orders": [
+        {
+          "partial-amount": 1,
+          "price-bought": 9000,
+          "time-bought": 1783355479699
+        }
+      ]
+    },
+    "Enchanted Cookie": {
+      "type": "short-term-investment",
+      "sub-orders": [
+        {
+          "partial-amount": 201,
+          "price-bought": 74582,
+          "time-bought": 1783233574357
+        }
+      ]
+    },
+    "Enchanted Eye of Ender": {
+      "type": "short-term-investment",
+      "sub-orders": [
+        {
+          "partial-amount": 32,
+          "price-bought": 6326,
+          "time-bought": 1783233805325
+        }
+      ]
+    },
+    "Enchanted Brown Mushroom Block": {
+      "type": "short-term-investment",
+      "sub-orders": [
+        {
+          "partial-amount": 61,
+          "price-bought": 247774,
+          "time-bought": 1783233543715
+        }
+      ]
+    },
+    "Enchanted Red Mushroom Block": {
+      "type": "short-term-investment",
+      "sub-orders": [
+        {
+          "partial-amount": 416,
+          "price-bought": 251000,
+          "time-bought": 1783233555204
+        }
+      ]
+    },
+    "Enchanted Packed Ice": {
+      "type": "short-term-investment",
+      "sub-orders": [
+        {
+          "partial-amount": 251,
+          "price-bought": 14216,
+          "time-bought": 1783233877918
+        }
+      ]
+    },
+    "Enchanted Slime Block": {
+      "type": "short-term-investment",
+      "sub-orders": [
+        {
+          "partial-amount": 6,
+          "price-bought": 125801,
+          "time-bought": 1783233587008
+        }
+      ]
+    },
+    "? Fine Topaz Gemstone": {
+      "type": "short-term-investment",
+      "sub-orders": [
+        {
+          "partial-amount": 65,
+          "price-bought": 25003,
+          "time-bought": 1783233827445
+        }
+      ]
+    },
+    "Polished Pumpkin": {
+      "type": "short-term-investment",
+      "sub-orders": [
+        {
+          "partial-amount": 79,
+          "price-bought": 244716,
+          "time-bought": 1783233530813
         }
       ]
     }
@@ -129,42 +430,782 @@
     "Carrot": {
       "current-amount": 0,
       "buy-order-stats": {
-        "total-buy-orders-created": 1,
-        "total-buy-amount-claimed": 1,
-        "total-buy-amount-placed-for-buying": 2,
-        "buy-average": 1
+        "total-buy-orders-created": 2,
+        "total-buy-amount-claimed": 128,
+        "total-buy-amount-placed-for-buying": 256,
+        "buy-average": 64
       },
       "sell-order-stats": {
         "total-sell-orders-created": 3,
-        "total-sell-amount-claimed": 128,
+        "total-sell-amount-claimed": 192,
         "total-sell-amount-placed-for-selling": 192,
-        "sell-average": 42.666666666666664
+        "sell-average": 64
       },
       "max-amount": 2000,
-      "total-profit-made": -459.81600000000003,
-      "total-sold": 257,
+      "total-profit-made": 636.377,
+      "total-sold": 193,
       "crafting-materials": "none"
     },
-    "Enchanted Rabbit Hide": {
-      "current-amount": 0,
+    "Enchanted Cocoa Beans": {
+      "current-amount": 162,
+      "buy-order-stats": {
+        "total-buy-orders-created": 0,
+        "total-buy-amount-claimed": 0,
+        "total-buy-amount-placed-for-buying": 0,
+        "buy-average": 0
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 0,
+        "total-sell-amount-claimed": 0,
+        "total-sell-amount-placed-for-selling": 0,
+        "sell-average": 0
+      },
+      "max-amount": 2000,
+      "total-profit-made": -7167.801999999993,
+      "total-sold": 248,
+      "crafting-materials": "none"
+    },
+    "Mutant Nether Wart": {
+      "current-amount": 4,
       "buy-order-stats": {
         "total-buy-orders-created": 1,
-        "total-buy-amount-claimed": 1,
-        "total-buy-amount-placed-for-buying": 2,
-        "buy-average": 1
+        "total-buy-amount-claimed": 1408,
+        "total-buy-amount-placed-for-buying": 2000,
+        "buy-average": 1408
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 0,
+        "total-sell-amount-claimed": 0,
+        "total-sell-amount-placed-for-selling": 0,
+        "sell-average": 0
+      },
+      "max-amount": 2000,
+      "total-profit-made": 3083520,
+      "total-sold": 1408,
+      "crafting-materials": "none"
+    },
+    "Ectoplasm": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 6,
+        "total-buy-amount-claimed": 987,
+        "total-buy-amount-placed-for-buying": 5724,
+        "buy-average": 164.5
       },
       "sell-order-stats": {
         "total-sell-orders-created": 2,
-        "total-sell-amount-claimed": 1,
-        "total-sell-amount-placed-for-selling": 2,
-        "sell-average": 0.5
+        "total-sell-amount-claimed": 660,
+        "total-sell-amount-placed-for-selling": 856,
+        "sell-average": 250
       },
       "max-amount": 2000,
-      "total-profit-made": 54.56800000000009,
+      "total-profit-made": 14265402.199999996,
+      "total-sold": 661,
+      "crafting-materials": "none"
+    },
+    "Enchanted Acacia Log": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 2,
+        "total-buy-amount-claimed": 7138,
+        "total-buy-amount-placed-for-buying": 15000,
+        "buy-average": 3569
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 5,
+        "total-sell-amount-claimed": 7138,
+        "total-sell-amount-placed-for-selling": 12010,
+        "sell-average": 1427.6
+      },
+      "max-amount": 2000,
+      "total-profit-made": 2440988.5960000004,
+      "total-sold": 7138,
+      "crafting-materials": "none"
+    },
+    "Enchanted Sand": {
+      "current-amount": 90,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 10000,
+        "total-buy-amount-placed-for-buying": 20000,
+        "buy-average": 10000
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 0,
+        "total-sell-amount-claimed": 3060,
+        "total-sell-amount-placed-for-selling": 0,
+        "sell-average": 0
+      },
+      "max-amount": 2000,
+      "total-profit-made": 5970492.8975,
+      "total-sold": 3108,
+      "crafting-materials": "none"
+    },
+    "Enchanted Slime Block": {
+      "current-amount": 6,
+      "buy-order-stats": {
+        "total-buy-orders-created": 4,
+        "total-buy-amount-claimed": 1459,
+        "total-buy-amount-placed-for-buying": 7000,
+        "buy-average": 364.75
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 1,
+        "total-sell-amount-claimed": 0,
+        "total-sell-amount-placed-for-selling": 112,
+        "sell-average": 0
+      },
+      "max-amount": 2000,
+      "total-profit-made": 4649132,
+      "total-sold": 1453,
+      "crafting-materials": "none"
+    },
+    "undefined": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 0,
+        "buy-average": 0
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 0,
+        "total-sell-amount-claimed": 0,
+        "total-sell-amount-placed-for-selling": 0,
+        "sell-average": 0
+      },
+      "max-amount": 2000,
+      "total-profit-made": 0,
+      "total-sold": 0,
+      "crafting-materials": "none"
+    },
+    "Azure Shard": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 2825,
+        "total-buy-amount-placed-for-buying": 7760,
+        "buy-average": 2825
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 3,
+        "total-sell-amount-claimed": 2825,
+        "total-sell-amount-placed-for-selling": 2159,
+        "sell-average": 941.6666666666666
+      },
+      "max-amount": 2000,
+      "total-profit-made": 3764754.728999999,
+      "total-sold": 2825,
+      "crafting-materials": "none"
+    },
+    "Compost": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 2,
+        "total-buy-amount-claimed": 5007,
+        "total-buy-amount-placed-for-buying": 15000,
+        "buy-average": 2503.5
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 3,
+        "total-sell-amount-claimed": 4205,
+        "total-sell-amount-placed-for-selling": 7192,
+        "sell-average": 767.3333333333334
+      },
+      "max-amount": 2000,
+      "total-profit-made": 3803425.219999999,
+      "total-sold": 4670,
+      "crafting-materials": "none"
+    },
+    "Compacted Wild Rose": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 3,
+        "total-buy-amount-claimed": 4000,
+        "total-buy-amount-placed-for-buying": 8000,
+        "buy-average": 1333.3333333333333
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 2,
+        "total-sell-amount-claimed": 2861,
+        "total-sell-amount-placed-for-selling": 2000,
+        "sell-average": 1000
+      },
+      "max-amount": 2000,
+      "total-profit-made": 9712628.20999999,
+      "total-sold": 2861,
+      "crafting-materials": "none"
+    },
+    "Enchanted Raw Salmon": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 5000,
+        "total-buy-amount-placed-for-buying": 10000,
+        "buy-average": 5000
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 8,
+        "total-sell-amount-claimed": 66,
+        "total-sell-amount-placed-for-selling": 15430,
+        "sell-average": 8.25
+      },
+      "max-amount": 2000,
+      "total-profit-made": 828070.6860000002,
+      "total-sold": 2778,
+      "crafting-materials": "none"
+    },
+    "Holy Dragon Fragment": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 5000,
+        "total-buy-amount-placed-for-buying": 10000,
+        "buy-average": 5000
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 2,
+        "total-sell-amount-claimed": 5000,
+        "total-sell-amount-placed-for-selling": 2926,
+        "sell-average": 2500
+      },
+      "max-amount": 2000,
+      "total-profit-made": 4159280.7299999967,
+      "total-sold": 5000,
+      "crafting-materials": "none"
+    },
+    "Ink Sac": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 5000,
+        "total-buy-amount-placed-for-buying": 10000,
+        "buy-average": 5000
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 1,
+        "total-sell-amount-claimed": 5000,
+        "total-sell-amount-placed-for-selling": 5000,
+        "sell-average": 5000
+      },
+      "max-amount": 2000,
+      "total-profit-made": 3467100,
+      "total-sold": 5000,
+      "crafting-materials": "none"
+    },
+    "? Fine Amber Gemstone": {
+      "current-amount": 564,
+      "buy-order-stats": {
+        "total-buy-orders-created": 3,
+        "total-buy-amount-claimed": 5564,
+        "total-buy-amount-placed-for-buying": 15000,
+        "buy-average": 1854.6666666666667
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 0,
+        "total-sell-amount-claimed": 530,
+        "total-sell-amount-placed-for-selling": 0,
+        "sell-average": 0
+      },
+      "max-amount": 2000,
+      "total-profit-made": 1405554.7000000004,
+      "total-sold": 530,
+      "crafting-materials": "none"
+    },
+    "Compacted Sunflower": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 4,
+        "total-buy-amount-claimed": 2688,
+        "total-buy-amount-placed-for-buying": 8000,
+        "buy-average": 672
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 5,
+        "total-sell-amount-claimed": 2688,
+        "total-sell-amount-placed-for-selling": 2436,
+        "sell-average": 537.6
+      },
+      "max-amount": 2000,
+      "total-profit-made": 9313326.379999988,
+      "total-sold": 2688,
+      "crafting-materials": "none"
+    },
+    "? Fine Ruby Gemstone": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 2,
+        "total-buy-amount-claimed": 5124,
+        "total-buy-amount-placed-for-buying": 10000,
+        "buy-average": 2562
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 1,
+        "total-sell-amount-claimed": 1124,
+        "total-sell-amount-placed-for-selling": 1124,
+        "sell-average": 1124
+      },
+      "max-amount": 2000,
+      "total-profit-made": 6554606,
+      "total-sold": 1124,
+      "crafting-materials": "none"
+    },
+    "? Fine Amethyst Gemstone": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 2,
+        "total-buy-amount-claimed": 1373,
+        "total-buy-amount-placed-for-buying": 7000,
+        "buy-average": 686.5
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 1,
+        "total-sell-amount-claimed": 1077,
+        "total-sell-amount-placed-for-selling": 1077,
+        "sell-average": 1077
+      },
+      "max-amount": 2000,
+      "total-profit-made": 7569478.42,
+      "total-sold": 1373,
+      "crafting-materials": "none"
+    },
+    "Enchanted Titanium": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 3,
+        "total-buy-amount-claimed": 8310,
+        "total-buy-amount-placed-for-buying": 15824,
+        "buy-average": 2770
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 2,
+        "total-sell-amount-claimed": 4358,
+        "total-sell-amount-placed-for-selling": 4310,
+        "sell-average": 2155
+      },
+      "max-amount": 2000,
+      "total-profit-made": 6791178.78,
+      "total-sold": 4358,
+      "crafting-materials": "none"
+    },
+    "Strong Dragon Fragment": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 61,
+        "total-buy-amount-placed-for-buying": 5000,
+        "buy-average": 61
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 0,
+        "total-sell-amount-claimed": 0,
+        "total-sell-amount-placed-for-selling": 0,
+        "sell-average": 0
+      },
+      "max-amount": 2000,
+      "total-profit-made": 117860.69999999997,
+      "total-sold": 61,
+      "crafting-materials": "none"
+    },
+    "Polished Pumpkin": {
+      "current-amount": 79,
+      "buy-order-stats": {
+        "total-buy-orders-created": 4,
+        "total-buy-amount-claimed": 1227,
+        "total-buy-amount-placed-for-buying": 6000,
+        "buy-average": 306.75
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 1,
+        "total-sell-amount-claimed": 1000,
+        "total-sell-amount-placed-for-selling": 1000,
+        "sell-average": 1000
+      },
+      "max-amount": 2000,
+      "total-profit-made": 3350012.0000000116,
+      "total-sold": 1148,
+      "crafting-materials": "none"
+    },
+    "Silver Magmafish": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 230,
+        "total-buy-amount-placed-for-buying": 5000,
+        "buy-average": 230
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 1,
+        "total-sell-amount-claimed": 230,
+        "total-sell-amount-placed-for-selling": 230,
+        "sell-average": 230
+      },
+      "max-amount": 2000,
+      "total-profit-made": 149335.7799999999,
+      "total-sold": 230,
+      "crafting-materials": "none"
+    },
+    "Enchanted Oak Log": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 338,
+        "total-buy-amount-placed-for-buying": 10000,
+        "buy-average": 338
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 3,
+        "total-sell-amount-claimed": 329,
+        "total-sell-amount-placed-for-selling": 685,
+        "sell-average": 109.66666666666667
+      },
+      "max-amount": 2000,
+      "total-profit-made": 38437.18699999999,
+      "total-sold": 338,
+      "crafting-materials": "none"
+    },
+    "Deep Root": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 172,
+        "total-buy-amount-placed-for-buying": 5000,
+        "buy-average": 172
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 1,
+        "total-sell-amount-claimed": 172,
+        "total-sell-amount-placed-for-selling": 172,
+        "sell-average": 172
+      },
+      "max-amount": 2000,
+      "total-profit-made": 1532416.8,
+      "total-sold": 172,
+      "crafting-materials": "none"
+    },
+    "Enchanted Cookie": {
+      "current-amount": 201,
+      "buy-order-stats": {
+        "total-buy-orders-created": 2,
+        "total-buy-amount-claimed": 1201,
+        "total-buy-amount-placed-for-buying": 6000,
+        "buy-average": 600.5
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 1,
+        "total-sell-amount-claimed": 1000,
+        "total-sell-amount-placed-for-selling": 1000,
+        "sell-average": 1000
+      },
+      "max-amount": 2000,
+      "total-profit-made": 2212230.000000003,
+      "total-sold": 1000,
+      "crafting-materials": "none"
+    },
+    "Enchanted Cactus": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 2,
+        "total-buy-amount-claimed": 1084,
+        "total-buy-amount-placed-for-buying": 4000,
+        "buy-average": 542
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 0,
+        "total-sell-amount-claimed": 21,
+        "total-sell-amount-placed-for-selling": 0,
+        "sell-average": 0
+      },
+      "max-amount": 2000,
+      "total-profit-made": 289213.0499999999,
+      "total-sold": 105,
+      "crafting-materials": "none"
+    },
+    "Exportable Carrots": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 5000,
+        "total-buy-amount-placed-for-buying": 10000,
+        "buy-average": 5000
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 4,
+        "total-sell-amount-claimed": 5000,
+        "total-sell-amount-placed-for-selling": 10000,
+        "sell-average": 1250
+      },
+      "max-amount": 2000,
+      "total-profit-made": 7440204.800000004,
+      "total-sold": 5000,
+      "crafting-materials": "none"
+    },
+    "Enchanted Lush Berberis": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 5000,
+        "total-buy-amount-placed-for-buying": 10000,
+        "buy-average": 5000
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 0,
+        "total-sell-amount-claimed": 2404,
+        "total-sell-amount-placed-for-selling": 0,
+        "sell-average": 0
+      },
+      "max-amount": 2000,
+      "total-profit-made": 370768.92,
+      "total-sold": 2404,
+      "crafting-materials": "none"
+    },
+    "Sulphuric Coal": {
+      "current-amount": 5000,
+      "buy-order-stats": {
+        "total-buy-orders-created": 2,
+        "total-buy-amount-claimed": 5001,
+        "total-buy-amount-placed-for-buying": 15000,
+        "buy-average": 2500.5
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 6,
+        "total-sell-amount-claimed": 0,
+        "total-sell-amount-placed-for-selling": 14480,
+        "sell-average": 0
+      },
+      "max-amount": 2000,
+      "total-profit-made": -54.29099999999928,
       "total-sold": 1,
       "crafting-materials": "none"
     },
-    "Titanic Experience Bottle": {
+    "Tasty Cheese": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 5000,
+        "total-buy-amount-placed-for-buying": 8800,
+        "buy-average": 5000
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 2,
+        "total-sell-amount-claimed": 4480,
+        "total-sell-amount-placed-for-selling": 4480,
+        "sell-average": 2240
+      },
+      "max-amount": 2000,
+      "total-profit-made": 2338061.5999999996,
+      "total-sold": 5000,
+      "crafting-materials": "none"
+    },
+    "Enchanted Sugar Cane": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 1398,
+        "total-buy-amount-placed-for-buying": 2000,
+        "buy-average": 1398
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 1,
+        "total-sell-amount-claimed": 1398,
+        "total-sell-amount-placed-for-selling": 1398,
+        "sell-average": 1398
+      },
+      "max-amount": 2000,
+      "total-profit-made": 6109763.279999999,
+      "total-sold": 1398,
+      "crafting-materials": "none"
+    },
+    "Jacob's Ticket": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 2,
+        "total-buy-amount-claimed": 2261,
+        "total-buy-amount-placed-for-buying": 10000,
+        "buy-average": 1130.5
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 1,
+        "total-sell-amount-claimed": 2149,
+        "total-sell-amount-placed-for-selling": 2149,
+        "sell-average": 2149
+      },
+      "max-amount": 2000,
+      "total-profit-made": 4200409.540000001,
+      "total-sold": 2261,
+      "crafting-materials": "none"
+    },
+    "Silver Lotus": {
+      "current-amount": 3292,
+      "buy-order-stats": {
+        "total-buy-orders-created": 3,
+        "total-buy-amount-claimed": 3708,
+        "total-buy-amount-placed-for-buying": 17760,
+        "buy-average": 1236
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 2,
+        "total-sell-amount-claimed": 0,
+        "total-sell-amount-placed-for-selling": 4480,
+        "sell-average": 0
+      },
+      "max-amount": 2000,
+      "total-profit-made": -2614836.62,
+      "total-sold": 416,
+      "crafting-materials": "none"
+    },
+    "Silver Fang": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 3053,
+        "total-buy-amount-placed-for-buying": 7760,
+        "buy-average": 3053
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 3,
+        "total-sell-amount-claimed": 2974,
+        "total-sell-amount-placed-for-selling": 2390,
+        "sell-average": 991.3333333333334
+      },
+      "max-amount": 2000,
+      "total-profit-made": 4788852.410999999,
+      "total-sold": 2974,
+      "crafting-materials": "none"
+    },
+    "Treasure Bait": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 335,
+        "total-buy-amount-placed-for-buying": 5000,
+        "buy-average": 335
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 1,
+        "total-sell-amount-claimed": 335,
+        "total-sell-amount-placed-for-selling": 335,
+        "sell-average": 335
+      },
+      "max-amount": 2000,
+      "total-profit-made": 206514.435,
+      "total-sold": 335,
+      "crafting-materials": "none"
+    },
+    "Agarimoo Tongue": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 2,
+        "total-buy-amount-claimed": 35,
+        "total-buy-amount-placed-for-buying": 7000,
+        "buy-average": 17.5
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 0,
+        "total-sell-amount-claimed": 0,
+        "total-sell-amount-placed-for-selling": 0,
+        "sell-average": 0
+      },
+      "max-amount": 2000,
+      "total-profit-made": 7944.630000000004,
+      "total-sold": 35,
+      "crafting-materials": "none"
+    },
+    "Enchanted Eye of Ender": {
+      "current-amount": 32,
+      "buy-order-stats": {
+        "total-buy-orders-created": 2,
+        "total-buy-amount-claimed": 2859,
+        "total-buy-amount-placed-for-buying": 12760,
+        "buy-average": 1429.5
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 2,
+        "total-sell-amount-claimed": 2827,
+        "total-sell-amount-placed-for-selling": 2827,
+        "sell-average": 1413.5
+      },
+      "max-amount": 2000,
+      "total-profit-made": 5311339.010999998,
+      "total-sold": 2827,
+      "crafting-materials": "none"
+    },
+    "Enchanted Packed Ice": {
+      "current-amount": 251,
+      "buy-order-stats": {
+        "total-buy-orders-created": 2,
+        "total-buy-amount-claimed": 755,
+        "total-buy-amount-placed-for-buying": 10000,
+        "buy-average": 377.5
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 0,
+        "total-sell-amount-claimed": 0,
+        "total-sell-amount-placed-for-selling": 0,
+        "sell-average": 0
+      },
+      "max-amount": 2000,
+      "total-profit-made": 27118.43999999997,
+      "total-sold": 504,
+      "crafting-materials": "none"
+    },
+    "Extremely Real Shuriken": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 118,
+        "total-buy-amount-placed-for-buying": 1000,
+        "buy-average": 118
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 1,
+        "total-sell-amount-claimed": 118,
+        "total-sell-amount-placed-for-selling": 118,
+        "sell-average": 118
+      },
+      "max-amount": 2000,
+      "total-profit-made": 1264139.9,
+      "total-sold": 118,
+      "crafting-materials": "none"
+    },
+    "? Fine Citrine Gemstone": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 3000,
+        "total-buy-amount-placed-for-buying": 6000,
+        "buy-average": 3000
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 2,
+        "total-sell-amount-claimed": 1698,
+        "total-sell-amount-placed-for-selling": 2685,
+        "sell-average": 849
+      },
+      "max-amount": 2000,
+      "total-profit-made": 5823549.120000003,
+      "total-sold": 3000,
+      "crafting-materials": "none"
+    },
+    "? Fine Jade Gemstone": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 2,
+        "total-buy-amount-claimed": 8000,
+        "total-buy-amount-placed-for-buying": 16000,
+        "buy-average": 4000
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 2,
+        "total-sell-amount-claimed": 5435,
+        "total-sell-amount-placed-for-selling": 3152,
+        "sell-average": 2717.5
+      },
+      "max-amount": 2000,
+      "total-profit-made": 15944423.049999997,
+      "total-sold": 5435,
+      "crafting-materials": "none"
+    },
+    "Dwarven O's Ore Oats": {
       "current-amount": 1,
       "buy-order-stats": {
         "total-buy-orders-created": 0,
@@ -183,7 +1224,7 @@
       "total-sold": 0,
       "crafting-materials": "none"
     },
-    "Enchanted Brown Mushroom": {
+    "Enchanted Jungle Log": {
       "current-amount": 0,
       "buy-order-stats": {
         "total-buy-orders-created": 1,
@@ -193,22 +1234,98 @@
       },
       "sell-order-stats": {
         "total-sell-orders-created": 1,
-        "total-sell-amount-claimed": 0,
+        "total-sell-amount-claimed": 5000,
         "total-sell-amount-placed-for-selling": 5000,
-        "sell-average": 0
+        "sell-average": 5000
       },
       "max-amount": 2000,
-      "total-profit-made": 0,
-      "total-sold": 0,
+      "total-profit-made": 1135249.9999999995,
+      "total-sold": 5000,
       "crafting-materials": "none"
     },
-    "Booster Cookie": {
-      "current-amount": 12,
+    "Purple Candy": {
+      "current-amount": 0,
       "buy-order-stats": {
-        "total-buy-orders-created": 0,
-        "total-buy-amount-claimed": 0,
-        "total-buy-amount-placed-for-buying": 0,
-        "buy-average": 0
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 3000,
+        "total-buy-amount-placed-for-buying": 6000,
+        "buy-average": 3000
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 1,
+        "total-sell-amount-claimed": 3000,
+        "total-sell-amount-placed-for-selling": 3000,
+        "sell-average": 3000
+      },
+      "max-amount": 2000,
+      "total-profit-made": 7771200,
+      "total-sold": 3000,
+      "crafting-materials": "none"
+    },
+    "Orb of Energy": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 447,
+        "total-buy-amount-placed-for-buying": 5000,
+        "buy-average": 447
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 1,
+        "total-sell-amount-claimed": 447,
+        "total-sell-amount-placed-for-selling": 447,
+        "sell-average": 447
+      },
+      "max-amount": 2000,
+      "total-profit-made": 3494739.87,
+      "total-sold": 447,
+      "crafting-materials": "none"
+    },
+    "Glacite Jewel": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 1108,
+        "total-buy-amount-placed-for-buying": 4000,
+        "buy-average": 1108
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 4,
+        "total-sell-amount-claimed": 602,
+        "total-sell-amount-placed-for-selling": 3347,
+        "sell-average": 150.5
+      },
+      "max-amount": 2000,
+      "total-profit-made": 1408951.8699999999,
+      "total-sold": 602,
+      "crafting-materials": "none"
+    },
+    "Enchanted Brown Mushroom Block": {
+      "current-amount": 61,
+      "buy-order-stats": {
+        "total-buy-orders-created": 2,
+        "total-buy-amount-claimed": 149,
+        "total-buy-amount-placed-for-buying": 3000,
+        "buy-average": 74.5
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 1,
+        "total-sell-amount-claimed": 88,
+        "total-sell-amount-placed-for-selling": 88,
+        "sell-average": 88
+      },
+      "max-amount": 2000,
+      "total-profit-made": 482323.6,
+      "total-sold": 88,
+      "crafting-materials": "none"
+    },
+    "? Fine Opal Gemstone": {
+      "current-amount": 367,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 367,
+        "total-buy-amount-placed-for-buying": 5000,
+        "buy-average": 367
       },
       "sell-order-stats": {
         "total-sell-orders-created": 0,
@@ -220,74 +1337,1305 @@
       "total-profit-made": 0,
       "total-sold": 0,
       "crafting-materials": "none"
+    },
+    "Can of Worms": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 114,
+        "total-buy-amount-placed-for-buying": 5000,
+        "buy-average": 114
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 0,
+        "total-sell-amount-claimed": 0,
+        "total-sell-amount-placed-for-selling": 0,
+        "sell-average": 0
+      },
+      "max-amount": 2000,
+      "total-profit-made": 243882.98999999996,
+      "total-sold": 114,
+      "crafting-materials": "none"
+    },
+    "Salt Cube": {
+      "current-amount": 1,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 50,
+        "total-buy-amount-placed-for-buying": 100,
+        "buy-average": 50
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 0,
+        "total-sell-amount-claimed": 20,
+        "total-sell-amount-placed-for-selling": 0,
+        "sell-average": 0
+      },
+      "max-amount": 2000,
+      "total-profit-made": -345275.10000000003,
+      "total-sold": 89,
+      "crafting-materials": "none"
+    },
+    "Enchanted Hay Bale": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 2000,
+        "total-buy-amount-placed-for-buying": 4000,
+        "buy-average": 2000
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 1,
+        "total-sell-amount-claimed": 2000,
+        "total-sell-amount-placed-for-selling": 2000,
+        "sell-average": 2000
+      },
+      "max-amount": 2000,
+      "total-profit-made": 1869799.9999999998,
+      "total-sold": 2000,
+      "crafting-materials": "none"
+    },
+    "Enchanted Red Mushroom Block": {
+      "current-amount": 416,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 416,
+        "total-buy-amount-placed-for-buying": 2000,
+        "buy-average": 416
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 0,
+        "total-sell-amount-claimed": 0,
+        "total-sell-amount-placed-for-selling": 0,
+        "sell-average": 0
+      },
+      "max-amount": 2000,
+      "total-profit-made": 0,
+      "total-sold": 0,
+      "crafting-materials": "none"
+    },
+    "Enchanted Lily Pad": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 5000,
+        "total-buy-amount-placed-for-buying": 10000,
+        "buy-average": 5000
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 0,
+        "total-sell-amount-claimed": 0,
+        "total-sell-amount-placed-for-selling": 0,
+        "sell-average": 0
+      },
+      "max-amount": 2000,
+      "total-profit-made": 0,
+      "total-sold": 0,
+      "crafting-materials": "none"
+    },
+    "? Fine Onyx Gemstone": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 3000,
+        "total-buy-amount-placed-for-buying": 6000,
+        "buy-average": 3000
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 0,
+        "total-sell-amount-claimed": 0,
+        "total-sell-amount-placed-for-selling": 0,
+        "sell-average": 0
+      },
+      "max-amount": 2000,
+      "total-profit-made": 0,
+      "total-sold": 0,
+      "crafting-materials": "none"
+    },
+    "Rusty Coin": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 5000,
+        "total-buy-amount-placed-for-buying": 10000,
+        "buy-average": 5000
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 1,
+        "total-sell-amount-claimed": 5000,
+        "total-sell-amount-placed-for-selling": 5000,
+        "sell-average": 5000
+      },
+      "max-amount": 2000,
+      "total-profit-made": 6928349.999999993,
+      "total-sold": 5000,
+      "crafting-materials": "none"
+    },
+    "? Fine Topaz Gemstone": {
+      "current-amount": 65,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 65,
+        "total-buy-amount-placed-for-buying": 3000,
+        "buy-average": 65
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 0,
+        "total-sell-amount-claimed": 0,
+        "total-sell-amount-placed-for-selling": 0,
+        "sell-average": 0
+      },
+      "max-amount": 2000,
+      "total-profit-made": 0,
+      "total-sold": 0,
+      "crafting-materials": "none"
+    },
+    "Compacted Moonflower": {
+      "current-amount": 0,
+      "buy-order-stats": {
+        "total-buy-orders-created": 1,
+        "total-buy-amount-claimed": 251,
+        "total-buy-amount-placed-for-buying": 2000,
+        "buy-average": 251
+      },
+      "sell-order-stats": {
+        "total-sell-orders-created": 1,
+        "total-sell-amount-claimed": 251,
+        "total-sell-amount-placed-for-selling": 251,
+        "sell-average": 251
+      },
+      "max-amount": 2000,
+      "total-profit-made": 678242.1599999999,
+      "total-sold": 251,
+      "crafting-materials": "none"
     }
   },
   "daily-profits": {
     "1782882000000": {
-      "daily-profit": -405.24799999999993,
+      "daily-profit": 212.288,
       "forge-profit": 0,
       "auction-house-profit": 0,
-      "bazaar-profit": -405.24799999999993,
+      "bazaar-profit": 212.288,
       "trades": [
         {
           "item-name": "Carrot",
           "count": 64,
-          "buy-price": 4,
-          "sell-price": 0.4,
-          "profit-per-unit": -3.604,
-          "total-profit": -230.656,
-          "date-bought": 1782888027280,
-          "date-sold": 1782888045220
+          "buy-price": 0.4,
+          "sell-price": 3.9,
+          "profit-per-unit": 3.461,
+          "total-profit": 221.504,
+          "date-bought": 1782949605542,
+          "date-sold": 1782949776977
         },
         {
           "item-name": "Carrot",
           "count": 64,
-          "buy-price": 3.9,
-          "sell-price": 3.8,
-          "profit-per-unit": -0.1380000000000001,
-          "total-profit": -8.832000000000006,
-          "date-bought": 1782888086676,
-          "date-sold": 1782888176536
+          "buy-price": 4.5,
+          "sell-price": 4.4,
+          "profit-per-unit": -0.14399999999999966,
+          "total-profit": -9.215999999999978,
+          "date-bought": 1782950014727,
+          "date-sold": 1782950124980
+        }
+      ]
+    },
+    "1782968400000": {
+      "daily-profit": 8348216.410999998,
+      "forge-profit": 0,
+      "auction-house-profit": 0,
+      "bazaar-profit": 8348216.410999998,
+      "trades": [
+        {
+          "item-name": "Enchanted Sand",
+          "count": 38,
+          "buy-price": 1000,
+          "sell-price": 680.7105263157895,
+          "profit-per-unit": -326.0965789473684,
+          "total-profit": -12391.67,
+          "date-bought": 1782955709512,
+          "date-sold": 1782955722915
+        },
+        {
+          "item-name": "Ectoplasm",
+          "count": 144,
+          "buy-price": 175000.6,
+          "sell-price": 189315,
+          "profit-per-unit": 12421.249999999995,
+          "total-profit": 1788659.9999999993,
+          "date-bought": 1782949167175,
+          "date-sold": 1782969571296
+        },
+        {
+          "item-name": "Enchanted Acacia Log",
+          "count": 64,
+          "buy-price": 1686,
+          "sell-price": 2038,
+          "profit-per-unit": 331.62,
+          "total-profit": 21223.68,
+          "date-bought": 1782949364872,
+          "date-sold": 1782969638246
+        },
+        {
+          "item-name": "Enchanted Slime Block",
+          "count": 112,
+          "buy-price": 116115,
+          "sell-price": 128000,
+          "profit-per-unit": 11885,
+          "total-profit": 1331120,
+          "date-bought": 1782949436032,
+          "date-sold": 1782969796544
+        },
+        {
+          "item-name": "Enchanted Acacia Log",
+          "count": 2240,
+          "buy-price": 1686,
+          "sell-price": 2035.5,
+          "profit-per-unit": 329.145,
+          "total-profit": 737284.7999999999,
+          "date-bought": 1782949364872,
+          "date-sold": 1783000281629
+        },
+        {
+          "item-name": "Enchanted Acacia Log",
+          "count": 2240,
+          "buy-price": 1686,
+          "sell-price": 2035.4,
+          "profit-per-unit": 329.0460000000001,
+          "total-profit": 737063.0400000003,
+          "date-bought": 1782949364872,
+          "date-sold": 1783000282742
+        },
+        {
+          "item-name": "Enchanted Acacia Log",
+          "count": 456,
+          "buy-price": 1686,
+          "sell-price": 2035.3,
+          "profit-per-unit": 328.94699999999995,
+          "total-profit": 149999.83199999997,
+          "date-bought": 1782949364872,
+          "date-sold": 1783000283777
+        },
+        {
+          "item-name": "Azure Shard",
+          "count": 585,
+          "buy-price": 2467.8,
+          "sell-price": 3839.1,
+          "profit-per-unit": 1332.9089999999997,
+          "total-profit": 779751.7649999998,
+          "date-bought": 1782949399538,
+          "date-sold": 1783000290363
+        },
+        {
+          "item-name": "Azure Shard",
+          "count": 1453,
+          "buy-price": 2467.8,
+          "sell-price": 3839.2,
+          "profit-per-unit": 1333.0079999999996,
+          "total-profit": 1936860.6239999994,
+          "date-bought": 1782949399538,
+          "date-sold": 1783000293058
+        },
+        {
+          "item-name": "Ectoplasm",
+          "count": 1,
+          "buy-price": 179498,
+          "sell-price": 10000,
+          "profit-per-unit": -169498,
+          "total-profit": -169498,
+          "date-bought": 1783000335223,
+          "date-sold": 1783000340068
+        },
+        {
+          "item-name": "Azure Shard",
+          "count": 787,
+          "buy-price": 2467.8,
+          "sell-price": 3838,
+          "profit-per-unit": 1331.8199999999997,
+          "total-profit": 1048142.3399999997,
+          "date-bought": 1782949399538,
+          "date-sold": 1783002421533
+        }
+      ]
+    },
+    "1783054800000": {
+      "daily-profit": 12365140.68999999,
+      "forge-profit": 0,
+      "auction-house-profit": 0,
+      "bazaar-profit": 12365140.68999999,
+      "trades": [
+        {
+          "item-name": "Ectoplasm",
+          "count": 356,
+          "buy-price": 175000.6,
+          "sell-price": 189315,
+          "profit-per-unit": 12421.249999999995,
+          "total-profit": 4421964.999999998,
+          "date-bought": 1782949167175,
+          "date-sold": 1783046335246
+        },
+        {
+          "item-name": "Enchanted Cocoa Beans",
+          "count": 49,
+          "buy-price": 485.9,
+          "sell-price": 463.40816326530614,
+          "profit-per-unit": -27.125918367346895,
+          "total-profit": -1329.1699999999978,
+          "date-bought": 1782950780022,
+          "date-sold": 1783060241578
+        },
+        {
+          "item-name": "Enchanted Cocoa Beans",
+          "count": 30,
+          "buy-price": 485.9,
+          "sell-price": 463.2,
+          "profit-per-unit": -27.331999999999987,
+          "total-profit": -819.9599999999996,
+          "date-bought": 1782950780022,
+          "date-sold": 1783061545315
+        },
+        {
+          "item-name": "Compost",
+          "count": 7,
+          "buy-price": 10652,
+          "sell-price": 11965,
+          "profit-per-unit": 1193.35,
+          "total-profit": 8353.449999999999,
+          "date-bought": 1783060146220,
+          "date-sold": 1783061980738
+        },
+        {
+          "item-name": "Strong Dragon Fragment",
+          "count": 61,
+          "buy-price": 24576,
+          "sell-price": 26775.90163934426,
+          "profit-per-unit": 1932.142622950819,
+          "total-profit": 117860.69999999997,
+          "date-bought": 1783063625622,
+          "date-sold": 1783102470368
+        },
+        {
+          "item-name": "Compacted Wild Rose",
+          "count": 1000,
+          "buy-price": 100790.3,
+          "sell-price": 105400,
+          "profit-per-unit": 3555.699999999997,
+          "total-profit": 3555699.999999997,
+          "date-bought": 1783064064276,
+          "date-sold": 1783102977204
+        },
+        {
+          "item-name": "Enchanted Cocoa Beans",
+          "count": 29,
+          "buy-price": 485.9,
+          "sell-price": 464.58620689655174,
+          "profit-per-unit": -25.95965517241375,
+          "total-profit": -752.8299999999988,
+          "date-bought": 1782950780022,
+          "date-sold": 1783103402510
+        },
+        {
+          "item-name": "Enchanted Titanium",
+          "count": 2134,
+          "buy-price": 20304,
+          "sell-price": 22075,
+          "profit-per-unit": 1550.25,
+          "total-profit": 3308233.5,
+          "date-bought": 1783063832176,
+          "date-sold": 1783104914270
+        },
+        {
+          "item-name": "Compacted Sunflower",
+          "count": 1000,
+          "buy-price": 102001.1,
+          "sell-price": 103997,
+          "profit-per-unit": 955.9299999999942,
+          "total-profit": 955929.9999999942,
+          "date-bought": 1783064047936,
+          "date-sold": 1783114779322
+        }
+      ]
+    },
+    "1783141200000": {
+      "daily-profit": 82529033.78950003,
+      "forge-profit": 0,
+      "auction-house-profit": 0,
+      "bazaar-profit": 82529033.78950003,
+      "trades": [
+        {
+          "item-name": "Enchanted Sand",
+          "count": 10,
+          "buy-price": 2485.90625,
+          "sell-price": 1293.7,
+          "profit-per-unit": -1205.1432499999999,
+          "total-profit": -12051.432499999999,
+          "date-bought": 1783133976557,
+          "date-sold": 1783133993135
+        },
+        {
+          "item-name": "Enchanted Cocoa Beans",
+          "count": 14,
+          "buy-price": 485.9,
+          "sell-price": 460.3,
+          "profit-per-unit": -30.202999999999967,
+          "total-profit": -422.84199999999953,
+          "date-bought": 1782950780022,
+          "date-sold": 1783147631968
+        },
+        {
+          "item-name": "Enchanted Cookie",
+          "count": 1000,
+          "buy-price": 74420.7,
+          "sell-price": 77407,
+          "profit-per-unit": 2212.2300000000027,
+          "total-profit": 2212230.000000003,
+          "date-bought": 1783103062712,
+          "date-sold": 1783147671364
+        },
+        {
+          "item-name": "Enchanted Titanium",
+          "count": 2176,
+          "buy-price": 20304,
+          "sell-price": 22075,
+          "profit-per-unit": 1550.25,
+          "total-profit": 3373344,
+          "date-bought": 1783063832176,
+          "date-sold": 1783147681044
+        },
+        {
+          "item-name": "? Fine Amethyst Gemstone",
+          "count": 1077,
+          "buy-price": 26348,
+          "sell-price": 31244,
+          "profit-per-unit": 4583.56,
+          "total-profit": 4936494.12,
+          "date-bought": 1783063428445,
+          "date-sold": 1783147682382
+        },
+        {
+          "item-name": "? Fine Ruby Gemstone",
+          "count": 1124,
+          "buy-price": 21344,
+          "sell-price": 27450,
+          "profit-per-unit": 5831.5,
+          "total-profit": 6554606,
+          "date-bought": 1783063490487,
+          "date-sold": 1783147683611
+        },
+        {
+          "item-name": "Ink Sac",
+          "count": 5000,
+          "buy-price": 2393.4,
+          "sell-price": 3118,
+          "profit-per-unit": 693.42,
+          "total-profit": 3467100,
+          "date-bought": 1783064186498,
+          "date-sold": 1783147685223
+        },
+        {
+          "item-name": "Silver Magmafish",
+          "count": 230,
+          "buy-price": 6143.5,
+          "sell-price": 6861.4,
+          "profit-per-unit": 649.2859999999996,
+          "total-profit": 149335.7799999999,
+          "date-bought": 1783063661050,
+          "date-sold": 1783147686249
+        },
+        {
+          "item-name": "Compost",
+          "count": 55,
+          "buy-price": 10654.1,
+          "sell-price": 11960,
+          "profit-per-unit": 1186.2999999999997,
+          "total-profit": 65246.499999999985,
+          "date-bought": 1783061555348,
+          "date-sold": 1783147752633
+        },
+        {
+          "item-name": "Compost",
+          "count": 465,
+          "buy-price": 10654.1,
+          "sell-price": 11083.2,
+          "profit-per-unit": 318.26800000000037,
+          "total-profit": 147994.62000000017,
+          "date-bought": 1783061555348,
+          "date-sold": 1783147801127
+        },
+        {
+          "item-name": "Enchanted Sand",
+          "count": 90,
+          "buy-price": 1000,
+          "sell-price": 2700,
+          "profit-per-unit": 1673,
+          "total-profit": 150570,
+          "date-bought": 1782955709512,
+          "date-sold": 1783147813135
+        },
+        {
+          "item-name": "Enchanted Sand",
+          "count": 2970,
+          "buy-price": 705.2,
+          "sell-price": 2700,
+          "profit-per-unit": 1967.8,
+          "total-profit": 5844366,
+          "date-bought": 1783063799366,
+          "date-sold": 1783147813135
+        },
+        {
+          "item-name": "? Fine Amber Gemstone",
+          "count": 530,
+          "buy-price": 24940.3,
+          "sell-price": 27871,
+          "profit-per-unit": 2651.9900000000007,
+          "total-profit": 1405554.7000000004,
+          "date-bought": 1783063456872,
+          "date-sold": 1783147815351
+        },
+        {
+          "item-name": "Holy Dragon Fragment",
+          "count": 3537,
+          "buy-price": 14797.2,
+          "sell-price": 15954,
+          "profit-per-unit": 997.2599999999993,
+          "total-profit": 3527308.619999998,
+          "date-bought": 1783063542027,
+          "date-sold": 1783147839821
+        },
+        {
+          "item-name": "Jacob's Ticket",
+          "count": 112,
+          "buy-price": 33522,
+          "sell-price": 35607.59821428572,
+          "profit-per-unit": 1729.5222321428603,
+          "total-profit": 193706.49000000034,
+          "date-bought": 1783102736037,
+          "date-sold": 1783148083961
+        },
+        {
+          "item-name": "Treasure Bait",
+          "count": 335,
+          "buy-price": 1001.1,
+          "sell-price": 1633.9,
+          "profit-per-unit": 616.461,
+          "total-profit": 206514.435,
+          "date-bought": 1783102853647,
+          "date-sold": 1783148769792
+        },
+        {
+          "item-name": "Holy Dragon Fragment",
+          "count": 1463,
+          "buy-price": 14797.2,
+          "sell-price": 15383,
+          "profit-per-unit": 431.96999999999923,
+          "total-profit": 631972.1099999988,
+          "date-bought": 1783063542027,
+          "date-sold": 1783185785508
+        },
+        {
+          "item-name": "Enchanted Sugar Cane",
+          "count": 1398,
+          "buy-price": 104098,
+          "sell-price": 109564,
+          "profit-per-unit": 4370.36,
+          "total-profit": 6109763.279999999,
+          "date-bought": 1783102969695,
+          "date-sold": 1783185787312
+        },
+        {
+          "item-name": "Compost",
+          "count": 4143,
+          "buy-price": 10654.1,
+          "sell-price": 11635,
+          "profit-per-unit": 864.5499999999996,
+          "total-profit": 3581830.6499999985,
+          "date-bought": 1783061555348,
+          "date-sold": 1783185788163
+        },
+        {
+          "item-name": "Compacted Wild Rose",
+          "count": 1000,
+          "buy-price": 99780.8,
+          "sell-price": 104900,
+          "profit-per-unit": 4070.199999999997,
+          "total-profit": 4070199.999999997,
+          "date-bought": 1783103074637,
+          "date-sold": 1783185789209
+        },
+        {
+          "item-name": "Polished Pumpkin",
+          "count": 1000,
+          "buy-price": 250638.8,
+          "sell-price": 255343,
+          "profit-per-unit": 2150.770000000012,
+          "total-profit": 2150770.0000000116,
+          "date-bought": 1783103019848,
+          "date-sold": 1783185791108
+        },
+        {
+          "item-name": "Silver Fang",
+          "count": 734,
+          "buy-price": 7104.3,
+          "sell-price": 8803.1,
+          "profit-per-unit": 1610.7690000000002,
+          "total-profit": 1182304.4460000002,
+          "date-bought": 1783102890160,
+          "date-sold": 1783185799610
+        },
+        {
+          "item-name": "Enchanted Raw Salmon",
+          "count": 10,
+          "buy-price": 1250.1,
+          "sell-price": 1852.5,
+          "profit-per-unit": 583.8750000000001,
+          "total-profit": 5838.750000000001,
+          "date-bought": 1783064168777,
+          "date-sold": 1783185817608
+        },
+        {
+          "item-name": "Enchanted Lush Berberis",
+          "count": 2404,
+          "buy-price": 1902,
+          "sell-price": 2077,
+          "profit-per-unit": 154.23,
+          "total-profit": 370768.92,
+          "date-bought": 1783102687136,
+          "date-sold": 1783185819558
+        },
+        {
+          "item-name": "Enchanted Cactus",
+          "count": 21,
+          "buy-price": 99951.6,
+          "sell-price": 103935,
+          "profit-per-unit": 2944.0499999999943,
+          "total-profit": 61825.04999999988,
+          "date-bought": 1783103040399,
+          "date-sold": 1783185820947
+        },
+        {
+          "item-name": "Agarimoo Tongue",
+          "count": 6,
+          "buy-price": 7784.7,
+          "sell-price": 9665.666666666666,
+          "profit-per-unit": 1784.3099999999995,
+          "total-profit": 10705.859999999997,
+          "date-bought": 1783148689986,
+          "date-sold": 1783186121321
+        },
+        {
+          "item-name": "Enchanted Packed Ice",
+          "count": 504,
+          "buy-price": 13504,
+          "sell-price": 13694.753968253968,
+          "profit-per-unit": 53.80642857142851,
+          "total-profit": 27118.43999999997,
+          "date-bought": 1783148644416,
+          "date-sold": 1783186135468
+        },
+        {
+          "item-name": "Enchanted Slime Block",
+          "count": 134,
+          "buy-price": 125307,
+          "sell-price": 128000,
+          "profit-per-unit": 2693,
+          "total-profit": 360862,
+          "date-bought": 1783148661691,
+          "date-sold": 1783186146553
+        },
+        {
+          "item-name": "Extremely Real Shuriken",
+          "count": 118,
+          "buy-price": 86302,
+          "sell-price": 97995,
+          "profit-per-unit": 10713.05,
+          "total-profit": 1264139.9,
+          "date-bought": 1783148707279,
+          "date-sold": 1783186558051
+        },
+        {
+          "item-name": "Tasty Cheese",
+          "count": 520,
+          "buy-price": 3735.5,
+          "sell-price": 3740,
+          "profit-per-unit": -32.9,
+          "total-profit": -17108,
+          "date-bought": 1783102953013,
+          "date-sold": 1783186874732
+        },
+        {
+          "item-name": "Polished Pumpkin",
+          "count": 94,
+          "buy-price": 249729,
+          "sell-price": 256000,
+          "profit-per-unit": 6271,
+          "total-profit": 589474,
+          "date-bought": 1783063864399,
+          "date-sold": 1783186939593
+        },
+        {
+          "item-name": "Deep Root",
+          "count": 172,
+          "buy-price": 5000.1,
+          "sell-price": 14050,
+          "profit-per-unit": 8909.4,
+          "total-profit": 1532416.8,
+          "date-bought": 1783063962870,
+          "date-sold": 1783190538163
+        },
+        {
+          "item-name": "Enchanted Eye of Ender",
+          "count": 2240,
+          "buy-price": 5939.1,
+          "sell-price": 7896.9,
+          "profit-per-unit": 1878.8309999999992,
+          "total-profit": 4208581.439999999,
+          "date-bought": 1783148731587,
+          "date-sold": 1783190568115
+        },
+        {
+          "item-name": "Enchanted Eye of Ender",
+          "count": 587,
+          "buy-price": 5939.1,
+          "sell-price": 7896.7,
+          "profit-per-unit": 1878.6329999999994,
+          "total-profit": 1102757.5709999995,
+          "date-bought": 1783148731587,
+          "date-sold": 1783190568816
+        },
+        {
+          "item-name": "Tasty Cheese",
+          "count": 2240,
+          "buy-price": 3735.5,
+          "sell-price": 4304.3,
+          "profit-per-unit": 525.7570000000002,
+          "total-profit": 1177695.6800000004,
+          "date-bought": 1783102953013,
+          "date-sold": 1783206243816
+        },
+        {
+          "item-name": "Tasty Cheese",
+          "count": 2240,
+          "buy-price": 3735.5,
+          "sell-price": 4304.2,
+          "profit-per-unit": 525.6579999999998,
+          "total-profit": 1177473.9199999995,
+          "date-bought": 1783102953013,
+          "date-sold": 1783206245261
+        },
+        {
+          "item-name": "Exportable Carrots",
+          "count": 4480,
+          "buy-price": 9002.3,
+          "sell-price": 10578,
+          "profit-per-unit": 1469.9200000000008,
+          "total-profit": 6585241.600000003,
+          "date-bought": 1783102672599,
+          "date-sold": 1783206252372
+        },
+        {
+          "item-name": "Silver Fang",
+          "count": 2165,
+          "buy-price": 7104.3,
+          "sell-price": 8802.4,
+          "profit-per-unit": 1610.0759999999996,
+          "total-profit": 3485814.539999999,
+          "date-bought": 1783102890160,
+          "date-sold": 1783206279084
+        },
+        {
+          "item-name": "Compacted Sunflower",
+          "count": 626,
+          "buy-price": 99127.1,
+          "sell-price": 105968,
+          "profit-per-unit": 5781.219999999994,
+          "total-profit": 3619043.719999996,
+          "date-bought": 1783148595526,
+          "date-sold": 1783206338448
+        },
+        {
+          "item-name": "Enchanted Raw Salmon",
+          "count": 8,
+          "buy-price": 1250.1,
+          "sell-price": 1738.6,
+          "profit-per-unit": 471.114,
+          "total-profit": 3768.912,
+          "date-bought": 1783064168777,
+          "date-sold": 1783206378554
+        },
+        {
+          "item-name": "Enchanted Titanium",
+          "count": 48,
+          "buy-price": 20233.2,
+          "sell-price": 22744,
+          "profit-per-unit": 2283.359999999999,
+          "total-profit": 109601.27999999997,
+          "date-bought": 1783148787866,
+          "date-sold": 1783206402847
+        },
+        {
+          "item-name": "? Fine Citrine Gemstone",
+          "count": 1617,
+          "buy-price": 25400.6,
+          "sell-price": 29436,
+          "profit-per-unit": 3741.0400000000013,
+          "total-profit": 6049261.6800000025,
+          "date-bought": 1783148752437,
+          "date-sold": 1783206404927
+        },
+        {
+          "item-name": "? Fine Jade Gemstone",
+          "count": 435,
+          "buy-price": 24383.3,
+          "sell-price": 26615,
+          "profit-per-unit": 1965.5500000000006,
+          "total-profit": 855014.2500000002,
+          "date-bought": 1783148765597,
+          "date-sold": 1783206411262
+        }
+      ]
+    },
+    "1783227600000": {
+      "daily-profit": 6317348.803999999,
+      "forge-profit": 0,
+      "auction-house-profit": 0,
+      "bazaar-profit": 6317348.803999999,
+      "trades": [
+        {
+          "item-name": "Compacted Sunflower",
+          "count": 374,
+          "buy-price": 99127.1,
+          "sell-price": 105313,
+          "profit-per-unit": 5132.769999999994,
+          "total-profit": 1919655.979999998,
+          "date-bought": 1783148595526,
+          "date-sold": 1783211734152
+        },
+        {
+          "item-name": "Exportable Carrots",
+          "count": 520,
+          "buy-price": 9002.3,
+          "sell-price": 10754,
+          "profit-per-unit": 1644.1600000000008,
+          "total-profit": 854963.2000000004,
+          "date-bought": 1783102672599,
+          "date-sold": 1783211738690
+        },
+        {
+          "item-name": "Silver Fang",
+          "count": 75,
+          "buy-price": 7104.3,
+          "sell-price": 8802.1,
+          "profit-per-unit": 1609.7790000000002,
+          "total-profit": 120733.42500000002,
+          "date-bought": 1783102890160,
+          "date-sold": 1783211743506
+        },
+        {
+          "item-name": "Enchanted Oak Log",
+          "count": 329,
+          "buy-price": 1534.4,
+          "sell-price": 1667.7,
+          "profit-per-unit": 116.62299999999996,
+          "total-profit": 38368.96699999999,
+          "date-bought": 1783063291591,
+          "date-sold": 1783211763547
+        },
+        {
+          "item-name": "Enchanted Oak Log",
+          "count": 9,
+          "buy-price": 1534.4,
+          "sell-price": 1557.5555555555557,
+          "profit-per-unit": 7.580000000000009,
+          "total-profit": 68.22000000000008,
+          "date-bought": 1783063291591,
+          "date-sold": 1783211767322
+        },
+        {
+          "item-name": "Enchanted Raw Salmon",
+          "count": 32,
+          "buy-price": 1250.1,
+          "sell-price": 1699.2,
+          "profit-per-unit": 432.1080000000001,
+          "total-profit": 13827.456000000004,
+          "date-bought": 1783064168777,
+          "date-sold": 1783211783352
+        },
+        {
+          "item-name": "Silver Lotus",
+          "count": 35,
+          "buy-price": 10252,
+          "sell-price": 4006.4,
+          "profit-per-unit": -6285.664000000001,
+          "total-profit": -219998.24000000002,
+          "date-bought": 1783102815277,
+          "date-sold": 1783211868949
+        },
+        {
+          "item-name": "Sulphuric Coal",
+          "count": 1,
+          "buy-price": 5597.4,
+          "sell-price": 5599.1,
+          "profit-per-unit": -54.29099999999928,
+          "total-profit": -54.29099999999928,
+          "date-bought": 1783186112329,
+          "date-sold": 1783211876806
+        },
+        {
+          "item-name": "Silver Lotus",
+          "count": 381,
+          "buy-price": 10252,
+          "sell-price": 4006.3989501312335,
+          "profit-per-unit": -6285.665039370078,
+          "total-profit": -2394838.38,
+          "date-bought": 1783102815277,
+          "date-sold": 1783211881951
+        },
+        {
+          "item-name": "Enchanted Raw Salmon",
+          "count": 2712,
+          "buy-price": 1250.1,
+          "sell-price": 1560,
+          "profit-per-unit": 294.30000000000007,
+          "total-profit": 798141.6000000002,
+          "date-bought": 1783064168777,
+          "date-sold": 1783211917103
+        },
+        {
+          "item-name": "Enchanted Raw Salmon",
+          "count": 16,
+          "buy-price": 1250.1,
+          "sell-price": 1672.7,
+          "profit-per-unit": 405.87300000000016,
+          "total-profit": 6493.968000000003,
+          "date-bought": 1783064168777,
+          "date-sold": 1783211924949
+        },
+        {
+          "item-name": "? Fine Citrine Gemstone",
+          "count": 81,
+          "buy-price": 25400.6,
+          "sell-price": 29435,
+          "profit-per-unit": 3740.0500000000015,
+          "total-profit": 302944.0500000001,
+          "date-bought": 1783148752437,
+          "date-sold": 1783212030657
+        },
+        {
+          "item-name": "? Fine Citrine Gemstone",
+          "count": 1302,
+          "buy-price": 25400.6,
+          "sell-price": 25247.03609831029,
+          "profit-per-unit": -406.0342626728105,
+          "total-profit": -528656.6099999993,
+          "date-bought": 1783148752437,
+          "date-sold": 1783212032901
+        },
+        {
+          "item-name": "Enchanted Cocoa Beans",
+          "count": 126,
+          "buy-price": 485.9,
+          "sell-price": 460,
+          "profit-per-unit": -30.49999999999998,
+          "total-profit": -3842.9999999999973,
+          "date-bought": 1782950780022,
+          "date-sold": 1783212265653
+        },
+        {
+          "item-name": "Carrot",
+          "count": 64,
+          "buy-price": 1,
+          "sell-price": 7.8,
+          "profit-per-unit": 6.7219999999999995,
+          "total-profit": 430.20799999999997,
+          "date-bought": 1783221100961,
+          "date-sold": 1783221223452
+        },
+        {
+          "item-name": "Enchanted Jungle Log",
+          "count": 5000,
+          "buy-price": 1213.4,
+          "sell-price": 1455,
+          "profit-per-unit": 227.0499999999999,
+          "total-profit": 1135249.9999999995,
+          "date-bought": 1783221453222,
+          "date-sold": 1783225017543
+        },
+        {
+          "item-name": "Agarimoo Tongue",
+          "count": 29,
+          "buy-price": 9669.3,
+          "sell-price": 9670.793103448275,
+          "profit-per-unit": -95.21482758620667,
+          "total-profit": -2761.229999999993,
+          "date-bought": 1783221516731,
+          "date-sold": 1783233341557
+        },
+        {
+          "item-name": "Enchanted Slime Block",
+          "count": 1207,
+          "buy-price": 125550,
+          "sell-price": 128000,
+          "profit-per-unit": 2450,
+          "total-profit": 2957150,
+          "date-bought": 1783221283613,
+          "date-sold": 1783233371713
+        },
+        {
+          "item-name": "Polished Pumpkin",
+          "count": 54,
+          "buy-price": 244708,
+          "sell-price": 256000,
+          "profit-per-unit": 11292,
+          "total-profit": 609768,
+          "date-bought": 1783221393302,
+          "date-sold": 1783233435619
+        },
+        {
+          "item-name": "Enchanted Cactus",
+          "count": 84,
+          "buy-price": 99693,
+          "sell-price": 102400,
+          "profit-per-unit": 2707,
+          "total-profit": 227388,
+          "date-bought": 1783221414598,
+          "date-sold": 1783233457070
+        },
+        {
+          "item-name": "Enchanted Brown Mushroom Block",
+          "count": 88,
+          "buy-price": 247370,
+          "sell-price": 255405,
+          "profit-per-unit": 5480.95,
+          "total-profit": 482323.6,
+          "date-bought": 1783221369305,
+          "date-sold": 1783233888152
         },
         {
           "item-name": "Carrot",
           "count": 1,
-          "buy-price": 0.5,
-          "sell-price": 0.4,
-          "profit-per-unit": -0.10399999999999998,
-          "total-profit": -0.10399999999999998,
-          "date-bought": 1782889085028,
-          "date-sold": 1782889142639
+          "buy-price": 8,
+          "sell-price": 1.9,
+          "profit-per-unit": -6.119,
+          "total-profit": -6.119,
+          "date-bought": 1783234084346,
+          "date-sold": 1783234088826
+        }
+      ]
+    },
+    "1783314000000": {
+      "daily-profit": 53859275.27399999,
+      "forge-profit": 0,
+      "auction-house-profit": 0,
+      "bazaar-profit": 53859275.27399999,
+      "trades": [
+        {
+          "item-name": "Compacted Sunflower",
+          "count": 364,
+          "buy-price": 100017,
+          "sell-price": 105313,
+          "profit-per-unit": 4242.87,
+          "total-profit": 1544404.68,
+          "date-bought": 1783221379276,
+          "date-sold": 1783347279990
         },
         {
-          "item-name": "Enchanted Rabbit Hide",
-          "count": 1,
-          "buy-price": 720.8,
-          "sell-price": 783.2,
-          "profit-per-unit": 54.56800000000009,
-          "total-profit": 54.56800000000009,
-          "date-bought": 1782888326637,
-          "date-sold": 1782924565155
+          "item-name": "Enchanted Acacia Log",
+          "count": 2138,
+          "buy-price": 1455.7,
+          "sell-price": 1846.2,
+          "profit-per-unit": 372.038,
+          "total-profit": 795417.2440000001,
+          "date-bought": 1783221438209,
+          "date-sold": 1783347282795
         },
         {
-          "item-name": "Carrot",
-          "count": 64,
-          "buy-price": 3.8,
-          "sell-price": 3.7,
-          "profit-per-unit": -0.13699999999999965,
-          "total-profit": -8.767999999999978,
-          "date-bought": 1782941170859,
-          "date-sold": 1782941261429
+          "item-name": "Jacob's Ticket",
+          "count": 2149,
+          "buy-price": 36998,
+          "sell-price": 39255,
+          "profit-per-unit": 1864.45,
+          "total-profit": 4006703.0500000003,
+          "date-bought": 1783221590903,
+          "date-sold": 1783347286155
         },
         {
-          "item-name": "Carrot",
-          "count": 64,
-          "buy-price": 3.7,
-          "sell-price": 0.4,
-          "profit-per-unit": -3.3040000000000003,
-          "total-profit": -211.45600000000002,
-          "date-bought": 1782942648807,
-          "date-sold": 1782942660174
+          "item-name": "Orb of Energy",
+          "count": 447,
+          "buy-price": 4041,
+          "sell-price": 11979,
+          "profit-per-unit": 7818.21,
+          "total-profit": 3494739.87,
+          "date-bought": 1783221274463,
+          "date-sold": 1783347288514
+        },
+        {
+          "item-name": "Purple Candy",
+          "count": 3000,
+          "buy-price": 24001,
+          "sell-price": 26860,
+          "profit-per-unit": 2590.4,
+          "total-profit": 7771200,
+          "date-bought": 1783221626977,
+          "date-sold": 1783347290926
+        },
+        {
+          "item-name": "? Fine Jade Gemstone",
+          "count": 3060,
+          "buy-price": 22736.2,
+          "sell-price": 26015,
+          "profit-per-unit": 3018.649999999999,
+          "total-profit": 9237068.999999998,
+          "date-bought": 1783221314395,
+          "date-sold": 1783347308161
+        },
+        {
+          "item-name": "Compacted Wild Rose",
+          "count": 861,
+          "buy-price": 102000.6,
+          "sell-price": 105479,
+          "profit-per-unit": 2423.609999999994,
+          "total-profit": 2086728.209999995,
+          "date-bought": 1783221404351,
+          "date-sold": 1783347330295
+        },
+        {
+          "item-name": "? Fine Amethyst Gemstone",
+          "count": 296,
+          "buy-price": 24562,
+          "sell-price": 33795.16891891892,
+          "profit-per-unit": 8895.217229729731,
+          "total-profit": 2632984.3000000003,
+          "date-bought": 1783221295099,
+          "date-sold": 1783347758780
+        },
+        {
+          "item-name": "? Fine Jade Gemstone",
+          "count": 1940,
+          "buy-price": 22736.2,
+          "sell-price": 26013,
+          "profit-per-unit": 3016.669999999999,
+          "total-profit": 5852339.799999998,
+          "date-bought": 1783221314395,
+          "date-sold": 1783354008324
+        },
+        {
+          "item-name": "Ectoplasm",
+          "count": 160,
+          "buy-price": 151774,
+          "sell-price": 205228,
+          "profit-per-unit": 51401.72,
+          "total-profit": 8224275.2,
+          "date-bought": 1783046380523,
+          "date-sold": 1783354008330
+        },
+        {
+          "item-name": "Glacite Jewel",
+          "count": 339,
+          "buy-price": 23875,
+          "sell-price": 26790,
+          "profit-per-unit": 2647.1,
+          "total-profit": 897366.9,
+          "date-bought": 1783221726433,
+          "date-sold": 1783354008333
+        },
+        {
+          "item-name": "Can of Worms",
+          "count": 114,
+          "buy-price": 11778,
+          "sell-price": 14057.90350877193,
+          "profit-per-unit": 2139.3244736842103,
+          "total-profit": 243882.98999999996,
+          "date-bought": 1783233782249,
+          "date-sold": 1783354112445
+        },
+        {
+          "item-name": "Salt Cube",
+          "count": 50,
+          "buy-price": 10000,
+          "sell-price": 5000.2,
+          "profit-per-unit": -5049.802000000001,
+          "total-profit": -252490.10000000003,
+          "date-bought": 1783355431489,
+          "date-sold": 1783355438684
+        },
+        {
+          "item-name": "Salt Cube",
+          "count": 20,
+          "buy-price": 5000.2,
+          "sell-price": 9000,
+          "profit-per-unit": 3909.8,
+          "total-profit": 78196,
+          "date-bought": 1783355418946,
+          "date-sold": 1783355530210
+        },
+        {
+          "item-name": "Salt Cube",
+          "count": 19,
+          "buy-price": 9000,
+          "sell-price": 1,
+          "profit-per-unit": -8999,
+          "total-profit": -170981,
+          "date-bought": 1783355479699,
+          "date-sold": 1783355728164
+        },
+        {
+          "item-name": "Compacted Sunflower",
+          "count": 324,
+          "buy-price": 100017,
+          "sell-price": 105000,
+          "profit-per-unit": 3933,
+          "total-profit": 1274292,
+          "date-bought": 1783233935661,
+          "date-sold": 1783355923389
+        },
+        {
+          "item-name": "Glacite Jewel",
+          "count": 263,
+          "buy-price": 23875,
+          "sell-price": 26081,
+          "profit-per-unit": 1945.19,
+          "total-profit": 511584.97000000003,
+          "date-bought": 1783221726433,
+          "date-sold": 1783356477447
+        },
+        {
+          "item-name": "Mutant Nether Wart",
+          "count": 1408,
+          "buy-price": 100210,
+          "sell-price": 102400,
+          "profit-per-unit": 2190,
+          "total-profit": 3083520,
+          "date-bought": 1783233613614,
+          "date-sold": 1783357166517
+        },
+        {
+          "item-name": "Rusty Coin",
+          "count": 5000,
+          "buy-price": 19100.4,
+          "sell-price": 20693,
+          "profit-per-unit": 1385.6699999999985,
+          "total-profit": 6928349.999999993,
+          "date-bought": 1783233764494,
+          "date-sold": 1783364156042
+        },
+        {
+          "item-name": "Enchanted Hay Bale",
+          "count": 2000,
+          "buy-price": 150000.5,
+          "sell-price": 152460,
+          "profit-per-unit": 934.8999999999999,
+          "total-profit": 1869799.9999999998,
+          "date-bought": 1783233522710,
+          "date-sold": 1783364753039
+        },
+        {
+          "item-name": "Compacted Moonflower",
+          "count": 251,
+          "buy-price": 106578,
+          "sell-price": 110384,
+          "profit-per-unit": 2702.16,
+          "total-profit": 678242.1599999999,
+          "date-bought": 1783358364790,
+          "date-sold": 1783364791671
         }
       ]
     }

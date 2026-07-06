@@ -11,7 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\backend/testBackend.mjs"
+            "program": "${workspaceFolder}\\backend/Testing/testProductList.js"
         }
     ]
 }
