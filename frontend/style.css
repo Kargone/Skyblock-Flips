@@ -328,3 +328,62 @@ footer p {
     color: #f44336;
     font-weight: bold;
 }
+
+.tab-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin: 0 0 24px;
+    padding: 14px;
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.18);
+    border-radius: 14px;
+    backdrop-filter: blur(10px);
+}
+
+.tab-button {
+    appearance: none;
+    border: none;
+    border-radius: 999px;
+    padding: 12px 18px;
+    background: rgba(255, 255, 255, 0.16);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tab-button:hover {
+    transform: translateY(-1px);
+    background: rgba(255, 255, 255, 0.24);
+}
+
+.tab-button.active {
+    background: white;
+    color: #4c5fd7;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.18);
+}
+
+.tab-panel {
+    display: none;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+.tab-panel.active.dashboard-section.full-width,
+.tab-panel.active.dashboard-section {
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .tab-bar {
+        padding: 12px;
+    }
+
+    .tab-button {
+        width: 100%;
+        text-align: center;
+    }
+}

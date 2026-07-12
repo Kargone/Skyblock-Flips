@@ -225,7 +225,7 @@
     "has-weights": true
   },
   "Bait Ring": {
-    "api-name": "",
+    "api-name": "BAIT_RING",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -308,7 +308,8 @@
     "has-weights": true
   },
   "Beastmaster Crest - Epic": {
-    "api-name": "",
+    "api-name": "Beastmaster Crest",
+    "tier": "Epic",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -318,7 +319,8 @@
     }
   },
   "Beastmaster Crest - Legendary": {
-    "api-name": "",
+    "api-name": "Beastmaster Crest",
+    "tier": "Legendary",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -328,7 +330,8 @@
     }
   },
   "Beastmaster Crest - Rare": {
-    "api-name": "",
+    "api-name": "Beastmaster Crest",
+    "tier": "Rare",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -352,6 +355,11 @@
     "has-weights": true
   },
   "Bezal Shard": {
+    "api-name": "SHARD_BEZAL",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Bogged Shard": {
     "api-name": "SHARD_BEZAL",
     "type": "short-term-investment",
     "has-weights": true
@@ -1163,6 +1171,11 @@
   },
   "Dodo Shard": {
     "api-name": "SHARD_DODO",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Lotusfish Shard": {
+    "api-name": "SHARD_LOTUSFISH",
     "type": "short-term-investment",
     "has-weights": true
   },
@@ -6230,7 +6243,17 @@
     "type": "short-term-investment",
     "has-weights": true
   },
+  "? Flawless Amber Gemstone": {
+    "api-name": "FLAWLESS_AMBER_GEM",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
   "Flawless Amethyst Gemstone": {
+    "api-name": "FLAWLESS_AMETHYST_GEM",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "? Flawless Amethyst Gemstone": {
     "api-name": "FLAWLESS_AMETHYST_GEM",
     "type": "short-term-investment",
     "has-weights": true
@@ -6240,7 +6263,17 @@
     "type": "short-term-investment",
     "has-weights": true
   },
+  "? Flawless Aquamarine Gemstone": {
+    "api-name": "FLAWLESS_AQUAMARINE_GEM",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
   "Flawless Citrine Gemstone": {
+    "api-name": "FLAWLESS_CITRINE_GEM",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "? Flawless Citrine Gemstone": {
     "api-name": "FLAWLESS_CITRINE_GEM",
     "type": "short-term-investment",
     "has-weights": true
@@ -6250,7 +6283,17 @@
     "type": "short-term-investment",
     "has-weights": true
   },
+  "? Flawless Jade Gemstone": {
+    "api-name": "FLAWLESS_JADE_GEM",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
   "Flawless Jasper Gemstone": {
+    "api-name": "FLAWLESS_JASPER_GEM",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "? Flawless Jasper Gemstone": {
     "api-name": "FLAWLESS_JASPER_GEM",
     "type": "short-term-investment",
     "has-weights": true
@@ -6260,7 +6303,17 @@
     "type": "short-term-investment",
     "has-weights": true
   },
+  "? Flawless Onyx Gemstone": {
+    "api-name": "FLAWLESS_ONYX_GEM",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
   "Flawless Opal Gemstone": {
+    "api-name": "FLAWLESS_OPAL_GEM",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "? Flawless Opal Gemstone": {
     "api-name": "FLAWLESS_OPAL_GEM",
     "type": "short-term-investment",
     "has-weights": true
@@ -6270,7 +6323,17 @@
     "type": "short-term-investment",
     "has-weights": true
   },
+  "? Flawless Peridot Gemstone": {
+    "api-name": "FLAWLESS_PERIDOT_GEM",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
   "Flawless Ruby Gemstone": {
+    "api-name": "FLAWLESS_RUBY_GEM",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "? Flawless Ruby Gemstone": {
     "api-name": "FLAWLESS_RUBY_GEM",
     "type": "short-term-investment",
     "has-weights": true
@@ -6280,7 +6343,17 @@
     "type": "short-term-investment",
     "has-weights": true
   },
+  "? Flawless Sapphire Gemstone": {
+    "api-name": "FLAWLESS_SAPPHIRE_GEM",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
   "Flawless Topaz Gemstone": {
+    "api-name": "FLAWLESS_TOPAZ_GEM",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "? Flawless Topaz Gemstone": {
     "api-name": "FLAWLESS_TOPAZ_GEM",
     "type": "short-term-investment",
     "has-weights": true
@@ -9989,5 +10062,254 @@
     "api-name": "GOBLIN_EGG_YELLOW",
     "type": "short-term-investment",
     "has-weights": true
+  },
+  "Personal Compactor 7000": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Super Compactor 3000": 1,
+      "Enchanted Redstone Dust": 448,
+      "Enchanted Redstone Block": 96
+    }
+  },
+  "Personal Deletor 7000": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Enchanted Lava Bucket": 1,
+      "Enchanted Redstone Block": 1,
+      "Enchanted Iron Ingot": 784,
+      "Enchanted Iron Block": 7
+    }
+  },
+  "Agarimoo Artifact": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Agarimoo Tongue": 617
+    }
+  },
+  "Glacial Artifact": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Glacial Talisman": 1,
+      "Enchanted Ice": 128,
+      "Glacial Fragment": 60,
+      "Enchanted Packed Ice": 8
+    }
+  },
+  "Hunter Talisman": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Golden Tooth": 64,
+      "Enchanted Rotten Flesh": 32
+    }
+  },
+  "Refined Diamond (forge)": {
+    "api-name": "REFINED_DIAMOND",
+    "seconds-to-craft": 28800,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Enchanted Diamond Block": 2
+    }
+  },
+  "Refined Mithril (forge)": {
+    "api-name": "REFINED_MITHRIL",
+    "seconds-to-craft": 21600,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Enchanted Mithril": 160
+    }
+  },
+  "Refined Titanium (forge)": {
+    "api-name": "REFINED_TITANIUM",
+    "seconds-to-craft": 43200,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Enchanted Titanium": 16  
+    }
+  },
+  "Drill Motor (forge)": {
+    "api-name": "DRILL_ENGINE",
+    "seconds-to-craft": 108000,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Treasurite": 10,
+      "Enchanted Iron Block": 1,
+      "Enchanted Redstone Block": 3,
+      "Golden Plate": 1
+    }
+  },
+  "Gemstone Mixture (forge)": {
+    "api-name": "GEMSTONE_MIXTURE",
+    "seconds-to-craft": 14400,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "? Fine Jade Gemstone": 4,
+      "? Fine Amber Gemstone": 4,
+      "? Fine Amethyst Gemstone": 4,
+      "? Fine Sapphire Gemstone": 4,
+      "Sludge Juice": 320
+    }
+  },
+  "Mithril Plate (forge)": {
+    "api-name": "MITHRIL_PLATE",
+    "seconds-to-craft": 64800,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Refined Titanium": 1,
+      "Refined Mithril": 5,
+      "Golden Plate": 1,
+      "Enchanted Iron Block": 1
+    }
+  },
+  "Titanium Artifact": {
+    "api-name": "",
+    "seconds-to-craft": 129600,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Refined Titanium": 12,
+      "Titanium Ring": 1
+    }
+  },
+  "Titanium Ring": {
+    "api-name": "",
+    "seconds-to-craft": 72000,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Refined Titanium": 6,
+      "Titanium Talisman": 1
+    }
+  },
+  "Titanium Gauntlet": {
+    "api-name": "",
+    "seconds-to-craft": 16200,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Refined Mineral": 16,
+      "Refined Titanium": 1,
+      "Mithril Gauntlet": 1
+    }
+  },
+  "Titanium Cloak": {
+    "api-name": "",
+    "seconds-to-craft": 16200,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Refined Mineral": 16,
+      "Refined Titanium": 1,
+      "Mithril Cloak": 1
+    }
+  },
+  "Titanium Belt": {
+    "api-name": "",
+    "seconds-to-craft": 16200,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Refined Mineral": 16,
+      "Refined Titanium": 1,
+      "Mithril Belt": 1
+    }
+  },
+  "Divan's Powder Coating (forge)": {
+    "api-name": "DIVAN_POWDER_COATING",
+    "seconds-to-craft": 129600,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Glossy Gemstone": 32,
+      "Refined Mineral": 32,
+      "Divan Fragment": 5,
+      "Enchanted Gold Block": 16
+    }
+  },
+  "Diamonite (forge)": {
+    "api-name": "DIAMONITE",
+    "seconds-to-craft": 21600,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Refined Diamond": 3
+    }
+  },
+  "Scorched Topaz (forge)": {
+    "api-name": "HOT_STUFF",
+    "seconds-to-craft": 21600,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Enchanted Hard Stone": 128,
+      "? Flawless Topaz Gemstone": 1 
+    }
+  },
+  "Gleaming Crystal (forge)": {
+    "api-name": "GLEAMING_CRYSTAL",
+    "seconds-to-craft": 21600,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Glossy Gemstone": 32,
+      "Refined Mithril": 1,
+      "Refined Diamond": 2
+    }
+  },
+  "Dwarven Geode (forge)": {
+    "api-name": "ROCK_GEMSTONE",
+    "seconds-to-craft": 21600,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Enchanted Cobblestone": 128,
+      "Treasurite": 64
+    }
+  },
+  "Mithril-Plated Drill Engine": {
+    "api-name": "",
+    "seconds-to-craft": 86400,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Drill Motor": 2,
+      "Mithril Plate": 1
+    }
+  },
+  "Mithril-Infused Fuel Tank": {
+    "api-name": "",
+    "seconds-to-craft": 86400,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Refined Diamond": 5,
+      "Refined Mithril": 10,
+      "Fuel Canister": 5
+    }
+  },
+  "Gemstone Drill LT-522": {
+    "api-name": "",
+    "seconds-to-craft": 30,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Ruby Drill TX-15": 1,
+      "Gemstone Mixture": 3  
+    }
   }
 }

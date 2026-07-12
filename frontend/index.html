@@ -19,16 +19,16 @@
                 <p class="stat-value" id="totalDailyProfit">-</p>
             </div>
             <div class="stat-card">
-                <h3>Total Items Flipped</h3>
-                <p class="stat-value" id="totalFlipped">-</p>
+                <h3>Average Daily Profit</h3>
+                <p class="stat-value" id="averageDailyProfit">-</p>
             </div>
             <div class="stat-card">
-                <h3>Total Profit</h3>
-                <p class="stat-value" id="totalProfit">-</p>
+                <h3>Average Weekly Profit</h3>
+                <p class="stat-value" id="averageWeeklyProfit">-</p>
             </div>
             <div class="stat-card">
-                <h3>Total Order Worth</h3>
-                <p class="stat-value" id="totalOrderWorth">-</p>
+                <h3>Lifetime Profit</h3>
+                <p class="stat-value" id="lifetimeProfit">-</p>
             </div>
             <div class="stat-card">
                 <h3>Active Buy Orders</h3>
@@ -38,9 +38,30 @@
                 <h3>Active Sell Orders</h3>
                 <p class="stat-value" id="activeSellOrders">-</p>
             </div>
+            <div class="stat-card">
+                <h3>Total Investment Worth</h3>
+                <p class="stat-value" id="totalInvestmentWorth">-</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Order Worth</h3>
+                <p class="stat-value" id="totalOrderWorth">-</p>
+            </div>
+            <div class="stat-card">
+                <h3>Total Items Flipped</h3>
+                <p class="stat-value" id="totalFlipped">-</p>
+            </div>
         </div>
 
-        <section class="dashboard-section full-width bazaar-snapshot-section">
+        <div class="tab-bar" role="tablist" aria-label="Dashboard sections">
+            <button class="tab-button active" type="button" data-tab-target="bazaar-orders">Bazaar buy/sell orders</button>
+            <button class="tab-button" type="button" data-tab-target="investments">Current investments</button>
+            <button class="tab-button" type="button" data-tab-target="auctions">Active Auctions</button>
+            <button class="tab-button" type="button" data-tab-target="crafts">Auction/forge products</button>
+            <button class="tab-button" type="button" data-tab-target="snapshot">Bazaar snapshot</button>
+            <button class="tab-button" type="button" data-tab-target="profits">Today's profit breakdown, all products</button>
+        </div>
+
+        <section class="dashboard-section full-width bazaar-snapshot-section tab-panel active" data-tab-group="snapshot">
             <h2>Bazaar Snapshot</h2>
             <div class="table-container">
                 <table id="bazaarSnapshotTable">
@@ -62,8 +83,8 @@
 
         <div class="dashboard-grid">
             <!-- Buy Orders Section -->
-            <section class="dashboard-section">
-                <h2>Buy Orders</h2>
+            <section class="dashboard-section tab-panel active" data-tab-group="bazaar-orders">
+                <h2 id="buyOrdersTitle">Buy Orders: Total (in dollars): (total sold)/(total amount), %, total profit</h2>
                 <div class="table-container">
                     <table id="buyOrdersTable">
                         <thead>
@@ -84,8 +105,8 @@
             </section>
 
             <!-- Sell Orders Section -->
-            <section class="dashboard-section">
-                <h2>Sell Orders</h2>
+            <section class="dashboard-section tab-panel active" data-tab-group="bazaar-orders">
+                <h2 id="sellOrdersTitle">Sell Orders: Total (in dollars): (total sold)/(total amount), %, total profit</h2>
                 <div class="table-container">
                     <table id="sellOrdersTable">
                         <thead>
@@ -107,7 +128,7 @@
             </section>
 
             <!-- Investments Section -->
-            <section class="dashboard-section">
+            <section class="dashboard-section tab-panel" data-tab-group="investments">
                 <h2>Current Investments</h2>
                 <div class="table-container">
                     <table id="investmentsTable">
@@ -117,17 +138,21 @@
                                 <th>Type</th>
                                 <th>Amount</th>
                                 <th>Highest Price</th>
+                                <th>Current Sell Price</th>
+                                <th>Margin</th>
+                                <th>Current Profit</th>
+                                <th>Date Bought</th>
                             </tr>
                         </thead>
                         <tbody id="investmentsBody">
-                            <tr><td colspan="4" class="empty">No investments</td></tr>
+                            <tr><td colspan="8" class="empty">No investments</td></tr>
                         </tbody>
                     </table>
                 </div>
             </section>
 
             <!-- Active Auctions Section -->
-            <section class="dashboard-section">
+            <section class="dashboard-section tab-panel" data-tab-group="auctions">
                 <h2>Active Auctions</h2>
                 <div class="table-container">
                     <table id="auctionsTable">
@@ -145,8 +170,51 @@
                 </div>
             </section>
 
+            <!-- Auction Crafting Section -->
+            <section class="dashboard-section full-width tab-panel" data-tab-group="crafts">
+                <h2>Auction Products</h2>
+                <div class="table-container">
+                    <table id="auctionCraftsTable">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Buy Order (Insta Buy)</th>
+                                <th>Have Mats</th>
+                                <th>Market Value</th>
+                                <th>Margin</th>
+                            </tr>
+                        </thead>
+                        <tbody id="auctionCraftsBody">
+                            <tr><td colspan="7" class="empty">No auction products</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Forge Crafting Section -->
+            <section class="dashboard-section full-width tab-panel" data-tab-group="crafts">
+                <h2>Forge Products</h2>
+                <div class="table-container">
+                    <table id="forgeCraftsTable">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Buy Order (Insta Buy)</th>
+                                <th>Have Mats</th>
+                                <th>Market Value</th>
+                                <th>Craft Time</th>
+                                <th>Margin</th>
+                            </tr>
+                        </thead>
+                        <tbody id="forgeCraftsBody">
+                            <tr><td colspan="7" class="empty">No forge products</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
             <!-- Daily Profits Section -->
-            <section class="dashboard-section">
+            <section class="dashboard-section tab-panel" data-tab-group="profits">
                 <h2>Today's Profit Breakdown</h2>
                 <div class="profit-breakdown">
                     <div class="profit-item">
@@ -165,7 +233,7 @@
             </section>
 
             <!-- All Products Section -->
-            <section class="dashboard-section full-width">
+            <section class="dashboard-section full-width tab-panel" data-tab-group="profits">
                 <h2>All Products</h2>
                 <div class="table-container">
                     <table id="productsTable">

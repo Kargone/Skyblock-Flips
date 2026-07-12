@@ -41,16 +41,28 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 //     "daily-profits": {}
 // };
 
-// setTimeout(() => {
-//     for (const testMesage of [
-//         "You Supercrafted Red Claw Ring!"
-//     ]) {
-//         new ProcesTrade(testMesage);
-//     }
-//     console.log('Orders done successfully', trader_data);
-// }, 1000);
-
 import product_list from './product-list.json' with { type: "json" };
+
+export const marketData = {
+    bazaarProducts: {},
+    lowestBinPrices: {},
+    lastUpdated: null
+};
+
+const IGNORE_INSTA_SELL_BUY = [
+    "Salt Cube",
+    "Enchanted Cookie",
+    "Enchanted Sand",
+    "Necromancer's Brooch",
+    "Red Scarf",
+    "Coal",
+    "Enchanted Potato",
+    "Enchanted Baked Potato",
+    "Supierior Dragon Fragment",
+    "Dwarven O's Ore Oats",
+    "Enchanted Pumpkin",
+    "Gold Plate",
+];
 
 // Load trader_data manually so we can modify and write it back
 const traderDataPath = path.join(__dirname, 'trader-data.json');
@@ -289,16 +301,20 @@ class ProcesTrade {
         } else if (this.message.includes('[Bazaar] Claimed') &&
                    this.message.includes('from selling')) {
             this.type = "sell-order-claim";
+            const coinsEarnedStart = findEnd(this.message, 'Claimed ');
+            const coinsEarnedEnd = this.message.indexOf(' coins from selling');
             const amountStringStart = findEnd(this.message, 'selling ');
             const amountStringEnd = this.message.indexOf('x');
             const priceStringStart = findEnd(this.message, ' at ');
             const priceStringEnd = this.message.indexOf(' each!')
             const nameStringStart = findEnd(this.message, 'x ');
             const nameStringEnd = this.message.indexOf(' at ');
+            const coinsEarned = parseFloat(this.message.slice(coinsEarnedStart, coinsEarnedEnd).replaceAll(',', ''));
+            const hasDecimal = this.message.slice(priceStringStart, priceStringEnd).includes('.');
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
             const pricePerUnit = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            this.sellOrderClaim(amount, pricePerUnit, nameString);
+            this.sellOrderClaim(amount, pricePerUnit, nameString, coinsEarned, hasDecimal);
         } else if (this.message.includes('[Bazaar] Cancelled!') &&
                    this.message.includes('Sell Offer!')) {
             this.type = "sell-order-cancel";
@@ -394,15 +410,14 @@ class ProcesTrade {
         } else {
             return console.log('ERROR: Invalid trade message: ' + this.message);
         }
-        
-
-
 
         console.log("Completed trade message: ", this.message);
         return 'Completed trade mesage';
     }
     instaBuy(amount, price, name, time_bought = Date.now()) {
         if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+
+        if (IGNORE_INSTA_SELL_BUY.includes(name)) return console.log('ERROR: Insta buy ignored for product: ' + name);
 
         // get the investment type but add "s" to format for trader_data
         const invesmentType = getInvestmentType(product_list[name]["type"]);
@@ -472,6 +487,8 @@ class ProcesTrade {
     }
     instaSell(amount, price, name, doBazaarFees = true) {
         if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+
+        if (IGNORE_INSTA_SELL_BUY.includes(name)) return console.log('ERROR: Insta sell ignored for product: ' + name);
 
         const invesmentType = getInvestmentType(product_list[name]["type"]); 
 
@@ -764,7 +781,6 @@ class ProcesTrade {
                             trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"];
                     }
                 }
-
                 return 'Buy order canceling completed';
             }
         }
@@ -908,23 +924,27 @@ class ProcesTrade {
 
         throw 'ERROR: Failed to fill a sell order';
     }
-    sellOrderClaim(amount, price_sold, name) {
+    sellOrderClaim(amount, price_sold, name, coins_earned, has_decimal) {
         if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
 
         // get the current sell orders
         const sellOrders = new Sort(trader_data["sell-order-overview"]["sell-orders"], false, "sell-order-place-time");
         
         // index that the sell order that was claimed will be at
-        let current_sell_order_index = -1;
+        let current_sell_order_index = this.determineNearestSellOrder(amount, price_sold, name, coins_earned, has_decimal);
 
         // find the index of the sell order that was just claimed
-        for (const sellOrderIndex of Object.keys(sellOrders)) {
-            const sellOrder = sellOrders[sellOrderIndex];
-            if (sellOrder["item-name"] === name && (Math.ceil(sellOrder["price-sold"]) === price_sold || Math.round(sellOrder["price-sold"] * 10) / 10 === price_sold || Math.floor(sellOrder["price-sold"]) === price_sold)) {
-                current_sell_order_index = sellOrderIndex;
-                break;
-            }
-        }
+        // for (const sellOrderIndex of Object.keys(sellOrders)) {
+        //     const sellOrder = sellOrders[sellOrderIndex];
+        //     if (sellOrder["item-name"] === name && (Math.ceil(sellOrder["price-sold"]) === price_sold || Math.round(sellOrder["price-sold"] * 10) / 10 === price_sold || Math.floor(sellOrder["price-sold"]) === price_sold)) {
+        //         current_sell_order_index = sellOrderIndex;
+        //         break;
+
+                
+        //     }
+        // }
+
+
         if (current_sell_order_index === -1 || sellOrders.length === 0) throw 'ERROR: No sell order found to claim';
 
         trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["has-been-claimed"] = true;
@@ -1022,6 +1042,71 @@ class ProcesTrade {
             }
         }
     }
+    determineNearestSellOrder(amount, price_sold, name, coins_earned, has_decimal) {
+        const EPSILON = 0.05; // Threshold to handle standard JS floating-point issues
+
+        let sellOrders = new Sort(trader_data["sell-order-overview"]["sell-orders"], false, "sell-order-place-time");
+
+        const potentialMatches = sellOrders.filter(order => {
+            const itemMatch = order["item-name"] === name;
+            const remainingAmountMatch = order["total-selling-amount"] >= amount;
+            return itemMatch && remainingAmountMatch;
+        });
+
+        let bestOrder = null;
+        let smallestScore = Infinity;
+
+        for (const order of potentialMatches) {
+            let isPriceMatch = false;
+            let specializedPenalty = 0;
+
+            if (has_decimal) {
+                // Case A: Chat explicitly has a decimal. Use strict near-exact matching.
+                const priceDifference = Math.abs(order["price-sold"] - price_sold);
+                if (priceDifference <= 0.15) {
+                    isPriceMatch = true;
+                    specializedPenalty = priceDifference < EPSILON ? 0 : priceDifference * 10000;
+                }
+            } else {
+                // Case B: Chat lacks decimals (High Coinage). 
+                // Check if the rounded of your database price matches the integer from chat.
+                const dbRoundedPrice = Math.round(order["price-sold"]);
+                if (dbRoundedPrice === Math.round(price_sold)) {
+                    isPriceMatch = true;
+                    
+                    // Tie breaker: Calculate the difference between the underlying raw data fractions.
+                    // We extract the fractional part (e.g. 26122.1 -> 0.1) to favor an exact matchup.
+                    const decimalRemainder = order["price-sold"] - dbRoundedPrice;
+                    specializedPenalty = decimalRemainder * 10; 
+                }
+            }
+
+            // If the price logic checks out, grade it alongside volume data
+            if (isPriceMatch) {
+                const volumeDifference = Math.abs(order["total-selling-amount"] - amount);
+                
+                // Total score: Lowest score represents the absolute best match
+                const currentScore = specializedPenalty + volumeDifference;
+
+                if (currentScore < smallestScore) {
+                    smallestScore = currentScore;
+                    bestOrder = order;
+                }
+            }
+        }
+
+        if (bestOrder) {
+            console.log(`✅ Success! Linked to Order ID: ${name} (Database Entry Price was: ${bestOrder["price-sold"]})`); 
+            // return the index of the best order in the original sellOrders array
+            const bestOrderIndex = sellOrders.findIndex(order => order["price-sold"] === bestOrder["price-sold"] 
+                && order["item-name"] === bestOrder["item-name"] 
+                && order["total-selling-amount"] === bestOrder["total-selling-amount"]);
+            return bestOrderIndex;
+        } else {
+            console.log(`❌ Tracker mismatch: No database profiles fit the parsed pricing signature.`);
+            return -1;
+        }
+    }
     sellOrderCancel(amount, name) {
         if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
 
@@ -1081,8 +1166,11 @@ class ProcesTrade {
         }
 
         const currentSellOrder = sellOrders[current_sell_order_index];
-        const invesmentType = getInvestmentType(product_list[name]["type"]); 
+        const invesmentType = getInvestmentType(product_list[name]["type"]);
         for (const subSellOrder of currentSellOrder["sub-orders"]) {
+            const price = subSellOrder["price-bought"];
+            const time_bought = subSellOrder["time-bought"];
+
             if (trader_data[invesmentType][name] != undefined) {
                 let found = false;
                 
@@ -1417,11 +1505,12 @@ class ProcesTrade {
         }
     }
     checkForForgeableItmes() {
-
+        
     }
 }
 
 let bazaar_data = {};
+let auction_data = [];
 
 const update_seconds = 3;
 setInterval(updateBazaarData, update_seconds * 1000);
@@ -1431,6 +1520,8 @@ async function updateBazaarData() {
         const response = await fetch("https://api.hypixel.net/v2/skyblock/bazaar");
         bazaar_data = await response.json();
         bazaar_data = bazaar_data['products'];
+        marketData.bazaarProducts = bazaar_data;
+        marketData.lastUpdated = Date.now();
         new UpdateOrderFillAmounts().updateOrders();
     } catch (e) {
         console.log('Fetch failed')
@@ -1438,6 +1529,63 @@ async function updateBazaarData() {
 }
 
 updateBazaarData();
+
+const auctionUpdateSeconds = 300;
+setInterval(updateAuctionData, auctionUpdateSeconds * 1000);
+updateAuctionData();
+
+async function updateAuctionData() {
+    try {
+        const firstPageResponse = await fetch('https://api.hypixel.net/v2/skyblock/auctions?page=0');
+        if (!firstPageResponse.ok) return;
+
+        const firstPage = await firstPageResponse.json();
+        const totalPages = firstPage.totalPages || 1;
+        const allAuctions = [...(firstPage.auctions || [])];
+
+        const pageRequests = [];
+        for (let page = 1; page < totalPages; page += 1) {
+            pageRequests.push(fetch(`https://api.hypixel.net/v2/skyblock/auctions?page=${page}`).then(response => response.ok ? response.json() : null));
+        }
+
+        const remainingPages = await Promise.all(pageRequests);
+        for (const page of remainingPages) {
+            if (page?.auctions) {
+                allAuctions.push(...page.auctions);
+            }
+        }
+
+        auction_data = allAuctions;
+        marketData.lowestBinPrices = buildLowestBinPrices(allAuctions);
+        marketData.lastUpdated = Date.now();
+    } catch (error) {
+        console.log('Auction fetch failed');
+    }
+}
+
+function buildLowestBinPrices(auctions) {
+    const prices = {};
+    for (const auction of auctions) {
+        if (!auction.bin || !auction.item_name) continue;
+        const normalizedName = normalizeName(auction.item_name, auction.item_name === 'Beastmaster Crest' ? auction.tier : null);
+        const price = auction.starting_bid || 0;
+        if (!normalizedName || !price) continue;
+
+        if (prices[normalizedName] == null || price < prices[normalizedName]) {
+            prices[normalizedName] = price;
+        }
+    }
+
+    return prices;
+}
+
+function normalizeName(name, tier) {
+    return String(name || '')
+        .replace(/§./g, '')
+        .replace(/\s+/g, ' ')
+        .trim()
+        .toLowerCase() + (tier ? `_${tier.toLowerCase()}` : '');
+}
 
 // Export the Main class for use in other modules
 export default Main;
@@ -1566,6 +1714,7 @@ class UpdateOrderFillAmounts {
         if (buy_order_buy_summary_index === -1) {
             const amountSold = buyOrder["buying-amount"];
 
+            console.log(`1Updating buy order for ${buyOrder["item-name"]} at price ${buyOrder["price-buying"]}. Amount bought: ${amountSold}`);
             trader_data["buy-order-overview"]["buy-orders"][buyOrderIndex]["bought-amount"] = amountSold;
 
             return 'Completed the amount update for the buy order';

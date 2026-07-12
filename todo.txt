@@ -1,30 +1,30 @@
-Still needs Testing:
-Dont added another buy order created when materials are stil left to claim on order
-Base sell order claim on who which sell order has the closet unclamed sell amount
-
-
 Unfinished:
-Forge and crafting materials
 Add firebase
-The frontend
 Beastmaster Crest Rarity problems
-
-Issues:
-Item value can go negative. eg insta selling something to npc when the item wasnt logged as being picked up
-
+no chat message for forging a product (base it off what i bought?), there's some other way to access the forge api
+Make a new addation to the other repo to handle the forge stuff client side without using chat messages
 
 
-Future talismans to flip:
-red claw artifact
-vaccine artifact
-besastmaster Crest
+Frontend:
+overall tiles
+make sure auctions that havent been put up are in the investment worth**
+
+buy/sell orders
+projected profit on buy orders, in dropdown
+
+breakdown of today profit
+each item transcation
+including: percent of total profit, sold, profit per item
+
+breakdown of total profit
+remove amount
+include sold, percent of total profit, profit per item, total sell orders sold
 
 
-pesronal comopactor
-persomal delteor
-spider artifact
-agarimoo artifact
-glacial artifact
-pressure artifact
-bat person ring
-hunter talisman
+active auctions
+flush out: name, cost, price selling, current lbin, sold?, profit
+
+all products table (ai)
+
+last updated:
+for bz, and ah

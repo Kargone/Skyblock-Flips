@@ -1,8 +1,12 @@
-Disabled the http-client, not sure what it does yet
-Updated the produt list to be more accurate
-Changed the console logs to only show when trade completed
-Changed the buy/sell orders to fill completly when no order can be found
-Fixed an issues with sell order cancel
-Fixed having same time bought, and cost doesnt stack the same item type in investments
-Daily profit updates with local time instead of universal
-Started the front end
+Fixed the finding for a sell order upon claiming
+Added a new place to track Auction house
+Added new tile for total investment worth
+Added new tiles to see what to craft for auction and forge
+Added a tab system to manage the dashboard
+Added a insta sell/buy list
+Added some new tiles for avg dail profit, weekly profit, and lifetime profit
+Made sure the auctions and forge stuff will be included in the stats tiles
+Add some more data to Buy/Sell order titles
+Changed the sorting system for those tiles
+Fixed some bz snapshot stuff
+Redid the investments tile to have more info

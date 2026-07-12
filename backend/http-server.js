@@ -1,4 +1,4 @@
-import Main from './backend.mjs';
+import Main, { marketData } from './backend.mjs';
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -48,6 +48,16 @@ let server = http.createServer(function (request, response) {
             };
             response.end(JSON.stringify(defaultData));
         }
+        return;
+    }
+
+    if (request.url === '/api/market-data' && request.method === 'GET') {
+        response.writeHead(200, { "Content-Type": "application/json" });
+        response.end(JSON.stringify({
+            bazaarProducts: marketData.bazaarProducts || {},
+            lowestBinPrices: marketData.lowestBinPrices || {},
+            lastUpdated: marketData.lastUpdated || null
+        }));
         return;
     }
 
