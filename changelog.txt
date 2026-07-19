@@ -1,12 +1,15 @@
-Fixed the finding for a sell order upon claiming
-Added a new place to track Auction house
-Added new tile for total investment worth
-Added new tiles to see what to craft for auction and forge
-Added a tab system to manage the dashboard
-Added a insta sell/buy list
-Added some new tiles for avg dail profit, weekly profit, and lifetime profit
-Made sure the auctions and forge stuff will be included in the stats tiles
-Add some more data to Buy/Sell order titles
-Changed the sorting system for those tiles
-Fixed some bz snapshot stuff
-Redid the investments tile to have more info
+Changed how investments calc sell price for the tile
+Last updatd now includes bz and ah time updates
+Breakdown of all products now includes percent of total sold, profit per item, and total sell orders sold
+Colored some of the profit indicators
+Fixed an issue with buy orders updating
+Fixed an issue with how auction claim fees were calculated
+Fushed out the active auctions table more
+Fixed a couple errors in the product list
+Seperated longterm/short term investments
+Added a full section for all trades for the day
+Fixed the determine nearest sell order function
+Added new error logging
+Changed how the current investments are changed on sell order cancel. Made a checker in case current amount and investment amount differ.
+Most robust ignore list
+Redid the buy order cancel function

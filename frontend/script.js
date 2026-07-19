@@ -83,6 +83,7 @@ class TraderDashboard {
             if (!response.ok) return;
 
             const payload = await response.json();
+            this.lastUpdated = payload.lastUpdated || {};
             this.bazaarData = payload.bazaarProducts || {};
             this.lowestBinPrices = payload.lowestBinPrices || {};
         } catch (error) {
@@ -149,6 +150,7 @@ class TraderDashboard {
         this.updateAuctionCrafts();
         this.updateForgeCrafts();
         this.updateDailyProfits();
+        this.updateTodaysProducts();
         this.updateAllProducts();
         this.updateLastUpdate();
     }
@@ -246,7 +248,7 @@ class TraderDashboard {
             const spreadA = productA?.quick_status ? Math.abs((productASellPrice || 0) * 0.99 - (productABuyPrice || 0)) : 0;
             const spreadB = productB?.quick_status ? Math.abs((productBSellPrice || 0) * 0.99 - (productBBuyPrice || 0)) : 0;
             return spreadB - spreadA;
-        }).map((name) => ({ name, apiName: this.getApiName(name) })).slice(0, 20); // top 20 products by spread
+        }).map((name) => ({ name, apiName: this.getApiName(name) })).slice(0, 40); // top 40 products by spread
         // console.log('Tracked products for bazaar snapshot:', trackedProducts);
 
         if (!this.bazaarData || trackedProducts.length === 0) {
@@ -403,8 +405,8 @@ class TraderDashboard {
                                             <tr>
                                                 <td>${this.formatAmount(subOrder['partial-selling-amount'] || 0)}</td>
                                                 <td>${this.formatAmount(subOrder['partial-sold-amount'] || 0)}</td>
-                                                <td>${this.formatCoin(subOrder['price-bought'] || 0)}</td>
-                                                <td>${this.formatCoin(subOrder['projected-profit'] || 0)}</td>
+                                                <td>${this.formatCoin(subOrder['price-bought'] || subOrder['price-crafted'] || 0)}</td>
+                                                <td class="${subOrder['projected-profit'] >= 0 ? 'profit-positive' : 'profit-negative'}">${this.formatCoin(subOrder['projected-profit'] || 0)}</td>
                                                 <td>${this.formatTimestamp(subOrder['time-bought'])}</td>
                                             </tr>
                                         `).join('') || '<tr><td colspan="5" class="empty">No sub-orders</td></tr>'}
@@ -436,26 +438,38 @@ class TraderDashboard {
     }
 
     updateInvestments() {
-        const tbody = document.getElementById('investmentsBody');
+        const shorttbody = document.getElementById('shorttermInvestmentsBody');
+        const longtbody = document.getElementById('longtermInvestmentsBody');
         const shortTermInv = this.traderData['short-term-investments'] || {};
         const longTermInv = this.traderData['long-term-investments'] || {};
 
-        const allInvestments = { ...shortTermInv, ...longTermInv };
-        const investmentEntries = Object.entries(allInvestments);
+        const shortTermInvestmentEntries = Object.entries(shortTermInv);
+        const longTermInvestmentEntries = Object.entries(longTermInv);
 
-        if (investmentEntries.length === 0) {
-            tbody.innerHTML = '<tr><td colspan="4" class="empty">No investments</td></tr>';
-            return;
+        if (shortTermInvestmentEntries.length === 0) {
+            shorttbody.innerHTML = '<tr><td colspan="8" class="empty">No investments</td></tr>';
+        } else {
+            // Process short-term investments
+            this.processInvestments(shortTermInvestmentEntries, shorttbody, 'Short-term');
         }
 
+        if (longTermInvestmentEntries.length === 0) {
+            longtbody.innerHTML = '<tr><td colspan="8" class="empty">No investments</td></tr>';
+        } else {
+            // Process long-term investments
+            this.processInvestments(longTermInvestmentEntries, longtbody, 'Long-term');
+        }
+    }
+
+    processInvestments(investmentEntries, tbody, investmentType) {
         // sort investments by highest profit
         investmentEntries.sort(([nameA, invA], [nameB, invB]) => {
             const totalAmountA = invA['sub-orders'].reduce((sum, sub) => sum + sub['partial-amount'], 0);
             const totalAmountB = invB['sub-orders'].reduce((sum, sub) => sum + sub['partial-amount'], 0);
             const highestPriceA = invA['sub-orders'].length > 0 ?
-                Math.max(...invA['sub-orders'].map(o => o["price-bought"])) : 0;
+                Math.max(...invA['sub-orders'].map(o => o["price-bought"] || o["price-crafted"])) : 0;
             const highestPriceB = invB['sub-orders'].length > 0 ?
-                Math.max(...invB['sub-orders'].map(o => o["price-bought"])) : 0;
+                Math.max(...invB['sub-orders'].map(o => o["price-bought"] || o["price-crafted"])) : 0;
             const currentSellPriceA = this.getCraftingMarketValue(nameA);
             const currentSellPriceB = this.getCraftingMarketValue(nameB);
             const marginA = currentSellPriceA * 0.99 - highestPriceA;
@@ -466,10 +480,10 @@ class TraderDashboard {
         });
 
         tbody.innerHTML = investmentEntries.map(([name, inv]) => {
-            const type = shortTermInv[name] ? 'Short-term' : 'Long-term';
+            const type = investmentType;
             const totalAmount = inv['sub-orders'].reduce((sum, sub) => sum + sub['partial-amount'], 0);
             const highestPrice = inv['sub-orders'].length > 0 ?
-                Math.max(...inv['sub-orders'].map(o => o["price-bought"])) : 0;
+                Math.max(...inv['sub-orders'].map(o => o["price-bought"] || o["price-crafted"])) : 0;
             const currentSellPrice = this.getCraftingMarketValue(name);
             const margin = currentSellPrice * 0.99 - highestPrice;
             const currentProfit = margin * totalAmount || 0;
@@ -488,7 +502,7 @@ class TraderDashboard {
                     <td>${this.formatCoin(currentSellPrice)}</td>
                     <!-- color the text if positive or negative -->
                     <td>${margin ? this.formatCoin(margin) : 'N/A'}</td>
-                    <td>${this.formatCoin(currentProfit)}</td>
+                    <td class="${currentProfit >= 0 ? 'profit-positive' : 'profit-negative'}">${this.formatCoin(currentProfit)}</td>
                     <td>${dateBought}</td>
                 </tr>
             `;
@@ -507,7 +521,10 @@ class TraderDashboard {
         tbody.innerHTML = auctions.map(auction => `
             <tr>
                 <td>${auction['item-name']}</td>
+                <td>${this.formatCoin(this.getCraftingMarketValue(auction['item-name']))}</td>
                 <td>${this.formatCoin(auction['price-selling'])}</td>
+                <td>${this.formatCoin(auction['material-cost'])}</td>
+                <td class="${auction['price-selling'] * 0.99 -auction['material-cost'] >= 0 ? 'profit-positive' : 'profit-negative'}">${this.formatCoin(auction['price-selling'] * 0.99 -auction['material-cost'])}</td>
                 <td>
                     <span class="status-badge ${auction['sold'] ? 'status-filled' : 'status-partial'}">
                         ${auction['sold'] ? 'Sold' : 'Active'}
@@ -641,10 +658,8 @@ class TraderDashboard {
         const entry = this.getProductEntry(name);
         if (entry?.['api-name']) {
             const bazaarProduct = this.bazaarData?.[entry['api-name']];
-            const quickStatus = bazaarProduct?.quick_status;
-            if (quickStatus) {
-                return quickStatus.sellPrice || 0;
-            }
+            const sellPrice = bazaarProduct?.buy_summary?.[0]?.pricePerUnit || 0;
+            if (sellPrice) return sellPrice;
         }
 
         const apiName = entry?.['api-name'];
@@ -698,6 +713,41 @@ class TraderDashboard {
         document.getElementById('forgeProfit').textContent = this.formatCoin(today['forge-profit'] || 0);
     }
 
+    updateTodaysProducts() {
+        const todayKey = Object.keys(this.traderData['daily-profits'] || {}).pop();
+        const todaysProducts = (this.traderData['daily-profits'] || {})[todayKey]?.['trades'] || {};
+        const tbody = document.getElementById('todaysProductsBody');
+        const productEntries = Object.entries(todaysProducts);
+
+        if (productEntries.length === 0) {
+            tbody.innerHTML = '<tr><td colspan="5" class="empty">No products</td></tr>';
+            return;
+        }
+
+        const totalProfit = productEntries.reduce((sum, [name, product]) => sum + (product['total-profit'] || 0), 0);
+
+        tbody.innerHTML = productEntries
+            .sort((a, b) => (b[1]['total-profit'] || 0) - (a[1]['total-profit'] || 0))
+            .map(([name, product]) => {
+                const itemName = product['item-name'] || name;
+                const profit = product['total-profit'] || 0;
+                const className = profit >= 0 ? 'profit-positive' : 'profit-negative';
+                    const profitPerItem = profit / (product['count'] || 1);
+                    const percentOfTotalProfit = (profit / (totalProfit || 1)) * 100;
+                const totalSellOrders = product['sell-order-stats']?.['total-sell-orders-created'] || 0;  
+
+                return `
+                    <tr>
+                        <td>${itemName}</td>
+                        <td class="${className}">${this.formatCoin(profit)}</td>
+                        <td>${product['count'] || 0}</td>
+                        <td>${this.formatCoin(profitPerItem)}</td>
+                        <td>${percentOfTotalProfit.toFixed(2)}%</td>
+                    </tr>
+                `;
+            }).join('');
+    }
+
     updateAllProducts() {
         const allProducts = this.traderData['all-products'] || {};
         const tbody = document.getElementById('productsBody');
@@ -708,19 +758,29 @@ class TraderDashboard {
             return;
         }
 
+        let totalProfit = 0;
+        for (const [key, value] of Object.entries(this.traderData['daily-profits'] || {})) {
+            totalProfit += value['daily-profit'] || 0;
+        }
+
         tbody.innerHTML = productEntries
             .sort((a, b) => (b[1]['total-profit-made'] || 0) - (a[1]['total-profit-made'] || 0))
             .slice(0, 50) // Show top 50 products
             .map(([name, product]) => {
                 const profit = product['total-profit-made'] || 0;
                 const className = profit >= 0 ? 'profit-positive' : 'profit-negative';
+                    const profitPerItem = profit / (product['total-sold'] || 1);
+                    const percentOfTotalProfit = (profit / (totalProfit || 1)) * 100;
+                const totalSellOrders = product['sell-order-stats']?.['total-sell-orders-created'] || 0;  
 
                 return `
                     <tr>
                         <td>${name}</td>
-                        <td>${product['current-amount'] || 0}</td>
                         <td class="${className}">${this.formatCoin(profit)}</td>
                         <td>${product['total-sold'] || 0}</td>
+                        <td>${this.formatCoin(profitPerItem)}</td>
+                        <td>${percentOfTotalProfit.toFixed(2)}%</td>
+                        <td>${totalSellOrders}</td>
                     </tr>
                 `;
             }).join('');
@@ -729,7 +789,11 @@ class TraderDashboard {
     updateLastUpdate() {
         const now = new Date();
         const timeString = now.toLocaleTimeString();
-        document.getElementById('lastUpdate').textContent = timeString;
+
+        // console.log(this.lastUpdated);
+        const lastUpdateAuctions = this.lastUpdated?.auctions;
+        const lastUpdateBazaar = this.lastUpdated?.bazaar;
+        document.getElementById('lastUpdate').textContent = `Last Update: Bazaar: ${lastUpdateBazaar ? this.formatTimestamp(lastUpdateBazaar) : 'N/A'}, Auctions: ${lastUpdateAuctions ? this.formatTimestamp(lastUpdateAuctions) : 'N/A'} (Current Time: ${timeString})`;
     }
 
     getApiName(name) {

@@ -1,30 +1,20 @@
 Unfinished:
 Add firebase
 Beastmaster Crest Rarity problems
-no chat message for forging a product (base it off what i bought?), there's some other way to access the forge api
-Make a new addation to the other repo to handle the forge stuff client side without using chat messages
 
+Forseed problem:
+If a given sell order has already been filled, then before its claim, the amount it has left could be overwritten if another order has the same price selling
+same for buy orders
+
+Issues:
 
 Frontend:
-overall tiles
-make sure auctions that havent been put up are in the investment worth**
+auto make short term investments into longterm ones
+program to auto add all the new stuff to product list
 
-buy/sell orders
+AI:
 projected profit on buy orders, in dropdown
 
-breakdown of today profit
-each item transcation
-including: percent of total profit, sold, profit per item
-
-breakdown of total profit
-remove amount
-include sold, percent of total profit, profit per item, total sell orders sold
-
-
-active auctions
-flush out: name, cost, price selling, current lbin, sold?, profit
-
-all products table (ai)
-
-last updated:
-for bz, and ah
+Issues:
+dark oak log going negative. flipped it from buy order for 4k to sell order, it went 6k negative (keep watch)
+Something is wrong with the tracking of certain sell orders, check price index (keep watch)

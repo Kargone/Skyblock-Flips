@@ -4,6 +4,15 @@
     "type": "short-term-investment",
     "has-weights": true
   },
+  "Razor-sharp Shark Tooth Necklace": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Sharp Shark Tooth Necklace": 1,
+      "Great White Shark Tooth": 4
+    }
+  },
   "%%red%%Volcanic Rock": {
     "api-name": "VOLCANIC_ROCK",
     "type": "short-term-investment",
@@ -8407,15 +8416,6 @@
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Razor-Sharp Shark Tooth Necklace": {
-    "api-name": "",
-    "type": "auction-product",
-    "has-weights": false,
-    "crafting-materials": {
-      "Sharp Shark Tooth Necklace": 1,
-      "Great White Shark Tooth": 4
-    }
-  },
   "Re-heated Gummy Polar Bear": {
     "api-name": "REHEATED_GUMMY_POLAR_BEAR",
     "type": "short-term-investment",
@@ -8438,7 +8438,7 @@
     "crafting-materials": {
       "Red Claw Ring": 1,
       "Red Claw Egg": 1,
-      "Enchanted Leather": 128,
+      "Enchanted Leather": 256,
       "Golden Tooth": 54
     }
   },
@@ -8452,7 +8452,7 @@
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
-      "Enchanted Leather": 32,
+      "Enchanted Leather": 96,
       "Golden Tooth": 8
     }
   },

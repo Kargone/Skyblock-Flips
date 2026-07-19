@@ -127,11 +127,11 @@
                 </div>
             </section>
 
-            <!-- Investments Section -->
+            <!-- Short-term Investments Section -->
             <section class="dashboard-section tab-panel" data-tab-group="investments">
-                <h2>Current Investments</h2>
+                <h2>Current Investments (Short-term)</h2>
                 <div class="table-container">
-                    <table id="investmentsTable">
+                    <table id="shortermInvestmentsTable">
                         <thead>
                             <tr>
                                 <th>Item</th>
@@ -144,7 +144,31 @@
                                 <th>Date Bought</th>
                             </tr>
                         </thead>
-                        <tbody id="investmentsBody">
+                        <tbody id="shorttermInvestmentsBody">
+                            <tr><td colspan="8" class="empty">No investments</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Long-term Investments Section -->
+            <section class="dashboard-section tab-panel" data-tab-group="investments">
+                <h2>Current Investments (Long-term)</h2>
+                <div class="table-container">
+                    <table id="longtermInvestmentsTable">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Type</th>
+                                <th>Amount</th>
+                                <th>Highest Price</th>
+                                <th>Current Sell Price</th>
+                                <th>Margin</th>
+                                <th>Current Profit</th>
+                                <th>Date Bought</th>
+                            </tr>
+                        </thead>
+                        <tbody id="longtermInvestmentsBody">
                             <tr><td colspan="8" class="empty">No investments</td></tr>
                         </tbody>
                     </table>
@@ -159,12 +183,15 @@
                         <thead>
                             <tr>
                                 <th>Item</th>
-                                <th>Price</th>
+                                <th>Current lBin</th>
+                                <th>Price Selling</th>
+                                <th>Cost</th>
+                                <th>Profit</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
                         <tbody id="auctionsBody">
-                            <tr><td colspan="3" class="empty">No active auctions</td></tr>
+                            <tr><td colspan="6" class="empty">No active auctions</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -185,7 +212,7 @@
                             </tr>
                         </thead>
                         <tbody id="auctionCraftsBody">
-                            <tr><td colspan="7" class="empty">No auction products</td></tr>
+                            <tr><td colspan="5" class="empty">No auction products</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -207,7 +234,7 @@
                             </tr>
                         </thead>
                         <tbody id="forgeCraftsBody">
-                            <tr><td colspan="7" class="empty">No forge products</td></tr>
+                            <tr><td colspan="6" class="empty">No forge products</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -232,6 +259,27 @@
                 </div>
             </section>
 
+            <!-- Today's Products Sold Section -->
+            <section class="dashboard-section full-width tab-panel" data-tab-group="profits">
+                <h2>Today's Products Sold</h2>
+                <div class="table-container">
+                    <table id="todaysProductsTable">
+                        <thead>
+                            <tr>
+                                <th>Product</th>
+                                <th>Profit</th>
+                                <th>Sold</th>
+                                <th>Profit per Item</th>
+                                <th>Percent of Total Profit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="todaysProductsBody">
+                            <tr><td colspan="5" class="empty">No products</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
             <!-- All Products Section -->
             <section class="dashboard-section full-width tab-panel" data-tab-group="profits">
                 <h2>All Products</h2>
@@ -240,13 +288,15 @@
                         <thead>
                             <tr>
                                 <th>Product</th>
-                                <th>Amount</th>
                                 <th>Profit</th>
                                 <th>Sold</th>
+                                <th>Profit per Item</th>
+                                <th>Percent of Total Profit</th>
+                                <th>Total Sell Orders</th>
                             </tr>
                         </thead>
                         <tbody id="productsBody">
-                            <tr><td colspan="4" class="empty">No products</td></tr>
+                            <tr><td colspan="6" class="empty">No products</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -254,7 +304,7 @@
         </div>
 
         <footer>
-            <p>Last updated: <span id="lastUpdate">-</span></p>
+            <span id="lastUpdate">-</span>
             <p class="update-info">Updates every 1 second</p>
         </footer>
     </div>
