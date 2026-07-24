@@ -1,15 +1,11 @@
-Changed how investments calc sell price for the tile
-Last updatd now includes bz and ah time updates
-Breakdown of all products now includes percent of total sold, profit per item, and total sell orders sold
-Colored some of the profit indicators
-Fixed an issue with buy orders updating
-Fixed an issue with how auction claim fees were calculated
-Fushed out the active auctions table more
-Fixed a couple errors in the product list
-Seperated longterm/short term investments
-Added a full section for all trades for the day
-Fixed the determine nearest sell order function
-Added new error logging
-Changed how the current investments are changed on sell order cancel. Made a checker in case current amount and investment amount differ.
-Most robust ignore list
-Redid the buy order cancel function
+Added another thing to nontrade messsages
+Added rounding into the price check for updating order fill amounts
+Made short term investments into longterm ones after 5 days and 5 million worth (disabled after other problems)
+Created a program to auto add all the new stuff to product list
+Added auction count list stat card
+Added projected profits to dropdown under buy orders
+Added a new run trade file
+Fixed some parsing of the trade messsage string on auction creation
+Fixed it finding the wrong lowest bin for rarity upgraded auctions
+More stuff changed in product list
+Added a stats tile to show the current mayor and the possible next mayor for flipping. Also show when the next ectoplasm is.

@@ -1,5 +1,5 @@
 Unfinished:
-Add firebase
+Add firebase (might not)
 Beastmaster Crest Rarity problems
 
 Forseed problem:
@@ -7,14 +7,5 @@ If a given sell order has already been filled, then before its claim, the amount
 same for buy orders
 
 Issues:
-
-Frontend:
-auto make short term investments into longterm ones
-program to auto add all the new stuff to product list
-
-AI:
-projected profit on buy orders, in dropdown
-
-Issues:
-dark oak log going negative. flipped it from buy order for 4k to sell order, it went 6k negative (keep watch)
-Something is wrong with the tracking of certain sell orders, check price index (keep watch)
+doesnt know the spider artifact price (couldn't replicate, keep watch)
+if a sell order has already been claimed, not fully, then is reported as filled in chat. the sell order amounts wont match up

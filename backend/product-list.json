@@ -234,7 +234,7 @@
     "has-weights": true
   },
   "Bait Ring": {
-    "api-name": "BAIT_RING",
+    "api-name": "",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -278,7 +278,7 @@
     "crafting-materials": {
       "Bat Person Ring": 1,
       "Ectoplasm": 128,
-      "Spooky Shard": 16
+      "Spooky Fragment": 16
     }
   },
   "Bat Person Ring": {
@@ -288,7 +288,7 @@
     "crafting-materials": {
       "Bat Person Talisman": 1,
       "Ectoplasm": 32,
-      "Spooky Shard": 4
+      "Spooky Fragment": 4
     }
   },
   "Bat Person Talisman": {
@@ -1184,7 +1184,7 @@
     "has-weights": true
   },
   "Lotusfish Shard": {
-    "api-name": "SHARD_LOTUSFISH",
+    "api-name": "SHARD_LOTUS_FISH",
     "type": "short-term-investment",
     "has-weights": true
   },
@@ -10071,17 +10071,6 @@
       "Super Compactor 3000": 1,
       "Enchanted Redstone Dust": 448,
       "Enchanted Redstone Block": 96
-    }
-  },
-  "Personal Deletor 7000": {
-    "api-name": "",
-    "type": "auction-product",
-    "has-weights": false,
-    "crafting-materials": {
-      "Enchanted Lava Bucket": 1,
-      "Enchanted Redstone Block": 1,
-      "Enchanted Iron Ingot": 784,
-      "Enchanted Iron Block": 7
     }
   },
   "Agarimoo Artifact": {

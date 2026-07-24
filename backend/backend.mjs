@@ -92,18 +92,17 @@ const IGNORE_INSTA_SELL_BUY = [
     "Titanic Experience Bottle",
     "Scorched Books",
     "Enchanted Sugar Cane",
-    "Spiked Bait",
     "Fuming Potato Book",
-    "Plant Matter",
     "Enchanted Cactus",
     "Enchanted Cookie",
     "Enchanted Hay Bale",
     "Cocoa Beans",
-
+    "Enchanted Melon",
 ];
 
 const IGNORE_INSTA_BUY = [
     "Polished Pumpkin",
+    "Plant Matter",
 ];
 
 // Load trader_data manually so we can modify and write it back
@@ -404,10 +403,11 @@ class ProcesTrade {
             this.npcSell(amount, totalPrice/amount, nameString);
         } else if (this.message.includes('created a BIN auction for')) {
             this.type = "auction-creation";
-            const priceStringStart = findEnd(this.message, 'at ');
+            // edge case: [MVP+] Kargone created a BIN auction for Bat Person Ring at 9,490,000 coins!
+            const priceStringStart = findEnd(this.message, ' at ');
             const priceStringEnd = this.message.indexOf(' coins!')
-            const nameStringStart = findEnd(this.message, 'for ');
-            const nameStringEnd = this.message.indexOf(' at');
+            const nameStringStart = findEnd(this.message, 'auction for ');
+            const nameStringEnd = this.message.indexOf(' at ');
             const pricePerUnit = parseInt(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
             this.auctionCreation(pricePerUnit, nameString);
@@ -457,7 +457,8 @@ class ProcesTrade {
             this.message.includes('Cancelling order...') ||
             this.message.includes('Executing instant sell...') ||
             this.message.includes('Submitting buy order...') ||
-            this.message.includes('You cancelled the trade!')
+            this.message.includes('You cancelled the trade!') ||
+            this.message.includes('Executing instant buy...')
         ) {
             return 'Nontrade message';
         } else {
@@ -1247,7 +1248,8 @@ class ProcesTrade {
         for (const subSellOrder of currentSellOrder["sub-orders"]) {
             const price = subSellOrder["price-bought"];
             const time_bought = subSellOrder["time-bought"];
-            const subSellAmount = subSellOrder["partial-selling-amount"] - subSellOrder["partial-sold-amount"];
+            const subSellAmount = subSellOrder["partial-selling-amount"];
+            if (subSellOrder["partial-sold-amount"] != 0) console.error("ERROR: Suborder has been partially sold, but the sell order is being cancelled. This should not happen. The suborder is: ", subSellOrder);
 
             if (trader_data[invesmentType][name] != undefined) {
                 let found = false;
@@ -1274,7 +1276,7 @@ class ProcesTrade {
                     "type": product_list[name]["type"],
                     "sub-orders": [
                         {
-                            "partial-amount": subSellOrder["partial-selling-amount"] - subSellOrder["partial-sold-amount"],
+                            "partial-amount": subSellOrder["partial-selling-amount"],
                             "price-bought": subSellOrder["price-bought"],
                             "time-bought": subSellOrder["time-bought"]
                         }
@@ -1320,9 +1322,11 @@ class ProcesTrade {
         return 'NPC sell completed';
     }
     auctionCreation(price, name) {
+        // console.log(`Creating auction for ${name} at price ${price}`);
+
         // automatically create product if none can already be found
         if (Object.keys(trader_data["long-term-investments"]).indexOf(name) === -1) {
-            console.log("Product was not found already in investments to create an auction for.");
+            console.log(`Product was not found already in investments to create an auction for. Creating product ${name} in long-term investments.`);
 
             // console.log(`Supercrafting ${name}`);
             this.supercraft(name);
@@ -1331,7 +1335,9 @@ class ProcesTrade {
         // remove the product from the long term investments by highest cost
         trader_data["long-term-investments"][name]["sub-orders"] = new Sort(trader_data["long-term-investments"][name]["sub-orders"], false, "price-bought");
         const currentProducts = trader_data["long-term-investments"][name]["sub-orders"];
+        // console.log(`Current products for ${name}: ${JSON.stringify(currentProducts)}`);
         const removedInvestment = currentProducts[0];
+        // console.log(`Removing investment: ${name} - ${removedInvestment["price-bought"]}`);
 
         if (currentProducts.length <= 1) {
             delete trader_data["long-term-investments"][name];
@@ -1342,6 +1348,9 @@ class ProcesTrade {
         }
 
         const auctionFees = calcAuctionFee(price);
+
+        // console.log(JSON.stringify(removedInvestment));
+        // console.log(auctionFees);
 
         trader_data["auction-house-overview"]["auctions"].push({
             "item-name": name,
@@ -1478,7 +1487,7 @@ class ProcesTrade {
         return 'Auction successfully bought';
     }
     supercraft(name) {
-        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list', name, Object.keys(product_list));
+        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list', name);
 
         // determine if product has already been created
         const productTypeAlreadyCreated = Object.keys(trader_data["long-term-investments"]).indexOf(name) != -1;
@@ -1654,6 +1663,7 @@ function buildLowestBinPrices(auctions) {
     const prices = {};
     for (const auction of auctions) {
         if (!auction.bin || !auction.item_name) continue;
+        if (auction.item_lore.includes('§k')) continue; // Skip items with obfuscated lore
         const normalizedName = normalizeName(auction.item_name, auction.item_name === 'Beastmaster Crest' ? auction.tier : null);
         const price = auction.starting_bid || 0;
         if (!normalizedName || !price) continue;
@@ -1691,7 +1701,10 @@ class UpdateOrderFillAmounts {
         for (const investmentName in longTermInvestments) this.checkForAllProductAndInvestmentMatches(investmentName);
 
         const shortTermInvestments = trader_data["short-term-investments"];
-        for (const investmentName in shortTermInvestments) this.checkForAllProductAndInvestmentMatches(investmentName);
+        for (const investmentName in shortTermInvestments) {
+            this.checkForAllProductAndInvestmentMatches(investmentName);
+            // this.makeShortTermInvestmentLongTerm(investmentName);
+        }
 
         // Atomic write: write to temp file first, then rename to avoid corruption on read
         const tempPath = traderDataPath + '.tmp';
@@ -1728,7 +1741,7 @@ class UpdateOrderFillAmounts {
 
         for (const sellOrderIndex in sellSummary) {
             const sellOrderSummary = sellSummary[sellOrderIndex];
-            if (sellOrderSummary["pricePerUnit"] === sellOrder["price-sold"]) {
+            if (Math.round(sellOrderSummary["pricePerUnit"] * 10) / 10 === Math.round(sellOrder["price-sold"] * 10) / 10) {
                 sell_order_sell_summary_index = sellOrderIndex;
                 break;
             }
@@ -1777,7 +1790,7 @@ class UpdateOrderFillAmounts {
                 amountSold -= subOrder["partial-selling-amount"];
             }
 
-            if (sellOrder["sub-orders"][subOrderIndex]["partial-sold-amount"] < 0) console.error('ERROR: Partial sold amount is less than 0, this should not happen', sellOrder);
+            if (sellOrder["sub-orders"][subOrderIndex]["partial-sold-amount"] < 0) console.error('ERROR: Partial sold amount is less than 0, this should not happen', sellOrder, amountSold);
             if (amountSold === 0) break;
         }
 
@@ -1799,7 +1812,8 @@ class UpdateOrderFillAmounts {
         
         for (const buyOrderIndex in buySummary) {
             const buyOrderSummary = buySummary[buyOrderIndex];
-            if (buyOrderSummary["pricePerUnit"] === buyOrder["price-buying"]) {
+            // round the price to 1 decimal place to avoid floating point issues
+            if (Math.round(buyOrderSummary["pricePerUnit"] * 10) / 10 === Math.round(buyOrder["price-buying"] * 10) / 10) {
                 buy_order_buy_summary_index = buyOrderIndex;
                 break;
             }
@@ -1825,10 +1839,54 @@ class UpdateOrderFillAmounts {
     checkForAllProductAndInvestmentMatches(itemName) {
         // make sure that for a given item, the total amount in all-products matches the total amount in long-term or short-term investments
         const allProductsAmount = trader_data["all-products"][itemName]?.["current-amount"];
-        const investmentType = getInvestmentType(product_list[itemName]["type"]);
-        const investmentAmount = trader_data[investmentType][itemName]["sub-orders"].reduce((acc, subOrder) => acc + subOrder["partial-amount"], 0);
+        const shortTermAmount = trader_data["short-term-investments"][itemName]?.["sub-orders"].reduce((acc, subOrder) => acc + subOrder["partial-amount"], 0) || 0
+        const longTermAmount = trader_data["long-term-investments"][itemName]?.["sub-orders"].reduce((acc, subOrder) => acc + subOrder["partial-amount"], 0) || 0;
+        const investmentAmount = shortTermAmount + longTermAmount;
         if (allProductsAmount !== investmentAmount) {
             console.error(`ERROR: Amount mismatch for item ${itemName}. All products: ${allProductsAmount}, Investment: ${investmentAmount}`);
+        }
+    }
+    makeShortTermInvestmentLongTerm(itemName) {
+        // move an investment into long term if conditions is met (it is a short term invesment, it has been 6 days, and its worth more than 10 million)
+        const investmentType = getInvestmentType(product_list[itemName]["type"]);
+        if (investmentType !== "short-term-investments") return (`ERROR: Item ${itemName} is not a short term investment`);
+        const subOrders = trader_data[investmentType][itemName]["sub-orders"];
+        const currentTime = Date.now();
+
+        // Check if it has been 5 days since the investment was made
+        for (const subOrder of subOrders) {
+            const timeSinceBought = currentTime - subOrder["time-bought"];
+            const sixDaysInMilliseconds = 5 * 24 * 60 * 60 * 1000;
+
+            if (timeSinceBought >= sixDaysInMilliseconds) {
+                // Check if the investment is worth more than 5 million
+                const priceBought = subOrder["price-bought"];
+                const orderWorth = priceBought * subOrder["partial-amount"];
+
+                if (orderWorth > 5_000_000) {
+                    // Move the investment to long term
+                    if (!trader_data["long-term-investments"][itemName]) {
+                        trader_data["long-term-investments"][itemName] = {
+                            "type": product_list[itemName]["type"],
+                            "sub-orders": []
+                        };
+                    }
+                    trader_data["long-term-investments"][itemName]["sub-orders"].push(subOrder);
+
+                    // Remove the investment from short term
+                    const index = trader_data[investmentType][itemName]["sub-orders"].indexOf(subOrder);
+                    if (index > -1) {
+                        trader_data[investmentType][itemName]["sub-orders"].splice(index, 1);
+                    }
+
+                    // if there is no more sub-orders for this item, remove it from short-term investments
+                    if (trader_data[investmentType][itemName]["sub-orders"].length === 0) {
+                        delete trader_data[investmentType][itemName];
+                    }
+
+                    console.log(`Moved ${itemName} suborder ${subOrder} from short term to long term investment.`);
+                }
+            }
         }
     }
 }

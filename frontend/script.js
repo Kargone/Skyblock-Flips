@@ -4,23 +4,29 @@ class TraderDashboard {
         this.traderData = null;
         this.productList = null;
         this.bazaarData = null;
+        this.mayorData = null;
         this.auctionData = [];
         this.lowestBinPrices = {};
+        this.openBuyOrders = new Set();
         this.openSellOrders = new Set();
         this.activeTab = 'bazaar-orders';
         this.updateInterval = 1000; // 1 second
         this.bazaarUpdateInterval = 60000; // 1 minute
         this.auctionUpdateInterval = 300000; // 5 minutes
+        this.mayorUpdateInterval = 300000; // 5 minutes
         this.init();
     }
 
     init() {
         this.setupTabs();
         this.fetchMarketData();
+        this.fetchMayorData();
         this.fetchAndUpdateData();
+
         setInterval(() => this.fetchAndUpdateData(), this.updateInterval);
         setInterval(() => this.fetchBazaarData(), this.bazaarUpdateInterval);
         setInterval(() => this.fetchAuctionData(), this.auctionUpdateInterval);
+        setInterval(() => this.fetchMayorData(), this.mayorUpdateInterval);
     }
 
     async fetchAndUpdateData() {
@@ -53,12 +59,25 @@ class TraderDashboard {
                 if (response.ok) {
                     this.productList = await response.json();
                 }
-            }).catch(() => {}),
+            }).catch(() => { }),
             this.fetchBazaarData(),
             this.fetchAuctionData()
         ]);
+        await this.fetchMayorData();
 
         this.updateDashboard();
+    }
+
+    async fetchMayorData() {
+        try {
+            const response = await fetch('https://api.hypixel.net/v2/resources/skyblock/election');
+            if (!response.ok) return;
+
+            const payload = await response.json();
+            this.mayorData = payload;
+        } catch (error) {
+            console.error('Error fetching mayor data:', error);
+        }
     }
 
     async fetchTraderData() {
@@ -153,6 +172,7 @@ class TraderDashboard {
         this.updateTodaysProducts();
         this.updateAllProducts();
         this.updateLastUpdate();
+        this.updateCalendar();
     }
 
     updateStats() {
@@ -208,6 +228,9 @@ class TraderDashboard {
 
         // Active Sell Orders
         document.getElementById('activeSellOrders').textContent = sellOrders.length;
+
+        // Active Auctions
+        document.getElementById('activeAuctions').textContent = auctionOrders.length;
     }
 
     updateBazaarSnapshot() {
@@ -290,6 +313,7 @@ class TraderDashboard {
 
         if (buyOrders.length === 0) {
             tbody.innerHTML = '<tr><td colspan="6" class="empty">No buy orders</td></tr>';
+            document.getElementById('buyOrdersTitle').textContent = `Active Buy Orders: Total Value: 0, Total Bought: 0/0 (100%), Total Projected Profit: 0`;
             return;
         }
 
@@ -300,32 +324,90 @@ class TraderDashboard {
             return percentB - percentA;
         });
 
-        tbody.innerHTML = buyOrders.map(order => `
-            <tr>
-                <td>${order['item-name']}</td>
-                <td>${this.formatCoin(order['price-buying'])}</td>
-                <td>${this.formatAmount(order['bought-amount'] || 0)} / ${this.formatAmount(order['buying-amount'] || 0)} (${this.formatPercent(order['bought-amount'] || 0, order['buying-amount'] || 0)})</td>
-                <td>${this.formatCoin((order['buying-amount'] || 0) * (order['price-buying'] || 0))}</td>
-                <td>${this.formatTimestamp(order['buy-order-place-time'])}</td>
-                <td>
-                    ${order['bought-amount'] >= order['buying-amount'] ? '<span class="status-badge status-filled">Filled</span>' : '<span class="status-badge status-pending">Pending</span>'}
-                </td>
-            </tr>
-        `).join('');
-        
+        const rows = [];
         let totalSoldAmount = 0;
         let totalAmountAllOrders = 0;
         let totalValue = 0;
+        let totalProjectedProfit = 0;
 
-        // find some values of totals just like in the sell orders
-        for (const buyOrder of buyOrders) {
-            totalSoldAmount += buyOrder['bought-amount'] || 0;
-            totalAmountAllOrders += buyOrder['buying-amount'] || 0;
-            totalValue += (buyOrder['buying-amount'] || 0) * (buyOrder['price-buying'] || 0);
-        }
+        buyOrders.forEach((order, index) => {
+            const totalBought = order['bought-amount'] || 0;
+            const totalAmount = order['buying-amount'] || 0;
+            const orderKey = this.getBuyOrderKey(order, index);
+            const isOpen = this.openBuyOrders.has(orderKey);
+            const status = totalBought >= totalAmount ? 'Filled' : 'Pending';
+            const bazaarPrice = this.getBazaarSellOrderPrice(order['item-name']);
+            const margin = bazaarPrice ? (bazaarPrice * 0.99) - (order['price-buying'] || 0) : 0;
+            const projectedProfit = margin * totalAmount || 0;
+
+            totalSoldAmount += totalBought;
+            totalAmountAllOrders += totalAmount;
+            totalValue += totalAmount * (order['price-buying'] || 0);
+            totalProjectedProfit += projectedProfit;
+
+            rows.push(`
+                <tr class="buy-order-row">
+                    <td>
+                        <button class="expand-button buy-order-toggle" data-order-key="${orderKey}" aria-expanded="${isOpen}">${isOpen ? '▾' : '▸'}</button>
+                        ${order['item-name']}
+                    </td>
+                    <td>${this.formatCoin(order['price-buying'])}</td>
+                    <td>${this.formatAmount(totalBought)} / ${this.formatAmount(totalAmount)} (${this.formatPercent(totalBought, totalAmount)})</td>
+                    <td>${this.formatCoin(totalAmount * (order['price-buying'] || 0))}</td>
+                    <td>${this.formatTimestamp(order['buy-order-place-time'])}</td>
+                    <td>
+                        <span class="status-badge status-${status.toLowerCase()}">${status}</span>
+                    </td>
+                </tr>
+            `);
+
+            if (isOpen) {
+                rows.push(`
+                    <tr class="sell-order-details-row">
+                        <td colspan="6">
+                            <div class="sell-order-details">
+                                <h4>Bazaar Price Breakdown</h4>
+                                <table class="sub-orders-table">
+                                    <thead>
+                                        <tr>
+                                            <th>Bazaar Price</th>
+                                            <th>Order Price</th>
+                                            <th>Margin</th>
+                                            <th>Projected Profit</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>${bazaarPrice ? this.formatCoin(bazaarPrice) : 'N/A'}</td>
+                                            <td>${this.formatCoin(order['price-buying'] || 0)}</td>
+                                            <td class="${margin >= 0 ? 'profit-positive' : 'profit-negative'}">${bazaarPrice ? this.formatCoin(margin) : 'N/A'}</td>
+                                            <td class="${projectedProfit >= 0 ? 'profit-positive' : 'profit-negative'}">${bazaarPrice ? this.formatCoin(projectedProfit) : 'N/A'}</td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </td>
+                    </tr>
+                `);
+            }
+        });
+
+        tbody.innerHTML = rows.join('');
+
+        tbody.querySelectorAll('.buy-order-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const orderKey = button.getAttribute('data-order-key');
+                if (this.openBuyOrders.has(orderKey)) {
+                    this.openBuyOrders.delete(orderKey);
+                } else {
+                    this.openBuyOrders.add(orderKey);
+                }
+                this.updateBuyOrders();
+            });
+        });
 
         const percentFilled = totalAmountAllOrders > 0 ? (totalSoldAmount / totalAmountAllOrders) * 100 : 0;
-        document.getElementById('buyOrdersTitle').textContent = `Active Buy Orders: Total Value: ${this.formatCoin(totalValue)}, Total Bought: ${this.formatAmount(totalSoldAmount)}/${this.formatAmount(totalAmountAllOrders)} (${percentFilled.toFixed(2)}%)`;
+        document.getElementById('buyOrdersTitle').textContent = `Active Buy Orders: Total Value: ${this.formatCoin(totalValue)}, Total Bought: ${this.formatAmount(totalSoldAmount)}/${this.formatAmount(totalAmountAllOrders)} (${percentFilled.toFixed(2)}%), Total Projected Profit: ${this.formatCoin(totalProjectedProfit)}`;
     }
 
     updateSellOrders() {
@@ -334,6 +416,7 @@ class TraderDashboard {
 
         if (sellOrders.length === 0) {
             tbody.innerHTML = '<tr><td colspan="7" class="empty">No sell orders</td></tr>';
+            document.getElementById('sellOrdersTitle').textContent = `Active Sell Orders: Total Value: 0, Total Sold: 0/0 (100%), Total Projected Profit: 0`;
             return;
         }
 
@@ -524,7 +607,7 @@ class TraderDashboard {
                 <td>${this.formatCoin(this.getCraftingMarketValue(auction['item-name']))}</td>
                 <td>${this.formatCoin(auction['price-selling'])}</td>
                 <td>${this.formatCoin(auction['material-cost'])}</td>
-                <td class="${auction['price-selling'] * 0.99 -auction['material-cost'] >= 0 ? 'profit-positive' : 'profit-negative'}">${this.formatCoin(auction['price-selling'] * 0.99 -auction['material-cost'])}</td>
+                <td class="${auction['price-selling'] * 0.99 - auction['material-cost'] >= 0 ? 'profit-positive' : 'profit-negative'}">${this.formatCoin(auction['price-selling'] * 0.99 - auction['material-cost'])}</td>
                 <td>
                     <span class="status-badge ${auction['sold'] ? 'status-filled' : 'status-partial'}">
                         ${auction['sold'] ? 'Sold' : 'Active'}
@@ -611,11 +694,11 @@ class TraderDashboard {
                                     </thead>
                                     <tbody>
                                         ${materials.map(([materialName, qty]) => {
-                                            const directInsta = this.getProductUnitCost(materialName, 'insta-buy');
-                                            const directBuy = this.getProductUnitCost(materialName, 'buy-order');
-                                            const directOwned = this.getProductUnitCost(materialName, 'owned', this.cloneInventorySnapshot(inventorySnapshot));
+                    const directInsta = this.getProductUnitCost(materialName, 'insta-buy');
+                    const directBuy = this.getProductUnitCost(materialName, 'buy-order');
+                    const directOwned = this.getProductUnitCost(materialName, 'owned', this.cloneInventorySnapshot(inventorySnapshot));
 
-                                            return `
+                    return `
                                                 <tr>
                                                     <td>${materialName}</td>
                                                     <td>${this.formatAmount(qty)}</td>
@@ -623,7 +706,7 @@ class TraderDashboard {
                                                     <td>${this.formatCoin(directOwned * qty) != 0 ? this.formatCoin(directOwned * qty) : ''}</td>
                                                 </tr>
                                             `;
-                                        }).join('') || '<tr><td colspan="5" class="empty">No materials listed</td></tr>'}
+                }).join('') || '<tr><td colspan="5" class="empty">No materials listed</td></tr>'}
                                     </tbody>
                                 </table>
                             </div>
@@ -699,7 +782,7 @@ class TraderDashboard {
     updateDailyProfits() {
         const dailyProfits = this.traderData['daily-profits'] || {};
         const todayKey = Object.keys(dailyProfits).pop();
-        
+
         if (!todayKey) {
             document.getElementById('bazaarProfit').textContent = '-';
             document.getElementById('auctionProfit').textContent = '-';
@@ -732,9 +815,9 @@ class TraderDashboard {
                 const itemName = product['item-name'] || name;
                 const profit = product['total-profit'] || 0;
                 const className = profit >= 0 ? 'profit-positive' : 'profit-negative';
-                    const profitPerItem = profit / (product['count'] || 1);
-                    const percentOfTotalProfit = (profit / (totalProfit || 1)) * 100;
-                const totalSellOrders = product['sell-order-stats']?.['total-sell-orders-created'] || 0;  
+                const profitPerItem = profit / (product['count'] || 1);
+                const percentOfTotalProfit = (profit / (totalProfit || 1)) * 100;
+                const totalSellOrders = product['sell-order-stats']?.['total-sell-orders-created'] || 0;
 
                 return `
                     <tr>
@@ -769,9 +852,9 @@ class TraderDashboard {
             .map(([name, product]) => {
                 const profit = product['total-profit-made'] || 0;
                 const className = profit >= 0 ? 'profit-positive' : 'profit-negative';
-                    const profitPerItem = profit / (product['total-sold'] || 1);
-                    const percentOfTotalProfit = (profit / (totalProfit || 1)) * 100;
-                const totalSellOrders = product['sell-order-stats']?.['total-sell-orders-created'] || 0;  
+                const profitPerItem = profit / (product['total-sold'] || 1);
+                const percentOfTotalProfit = (profit / (totalProfit || 1)) * 100;
+                const totalSellOrders = product['sell-order-stats']?.['total-sell-orders-created'] || 0;
 
                 return `
                     <tr>
@@ -796,8 +879,66 @@ class TraderDashboard {
         document.getElementById('lastUpdate').textContent = `Last Update: Bazaar: ${lastUpdateBazaar ? this.formatTimestamp(lastUpdateBazaar) : 'N/A'}, Auctions: ${lastUpdateAuctions ? this.formatTimestamp(lastUpdateAuctions) : 'N/A'} (Current Time: ${timeString})`;
     }
 
+    updateCalendar() {
+        const EPOCH_TIMESTAMP_MILLISECONDS = 1560275700000; // June 11, 2019, 17:55:00 UTC
+        const ADJUSTMENT_FOR_ELECTION_MILLISECONDS = 29 * 3600 * 1000 + 20 * 60 * 1000; // Adjust this value if there are known maintenance periods that affect the cycle
+        const MILLISECONDS_PER_SB_YEAR = 124 * 3600 * 1000;
+        const targetElectionYear = this.mayorData.current.year + 1;
+        const targetElectionTimestampMilliseconds = EPOCH_TIMESTAMP_MILLISECONDS + ADJUSTMENT_FOR_ELECTION_MILLISECONDS + ((targetElectionYear - 1) * MILLISECONDS_PER_SB_YEAR);
+        
+        const ADJUSTMENT_FOR_SPOOKY_FESTIVAL_MILLISECONDS = 52 * 3600 * 1000 + 20 * 60 * 1000 + ADJUSTMENT_FOR_ELECTION_MILLISECONDS;
+        const targetSpookyFestivalYear = this.mayorData.current.year + 1;
+        const targetSpookyFestivalTimestampMilliseconds = EPOCH_TIMESTAMP_MILLISECONDS + ADJUSTMENT_FOR_SPOOKY_FESTIVAL_MILLISECONDS + ((targetSpookyFestivalYear - 1) * MILLISECONDS_PER_SB_YEAR);
+
+        const formatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
+        const findtargetDate = (timestamp) => {
+            const date = new Date(timestamp);
+            return date.toLocaleString(undefined, formatOptions);
+        };
+        const targetElectionDate = findtargetDate(targetElectionTimestampMilliseconds);
+        const targetSpookyFestivalDate = findtargetDate(targetSpookyFestivalTimestampMilliseconds);
+
+        let futureMayorList = this.mayorData.current.candidates || [];
+        futureMayorList.sort((a, b) => b.votes - a.votes);
+        const nextMayor = futureMayorList[0] || { name: 'N/A', votes: 0 };
+
+        const calendarElement = document.getElementById('calendar');
+        calendarElement.innerHTML = `
+            <h2>Mayor Information</h2>
+            <div class="mayor-info">
+                <p>Current Mayor: ${this.mayorData.mayor.name}</p>
+                <p>Next Mayor: ${nextMayor.name}</p>
+                <p>Election Ends: ${targetElectionDate}</p>
+                <p>Next Spooky Festival: ${targetSpookyFestivalDate}</p>
+                <p>Daily NPC Reset Time: 7:00 PM CDT</p>
+            </div>
+        `;
+    }
+
     getApiName(name) {
         return this.productList?.[name]?.['api-name'] || null;
+    }
+
+    getBuyOrderKey(order, index) {
+        return `${order['item-name'] || 'unknown'}-${order['buy-order-place-time'] || index}`;
+    }
+
+    getBazaarBuyOrderPrice(itemName) {
+        const entry = this.getProductEntry(itemName);
+        const apiName = entry?.['api-name'];
+        if (!apiName) return 0;
+
+        const bazaarProduct = this.bazaarData?.[apiName];
+        return bazaarProduct?.sell_summary?.[0]?.pricePerUnit || 0;
+    }
+
+    getBazaarSellOrderPrice(itemName) {
+        const entry = this.getProductEntry(itemName);
+        const apiName = entry?.['api-name'];
+        if (!apiName) return 0;
+
+        const bazaarProduct = this.bazaarData?.[apiName];
+        return bazaarProduct?.buy_summary?.[0]?.pricePerUnit || 0;
     }
 
     getSellOrderKey(order, index) {
@@ -1008,7 +1149,7 @@ class TraderDashboard {
 
         const isNegative = amount < 0;
         amount = Math.abs(amount);
-        
+
         if (amount >= 1000000000) {
             return (isNegative ? '-' : '') + (amount / 1000000000).toFixed(2) + 'B';
         } else if (amount >= 1000000) {
