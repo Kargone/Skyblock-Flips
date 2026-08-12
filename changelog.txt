@@ -1,3 +1,5 @@
+Sorry this is the acutal message for the last commit:
+
 Made sure it only disps the have mats catergory if it actually has all of them, not partial
 Added functionality to handle the rarities for beastmaster crest, changed a lot in the process
 Changed the console logging for most messsages
