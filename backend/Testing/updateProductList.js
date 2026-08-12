@@ -17,10 +17,11 @@ const productList = await JSON.parse(fs.readFileSync(productListPath, 'utf8'));
 console.log(`Loaded ${Object.keys(productList).length} products from product-list.json`);
 
 for (const [displayName, apiName] of Object.entries(bazaarApiNameMap.displayNameToApiName)) {
-    if (productList[displayName] && !productList.hasOwnProperty(displayName)) {
+    if (!productList.hasOwnProperty(displayName)) {
         productList[displayName] = {
             "api-name": apiName,
-            "type": "short-term-investment"
+            "type": "short-term-investment",
+            "has-weights": true
         };
         console.log(`Added ${displayName} with API name ${apiName} to product list.`);
     }

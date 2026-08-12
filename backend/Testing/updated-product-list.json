@@ -160,7 +160,7 @@
   },
   "Ancient Claw": {
     "api-name": "ANCIENT_CLAW",
-    "type": "short-term-investment",
+    "type": "crafting-material",
     "has-weights": true
   },
   "Ancient Rose": {
@@ -234,7 +234,7 @@
     "has-weights": true
   },
   "Bait Ring": {
-    "api-name": "BAIT_RING",
+    "api-name": "",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -278,7 +278,7 @@
     "crafting-materials": {
       "Bat Person Ring": 1,
       "Ectoplasm": 128,
-      "Spooky Shard": 16
+      "Spooky Fragment": 16
     }
   },
   "Bat Person Ring": {
@@ -288,7 +288,7 @@
     "crafting-materials": {
       "Bat Person Talisman": 1,
       "Ectoplasm": 32,
-      "Spooky Shard": 4
+      "Spooky Fragment": 4
     }
   },
   "Bat Person Talisman": {
@@ -316,36 +316,58 @@
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Beastmaster Crest - Epic": {
+  "Beastmaster Crest - EPIC": {
     "api-name": "Beastmaster Crest",
-    "tier": "Epic",
+    "tier": "EPIC",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
-      "Beastmaster Crest - Rare": 1,
+      "Beastmaster Crest - RARE": 1,
       "Enchanted Ancient Claw": 4,
       "Griffin Feather": 128
     }
   },
-  "Beastmaster Crest - Legendary": {
+  "Beastmaster Crest - LEGENDARY": {
     "api-name": "Beastmaster Crest",
-    "tier": "Legendary",
+    "tier": "LEGENDARY",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
-      "Beastmaster Crest - Epic": 1,
+      "Beastmaster Crest - EPIC": 1,
       "Enchanted Ancient Claw": 32,
       "Griffin Feather": 256
     }
   },
-  "Beastmaster Crest - Rare": {
+  "Beastmaster Crest - RARE": {
     "api-name": "Beastmaster Crest",
-    "tier": "Rare",
+    "tier": "RARE",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
-      "Ancient Claw": 376,
-      "Griffin Feather": 44
+      "Ancient Claw": 256,
+      "Griffin Feather": 32,
+      "Beastmaster Crest - UNCOMMON": 1
+    }
+  },
+  "Beastmaster Crest - UNCOMMON": {
+    "api-name": "Beastmaster Crest",
+    "tier": "UNCOMMON",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Ancient Claw": 80,
+      "Griffin Feather": 8,
+      "Beastmaster Crest - COMMON": 1
+    }
+  },
+  "Beastmaster Crest - COMMON": {
+    "api-name": "Beastmaster Crest",
+    "tier": "COMMON",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Ancient Claw": 40,
+      "Griffin Feather": 4
     }
   },
   "Beating Heart": {
@@ -1184,7 +1206,7 @@
     "has-weights": true
   },
   "Lotusfish Shard": {
-    "api-name": "SHARD_LOTUSFISH",
+    "api-name": "SHARD_LOTUS_FISH",
     "type": "short-term-investment",
     "has-weights": true
   },
@@ -1344,7 +1366,7 @@
   },
   "Enchanted Ancient Claw": {
     "api-name": "ENCHANTED_ANCIENT_CLAW",
-    "type": "short-term-investment",
+    "type": "crafting-material",
     "has-weights": true
   },
   "Enchanted Baked Potato": {
@@ -10073,17 +10095,6 @@
       "Enchanted Redstone Block": 96
     }
   },
-  "Personal Deletor 7000": {
-    "api-name": "",
-    "type": "auction-product",
-    "has-weights": false,
-    "crafting-materials": {
-      "Enchanted Lava Bucket": 1,
-      "Enchanted Redstone Block": 1,
-      "Enchanted Iron Ingot": 784,
-      "Enchanted Iron Block": 7
-    }
-  },
   "Agarimoo Artifact": {
     "api-name": "",
     "type": "auction-product",
@@ -10311,5 +10322,910 @@
       "Ruby Drill TX-15": 1,
       "Gemstone Mixture": 3
     }
+  },
+  "Glacial Talisman": {
+    "api-name": "",
+    "type": "crafting-material",
+    "has-weights": false
+  },
+  "Abyssal Miner Shard": {
+    "api-name": "SHARD_ABYSSAL_MINER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Acacia Minion XII Upgrade Stone": {
+    "api-name": "GENERATOR_UPGRADE_STONE_ACACIA_12",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Ant Shard": {
+    "api-name": "SHARD_ANT",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Anteater Shard": {
+    "api-name": "SHARD_ANTEATER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Areita Shard": {
+    "api-name": "SHARD_AREITA",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Badger Shard": {
+    "api-name": "SHARD_BADGER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Bayou Sludge Shard": {
+    "api-name": "SHARD_BAYOU_SLUDGE",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Bee Saliva": {
+    "api-name": "BEE_SALIVA",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Beeheemoth Shard": {
+    "api-name": "SHARD_BEEHEEMOTH",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Billygoat Shard": {
+    "api-name": "SHARD_BILLYGOAT",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Birch Minion XII Upgrade Stone": {
+    "api-name": "GENERATOR_UPGRADE_STONE_BIRCH_12",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Black Widow Shard": {
+    "api-name": "SHARD_BLACK_WIDOW",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Bloodbat Shard": {
+    "api-name": "SHARD_BLOODBAT",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Blooming Thorns": {
+    "api-name": "BLOOMING_THORNS",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Blue Crab Shard": {
+    "api-name": "SHARD_BLUE_CRAB",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Blue Jay Shard": {
+    "api-name": "SHARD_BLUE_JAY",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Bluebird Shard": {
+    "api-name": "SHARD_BLUEBIRD",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Bonzo Shard": {
+    "api-name": "SHARD_BONZO",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Bottled Mischief": {
+    "api-name": "BOTTLED_MISCHIEF",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Brineling Shard": {
+    "api-name": "SHARD_BRINELING",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Bunbun Shard": {
+    "api-name": "SHARD_BUNBUN",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Cavernfish Shard": {
+    "api-name": "SHARD_CAVERNFISH",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Cheeky Tiki Shard": {
+    "api-name": "SHARD_CHEEKY_TIKI",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Chuckwalla Shard": {
+    "api-name": "SHARD_CHUCKWALLA",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Common Hunting Wisdom Booster": {
+    "api-name": "HUNTING_WISDOM_BOOSTER_COMMON",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Cricket Shard": {
+    "api-name": "SHARD_CRICKET",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Dark Oak Minion XII Upgrade Stone": {
+    "api-name": "GENERATOR_UPGRADE_STONE_DARK_OAK_12",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Distant Echo": {
+    "api-name": "DISTANT_ECHO",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Dive Ghast Shard": {
+    "api-name": "SHARD_DIVE_GHAST",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Doomspiral Shard": {
+    "api-name": "SHARD_DOOMSPIRAL",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Driftling Shard": {
+    "api-name": "SHARD_DRIFTLING",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Drybark Shard": {
+    "api-name": "SHARD_DRYBARK",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Dumpster Diver Shard": {
+    "api-name": "SHARD_DUMPSTER_DIVER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Dung Beetle Shard": {
+    "api-name": "SHARD_DUNG_BEETLE",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Duplico Shard": {
+    "api-name": "SHARD_DUPLICO",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Dustybit Shard": {
+    "api-name": "SHARD_DUSTYBIT",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Ember Shard": {
+    "api-name": "SHARD_EMBER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Enchanted Helix Log": {
+    "api-name": "ENCHANTED_HELIX_LOG",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Enchanted Honeycomb": {
+    "api-name": "ENCHANTED_HONEYCOMB",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Enchanted Honeycomb Block": {
+    "api-name": "ENCHANTED_HONEYCOMB_BLOCK",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Enchanted Ruby Veilshroom": {
+    "api-name": "ENCHANTED_RUBY_VEILSHROOM",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Extremely Mild Adhesive": {
+    "api-name": "EXTREMELY_MILD_ADHESIVE",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Feast Burger with a Side of Deepfries": {
+    "api-name": "FEAST_BURGER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Firefox Shard": {
+    "api-name": "SHARD_FIREFOX",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Flitter Shard": {
+    "api-name": "SHARD_FLITTER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Fluffling Shard": {
+    "api-name": "SHARD_FLUFFLING",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Fly Shard": {
+    "api-name": "SHARD_FLY",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Foxtrot Shard": {
+    "api-name": "SHARD_FOXTROT",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Gazer Shard": {
+    "api-name": "SHARD_GAZER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Gemzie Shard": {
+    "api-name": "SHARD_GEMZIE",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Ghost Crab Shard": {
+    "api-name": "SHARD_GHOST_CRAB",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Giant Frog Treat": {
+    "api-name": "GIANT_FROG_TREAT",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Giant Honey Dipper": {
+    "api-name": "GIANT_HONEY_DIPPER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Giant Isopod Shard": {
+    "api-name": "SHARD_GIANT_ISOPOD",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Giant Sloth Claw": {
+    "api-name": "GIANT_SLOTH_CLAW",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Giant Water Bug Shard": {
+    "api-name": "SHARD_GIANT_WATER_BUG",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Gimmiegold Shard": {
+    "api-name": "SHARD_GIMMIEGOLD",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Goldolot Shard": {
+    "api-name": "SHARD_GOLDOLOT",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Grizzly Bear Shard": {
+    "api-name": "SHARD_GRIZZLY_BEAR",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Groundhog Shard": {
+    "api-name": "SHARD_GROUNDHOG",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Haggard Shard": {
+    "api-name": "SHARD_HAGGARD",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Hawk Shard": {
+    "api-name": "SHARD_HAWK",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Helix Log": {
+    "api-name": "HELIX_LOG",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Helixis": {
+    "api-name": "HELIXIS",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Hewver Shard": {
+    "api-name": "SHARD_HEWVER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Hideonfloor Shard": {
+    "api-name": "SHARD_HIDEONFLOOR",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Hideonsun Shard": {
+    "api-name": "SHARD_HIDEONSUN",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Hideonwall Shard": {
+    "api-name": "SHARD_HIDEONWALL",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Hideyho Shard": {
+    "api-name": "SHARD_HIDEYHO",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Hivethief Shard": {
+    "api-name": "SHARD_HIVETHIEF",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Honey Badger Shard": {
+    "api-name": "SHARD_HONEY_BADGER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Honeybug Shard": {
+    "api-name": "SHARD_HONEYBUG",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Honeybuzz Shard": {
+    "api-name": "SHARD_HONEYBUZZ",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Honeycomb": {
+    "api-name": "HONEYCOMB",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Honeyhog Shard": {
+    "api-name": "SHARD_HONEYHOG",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Honeymite Shard": {
+    "api-name": "SHARD_HONEYMITE",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Howling Spirit Shard": {
+    "api-name": "SHARD_HOWLING_SPIRIT",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Isopod Husk": {
+    "api-name": "ISOPOD_HUSK",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "June Bug Shard": {
+    "api-name": "SHARD_JUNE_BUG",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Jungle Minion XII Upgrade Stone": {
+    "api-name": "GENERATOR_UPGRADE_STONE_JUNGLE_12",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Keeled Slug Shard": {
+    "api-name": "SHARD_KEELED_SLUG",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Large Frog Treat": {
+    "api-name": "LARGE_FROG_TREAT",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Large Honey Dipper": {
+    "api-name": "LARGE_HONEY_DIPPER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Large Sloth Claw": {
+    "api-name": "LARGE_SLOTH_CLAW",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Lava Leech Shard": {
+    "api-name": "SHARD_LAVA_LEECH",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Litterbug Shard": {
+    "api-name": "SHARD_LITTERBUG",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Locust Shard": {
+    "api-name": "SHARD_LOCUST",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Macaw Shard": {
+    "api-name": "SHARD_MACAW",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Maggot Shard": {
+    "api-name": "SHARD_MAGGOT",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Mantis Shrimp Shard": {
+    "api-name": "SHARD_MANTIS_SHRIMP",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Medium Frog Treat": {
+    "api-name": "MEDIUM_FROG_TREAT",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Medium Honey Dipper": {
+    "api-name": "MEDIUM_HONEY_DIPPER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Medium Sloth Claw": {
+    "api-name": "MEDIUM_SLOTH_CLAW",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Minos Hunter Shard": {
+    "api-name": "SHARD_MINOS_HUNTER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Miria's Coupon": {
+    "api-name": "MIRIA_COUPON",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Miria's Prize": {
+    "api-name": "MIRIA_PRIZE",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Mite Shard": {
+    "api-name": "SHARD_MITE",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Morning Dew": {
+    "api-name": "MORNING_DEW",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Mosquito Shard": {
+    "api-name": "SHARD_MOSQUITO",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Moth Shard": {
+    "api-name": "SHARD_MOTH",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Mountain Goat Shard": {
+    "api-name": "SHARD_MOUNTAIN_GOAT",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Murderwing Shard": {
+    "api-name": "SHARD_MURDERWING",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Murkbat Shard": {
+    "api-name": "SHARD_MURKBAT",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Nilbog Shard": {
+    "api-name": "SHARD_NILBOG",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Nozzlenose Shard": {
+    "api-name": "SHARD_NOZZLENOSE",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Oak Minion XII Upgrade Stone": {
+    "api-name": "GENERATOR_UPGRADE_STONE_OAK_12",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Osedax Shard": {
+    "api-name": "SHARD_OSEDAX",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Pangolin Shard": {
+    "api-name": "SHARD_PANGOLIN",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Paragon Shard": {
+    "api-name": "SHARD_PARAGON",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Parakeet Shard": {
+    "api-name": "SHARD_PARAKEET",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Parched Shard": {
+    "api-name": "SHARD_PARCHED",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Polaris Shard": {
+    "api-name": "SHARD_POLARIS",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Pollendart Shard": {
+    "api-name": "SHARD_POLLENDART",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Primordial Shard": {
+    "api-name": "SHARD_PRIMORDIAL",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Puck Shard": {
+    "api-name": "SHARD_PUCK",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Queen Ant Shard": {
+    "api-name": "SHARD_QUEEN_ANT",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Queen Bee Shard": {
+    "api-name": "SHARD_QUEEN_BEE",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Queen Snake Shard": {
+    "api-name": "SHARD_QUEEN_SNAKE",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Rabbit Cat Shard": {
+    "api-name": "SHARD_RABBIT_CAT",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Rabbit Godfather Shard": {
+    "api-name": "SHARD_RABBIT_GODFATHER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Rabbit Godmother Shard": {
+    "api-name": "SHARD_RABBIT_GODMOTHER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Rabbit Mafioso Shard": {
+    "api-name": "SHARD_RABBIT_MAFIOSO",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Rabbit Neighbor Shard": {
+    "api-name": "SHARD_RABBIT_NEIGHBOR",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Rainbow Feather": {
+    "api-name": "RAINBOW_FEATHER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Rat Shard": {
+    "api-name": "SHARD_RAT",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Red Panda Shard": {
+    "api-name": "SHARD_RED_PANDA",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Reinforced Netting": {
+    "api-name": "REINFORCED_NETTING",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Rockmite Shard": {
+    "api-name": "SHARD_ROCKMITE",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Ruby Veilshroom": {
+    "api-name": "RUBY_VEILSHROOM",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Scatha Shard": {
+    "api-name": "SHARD_SCATHA",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Scrappy Shard": {
+    "api-name": "SHARD_SCRAPPY",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Sea Witch Shard": {
+    "api-name": "SHARD_SEA_WITCH",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Sepialot Shard": {
+    "api-name": "SHARD_SEPIALOT",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Shrieky Tiki Shard": {
+    "api-name": "SHARD_SHRIEKY_TIKI",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Shuddersquid Shard": {
+    "api-name": "SHARD_SHUDDERSQUID",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Shyworm Shard": {
+    "api-name": "SHARD_SHYWORM",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Silkbreeze Shard": {
+    "api-name": "SHARD_SILKBREEZE",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Small Frog Treat": {
+    "api-name": "SMALL_FROG_TREAT",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Small Honey Dipper": {
+    "api-name": "SMALL_HONEY_DIPPER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Small Sloth Claw": {
+    "api-name": "SMALL_SLOTH_CLAW",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Sneaky Tiki Shard": {
+    "api-name": "SHARD_SNEAKY_TIKI",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Snoozle Shard": {
+    "api-name": "SHARD_SNOOZLE",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Solar Shard": {
+    "api-name": "SHARD_SOLAR",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Solsnatcher Shard": {
+    "api-name": "SHARD_SOLSNATCHER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Special Zealot Shard": {
+    "api-name": "SHARD_SPECIAL_ZEALOT",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Sprawl Shard": {
+    "api-name": "SHARD_SPRAWL",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Spruce Minion XII Upgrade Stone": {
+    "api-name": "GENERATOR_UPGRADE_STONE_SPRUCE_12",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Stag Beetle Shard": {
+    "api-name": "SHARD_STAG_BEETLE",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Stingray Shard": {
+    "api-name": "SHARD_STINGRAY",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Stoneworm Shard": {
+    "api-name": "SHARD_STONEWORM",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Stretching Sticks": {
+    "api-name": "STRETCHING_STICKS",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Strongarm Shard": {
+    "api-name": "SHARD_STRONGARM",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Sublime Silk": {
+    "api-name": "SUBLIME_SILK",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Tepid Shard": {
+    "api-name": "SHARD_TEPID",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Thunder Shard": {
+    "api-name": "SHARD_THUNDER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Timestalk Clone Shard": {
+    "api-name": "SHARD_TIMESTALK_CLONE",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Timil Shard": {
+    "api-name": "SHARD_TIMIL",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Torrid Shard": {
+    "api-name": "SHARD_TORRID",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Treasure Hoarder Shard": {
+    "api-name": "SHARD_TREASURE_HOARDER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Treefrog Shard": {
+    "api-name": "SHARD_TREEFROG",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Troodon Shard": {
+    "api-name": "SHARD_TROODON",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Uncommon Fighting Booster": {
+    "api-name": "FIGHTING_BOOSTER_UNCOMMON",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Uncommon Foraging Fortune Booster": {
+    "api-name": "FORAGING_FORTUNE_BOOSTER_UNCOMMON",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Uncommon Foraging Wisdom Booster": {
+    "api-name": "FORAGING_WISDOM_BOOSTER_UNCOMMON",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Uncommon Hunting Wisdom Booster": {
+    "api-name": "HUNTING_WISDOM_BOOSTER_UNCOMMON",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Uncommon Sweep Booster": {
+    "api-name": "SWEEP_BOOSTER_UNCOMMON",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "undefined": {
+    "api-name": "SHARD_WIKI_TIKI",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Veilshroom Bunch": {
+    "api-name": "VEILSHROOM_BUNCH",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Vulture Shard": {
+    "api-name": "SHARD_VULTURE",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Water Hyacinth": {
+    "api-name": "WATER_HYACINTH",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Water Snake Shard": {
+    "api-name": "SHARD_WATER_SNAKE",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Wetwing Shard": {
+    "api-name": "SHARD_WETWING",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Wiki Tiki Shard": {
+    "api-name": "SHARD_WIKI_TIKI",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Wild Hog Shard": {
+    "api-name": "SHARD_WILD_HOG",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Wolverine Shard": {
+    "api-name": "SHARD_WOLVERINE",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Woodchucker Shard": {
+    "api-name": "SHARD_WOODCHUCKER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Woodlouse Shard": {
+    "api-name": "SHARD_WOODLOUSE",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Woodpecker Shard": {
+    "api-name": "SHARD_WOODPECKER",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Wumpa Shard": {
+    "api-name": "SHARD_WUMPA",
+    "type": "short-term-investment",
+    "has-weights": true
+  },
+  "Zombuddy Shard": {
+    "api-name": "SHARD_ZOMBUDDY",
+    "type": "short-term-investment",
+    "has-weights": true
   }
 }

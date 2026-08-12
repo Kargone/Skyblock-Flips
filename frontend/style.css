@@ -329,6 +329,38 @@ footer p {
     font-weight: bold;
 }
 
+.zero-buy-orders td {
+    color: #c62828;
+}
+
+.investment-delete-cell {
+    text-align: right;
+    white-space: nowrap;
+}
+
+.delete-investment-button {
+    appearance: none;
+    border: 1px solid rgba(198, 40, 40, 0.18);
+    background: #fdecec;
+    color: #c62828;
+    border-radius: 999px;
+    padding: 8px 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+}
+
+.delete-investment-button:hover {
+    transform: translateY(-1px);
+    background: #fbd7d7;
+    box-shadow: 0 6px 16px rgba(198, 40, 40, 0.15);
+}
+
+.delete-investment-button:focus-visible {
+    outline: 2px solid #c62828;
+    outline-offset: 2px;
+}
+
 .tab-bar {
     display: flex;
     flex-wrap: wrap;

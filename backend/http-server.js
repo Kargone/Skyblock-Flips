@@ -69,9 +69,15 @@ let server = http.createServer(function (request, response) {
     // Trade message submissions via POST
     else if (request.method === 'POST') {
         request.on('data', function(data) {
-            // console.log('Data: ' + data);
-            main.submitTrade(data.toString());
-            pastTradesLogs.push(data.toString());
+            // console.log('Data: ' + data, typeof data);
+
+            data = JSON.parse(data.toString());
+            for (const value of data) {
+                // console.log('Data value: ' + JSON.stringify(value));
+                pastTradesLogs.push(JSON.stringify(value));
+                main.submitTrade(JSON.stringify(value));
+            }
+
             fs.writeFile(
                 path.join(path.dirname(fileURLToPath(import.meta.url)), 'Testing/pastTradesLogs.json'), 
                 JSON.stringify(pastTradesLogs, null, 2), 

@@ -98,11 +98,45 @@ const IGNORE_INSTA_SELL_BUY = [
     "Enchanted Hay Bale",
     "Cocoa Beans",
     "Enchanted Melon",
+    "Enchanted Dandelion",
+    "Fermento",
+    "Enchanted Baked Potato",
+    "Enchatend Wild Rose",
+    "Wild Rose",
+    "? Fine Citrine Gemstone",
+    "Toxic Arrow Poison",
+    "Supreme Chocolate Bar",
+    "Sharpness VI",
+    "Coalroot",
+    "Crimson Essence",
+    "Enchanted Red Mushroom",
+    "Celestial Mason Jar",
+    "Mutated Blaze Ashes",
+    "Enchanted Rotten Flesh",
+    "Raw Cod",
+    "Superboom TNT",
+    "Sugar Cane",
+    "Sulphur",
+    "Gold Ingot",
+    "Dustgrain",
+    "Ashwreath",
+    "Enchanted Wild Rose",
+    "Enchanted Raw Rabbit",
+    "Enchanted Poppy",
+    "Enchanted Brown Mushroom Block",
+    "Tasty Cheese",
 ];
 
 const IGNORE_INSTA_BUY = [
     "Polished Pumpkin",
     "Plant Matter",
+];
+
+const IGNORE_INSTA_SELL = [
+    "Enchanted Rotten Flesh",
+];
+
+const ALLOW_INSTA_SELL_BUY = [
 ];
 
 // Load trader_data manually so we can modify and write it back
@@ -168,10 +202,12 @@ function getInvestmentType(product_list_type) {
         return "long-term-investments";
     } else if (product_list_type === "auction-product") {
         return "long-term-investments";
+    } else if (product_list_type === "forge-product") {
+        return "long-term-investments";
     } else if (product_list_type === "short-term-investment") {
         return "short-term-investments";
     } else if (product_list_type === "crafting-material") {
-        return "short-term-investments";
+        return "long-term-investments";
     } else {
         throw "ERROR: Invalid Investment Type";
     }
@@ -203,6 +239,16 @@ function roundDown(value) {
     }
 }
 
+//create a function that will replace console.error. this time you can actually have the yellow color 
+function consoleError(message) {
+    console.error('\x1b[33m%s\x1b[0m', message);
+}
+
+//create a function that will replace console.warn. this time you can actually have the red color
+function consoleWarn(message) {
+    console.warn('\x1b[31m%s\x1b[0m', message);
+}
+
 class Sort {
     constructor(object, increasing = true, key1, key2 = '') {
         if (key2 === '') {
@@ -213,7 +259,7 @@ class Sort {
     }
     compareFn1(key1, increasing) {
         if (increasing) {
-            return function(a, b) {
+            return function (a, b) {
                 if (a[key1] < b[key1]) {
                     return -1;
                 } else if (a[key1] > b[key1]) {
@@ -222,7 +268,7 @@ class Sort {
                 return 0;
             }
         } else {
-            return function(a, b) {
+            return function (a, b) {
                 if (a[key1] < b[key1]) {
                     return 1;
                 } else if (a[key1] > b[key1]) {
@@ -234,7 +280,7 @@ class Sort {
     }
     compareFn2(key1, key2, increasing) {
         if (increasing) {
-            return function(a, b) {
+            return function (a, b) {
                 if (a[key1][key2] < b[key1][key2]) {
                     return -1;
                 } else if (a[key1][key2] > b[key1][key2]) {
@@ -243,7 +289,7 @@ class Sort {
                 return 0;
             }
         } else {
-            return function(a, b) {
+            return function (a, b) {
                 if (a[key1][key2] < b[key1][key2]) {
                     return 1;
                 } else if (a[key1][key2] > b[key1][key2]) {
@@ -256,13 +302,20 @@ class Sort {
 }
 
 class ProcesTrade {
-    constructor(trade_message) {
-        trade_message = formatTradeMessage(trade_message);
+    constructor(tradeJSON) {
+        // convert tradeJSON from string to object
+        const tradeObject = JSON.parse(tradeJSON);
+        const trade_message = formatTradeMessage(tradeObject[0]?.plainText || tradeObject.plainText);
+        // console.log("Processing trade message: ", trade_message);
+        
+        const detectedRarity = tradeObject.detectedRarity;
 
         this.message = trade_message;
         this.messageArray = this.message.split('');
-        console.log("Processing trade message: ", this.message);
-        
+        // console.log("Processing trade message: ", this.message);
+
+        let result = '';
+
         // determine message type
         if (this.message.includes('[Bazaar] Bought')) {
             this.type = "insta-buy";
@@ -275,7 +328,7 @@ class ProcesTrade {
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
             const pricePerUnit = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', '')) / amount;
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            this.instaBuy(amount, pricePerUnit, nameString, Date.now(), true);
+            result = this.instaBuy(amount, pricePerUnit, nameString, Date.now(), true);
         } else if (this.message.includes('[Bazaar] Sold')) {
             this.type = "insta-sell";
             const amountStringStart = findEnd(this.message, 'Sold ');
@@ -285,9 +338,9 @@ class ProcesTrade {
             const nameStringStart = findEnd(this.message, 'x ');
             const nameStringEnd = this.message.indexOf(' for');
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
-            const pricePerUnit = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''))/amount;
+            const pricePerUnit = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', '')) / amount;
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            this.instaSell(amount, pricePerUnit, nameString, true, true);
+            result = this.instaSell(amount, pricePerUnit, nameString, true, true);
         } else if (this.message.includes('[Bazaar] Buy Order Setup!')) {
             this.type = "buy-order-setup";
             const amountStringStart = findEnd(this.message, 'Setup! ');
@@ -299,7 +352,7 @@ class ProcesTrade {
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
             const totalPrice = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            this.buyOrderSetup(amount, totalPrice/amount, nameString);
+            result = this.buyOrderSetup(amount, totalPrice / amount, nameString);
         } else if (this.message.includes('[Bazaar] Your Buy Order for')) {
             this.type = "buy-order-fill";
             const amountStringStart = findEnd(this.message, 'for ');
@@ -308,9 +361,9 @@ class ProcesTrade {
             const nameStringEnd = this.message.indexOf(' was');
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            this.buyOrderFill(amount, nameString);
+            result = this.buyOrderFill(amount, nameString);
         } else if (this.message.includes('[Bazaar] Claimed') &&
-                   this.message.includes('bought for')) {
+            this.message.includes('bought for')) {
             this.type = "buy-order-claim";
             const amountStringStart = findEnd(this.message, 'Claimed ');
             const amountStringEnd = this.message.indexOf('x');
@@ -321,14 +374,14 @@ class ProcesTrade {
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
             const pricePerUnit = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            this.buyOrderClaim(amount, pricePerUnit, nameString);
+            result = this.buyOrderClaim(amount, pricePerUnit, nameString);
         } else if (this.message.includes('[Bazaar] Cancelled!') &&
-                   this.message.includes('Buy Order!')) {
+            this.message.includes('Buy Order!')) {
             this.type = "buy-order-cancel";
             const amountStringStart = findEnd(this.message, 'Refunded ');
             const amountStringEnd = this.message.indexOf(' coins');
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
-            this.buyOrderCancel(amount);
+            result = this.buyOrderCancel(amount);
         } else if (this.message.includes('[Bazaar] Sell Offer Setup!')) {
             this.type = "sell-order-setup";
             const amountStringStart = findEnd(this.message, 'Setup! ');
@@ -340,7 +393,7 @@ class ProcesTrade {
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
             const totalPrice = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            this.sellOrderSetup(amount, Math.round(totalPrice/amount/0.99*10)/10, nameString);
+            result = this.sellOrderSetup(amount, Math.round(totalPrice / amount / 0.99 * 10) / 10, nameString);
         } else if (this.message.includes('[Bazaar] Your Sell Offer for')) {
             this.type = "sell-order-fill";
             const amountStringStart = findEnd(this.message, 'for ');
@@ -349,9 +402,9 @@ class ProcesTrade {
             const nameStringEnd = this.message.indexOf(' was');
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            this.sellOrderFill(amount, nameString);
+            result = this.sellOrderFill(amount, nameString);
         } else if (this.message.includes('[Bazaar] Claimed') &&
-                   this.message.includes('from selling')) {
+            this.message.includes('from selling')) {
             this.type = "sell-order-claim";
             const coinsEarnedStart = findEnd(this.message, 'Claimed ');
             const coinsEarnedEnd = this.message.indexOf(' coins from selling');
@@ -366,9 +419,9 @@ class ProcesTrade {
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
             const pricePerUnit = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            this.sellOrderClaim(amount, pricePerUnit, nameString, coinsEarned, hasDecimal);
+            result = this.sellOrderClaim(amount, pricePerUnit, nameString, coinsEarned, hasDecimal);
         } else if (this.message.includes('[Bazaar] Cancelled!') &&
-                   this.message.includes('Sell Offer!')) {
+            this.message.includes('Sell Offer!')) {
             this.type = "sell-order-cancel";
             const amountStringStart = findEnd(this.message, 'Refunded ');
             const amountStringEnd = this.message.indexOf('x ');
@@ -376,7 +429,7 @@ class ProcesTrade {
             const nameStringEnd = this.message.indexOf(' from ');
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            this.sellOrderCancel(amount, nameString);
+            result = this.sellOrderCancel(amount, nameString);
         } else if (this.message.includes('[Bazaar] Order Flipped!')) {
             this.type = "order-flipped";
             const amountStringStart = findEnd(this.message, 'Flipped! ');
@@ -388,7 +441,7 @@ class ProcesTrade {
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
             const profitString = parseFloat(this.message.slice(profitStringStart, profitStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            this.orderFlipped(amount, nameString, profitString);
+            result = this.orderFlipped(amount, nameString, profitString);
         } else if (this.message.includes('You sold')) {
             this.type = "npc-sell";
             const amountStringStart = findEnd(this.message, ' x');
@@ -400,7 +453,20 @@ class ProcesTrade {
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
             const totalPrice = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            this.npcSell(amount, totalPrice/amount, nameString);
+            result = this.npcSell(amount, totalPrice / amount, nameString);
+        } else if (this.message.includes('You bought back')) {
+            // You bought back Dirt x64 for 64 Coins!
+            this.type = "npc-buy";
+            const amountStringStart = findEnd(this.message, ' x');
+            const amountStringEnd = this.message.indexOf(' for');
+            const priceStringStart = findEnd(this.message, ' for ');
+            const priceStringEnd = this.message.indexOf(' Coins!')
+            const nameStringStart = findEnd(this.message, 'bought back ');
+            const nameStringEnd = this.message.indexOf(' x');
+            const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
+            const totalPrice = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
+            const nameString = this.message.slice(nameStringStart, nameStringEnd);
+            result = this.npcBuyBack(amount, totalPrice / amount, nameString);
         } else if (this.message.includes('created a BIN auction for')) {
             this.type = "auction-creation";
             // edge case: [MVP+] Kargone created a BIN auction for Bat Person Ring at 9,490,000 coins!
@@ -410,7 +476,7 @@ class ProcesTrade {
             const nameStringEnd = this.message.indexOf(' at ');
             const pricePerUnit = parseInt(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            this.auctionCreation(pricePerUnit, nameString);
+            result = this.auctionCreation(pricePerUnit, nameString, detectedRarity);
         } else if (this.message.includes('You collected')) {
             this.type = "auction-claim";
             const priceStringStart = findEnd(this.message, 'collected ');
@@ -419,13 +485,13 @@ class ProcesTrade {
             const nameStringEnd = this.message.indexOf(' to ');
             const pricePerUnit = parseInt(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            this.auctionClaim(pricePerUnit, nameString);
+            result = this.auctionClaim(pricePerUnit, nameString, detectedRarity);
         } else if (this.message.includes('cancelled an auction for')) {
             this.type = "auction-cancel";
             const nameStringStart = findEnd(this.message, 'for ');
             const nameStringEnd = this.message.indexOf('!');
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            this.auctionCancel(nameString);
+            result = this.auctionCancel(nameString, detectedRarity);
         } else if (this.message.includes('[Auction]')) {
             this.type = "auction-sold";
             const priceStringStart = findEnd(this.message, ' for ');
@@ -434,7 +500,7 @@ class ProcesTrade {
             const nameStringEnd = this.message.indexOf(' for ');
             const pricePerUnit = parseInt(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            this.auctionSold(pricePerUnit, nameString);
+            result = this.auctionSold(pricePerUnit, nameString, detectedRarity);
         } else if (this.message.includes('You purchased')) {
             this.type = "auction-bought";
             const priceStringStart = findEnd(this.message, ' for ');
@@ -443,13 +509,31 @@ class ProcesTrade {
             const nameStringEnd = this.message.indexOf(' for ');
             const pricePerUnit = parseInt(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            this.auctionBought(pricePerUnit, nameString);
+            result = this.auctionBought(pricePerUnit, nameString, detectedRarity);
+        } else if (this.message.includes('back from your expired auction!')) {
+            this.type = "auction-expired";
+            // Example: "You claimed Bait Ring back from your expired auction!"
+            const nameStringStart = findEnd(this.message, 'You claimed ');
+            const nameStringEnd = this.message.indexOf(' back from your expired auction!');
+            const nameString = this.message.slice(nameStringStart, nameStringEnd);
+            result = this.auctionExpired(nameString, detectedRarity);
         } else if (this.message.includes('You Supercrafted')) {
             this.type = "supercraft";
+            // console.log("here");
             const nameStringStart = findEnd(this.message, 'Supercrafted ');
             const nameStringEnd = this.message.indexOf('!');
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            this.supercraft(nameString);
+            result = this.supercraft(nameString, detectedRarity);
+        } else if (this.message.includes("xjk You removed")) {
+            // "xjk You removed 1x Enchanted Ancient Claw from your inventory!"
+            this.type = "item-removed";
+            const nameStringStart = findEnd(this.message, 'x ');
+            const nameStringEnd = this.message.indexOf(' from your inventory!');
+            const amountStringStart = findEnd(this.message, 'removed ');
+            const amountStringEnd = this.message.indexOf('x ');
+            const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
+            const nameString = this.message.slice(nameStringStart, nameStringEnd);
+            result = this.itemRemoved(nameString, amount, detectedRarity);
         } else if (
             this.message.includes('Claiming order...') ||
             this.message.includes('Putting goods in escrow...') ||
@@ -458,30 +542,84 @@ class ProcesTrade {
             this.message.includes('Executing instant sell...') ||
             this.message.includes('Submitting buy order...') ||
             this.message.includes('You cancelled the trade!') ||
-            this.message.includes('Executing instant buy...')
+            this.message.includes('Executing instant buy...') ||
+            this.message.includes('BIN Auction started for') ||
+            this.message.includes('You canceled your auction for') ||
+            this.message.includes('You don\'t have anything to sell!')
         ) {
-            return 'Nontrade message';
+            result = 'Nontrade message';
+            return "Nontrade message: " + this.message;
         } else {
-            return console.log('ERROR: Invalid trade message: ' + this.message);
+            return consoleError('ERROR: Invalid trade message: ' + this.message);
         }
 
-        // console.log("Completed trade message: ", this.message, "\n~~~~~~~~");
+        if (result.includes('ERROR')) {
+            return consoleError('ERROR: ' + result + ' for trade message: ' + this.message);
+        } else {
+            console.log('SUCCESS: ' + this.message + ' Result: ' + result);
+        }
+
         return 'Completed trade mesage';
     }
-    instaBuy(amount, price, name, time_bought = Date.now(), ignoreListEnabled = false) {
-        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+    trackProduct(name, transactionType) {
+        // do the console.log, and return true or false if the product supposed to be tracked or not, based on the ignore lists and if the product is in a crafting recipe or has any buy or sell orders
+        if (ALLOW_INSTA_SELL_BUY.includes(name)) {
+            // console.log('Tracking product: ' + name + ' for transaction type: ' + transactionType);
+            return true;
+        }
 
-        if (IGNORE_INSTA_SELL_BUY.includes(name) && ignoreListEnabled) return console.log('ERROR: Insta buy ignored for product: ' + name);
-        if (IGNORE_INSTA_BUY.includes(name) && ignoreListEnabled) return console.log('ERROR: Insta buy ignored for product: ' + name);
+        // first check if the product is in the ignore lists
+        if (IGNORE_INSTA_SELL_BUY.includes(name)) {
+            // consoleError('ERROR: Product is in ignore list: ' + name);
+            return false;
+        }
+        if (IGNORE_INSTA_BUY.includes(name) && transactionType === 'buy') {
+            // consoleError('ERROR: Product is in ignore list: ' + name);
+            return false;
+        }
+        if (IGNORE_INSTA_SELL.includes(name) && transactionType === 'sell') {
+            // consoleError('ERROR: Product is in ignore list: ' + name);
+            return false;
+        }
+
+        // then check if the order has any buy or sell orders, if not then return, unless its in a crafting recipe, then we can track it anyway
+        if (Object.keys(trader_data["all-products"]).indexOf(name) === -1 && !this.isItemInCraftingRecipe(name)) {
+            // consoleError('ERROR: Product is not in a crafting recipe and not found in trader data: ' + name);
+            return false;
+        }
+
+        if (trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"] === 0 &&
+            trader_data["all-products"][name]["sell-order-stats"]["total-sell-orders-created"] === 0 &&
+            !this.isItemInCraftingRecipe(name)) {
+            // consoleError('ERROR: Product is not in a crafting recipe and has no buy or sell orders: ' + name);
+            return false;
+        }
+
+        // console.log('Tracking product: ' + name + ' for transaction type: ' + transactionType);
+        return true;
+    }
+    isItemInCraftingRecipe(name) {
+        const productNames = Object.keys(product_list);
+        for (const productName of productNames) {
+            if (product_list[productName]["crafting-materials"] && Object.keys(product_list[productName]["crafting-materials"]).includes(name)) {
+                // console.log('Product is in a crafting recipe: ' + name + ' is used to craft ' + productName);
+                return true;
+            }
+        }
+        return false;
+    }
+    instaBuy(amount, price, name, time_bought = Date.now(), ignoreListEnabled = false) {
+        if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Product name not found in product list';
+
+        if (ignoreListEnabled && this.trackProduct(name, 'buy') === false) return 'Rejected: Product not tracked for buy transactions.';
 
         // get the investment type but add "s" to format for trader_data
         const invesmentType = getInvestmentType(product_list[name]["type"]);
-        
 
         // look for any invesments that might already be the same name
         if (Object.keys(trader_data[invesmentType]).indexOf(name) != -1) {
             let found = false;
-            
+
             // append a new order to suborders
             for (const subOrderIndex of Object.keys(trader_data[invesmentType][name]["sub-orders"])) {
                 if (trader_data[invesmentType][name]["sub-orders"][subOrderIndex]["price-bought"] === price &&
@@ -541,34 +679,40 @@ class ProcesTrade {
         return 'Instabuy completed';
     }
     instaSell(amount, price, name, doBazaarFees = true, ignoreListEnabled = false) {
-        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+        if (Object.keys(product_list).indexOf(name + " (forge)") != -1) {
+            // console.log(`Supercrafting ${name} requires a forge, so supercrafting ${name} (forge) instead`);
+            name = name + " (forge)";
+        }
 
-        if (IGNORE_INSTA_SELL_BUY.includes(name) && ignoreListEnabled) return console.log('ERROR: Insta sell ignored for product: ' + name);
 
-        const invesmentType = getInvestmentType(product_list[name]["type"]); 
+        if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Product name not found in product list';
+
+        if (ignoreListEnabled && this.trackProduct(name, 'buy') === false) return 'Rejected: Product not tracked for sell transactions.';
+
+        const invesmentType = getInvestmentType(product_list[name]["type"]);
 
         // look for any invesments that might already be the same name
         if (Object.keys(trader_data[invesmentType]).indexOf(name) != -1) {
             // adjust the amounts to reflect the sel
             let suborders = trader_data[invesmentType][name]["sub-orders"];
-            
+
             trader_data[invesmentType][name]["sub-orders"] = new Sort(trader_data[invesmentType][name]["sub-orders"], false, "price-bought");
 
             while (suborders.length > 0) {
                 const subOrder = suborders[0];
 
-                if (amount === 0) return;
+                if (amount === 0) return "Insta sell completed";
 
                 // go through each suborder
                 if (subOrder["partial-amount"] > amount) {
                     // then just subtract from the current suborder
                     trader_data[invesmentType][name]["sub-orders"][0]["partial-amount"] -= amount;
-                    
+
                     // calculate the profit from the sell order
                     const date_bought = subOrder["time-bought"];
 
                     trader_data["all-products"][name]["current-amount"] -= amount;
-                    return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees);
+                    return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees) + " & Insta sell completed";
                 } else {
                     // determine if the last suborder is bought out
                     if (trader_data[invesmentType][name]["sub-orders"].length <= 1) {
@@ -583,7 +727,7 @@ class ProcesTrade {
                         const date_bought = subOrder["time-bought"];
 
                         trader_data["all-products"][name]["current-amount"] -= subOrder["partial-amount"];
-                        return this.addProfit(subOrder["partial-amount"], name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees);
+                        return this.addProfit(subOrder["partial-amount"], name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees) + " & Insta sell completed";
                     } else {
                         amount -= subOrder["partial-amount"];
 
@@ -604,7 +748,7 @@ class ProcesTrade {
         }
     }
     addProfit(amount, name, buy_price, sell_price, date_bought, date_sold, doFees, type = 'bazaar') {
-        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+        if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Product name not found in product list';
 
         const now = new Date();
         const dateOfTransaction = morningTime(now.getTime()).toString();
@@ -612,13 +756,13 @@ class ProcesTrade {
         // calculate the current profit
         let profitPerUnit;
         if (type === 'bazaar' && doFees) {
-            const bazaarFeesPerUnit = sell_price * 0.01; 
+            const bazaarFeesPerUnit = sell_price * 0.01;
             profitPerUnit = (sell_price - buy_price) - bazaarFeesPerUnit;
         } else {
             profitPerUnit = (sell_price - buy_price);
         }
         const profit = amount * profitPerUnit;
-        
+
         // add the profit to the daily profits stuff
         if (Object.keys(trader_data["all-products"]).indexOf(name) === -1) {
             trader_data["all-products"][name] = {
@@ -644,7 +788,7 @@ class ProcesTrade {
 
         trader_data["all-products"][name]["total-profit-made"] += profit;
         trader_data["all-products"][name]["total-sold"] += amount;
-        
+
         if (Object.keys(trader_data["daily-profits"]).indexOf(dateOfTransaction) === -1) {
             trader_data["daily-profits"][dateOfTransaction] = {
                 "daily-profit": 0,
@@ -657,7 +801,7 @@ class ProcesTrade {
 
         trader_data["daily-profits"][dateOfTransaction]["daily-profit"] += profit;
         trader_data["daily-profits"][dateOfTransaction][`${type}-profit`] += profit;
-        
+
         // update the trades for today
         for (const tradeIndex of Object.keys(trader_data["daily-profits"][dateOfTransaction]["trades"])) {
             const trade = trader_data["daily-profits"][dateOfTransaction]["trades"][tradeIndex];
@@ -665,10 +809,10 @@ class ProcesTrade {
                 trade["buy-price"] === buy_price &&
                 trade["sell-price"] === sell_price) {
                 // update a trade that already exists
-                trader_data["daily-profits"][dateOfTransaction]["trades"][tradeIndex]["count"] += amount; 
+                trader_data["daily-profits"][dateOfTransaction]["trades"][tradeIndex]["count"] += amount;
                 const current_amount = trader_data["daily-profits"][dateOfTransaction]["trades"][tradeIndex]["count"];
                 trader_data["daily-profits"][dateOfTransaction]["trades"][tradeIndex]["total-profit"] = current_amount * profitPerUnit;
-                
+
                 return 'Addprofit completed';
             }
         }
@@ -688,7 +832,7 @@ class ProcesTrade {
         return 'Addprofit completed';
     }
     buyOrderSetup(amount, price, name) {
-        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+        if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Product name not found in product list';
 
         // get the hypixel api name and the current sell order price
         const apiName = product_list[name]["api-name"];
@@ -703,26 +847,28 @@ class ProcesTrade {
             "price-buying": price,
             "projected-profit": Math.round((currentResellPrice - price) * amount - bazaarFees),
             "has-been-claimed": false,
+            "has-been-filled": false,
             "buy-order-place-time": Date.now()
         });
 
         return 'Buy order setup completed';
     }
     buyOrderFill(amount, name) {
-        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+        if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Product name not found in product list';
 
         // get the current buy orders
         const buyOrders = trader_data['buy-order-overview']['buy-orders'];
-        
+
         // find a current buy order that matches the name and buying amount as an order already placed
         for (let buyOrderIndex = 0; buyOrderIndex < buyOrders.length; buyOrderIndex++) {
             const buyOrder = buyOrders[buyOrderIndex];
             if (buyOrder["item-name"] === name &&
                 buyOrder["buying-amount"] === amount) {
                 // alter the bought and buying amounts to reflect that the order has filled
-                trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["bought-amount"] = 
+                trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["has-been-filled"] = true;
+                trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["bought-amount"] =
                     copy(trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["buying-amount"]);
-                
+
                 return 'Buy order filling completed';
             }
         }
@@ -730,20 +876,20 @@ class ProcesTrade {
         throw new Error('ERROR: Failed to fill a buy order');
     }
     buyOrderClaim(amount, price, name) {
-        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+        if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Product name not found in product list';
 
         // get the current buy orders
         const buyOrders = trader_data['buy-order-overview']['buy-orders'];
-        
+
         // find a current buy order that matches the name and buying price as an order already placed
         for (let buyOrderIndex = 0; buyOrderIndex < buyOrders.length; buyOrderIndex++) {
             const buyOrder = buyOrders[buyOrderIndex];
             if (buyOrder["item-name"] === name && (Math.ceil(buyOrder["price-buying"]) === price || buyOrder["price-buying"] === price || Math.floor(buyOrder["price-buying"]) === price)) {
                 trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["has-been-claimed"] = true;
-                
+
                 // add the products claimed to the investments
                 this.instaBuy(amount, price, name, buyOrder["buy-order-place-time"]);
-                
+
                 // if the buy order was filled
                 if (buyOrder["buying-amount"] === amount) {
                     // then remove it
@@ -779,7 +925,7 @@ class ProcesTrade {
                     if (amount != 2240) trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"] += 1;
                     trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-claimed"] += amount;
                     trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-placed-for-buying"] += buyOrder["buying-amount"] + amount;
-                    trader_data["all-products"][name]["buy-order-stats"]["buy-average"] = 
+                    trader_data["all-products"][name]["buy-order-stats"]["buy-average"] =
                         trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-claimed"] /
                         trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"];
                 }
@@ -795,7 +941,7 @@ class ProcesTrade {
 
         // get the current buy orders
         let buyOrders = trader_data['buy-order-overview']['buy-orders'];
-        
+
         // Debug, arachan's fang came through here. none was bought but it showed 64 on buy amount. the dollar amount would be computed exactlt correct
         // probably find a different way to find the order
         // [Bazaar] Cancelled! Refunded 33,067,219 coins from cancelling Buy Order!
@@ -808,7 +954,10 @@ class ProcesTrade {
         });
 
         // if there are no buy orders that match the dollar amount, throw an error
-        if (buyOrders.length === 0) throw new Error('ERROR: Failed to find a buy order to cancel');
+        if (buyOrders.length === 0) {
+            consoleWarn('WARNING: Failed to find a buy order to cancel for dollar amount: ' + dollars);
+            return 'ERROR: Failed to find a buy order to cancel';
+        }
 
         // if the length if more than 1, find the one with the closest dollar amount to the dollars variable
         let closestBuyOrder = buyOrders[0];
@@ -860,7 +1009,7 @@ class ProcesTrade {
             } else {
                 trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"] += 1;
                 trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-placed-for-buying"] += removedOrder["buying-amount"];
-                trader_data["all-products"][name]["buy-order-stats"]["buy-average"] = 
+                trader_data["all-products"][name]["buy-order-stats"]["buy-average"] =
                     trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-claimed"] /
                     trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"];
             }
@@ -868,10 +1017,10 @@ class ProcesTrade {
         return 'Buy order canceling completed';
     }
     sellOrderSetup(amount, price, name) {
-        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+        if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Product name not found in product list';
 
         const resellPrice = price;
-        const invesmentType = getInvestmentType(product_list[name]["type"]); 
+        const invesmentType = getInvestmentType(product_list[name]["type"]);
         const sellOrderPlaceTime = Date.now();
         let earliest_time_bought = "10000000000000000000000000000";
         let total_selling_amount = 0;
@@ -883,7 +1032,7 @@ class ProcesTrade {
         while (investmentSubOrders.length > 0) {
             const investmentSubOrder = investmentSubOrders[0];
             if (amount === 0) break;
-            
+
             // go through each suborder
             if (investmentSubOrder["partial-amount"] > amount) {
                 // then just subtract from the current suborder
@@ -915,7 +1064,7 @@ class ProcesTrade {
                     amount -= investmentSubOrder["partial-amount"];
 
                     if (amount > 0) throw new Error('ERROR: Sell order setup requires more products then found in investments');
-                    
+
                     // add the new sub sell order
                     const bazaarFeesPerUnit = resellPrice * 0.01;
                     const projectedProfitPerUnit = Math.round((resellPrice - investmentSubOrder["price-bought"] - bazaarFeesPerUnit) * 10) / 10;
@@ -975,45 +1124,53 @@ class ProcesTrade {
             "earliest-time-bought": earliest_time_bought,
             "total-selling-amount": total_selling_amount,
             "has-been-claimed": false,
+            "has-been-filled": false,
             "sell-order-place-time": sellOrderPlaceTime,
             "sub-orders": sell_sub_orders
         });
 
-        return ('Sell order setup completed');
+        return 'Sell order setup completed';
     }
     sellOrderFill(amount, name) {
-        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+        if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Product name not found in product list';
 
         // get the current sell orders
         const sellOrders = trader_data['sell-order-overview']['sell-orders'];
-        
+
         // find a current sell order that matches the name and selling amount as an order already placed
         for (let sellOrderIndex = 0; sellOrderIndex < sellOrders.length; sellOrderIndex++) {
             const sellOrder = sellOrders[sellOrderIndex];
+            // console.log("Checking sell order: ", sellOrder, " against name: ", name, " and amount: ", amount);
             if (sellOrder["item-name"] === name &&
                 sellOrder["total-selling-amount"] === amount) {
-                // alter the bought and selling amounts to reflect that the order has filled
-                for (const subSellOrderIndex of Object.keys(trader_data['sell-order-overview']['sell-orders'][sellOrderIndex]["sub-orders"])) {
-                    trader_data['sell-order-overview']['sell-orders'][sellOrderIndex]["sub-orders"][subSellOrderIndex]["partial-sold-amount"] =
-                        trader_data['sell-order-overview']['sell-orders'][sellOrderIndex]["sub-orders"][subSellOrderIndex]["partial-selling-amount"];
-                }
                 
-                return 'Buy order filling completed';
+                sellOrder["has-been-filled"] = true;
+                sellOrder["sub-orders"].map(subOrder => {
+                    subOrder["partial-sold-amount"] = subOrder["partial-selling-amount"];
+                });
+                trader_data['sell-order-overview']['sell-orders'][sellOrderIndex] = sellOrder;
+
+                // console.log("Filled sell order: ", trader_data['sell-order-overview']['sell-orders'][sellOrderIndex]);
+                return 'Sell order filling completed';
             }
         }
 
-        throw new Error('ERROR: Failed to fill a sell order');
+        consoleWarn('ERROR: Failed to fill a sell order');
+        return 'ERROR: Failed to fill a sell order';
     }
     sellOrderClaim(amount, price_sold, name, coins_earned, has_decimal) {
-        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+        if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Product name not found in product list';
 
         // get the current sell orders
         const sellOrders = new Sort(trader_data["sell-order-overview"]["sell-orders"], false, "sell-order-place-time");
-        
+
         // index that the sell order that was claimed will be at
         let current_sell_order_index = this.determineNearestSellOrder(amount, price_sold, name, coins_earned, has_decimal);
 
-        if (current_sell_order_index === -1 || sellOrders.length === 0) throw new Error('ERROR: No sell order found to claim');
+        if (current_sell_order_index === -1 || sellOrders.length === 0) {
+            consoleWarn('ERROR: Failed to find a sell order to claim for name: ' + name + ', amount: ' + amount + ', price_sold: ' + price_sold + ', coins_earned: ' + coins_earned + ', has_decimal: ' + has_decimal);
+            return 'ERROR: Failed to find a sell order to claim';
+        }
 
         trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["has-been-claimed"] = true;
 
@@ -1022,11 +1179,11 @@ class ProcesTrade {
 
         // subtract the amount from the total selling amount
         trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["total-selling-amount"] -= amount;
-        
+
         while (suborders.length > 0) {
             const subOrder = suborders[0];
 
-            if (subOrder["partial-selling-amount"] === 0) return;
+            if (subOrder["partial-selling-amount"] === 0) return "Sell order claim completed";
 
             // go through each suborder
             if (subOrder["partial-selling-amount"] > amount) {
@@ -1039,13 +1196,13 @@ class ProcesTrade {
 
                 addSellClaimToProducts(amount, name, subOrder["partial-selling-amount"], false);
 
-                return this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true);
+                return this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true) + " & Sell order claim completed";
             } else {
                 // determine if the last suborder is bought out
                 if (trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"].length <= 1) {
                     amount -= subOrder["partial-selling-amount"];
                     if (amount > 0) throw new Error('ERROR: Amount still left over to claim from sell order after order has been completly filled');
-                    
+
                     // remove the whole order
                     trader_data["sell-order-overview"]["sell-orders"].splice(current_sell_order_index, 1);
 
@@ -1054,8 +1211,7 @@ class ProcesTrade {
 
                     addSellClaimToProducts(subOrder["partial-selling-amount"], name, subOrder["partial-selling-amount"], true);
 
-
-                    return this.addProfit(subOrder["partial-selling-amount"], name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true);
+                    return this.addProfit(subOrder["partial-selling-amount"], name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true) + " & Sell order claim completed";
                 } else {
                     amount -= subOrder["partial-selling-amount"];
 
@@ -1072,7 +1228,9 @@ class ProcesTrade {
             }
         }
 
-        throw new Error('ERROR: More sell order claiming then that in the sell order');
+        consoleWarn('ERROR: More sell order claiming then that in the sell order');
+
+        return 'ERROR: More sell order claiming then that in the sell order';
 
         function addSellClaimToProducts(amount, name, orderSellAmount, orderFilled) {
             // add the claim into the sell order stuff
@@ -1103,7 +1261,7 @@ class ProcesTrade {
                 if (orderFilled) {
                     trader_data["all-products"][name]["sell-order-stats"]["total-sell-orders-created"] += 1;
                     trader_data["all-products"][name]["sell-order-stats"]["total-sell-amount-placed-for-selling"] += orderSellAmount;
-                    trader_data["all-products"][name]["sell-order-stats"]["sell-average"] = 
+                    trader_data["all-products"][name]["sell-order-stats"]["sell-average"] =
                         trader_data["all-products"][name]["sell-order-stats"]["total-sell-amount-claimed"] /
                         trader_data["all-products"][name]["sell-order-stats"]["total-sell-orders-created"];
                 }
@@ -1146,11 +1304,11 @@ class ProcesTrade {
             } else {
                 // Case B: Chat lacks decimals (High Coinage). Use rounded matching with tie-breaker logic.
                 // console.log(`Comparing rounded prices: DB=${order["price-sold"]}, Chat=${price_sold}`);
-                // console.log(`Rounded DB Price: ${roundDown(order["price-sold"])}, Rounded Chat Price: ${roundDown(actualPrice)}`);
+                // console.log(`Rounded DB Price: ${roundDown(order["price-sold"])}, Rounded Chat Price: ${roundDown(actualPrice)}, Chat Price Sold: ${price_sold}`);
                 const dbRoundedPrice = roundDown(order["price-sold"]);
-                if (dbRoundedPrice === roundDown(actualPrice) || Math.abs(order["price-sold"] - actualPrice) <= 0.15) {
+                if (dbRoundedPrice === roundDown(actualPrice) || Math.abs(order["price-sold"] - actualPrice) <= 0.15 || dbRoundedPrice === price_sold) {
                     isPriceMatch = true;
-                    
+
                     // Tie breaker: Calculate the difference between the underlying raw data fractions.
                     // We extract the fractional part (e.g. 26122.1 -> 0.1) to favor an exact matchup.
                     const decimalRemainder = Math.abs(order["price-sold"] - actualPrice);
@@ -1161,7 +1319,7 @@ class ProcesTrade {
             // If the price logic checks out, grade it alongside volume data
             if (isPriceMatch) {
                 const volumeDifference = Math.abs(totalSoldAmount - amount);
-                
+
                 // Total score: Lowest score represents the absolute best match
                 const currentScore = specializedPenalty + volumeDifference;
                 // console.log(`Evaluated Order: Name=${order["item-name"]}, Price=${order["price-sold"]}, Amount=${order["total-selling-amount"]}, Score=${currentScore.toFixed(4)}`);
@@ -1176,21 +1334,21 @@ class ProcesTrade {
         if (bestOrder) {
             // console.log(`✅ Success! Linked to Order ID: ${name} (Database Entry Price was: ${bestOrder["price-sold"]})`); 
             // return the index of the best order in the original sellOrders array
-            const bestOrderIndex = sellOrders.findIndex(order => order["price-sold"] === bestOrder["price-sold"] 
-                && order["item-name"] === bestOrder["item-name"] 
+            const bestOrderIndex = sellOrders.findIndex(order => order["price-sold"] === bestOrder["price-sold"]
+                && order["item-name"] === bestOrder["item-name"]
                 && order["total-selling-amount"] === bestOrder["total-selling-amount"]);
             return bestOrderIndex;
         } else {
-            console.log(`❌ Tracker mismatch: No database profiles fit the parsed pricing signature.`);
+            consoleWarn(`❌ Tracker mismatch: No database profiles fit the parsed pricing signature.`);
             return -1;
         }
     }
     sellOrderCancel(amount, name) {
-        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+        if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Product name not found in product list';
 
         // get the current sell orders
         const sellOrders = trader_data["sell-order-overview"]["sell-orders"];
-        
+
         // index that the sell order that was claimed will be at
         let current_sell_order_index = -1;
 
@@ -1233,11 +1391,11 @@ class ProcesTrade {
                 "crafting-materials": "none"
             };
 
-            console.log('This is weird, im making product data on a sell order cancel before its even been bought before.')
+            consoleWarn('This is weird, im making product data on a sell order cancel before its even been bought before.')
         } else {
             trader_data["all-products"][name]["sell-order-stats"]["total-sell-orders-created"] += 1;
             trader_data["all-products"][name]["sell-order-stats"]["total-sell-amount-placed-for-selling"] += amount;
-            trader_data["all-products"][name]["sell-order-stats"]["sell-average"] = 
+            trader_data["all-products"][name]["sell-order-stats"]["sell-average"] =
                 trader_data["all-products"][name]["sell-order-stats"]["total-sell-amount-claimed"] /
                 trader_data["all-products"][name]["sell-order-stats"]["total-sell-orders-created"];
             trader_data["all-products"][name]["current-amount"] += amount;
@@ -1249,11 +1407,11 @@ class ProcesTrade {
             const price = subSellOrder["price-bought"];
             const time_bought = subSellOrder["time-bought"];
             const subSellAmount = subSellOrder["partial-selling-amount"];
-            if (subSellOrder["partial-sold-amount"] != 0) console.error("ERROR: Suborder has been partially sold, but the sell order is being cancelled. This should not happen. The suborder is: ", subSellOrder);
+            if (subSellOrder["partial-sold-amount"] != 0) consoleWarn("ERROR: Suborder has been partially sold, but the sell order is being cancelled. This should not happen. The suborder is: ", subSellOrder);
 
             if (trader_data[invesmentType][name] != undefined) {
                 let found = false;
-                
+
                 // append a new order to suborders
                 for (const subOrderIndex of Object.keys(trader_data[invesmentType][name]["sub-orders"])) {
                     if (trader_data[invesmentType][name]["sub-orders"][subOrderIndex]["price-bought"] === price &&
@@ -1290,7 +1448,7 @@ class ProcesTrade {
         return 'Sell order cancelled';
     }
     orderFlipped(amount, name, profit) {
-        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+        if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Product name not found in product list';
 
         // get the buy orders
         const buyOrders = trader_data["buy-order-overview"]["buy-orders"];
@@ -1315,21 +1473,29 @@ class ProcesTrade {
         return 'Buy order flipped';
     }
     npcSell(amount, price, name) {
-        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list');
+        if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Product name not found in product list';
 
         this.instaSell(amount, price, name, false);
 
         return 'NPC sell completed';
     }
-    auctionCreation(price, name) {
+    npcBuyBack(amount, price, name) {
+        if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Product name not found in product list';
+        
+        this.instaBuy(amount, price, name);
+
+        return 'NPC buyback completed';
+    }
+    auctionCreation(price, name, detectedRarity) {
         // console.log(`Creating auction for ${name} at price ${price}`);
+        name = this.fixRarity(name, detectedRarity);
 
         // automatically create product if none can already be found
         if (Object.keys(trader_data["long-term-investments"]).indexOf(name) === -1) {
             console.log(`Product was not found already in investments to create an auction for. Creating product ${name} in long-term investments.`);
 
             // console.log(`Supercrafting ${name}`);
-            this.supercraft(name);
+            this.supercraft(name, detectedRarity);
         }
 
         // remove the product from the long term investments by highest cost
@@ -1376,8 +1542,10 @@ class ProcesTrade {
             }
         }
     }
-    auctionClaim(price, name) {
-        const priceSold = price/0.99;
+    auctionClaim(price, name, detectedRarity) {
+        name = this.fixRarity(name, detectedRarity);
+
+        const priceSold = price / 0.99;
 
         // remove auction
         const auctions = trader_data["auction-house-overview"]["auctions"];
@@ -1390,19 +1558,24 @@ class ProcesTrade {
                 break;
             }
         }
-        
-        if (current_auction_index === -1) throw new Error('ERROR: Auction not found to claim');
+
+        if (current_auction_index === -1) {
+            consoleWarn('ERROR: Auction not found to claim for name: ' + name + ', price: ' + price + ', priceSold: ' + priceSold);
+            return 'ERROR: Auction not found to claim';
+        }
 
         // remove the auction from 'auctions'
         const removedAuction = trader_data["auction-house-overview"]["auctions"].splice(current_auction_index, 1)[0];
-        
+
         // add auction fee to daily profit
         const auctionFees = priceSold * 0.01;
         this.addProfit(1, name, removedAuction["material-cost"] + auctionFees, priceSold, removedAuction["date-placed"], Date.now(), false, "auction-house");
 
         return 'Auction claimed';
     }
-    auctionCancel(name) {
+    auctionCancel(name, detectedRarity) {
+        name = this.fixRarity(name, detectedRarity);
+
         // find the first occurance of the auction
         const auctions = trader_data["auction-house-overview"]["auctions"];
         let current_auction_index = -1;
@@ -1418,8 +1591,11 @@ class ProcesTrade {
             }
         }
 
-        if (current_auction_index === -1) throw new Error('ERROR: Auction not found to cancel');
-        
+        if (current_auction_index === -1) {
+            consoleWarn('ERROR: Auction not found to cancel for name: ' + name);
+            return 'ERROR: Auction not found to cancel';
+        }
+
         // remove the auction from 'auctions'
         const removedAuction = trader_data["auction-house-overview"]["auctions"].splice(current_auction_index, 1)[0];
         // console.log(`Auction cancelled for ${name} at price ${removedAuction["price-selling"]} and index ${current_auction_index}`);
@@ -1452,7 +1628,9 @@ class ProcesTrade {
 
         return ('Auction cancelled');
     }
-    auctionSold(price, name) {
+    auctionSold(price, name, detectedRarity) {
+        name = this.fixRarity(name, detectedRarity);
+
         // find the first occurance of the auction
         const auctions = trader_data["auction-house-overview"]["auctions"];
         let current_auction_index = -1;
@@ -1465,13 +1643,18 @@ class ProcesTrade {
             }
         }
 
-        if (current_auction_index === -1) throw new Error('ERROR: Auction not found to set sold');
-        
+        if (current_auction_index === -1) {
+            consoleWarn('ERROR: Auction not found to set sold for name: ' + name + ', price: ' + price);
+            return 'ERROR: Auction not found to set sold';
+        }
+
         trader_data["auction-house-overview"]["auctions"][current_auction_index]["sold"] = true;
 
         return 'Auction successfully set sold';
     }
-    auctionBought(price, name) {
+    auctionBought(price, name, detectedRarity) {
+        name = this.fixRarity(name, detectedRarity);
+
         if (Object.keys(trader_data["all-products"]).indexOf(name) === -1) {
             trader_data["all-products"][name] = {
                 "current-amount": 0, // will be added in instabuy
@@ -1483,11 +1666,27 @@ class ProcesTrade {
         }
 
         this.instaBuy(1, price, name);
-        
+
         return 'Auction successfully bought';
     }
-    supercraft(name) {
-        if (Object.keys(product_list).indexOf(name) === -1) return console.log('ERROR: Product name not found in product list', name);
+    auctionExpired(name, detectedRarity) {
+        // console.log(`Auction expired for ${name}`);
+        this.auctionCancel(name, detectedRarity);
+
+        return 'Auction successfully expired';
+    }
+    supercraft(name, detectedRarity) {
+        // different naming function for this one
+        name = this.fixRarity(name, detectedRarity);
+
+        // console.log(`Supercrafting ${name}`);
+
+        if (Object.keys(product_list).indexOf(name) === -1) return `ERROR: Product name not found in product list ${name}`;
+
+        if (Object.keys(product_list).indexOf(name + " (forge)") != -1) {
+            // console.log(`Supercrafting ${name} requires a forge, so supercrafting ${name} (forge) instead`);
+            name = name + " (forge)";
+        }
 
         // determine if product has already been created
         const productTypeAlreadyCreated = Object.keys(trader_data["long-term-investments"]).indexOf(name) != -1;
@@ -1502,6 +1701,7 @@ class ProcesTrade {
         for (const craftingMaterialName of Object.keys(craftingMaterials)) {
             let productCost = removeCraftingMaterialFromInvestments(craftingMaterialName, craftingMaterials[craftingMaterialName], true);
             if (productCost === 0) {
+                consoleWarn(`ERROR: Could not remove crafting material ${craftingMaterialName} from investments`);
                 // if crafting material is another auction product, then supercraft that first
                 if (Object.keys(product_list).indexOf(craftingMaterialName) === -1) throw new Error('ERROR: Crafting material not found in product list');
                 if (product_list[craftingMaterialName]["type"] !== 'auction-product') throw new Error('ERROR: Crafting material is not an auction product, but was not found in investments (supercraft)');
@@ -1547,7 +1747,7 @@ class ProcesTrade {
         return 'Supercraft successful';
 
         function removeCraftingMaterialFromInvestments(name, amount, returnFailed) {
-            const invesmentType = getInvestmentType(product_list[name]["type"]); 
+            const invesmentType = getInvestmentType(product_list[name]["type"]);
 
             if (Object.keys(trader_data[invesmentType]).indexOf(name) === -1) {
                 if (returnFailed) {
@@ -1570,18 +1770,18 @@ class ProcesTrade {
                 // go through each suborder
                 if (subOrder["partial-amount"] > amount) {
                     material_cost += amount * subOrder[priceBoughtKey];
-                    
+
                     // then just subtract from the current suborder
                     trader_data[invesmentType][name]["sub-orders"][0]["partial-amount"] -= amount;
 
                     return material_cost;
                 } else if (trader_data[invesmentType][name]["sub-orders"].length <= 1) {
                     material_cost += amount * subOrder[priceBoughtKey];
-                    
+
                     // remove the whole order
                     delete trader_data[invesmentType][name];
 
-                    if (amount > subOrder["partial-amount"]) throw new Error('ERROR: More crafting materials needed then in investments'); 
+                    if (amount > subOrder["partial-amount"]) throw new Error('ERROR: More crafting materials needed then in investments');
 
                     return material_cost;
                 } else {
@@ -1593,11 +1793,68 @@ class ProcesTrade {
                 }
             }
 
-            throw new Error('ERROR: Something wrong with suborders when removing crafting materials from investments'); 
+            throw new Error('ERROR: Something wrong with suborders when removing crafting materials from investments');
         }
     }
-    checkForForgeableItmes() {
+    itemRemoved(name, amount, detectedRarity) {
+        // simply remove the item from the all-products list, and the short/term investments if it exists there
+        name = this.fixRarity(name, detectedRarity);
+
+        if (Object.keys(trader_data["all-products"]).indexOf(name) === -1) return `ERROR: Product name not found in all-products list: ${name}`;
         
+        // remove the amount from all products
+        trader_data["all-products"][name]["current-amount"] -= amount;
+        if (trader_data["all-products"][name]["current-amount"] < 0) {
+            consoleWarn('ERROR: Current amount of product is less than 0 after item removal');
+            return 'ERROR: Current amount of product is less than 0 after item removal';
+        }
+
+        // remove from long-term investments if it exists there
+        const investmentType = getInvestmentType(product_list[name]["type"]);
+        let suborders = [];
+        if (Object.keys(trader_data[investmentType]).indexOf(name) !== -1) {
+            suborders = trader_data[investmentType][name]["sub-orders"];
+            trader_data[investmentType][name]["sub-orders"] = new Sort(suborders, false, "price-crafted");
+        } else {
+            consoleWarn('ERROR: Product name not found in investments list: ' + name);
+            return 'ERROR: Product name not found in investments list: ' + name;
+        }
+
+        while (suborders.length > 0 && amount > 0) {
+            const subOrder = suborders[0];
+            if (subOrder["partial-amount"] > amount) {
+                trader_data[investmentType][name]["sub-orders"][0]["partial-amount"] -= amount;
+                amount = 0;
+            } else {
+                amount -= subOrder["partial-amount"];
+                trader_data[investmentType][name]["sub-orders"].splice(0, 1);
+            }
+        }
+
+        // change the total amount of the product in the order
+        trader_data[investmentType][name]["total-amount"] -= amount;
+        if (trader_data[investmentType][name]["total-amount"] < 0) {
+            consoleWarn('ERROR: Total amount of product is less than 0 after item removal');
+            return 'ERROR: Total amount of product is less than 0 after item removal';
+        }
+
+        // remove the order from the investments if there are no more suborders
+        if (trader_data[investmentType][name]["sub-orders"].length === 0) delete trader_data[investmentType][name];
+
+        if (amount > 0) {
+            consoleWarn('ERROR: More items removed than in long-term investments');
+            return 'ERROR: More items removed than in long-term investments';
+        }
+
+        return 'Item removed successfully';
+    }
+    fixRarity(name, detectedRarity) {
+        if (name.includes(" - ")) return name; // already has a rarity
+        if (detectedRarity != "") name = `${name} - ${detectedRarity}`;
+        return name;
+    }
+    checkForForgeableItmes() {
+
     }
 }
 
@@ -1681,7 +1938,8 @@ function normalizeName(name, tier) {
         .replace(/§./g, '')
         .replace(/\s+/g, ' ')
         .trim()
-        .toLowerCase() + (tier ? `_${tier.toLowerCase()}` : '');
+        .replace(/ - .+$/, '') // Remove existing rarity
+        .toLowerCase() + (tier ? ` - ${tier}` : '');
 }
 
 // Export the Main class for use in other modules
@@ -1689,7 +1947,7 @@ export default Main;
 
 // price floats incorrect
 class UpdateOrderFillAmounts {
-    constructor() {}
+    constructor() { }
     updateOrders() {
         const sellOrders = trader_data["sell-order-overview"]["sell-orders"];
         for (const sellOrderIndex in sellOrders) this.updateSellOrderFillAmount(sellOrderIndex, sellOrders);
@@ -1709,14 +1967,14 @@ class UpdateOrderFillAmounts {
         // Atomic write: write to temp file first, then rename to avoid corruption on read
         const tempPath = traderDataPath + '.tmp';
         fs.writeFile(
-            tempPath, 
-            JSON.stringify(trader_data, null, 2), 
-            function(err) {
+            tempPath,
+            JSON.stringify(trader_data, null, 2),
+            function (err) {
                 if (err) {
                     console.error('Error writing temp trader data file:', err);
                 } else {
                     // Atomic rename - replaces the original file
-                    fs.rename(tempPath, traderDataPath, function(renameErr) {
+                    fs.rename(tempPath, traderDataPath, function (renameErr) {
                         if (renameErr) {
                             console.error('Error renaming temp file:', renameErr);
                         }
@@ -1729,9 +1987,13 @@ class UpdateOrderFillAmounts {
         const sellOrder = sellOrders[sellOrderIndex];
         const apiName = product_list[sellOrder["item-name"]]["api-name"];
         const sellSummary = bazaar_data[apiName]["buy_summary"];
-        
+
         // check the price range and if it is already filled
         // if (sellOrder["total-selling-amount"] === this.findTotalSold(sellOrder)) return ('Sell order already filled', sellOrder);
+
+        if (sellOrder["has-been-filled"]) return ('Sell order has been filled', sellOrder);
+
+        if (sellSummary.length === 0) return ('No sell summary found for item', sellOrder["item-name"]);
 
         if (sellOrder["price-sold"] < sellSummary[0]["pricePerUnit"]) return ('Price sold is under the selling range', sellOrder);
 
@@ -1804,12 +2066,16 @@ class UpdateOrderFillAmounts {
         // check the price range and if it is already filled
         // if (buyOrder["buying-amount"] === buyOrder["bought-amount"]) return ('Buy order already filled', buyOrder);
 
+        if (buyOrder["has-been-filled"]) return ('Buy order has been filled', buyOrder);
+
+        if (buySummary.length === 0) return ('No buy summary found for item', buyOrder["item-name"]);
+
         if (buyOrder["price-buying"] < buySummary[buySummary.length - 1]["pricePerUnit"]) return ('Price buying is under the buying range', buyOrder);
 
         if (buyOrder["price-buying"] > buySummary[0]["pricePerUnit"]) return ('Price buying is over the buying range', buyOrder);
-        
+
         let buy_order_buy_summary_index = -1;
-        
+
         for (const buyOrderIndex in buySummary) {
             const buyOrderSummary = buySummary[buyOrderIndex];
             // round the price to 1 decimal place to avoid floating point issues
@@ -1818,7 +2084,7 @@ class UpdateOrderFillAmounts {
                 break;
             }
         }
-        
+
         if (buy_order_buy_summary_index === -1) {
             const amountSold = buyOrder["buying-amount"];
 
@@ -1826,7 +2092,7 @@ class UpdateOrderFillAmounts {
 
             return 'Completed the amount update for the buy order';
         }
-        
+
         if (buySummary[buy_order_buy_summary_index]["orders"] > 1) return ('Buy order has multi order, not updating', buyOrder);
 
         const amountLeftOnBuyOrder = buySummary[buy_order_buy_summary_index]["amount"];

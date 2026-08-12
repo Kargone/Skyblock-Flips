@@ -14,6 +14,7 @@
                             "item-name": "",
                             "price-sold": 0,
                             "total-selling-amount": 0,
+                            "has-been-filled": false,
                             "has-been-claimed": false,
                             "earliest-time-bought": "",
                             "sell-order-place-time": "",
@@ -39,6 +40,7 @@
                             "price-buying": 0,
                             "projected-profit": 0,
                             "has-been-claimed": false,
+                            "has-been-filled": false,
                             "buy-order-place-time": ""
                         }
                     ]

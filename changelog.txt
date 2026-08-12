@@ -1,11 +1,19 @@
-Added another thing to nontrade messsages
-Added rounding into the price check for updating order fill amounts
-Made short term investments into longterm ones after 5 days and 5 million worth (disabled after other problems)
-Created a program to auto add all the new stuff to product list
-Added auction count list stat card
-Added projected profits to dropdown under buy orders
-Added a new run trade file
-Fixed some parsing of the trade messsage string on auction creation
-Fixed it finding the wrong lowest bin for rarity upgraded auctions
-More stuff changed in product list
-Added a stats tile to show the current mayor and the possible next mayor for flipping. Also show when the next ectoplasm is.
+Made sure it only disps the have mats catergory if it actually has all of them, not partial
+Added functionality to handle the rarities for beastmaster crest, changed a lot in the process
+Changed the console logging for most messsages
+Fixed an error with the beastmater crest uncommon reciepe
+Added auction expire logic
+Removed some old test files
+Added a flag for has-been-filled. Makes it sure that rewriting after fill doesnt work
+Added a delete button for investments on frontend
+Added an option for buyback with npc
+Fixed spooky festival being off by a year
+Added auction relisting margin in parathesis
+Added auction instabuy margin in parathesis
+Fixed some more logic with determing the nearest sell order
+Added an insta sell list
+Changed some logic handling of data from post requests to fit skyblockflips mod update
+Changed market value of forge products should be made insta sell and not insta buy
+Reworte the getBazaarApiNames to be correct this time, and updated the product list
+Added a different way to determine if a product will be tracked or not. Im tired of updating the lists
+Revamped all of the console logs. it makes a lot more sense now

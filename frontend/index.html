@@ -71,9 +71,9 @@
             <button class="tab-button active" type="button" data-tab-target="bazaar-orders">Bazaar buy/sell orders</button>
             <button class="tab-button" type="button" data-tab-target="investments">Current investments</button>
             <button class="tab-button" type="button" data-tab-target="auctions">Active Auctions</button>
-            <button class="tab-button" type="button" data-tab-target="crafts">Auction/forge products</button>
-            <button class="tab-button" type="button" data-tab-target="snapshot">Bazaar snapshot</button>
-            <button class="tab-button" type="button" data-tab-target="profits">Today's profit breakdown, all products</button>
+            <button class="tab-button" type="button" data-tab-target="crafts">Auction/forge Products</button>
+            <button class="tab-button" type="button" data-tab-target="snapshot">Bazaar Snapshot</button>
+            <button class="tab-button" type="button" data-tab-target="profits">Today's Profit Breakdown; All Products</button>
         </div>
 
         <section class="dashboard-section full-width bazaar-snapshot-section tab-panel active" data-tab-group="snapshot">
@@ -157,10 +157,11 @@
                                 <th>Margin</th>
                                 <th>Current Profit</th>
                                 <th>Date Bought</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody id="shorttermInvestmentsBody">
-                            <tr><td colspan="8" class="empty">No investments</td></tr>
+                                <tr><td colspan="9" class="empty">No investments</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -181,10 +182,11 @@
                                 <th>Margin</th>
                                 <th>Current Profit</th>
                                 <th>Date Bought</th>
+                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody id="longtermInvestmentsBody">
-                            <tr><td colspan="8" class="empty">No investments</td></tr>
+                                <tr><td colspan="9" class="empty">No investments</td></tr>
                         </tbody>
                     </table>
                 </div>
@@ -201,7 +203,7 @@
                                 <th>Current lBin</th>
                                 <th>Price Selling</th>
                                 <th>Cost</th>
-                                <th>Profit</th>
+                                <th>Profit (if relisted)</th>
                                 <th>Status</th>
                             </tr>
                         </thead>
@@ -223,7 +225,7 @@
                                 <th>Buy Order (Insta Buy)</th>
                                 <th>Have Mats</th>
                                 <th>Market Value</th>
-                                <th>Margin</th>
+                                <th>Margin (Insta Buy)</th>
                             </tr>
                         </thead>
                         <tbody id="auctionCraftsBody">
@@ -245,7 +247,7 @@
                                 <th>Have Mats</th>
                                 <th>Market Value</th>
                                 <th>Craft Time</th>
-                                <th>Margin</th>
+                                <th>Margin (Insta Buy)</th>
                             </tr>
                         </thead>
                         <tbody id="forgeCraftsBody">
@@ -256,7 +258,7 @@
             </section>
 
             <!-- Daily Profits Section -->
-            <section class="dashboard-section tab-panel" data-tab-group="profits">
+            <section class="dashboard-section full-width tab-panel" data-tab-group="profits">
                 <h2>Today's Profit Breakdown</h2>
                 <div class="profit-breakdown">
                     <div class="profit-item">
@@ -320,7 +322,7 @@
 
         <footer>
             <span id="lastUpdate">-</span>
-            <p class="update-info">Updates every 1 second</p>
+            <p class="update-info">Updates every 2.5 seconds</p>
         </footer>
     </div>
 

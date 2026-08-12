@@ -10,7 +10,7 @@ class TraderDashboard {
         this.openBuyOrders = new Set();
         this.openSellOrders = new Set();
         this.activeTab = 'bazaar-orders';
-        this.updateInterval = 1000; // 1 second
+        this.updateInterval = 1000; // 2.5 seconds
         this.bazaarUpdateInterval = 60000; // 1 minute
         this.auctionUpdateInterval = 300000; // 5 minutes
         this.mayorUpdateInterval = 300000; // 5 minutes
@@ -22,6 +22,7 @@ class TraderDashboard {
         this.fetchMarketData();
         this.fetchMayorData();
         this.fetchAndUpdateData();
+        this.setupInvestmentDeletion();
 
         setInterval(() => this.fetchAndUpdateData(), this.updateInterval);
         setInterval(() => this.fetchBazaarData(), this.bazaarUpdateInterval);
@@ -123,11 +124,51 @@ class TraderDashboard {
     }
 
     normalizeName(name, tier) {
+        // one error could be caused by names already including the rarity, so we should remove it if it exists
         return String(name || '')
             .replace(/§./g, '')
             .replace(/\s+/g, ' ')
             .trim()
-            .toLowerCase() + (tier ? `_${tier.toLowerCase()}` : '');
+            .replace(/ - .+$/, '') // Remove existing rarity
+            .toLowerCase() + (tier ? ` - ${tier}` : '');
+    }
+
+    escapeHtml(value) {
+        return String(value ?? '')
+            .replace(/&/g, '&amp;')
+            .replace(/</g, '&lt;')
+            .replace(/>/g, '&gt;')
+            .replace(/"/g, '&quot;')
+            .replace(/'/g, '&#39;');
+    }
+
+    getAllProductBuyOrderCount(itemName) {
+        const allProducts = this.traderData?.['all-products'] || {};
+        return allProducts[itemName]?.['buy-order-stats']?.['total-buy-orders-created'] || 0;
+    }
+
+    setupInvestmentDeletion() {
+        async function handleDeleteClick(event) {
+            const button = event.target.closest('.delete-investment-button');
+            if (!button) return;
+
+            const amount = Number(button.dataset.amount || 0);
+            const itemName = button.dataset.itemName || '';
+            console.log(`Delete investment clicked for ${itemName} with amount ${amount}`);
+            // Here you would implement the logic to delete the investment, e.g., sending a request to the backend
+            const response = await fetch('http://localhost:8000/trades', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: `[{"plainText":"xjk You removed ${amount}x ${itemName} from your inventory!","fullJson":[],"detectedRarity":""}]`
+            });
+            const result = await response;
+            console.log(result.statusText);
+        };
+
+        document.getElementById('shorttermInvestmentsBody')?.addEventListener('click', handleDeleteClick);
+        document.getElementById('longtermInvestmentsBody')?.addEventListener('click', handleDeleteClick);
     }
 
     setupTabs() {
@@ -530,14 +571,14 @@ class TraderDashboard {
         const longTermInvestmentEntries = Object.entries(longTermInv);
 
         if (shortTermInvestmentEntries.length === 0) {
-            shorttbody.innerHTML = '<tr><td colspan="8" class="empty">No investments</td></tr>';
+            shorttbody.innerHTML = '<tr><td colspan="9" class="empty">No investments</td></tr>';
         } else {
             // Process short-term investments
             this.processInvestments(shortTermInvestmentEntries, shorttbody, 'Short-term');
         }
 
         if (longTermInvestmentEntries.length === 0) {
-            longtbody.innerHTML = '<tr><td colspan="8" class="empty">No investments</td></tr>';
+            longtbody.innerHTML = '<tr><td colspan="9" class="empty">No investments</td></tr>';
         } else {
             // Process long-term investments
             this.processInvestments(longTermInvestmentEntries, longtbody, 'Long-term');
@@ -570,15 +611,17 @@ class TraderDashboard {
             const currentSellPrice = this.getCraftingMarketValue(name);
             const margin = currentSellPrice * 0.99 - highestPrice;
             const currentProfit = margin * totalAmount || 0;
+            const rowClass = this.getAllProductBuyOrderCount(name) === 0 && investmentType === 'Short-term'? 'zero-buy-orders' : '';
             // get the date-bought from the earliest sub-order
             const earliestSubOrder = inv['sub-orders'].reduce((earliest, sub) => {
                 return !earliest || sub['time-bought'] < earliest['time-bought'] ? sub : earliest;
             }, null);
             const dateBought = earliestSubOrder ? new Date(earliestSubOrder['time-bought']).toLocaleDateString() : 'N/A';
+            const escapedName = this.escapeHtml(name);
 
             return `
-                <tr>
-                    <td>${name}</td>
+                <tr class="${rowClass}">
+                    <td>${escapedName}</td>
                     <td>${type}</td>
                     <td>${totalAmount}</td>
                     <td>${this.formatCoin(highestPrice)}</td>
@@ -587,6 +630,16 @@ class TraderDashboard {
                     <td>${margin ? this.formatCoin(margin) : 'N/A'}</td>
                     <td class="${currentProfit >= 0 ? 'profit-positive' : 'profit-negative'}">${this.formatCoin(currentProfit)}</td>
                     <td>${dateBought}</td>
+                    <td class="investment-delete-cell">
+                        <button
+                            type="button"
+                            class="delete-investment-button"
+                            data-item-name="${escapedName}"
+                            data-amount="${totalAmount}"
+                        >
+                            Delete
+                        </button>
+                    </td>
                 </tr>
             `;
         }).join('');
@@ -607,7 +660,7 @@ class TraderDashboard {
                 <td>${this.formatCoin(this.getCraftingMarketValue(auction['item-name']))}</td>
                 <td>${this.formatCoin(auction['price-selling'])}</td>
                 <td>${this.formatCoin(auction['material-cost'])}</td>
-                <td class="${auction['price-selling'] * 0.99 - auction['material-cost'] >= 0 ? 'profit-positive' : 'profit-negative'}">${this.formatCoin(auction['price-selling'] * 0.99 - auction['material-cost'])}</td>
+                <td class="${auction['price-selling'] * 0.99 - auction['material-cost'] >= 0 ? 'profit-positive' : 'profit-negative'}">${this.formatCoin(auction['price-selling'] * 0.99 - auction['material-cost'])}<span class="${this.getCraftingMarketValue(auction['item-name']) * 0.99 - auction['material-cost'] - this.calcAuctionFee(auction['price-selling']) >= 0 ? 'profit-positive' : 'profit-negative'}"> (${this.formatCoin(this.getCraftingMarketValue(auction['item-name']) * 0.99 - auction['material-cost'] - this.calcAuctionFee(auction['price-selling']))})</span></td>
                 <td>
                     <span class="status-badge ${auction['sold'] ? 'status-filled' : 'status-partial'}">
                         ${auction['sold'] ? 'Sold' : 'Active'}
@@ -615,6 +668,16 @@ class TraderDashboard {
                 </td>
             </tr>
         `).join('');
+    }
+
+    calcAuctionFee(price_not_sold) {
+        if (price_not_sold > 100000000) {
+            return price_not_sold * 0.025;
+        } else if (price_not_sold > 10000000) {
+            return price_not_sold * 0.02;
+        } else {
+            return price_not_sold * 0.01;
+        }
     }
 
     updateAuctionCrafts() {
@@ -672,7 +735,7 @@ class TraderDashboard {
                     <td>${this.formatCoin(costBreakdown.owned) != 0 ? this.formatCoin(costBreakdown.owned) : ''}</td>
                     <td>${this.formatCoin(costBreakdown.marketValue) != 0 ? this.formatCoin(costBreakdown.marketValue) : ''}</td>
                     ${showCraftTime ? `<td>${this.formatDuration(craftTime || 0)}</td>` : ''}
-                    <td class="${costBreakdown.margin >= 0 ? 'profit-positive' : 'profit-negative'}">${this.formatCoin(costBreakdown.margin)}</td>
+                    <td class="${costBreakdown.margin >= 0 ? 'profit-positive' : 'profit-negative'}">${this.formatCoin(costBreakdown.margin)}<span class="${costBreakdown.margin - (costBreakdown.instaBuy - costBreakdown.buyOrder) >= 0 ? 'profit-positive' : 'profit-negative'}"> (${this.formatCoin(costBreakdown.margin - (costBreakdown.instaBuy - costBreakdown.buyOrder))})</span></td>
                 </tr>
             `);
 
@@ -689,14 +752,14 @@ class TraderDashboard {
                                             <th>Material</th>
                                             <th>Qty</th>
                                             <th>Buy Order (Insta Buy)</th>
-                                            <th>Owned</th>
+                                            <th>Have Mats</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         ${materials.map(([materialName, qty]) => {
                     const directInsta = this.getProductUnitCost(materialName, 'insta-buy');
                     const directBuy = this.getProductUnitCost(materialName, 'buy-order');
-                    const directOwned = this.getProductUnitCost(materialName, 'owned', this.cloneInventorySnapshot(inventorySnapshot));
+                    const directOwned = this.getProductUnitCost(materialName, 'owned', this.cloneInventorySnapshot(inventorySnapshot), qty);
 
                     return `
                                                 <tr>
@@ -739,10 +802,13 @@ class TraderDashboard {
 
     getCraftingMarketValue(name) {
         const entry = this.getProductEntry(name);
+
         if (entry?.['api-name']) {
             const bazaarProduct = this.bazaarData?.[entry['api-name']];
-            const sellPrice = bazaarProduct?.buy_summary?.[0]?.pricePerUnit || 0;
-            if (sellPrice) return sellPrice;
+            const buyPrice = bazaarProduct?.buy_summary?.[0]?.pricePerUnit || 0;
+            const sellPrice = bazaarProduct?.sell_summary?.[0]?.pricePerUnit || 0;
+            if (name.includes('forge')) return sellPrice;
+            if (buyPrice) return buyPrice;
         }
 
         const apiName = entry?.['api-name'];
@@ -755,7 +821,7 @@ class TraderDashboard {
         const instaBuy = this.getRecipeCost(name, 'insta-buy');
         const buyOrder = this.getRecipeCost(name, 'buy-order');
         const owned = this.getRecipeCost(name, 'owned', this.cloneInventorySnapshot(inventorySnapshot));
-        const marketValue = this.getCraftingMarketValue(name);
+        const marketValue =this.getCraftingMarketValue(name);
         const entry = this.getProductEntry(name);
         const isAuctionProduct = entry?.type === 'auction-product' || entry?.type === 'forge-product';
         const fee = isAuctionProduct ? (marketValue > 10000000 ? 0.02 : 0.01) : 0.01;
@@ -883,12 +949,20 @@ class TraderDashboard {
         const EPOCH_TIMESTAMP_MILLISECONDS = 1560275700000; // June 11, 2019, 17:55:00 UTC
         const ADJUSTMENT_FOR_ELECTION_MILLISECONDS = 29 * 3600 * 1000 + 20 * 60 * 1000; // Adjust this value if there are known maintenance periods that affect the cycle
         const MILLISECONDS_PER_SB_YEAR = 124 * 3600 * 1000;
-        const targetElectionYear = this.mayorData.current.year + 1;
+        const targetElectionYear = (this.mayorData?.current?.year || this.mayorData?.mayor?.election.year || 0) + 1;
         const targetElectionTimestampMilliseconds = EPOCH_TIMESTAMP_MILLISECONDS + ADJUSTMENT_FOR_ELECTION_MILLISECONDS + ((targetElectionYear - 1) * MILLISECONDS_PER_SB_YEAR);
         
         const ADJUSTMENT_FOR_SPOOKY_FESTIVAL_MILLISECONDS = 52 * 3600 * 1000 + 20 * 60 * 1000 + ADJUSTMENT_FOR_ELECTION_MILLISECONDS;
-        const targetSpookyFestivalYear = this.mayorData.current.year + 1;
-        const targetSpookyFestivalTimestampMilliseconds = EPOCH_TIMESTAMP_MILLISECONDS + ADJUSTMENT_FOR_SPOOKY_FESTIVAL_MILLISECONDS + ((targetSpookyFestivalYear - 1) * MILLISECONDS_PER_SB_YEAR);
+        // the target year is correct only if the spooky festival hasnt passed yet, otherwise it should be the next year
+        // if the current date is after the spooky festival, we need to add a year
+        let targetSpookyFestivalYear = (this.mayorData?.current?.year || this.mayorData?.mayor?.election.year || 0);
+        let targetSpookyFestivalTimestampMilliseconds = EPOCH_TIMESTAMP_MILLISECONDS + ADJUSTMENT_FOR_SPOOKY_FESTIVAL_MILLISECONDS + ((targetSpookyFestivalYear - 1) * MILLISECONDS_PER_SB_YEAR);
+        const now = new Date();
+        const currentTimestamp = now.getTime();
+        if (currentTimestamp > targetSpookyFestivalTimestampMilliseconds) {
+            targetSpookyFestivalYear++;
+            targetSpookyFestivalTimestampMilliseconds = EPOCH_TIMESTAMP_MILLISECONDS + ADJUSTMENT_FOR_SPOOKY_FESTIVAL_MILLISECONDS + ((targetSpookyFestivalYear - 1) * MILLISECONDS_PER_SB_YEAR);
+        }
 
         const formatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
         const findtargetDate = (timestamp) => {
@@ -898,7 +972,7 @@ class TraderDashboard {
         const targetElectionDate = findtargetDate(targetElectionTimestampMilliseconds);
         const targetSpookyFestivalDate = findtargetDate(targetSpookyFestivalTimestampMilliseconds);
 
-        let futureMayorList = this.mayorData.current.candidates || [];
+        let futureMayorList = this.mayorData?.current?.candidates || [];
         futureMayorList.sort((a, b) => b.votes - a.votes);
         const nextMayor = futureMayorList[0] || { name: 'N/A', votes: 0 };
 
@@ -906,7 +980,7 @@ class TraderDashboard {
         calendarElement.innerHTML = `
             <h2>Mayor Information</h2>
             <div class="mayor-info">
-                <p>Current Mayor: ${this.mayorData.mayor.name}</p>
+                <p>Current Mayor: ${this.mayorData?.mayor?.name || 'N/A'}</p>
                 <p>Next Mayor: ${nextMayor.name}</p>
                 <p>Election Ends: ${targetElectionDate}</p>
                 <p>Next Spooky Festival: ${targetSpookyFestivalDate}</p>
@@ -1005,14 +1079,14 @@ class TraderDashboard {
         return Boolean(entry?.['crafting-materials'] && Object.keys(entry['crafting-materials']).length > 0);
     }
 
-    getProductUnitCost(name, mode = 'insta-buy', inventorySnapshot = null, path = new Set()) {
+    getProductUnitCost(name, mode = 'insta-buy', inventorySnapshot = null, amountNeeded = 0, path = new Set()) {
         const normalizedName = this.normalizeName(name);
         if (path.has(normalizedName)) {
             return 0;
         }
 
         const entry = this.getProductEntry(name);
-        const ownedUnitCost = inventorySnapshot ? this.getOwnedUnitCost(name, inventorySnapshot) : null;
+        const ownedUnitCost = inventorySnapshot ? this.getOwnedUnitCost(name, inventorySnapshot, amountNeeded) : null;
         if (ownedUnitCost != null) {
             return ownedUnitCost;
         }
@@ -1026,10 +1100,9 @@ class TraderDashboard {
 
         if (entry?.['api-name']) {
             const bazaarProduct = this.bazaarData?.[entry['api-name']];
-            const quickStatus = bazaarProduct?.quick_status;
-            if (quickStatus) {
-                return mode === 'buy-order' ? (quickStatus.sellPrice || 0) : (quickStatus.buyPrice || 0);
-            }
+            const buyOrders = bazaarProduct?.sell_summary || [];
+            const sellOrders = bazaarProduct?.buy_summary || [];
+            return mode === 'buy-order' ? (buyOrders[0]?.pricePerUnit || 0) : (sellOrders[0]?.pricePerUnit || 0);
         }
 
         const auctionPrice = this.lowestBinPrices[normalizedName];
@@ -1054,10 +1127,9 @@ class TraderDashboard {
 
         if (entry?.['api-name']) {
             const bazaarProduct = this.bazaarData?.[entry['api-name']];
-            const quickStatus = bazaarProduct?.quick_status;
-            if (quickStatus) {
-                return quickStatus.sellPrice || quickStatus.buyPrice || 0;
-            }
+            const buyOrders = bazaarProduct?.sell_summary || [];
+            const sellOrders = bazaarProduct?.buy_summary || [];
+            return buyOrders[0]?.pricePerUnit || sellOrders[0]?.pricePerUnit || 0;
         }
 
         const auctionPrice = this.lowestBinPrices[normalizedName];
@@ -1072,9 +1144,11 @@ class TraderDashboard {
         return 0;
     }
 
-    getOwnedUnitCost(name, inventorySnapshot) {
+    getOwnedUnitCost(name, inventorySnapshot, amountNeeded = 0) {
         const record = inventorySnapshot?.[name];
         if (!record || !record.amount) return null;
+        // use the quantity needed to determine if it actually can be filled with owned items, if not, return null to indicate that we need to buy it
+        if (amountNeeded > 0 && record.amount < amountNeeded) return null;
         return record.totalCost / record.amount;
     }
 
@@ -1094,11 +1168,9 @@ class TraderDashboard {
 
         for (const [materialName, quantity] of Object.entries(entry['crafting-materials'])) {
             let remainingQuantity = quantity;
-            const ownedUnitCost = inventorySnapshot ? this.getOwnedUnitCost(materialName, inventorySnapshot) : null;
+            const ownedUnitCost = inventorySnapshot ? this.getOwnedUnitCost(materialName, inventorySnapshot, quantity) : null;
 
-            if (ownedUnitCost == null && mode === 'owned') {
-                return 0; // If owned unit cost is -1, it means we have the material but no cost info, treat as infinite cost
-            }
+            if (ownedUnitCost == null && mode === 'owned') return 0;
 
             if (inventorySnapshot?.[materialName]?.amount > 0 && ownedUnitCost != null) {
                 const usedOwnedQuantity = Math.min(remainingQuantity, inventorySnapshot[materialName].amount);
@@ -1109,7 +1181,7 @@ class TraderDashboard {
             }
 
             if (remainingQuantity > 0) {
-                totalCost += this.getProductUnitCost(materialName, mode, inventorySnapshot, path) * remainingQuantity;
+                totalCost += this.getProductUnitCost(materialName, mode, inventorySnapshot, 0, path) * remainingQuantity;
             }
         }
 
