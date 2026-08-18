@@ -7,6 +7,5 @@ NPC buyback doesnt remove the profit
 Issues:
 better way to track forge (none of it works lol)
 
-add more auction crafts to list
 
 for the lists:

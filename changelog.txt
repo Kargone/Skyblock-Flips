@@ -1,21 +1,7 @@
-Sorry this is the acutal message for the last commit:
-
-Made sure it only disps the have mats catergory if it actually has all of them, not partial
-Added functionality to handle the rarities for beastmaster crest, changed a lot in the process
-Changed the console logging for most messsages
-Fixed an error with the beastmater crest uncommon reciepe
-Added auction expire logic
-Removed some old test files
-Added a flag for has-been-filled. Makes it sure that rewriting after fill doesnt work
-Added a delete button for investments on frontend
-Added an option for buyback with npc
-Fixed spooky festival being off by a year
-Added auction relisting margin in parathesis
-Added auction instabuy margin in parathesis
-Fixed some more logic with determing the nearest sell order
-Added an insta sell list
-Changed some logic handling of data from post requests to fit skyblockflips mod update
-Changed market value of forge products should be made insta sell and not insta buy
-Reworte the getBazaarApiNames to be correct this time, and updated the product list
-Added a different way to determine if a product will be tracked or not. Im tired of updating the lists
-Revamped all of the console logs. it makes a lot more sense now
+Added a system to reject auctions if they arent in the product list for tracking
+Added a file to get all recipe based accesorys via hypixel api with getAcessoryItems
+Added a couple new files to auto make craft recipes for more product list in the accessory-items
+Updated the product list with the new recipes
+Made the partial filling amount errors one line
+Automatically calculates have mats better for the auction/forge section to determine current costs
+Removed one undeeded file

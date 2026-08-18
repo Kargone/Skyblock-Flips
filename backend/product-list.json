@@ -11227,5 +11227,298 @@
     "api-name": "SHARD_ZOMBUDDY",
     "type": "short-term-investment",
     "has-weights": true
+  },
+  "Mineral Talisman": {
+    "api-name": "",
+    "type": "crafting-material",
+    "has-weights": false
+  },
+  "Glossy Mineral Talisman": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Glossy Gemstone": 16,
+      "Mineral Talisman": 1
+    }
+  },
+  "Scavenger Talisman": {
+    "api-name": "",
+    "type": "crafting-material",
+    "has-weights": false
+  },
+  "Scavenger Ring": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Blood-Stained Coins": 4,
+      "Freshly-Minted Coins": 8,
+      "Scavenger Talisman": 1
+    }
+  },
+  "Scavenger Artifact": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Blood-Soaked Coins": 4,
+      "Freshly-Minted Coins": 16,
+      "Scavenger Ring": 1
+    }
+  },
+  "Talisman of Coins": {
+    "api-name": "",
+    "type": "crafting-material",
+    "has-weights": false
+  },
+  "Ring of Coins": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Freshly-Minted Coins": 4,
+      "Talisman of Coins": 1
+    }
+  },
+  "Artifact of Coins": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Freshly-Minted Coins": 16,
+      "Ring of Coins": 1
+    }
+  },
+  "Catacombs Expert Ring": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Wither Catalyst": 24
+    }
+  },
+  "Wither Artifact": {
+    "api-name": "",
+    "type": "crafting-material",
+    "has-weights": false
+  },
+  "Wither Relic": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Wither Catalyst": 8,
+      "Wither Artifact": 1
+    }
+  },
+  "Treasure Talisman": {
+    "api-name": "",
+    "type": "crafting-material",
+    "has-weights": false
+  },
+  "Treasure Ring": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Treasure Talisman": 8
+    }
+  },
+  "Treasure Artifact": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Treasure Ring": 9
+    }
+  },
+  "Scare Fragment": {
+    "api-name": "",
+    "type": "crafting-material",
+    "has-weights": false
+  },
+  "Intimidation Artifact": {
+    "api-name": "",
+    "type": "crafting-material",
+    "has-weights": false
+  },
+  "Intimidation Relic": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Scare Fragment": 8,
+      "Intimidation Artifact": 1
+    }
+  },
+  "Blaze Talisman": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Millennia-Old Blaze Ashes": 8,
+      "Enchanted Blaze Rod": 8
+    }
+  },
+  "Burststopper Talisman": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Whipped Magma Cream": 4,
+      "Molten Powder": 128,
+      "Refined Titanium": 6
+    }
+  },
+  "Soulflow Pile": {
+    "api-name": "",
+    "type": "crafting-material",
+    "has-weights": false
+  },
+  "Soulflow Battery": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Null Ovoid": 8,
+      "Soulflow Pile": 1
+    }
+  },
+  "Soulflow Supercell": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Null Ovoid": 192,
+      "Null Atom": 2,
+      "Soulflow Battery": 1
+    }
+  },
+  "Ender Artifact": {
+    "api-name": "",
+    "type": "crafting-material",
+    "has-weights": false
+  },
+  "Exceedingly Rare Ender Artifact Upgrade": {
+    "api-name": "",
+    "type": "crafting-material",
+    "has-weights": false
+  },
+  "Ender Relic": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Enchanted Obsidian": 128,
+      "Enchanted Eye of Ender": 96,
+      "Ender Artifact": 1,
+      "Exceedingly Rare Ender Artifact Upgrade": 1
+    }
+  },
+  "Scythe Blade": {
+    "api-name": "",
+    "type": "crafting-material",
+    "has-weights": false
+  },
+  "Reaper Orb": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Scythe Blade": 8
+    }
+  },
+  "Zombie Ring": {
+    "api-name": "",
+    "type": "crafting-material",
+    "has-weights": false
+  },
+  "Zombie Artifact": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Enchanted Iron Ingot": 32,
+      "Enchanted Diamond": 16,
+      "Revenant Viscera": 48,
+      "Zombie Ring": 1
+    }
+  },
+  "Devour Ring": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Enchanted Raw Chicken": 2,
+      "Enchanted Raw Salmon": 8,
+      "Revenant Viscera": 39
+    }
+  },
+  "Cropie Talisman": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Cropie": 256
+    }
+  },
+  "Squash Ring": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Squash": 128,
+      "Cropie Talisman": 1
+    }
+  },
+  "Fermento Artifact": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Condensed Fermento": 8,
+      "Squash Ring": 1
+    }
+  },
+  "Draconic Talisman": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Ritual Residue": 2,
+      "Mite Gel": 96,
+      "Absolute Ender Pearl": 32
+    }
+  },
+  "Draconic Ring": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Ritual Residue": 4,
+      "Mite Gel": 96,
+      "Draconic Talisman": 1,
+      "Tessellated Ender Pearl": 1
+    }
+  },
+  "Draconic Artifact": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Ritual Residue": 12,
+      "Tessellated Ender Pearl": 2,
+      "Mite Gel": 128,
+      "Draconic Ring": 1
+    }
+  },
+  "Pulse Ring": {
+    "api-name": "",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Orb of Energy": 256
+    }
   }
 }

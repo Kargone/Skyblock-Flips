@@ -545,7 +545,8 @@ class ProcesTrade {
             this.message.includes('Executing instant buy...') ||
             this.message.includes('BIN Auction started for') ||
             this.message.includes('You canceled your auction for') ||
-            this.message.includes('You don\'t have anything to sell!')
+            this.message.includes('You don\'t have anything to sell!') ||
+            this.message.includes('You claimed ')
         ) {
             result = 'Nontrade message';
             return "Nontrade message: " + this.message;
@@ -1490,6 +1491,8 @@ class ProcesTrade {
         // console.log(`Creating auction for ${name} at price ${price}`);
         name = this.fixRarity(name, detectedRarity);
 
+        if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Auction item name not found in product list';
+
         // automatically create product if none can already be found
         if (Object.keys(trader_data["long-term-investments"]).indexOf(name) === -1) {
             console.log(`Product was not found already in investments to create an auction for. Creating product ${name} in long-term investments.`);
@@ -1544,6 +1547,8 @@ class ProcesTrade {
     }
     auctionClaim(price, name, detectedRarity) {
         name = this.fixRarity(name, detectedRarity);
+        
+        if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Auction item name not found in product list';
 
         const priceSold = price / 0.99;
 
@@ -1575,6 +1580,8 @@ class ProcesTrade {
     }
     auctionCancel(name, detectedRarity) {
         name = this.fixRarity(name, detectedRarity);
+
+        if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Auction item name not found in product list';
 
         // find the first occurance of the auction
         const auctions = trader_data["auction-house-overview"]["auctions"];
@@ -1631,6 +1638,8 @@ class ProcesTrade {
     auctionSold(price, name, detectedRarity) {
         name = this.fixRarity(name, detectedRarity);
 
+        if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Auction item name not found in product list';
+
         // find the first occurance of the auction
         const auctions = trader_data["auction-house-overview"]["auctions"];
         let current_auction_index = -1;
@@ -1655,6 +1664,9 @@ class ProcesTrade {
     auctionBought(price, name, detectedRarity) {
         name = this.fixRarity(name, detectedRarity);
 
+        if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Auction item name not found in product list';
+
+
         if (Object.keys(trader_data["all-products"]).indexOf(name) === -1) {
             trader_data["all-products"][name] = {
                 "current-amount": 0, // will be added in instabuy
@@ -1671,9 +1683,9 @@ class ProcesTrade {
     }
     auctionExpired(name, detectedRarity) {
         // console.log(`Auction expired for ${name}`);
-        this.auctionCancel(name, detectedRarity);
+        const result = this.auctionCancel(name, detectedRarity);
 
-        return 'Auction successfully expired';
+        return result === "ERROR: Auction item name not found in product list" ? "ERROR: Auction item name not found in product list" : 'Auction successfully expired';
     }
     supercraft(name, detectedRarity) {
         // different naming function for this one
@@ -2052,7 +2064,7 @@ class UpdateOrderFillAmounts {
                 amountSold -= subOrder["partial-selling-amount"];
             }
 
-            if (sellOrder["sub-orders"][subOrderIndex]["partial-sold-amount"] < 0) console.error('ERROR: Partial sold amount is less than 0, this should not happen', sellOrder, amountSold);
+            if (sellOrder["sub-orders"][subOrderIndex]["partial-sold-amount"] < 0) console.error('ERROR: Partial sold amount is less than 0, this should not happen: ', subOrderIndex, sellOrder["item-name"], sellOrder["price-sold"], amountSold);
             if (amountSold === 0) break;
         }
 

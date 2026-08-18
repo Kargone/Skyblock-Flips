@@ -1146,9 +1146,22 @@ class TraderDashboard {
 
     getOwnedUnitCost(name, inventorySnapshot, amountNeeded = 0) {
         const record = inventorySnapshot?.[name];
+        
+        // add functionality to calculate an auction if you dont have it in your inventory, but you could craft it with materials you do have in your inventory, and return that cost instead of null
+        // console.log(`Debug: Getting owned unit cost for ${name} with amount needed: ${amountNeeded}`);
+        if ("Bait Ring" === name) {
+            console.log("Debug: Bait Ring owned unit cost calculation");
+        }
+        
+        if (this.isCraftableProduct(name)) {
+            const craftCost = this.getRecipeCost(name, 'owned', inventorySnapshot);
+            if (craftCost > 0) return craftCost;
+        }
+        
         if (!record || !record.amount) return null;
         // use the quantity needed to determine if it actually can be filled with owned items, if not, return null to indicate that we need to buy it
         if (amountNeeded > 0 && record.amount < amountNeeded) return null;
+
         return record.totalCost / record.amount;
     }
 

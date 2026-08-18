@@ -11,7 +11,7 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            "program": "${workspaceFolder}\\backend/Testing/getBazaarApiNames.js"
+            "program": "${workspaceFolder}\\backend/Testing/addNewCrafts.js"
         }
     ]
 }
