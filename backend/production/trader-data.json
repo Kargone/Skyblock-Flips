@@ -3,183 +3,21 @@
   "sell-order-overview": {
     "sell-orders": [
       {
-        "item-name": "Howling Spirit Shard",
-        "price-sold": 9995.6,
-        "earliest-time-bought": 1786860415292,
-        "total-selling-amount": 1760,
-        "has-been-claimed": false,
-        "has-been-filled": false,
-        "sell-order-place-time": 1787065199280,
-        "sub-orders": [
-          {
-            "partial-sold-amount": 75,
-            "partial-selling-amount": 1760,
-            "price-bought": 6252,
-            "projected-profit": 6412736,
-            "time-bought": 1786860415292,
-            "sell-order-place-time": 1787065199280
-          }
-        ]
-      },
-      {
-        "item-name": "Howling Spirit Shard",
-        "price-sold": 9995.7,
-        "earliest-time-bought": 1786501070996,
-        "total-selling-amount": 2240,
-        "has-been-claimed": false,
-        "has-been-filled": false,
-        "sell-order-place-time": 1787065187223,
-        "sub-orders": [
-          {
-            "partial-sold-amount": 0,
-            "partial-selling-amount": 21,
-            "price-bought": 7582.3,
-            "projected-profit": 48581.4,
-            "time-bought": 1786501070996,
-            "sell-order-place-time": 1787065187223
-          },
-          {
-            "partial-sold-amount": 0,
-            "partial-selling-amount": 2219,
-            "price-bought": 6252,
-            "projected-profit": 8085370.3,
-            "time-bought": 1786860415292,
-            "sell-order-place-time": 1787065187223
-          }
-        ]
-      },
-      {
-        "item-name": "Superior Dragon Fragment",
-        "price-sold": 83809,
-        "earliest-time-bought": 1786729592390,
-        "total-selling-amount": 1694,
-        "has-been-claimed": false,
-        "has-been-filled": true,
-        "sell-order-place-time": 1787065180268,
-        "sub-orders": [
-          {
-            "partial-sold-amount": 484,
-            "partial-selling-amount": 484,
-            "price-bought": 79500,
-            "projected-profit": 1679915.6,
-            "time-bought": 1786860299847,
-            "sell-order-place-time": 1787065180268
-          },
-          {
-            "partial-sold-amount": 671,
-            "partial-selling-amount": 671,
-            "price-bought": 79499,
-            "projected-profit": 2329644.9,
-            "time-bought": 1786835754816,
-            "sell-order-place-time": 1787065180268
-          },
-          {
-            "partial-sold-amount": 539,
-            "partial-selling-amount": 539,
-            "price-bought": 75269,
-            "projected-profit": 4151324.0999999996,
-            "time-bought": 1786729592390,
-            "sell-order-place-time": 1787065180268
-          }
-        ]
-      },
-      {
-        "item-name": "Silver Fang",
-        "price-sold": 10355.6,
-        "earliest-time-bought": 1786583117808,
-        "total-selling-amount": 1650,
-        "has-been-claimed": false,
-        "has-been-filled": true,
-        "sell-order-place-time": 1787065161915,
-        "sub-orders": [
-          {
-            "partial-sold-amount": 855,
-            "partial-selling-amount": 855,
-            "price-bought": 9151.5,
-            "projected-profit": 940927.5,
-            "time-bought": 1786729906175,
-            "sell-order-place-time": 1787065161915
-          },
-          {
-            "partial-sold-amount": 24,
-            "partial-selling-amount": 24,
-            "price-bought": 9150.5,
-            "projected-profit": 26436,
-            "time-bought": 1786583117808,
-            "sell-order-place-time": 1787065161915
-          },
-          {
-            "partial-sold-amount": 771,
-            "partial-selling-amount": 771,
-            "price-bought": 9150.1,
-            "projected-profit": 849564.9,
-            "time-bought": 1786860287944,
-            "sell-order-place-time": 1787065161915
-          }
-        ]
-      },
-      {
-        "item-name": "? Fine Sapphire Gemstone",
-        "price-sold": 33998.3,
-        "earliest-time-bought": 1785776105881,
-        "total-selling-amount": 1495,
-        "has-been-claimed": false,
-        "has-been-filled": false,
-        "sell-order-place-time": 1787065155815,
-        "sub-orders": [
-          {
-            "partial-sold-amount": 893,
-            "partial-selling-amount": 1434,
-            "price-bought": 31841.2,
-            "projected-profit": 2605721.4,
-            "time-bought": 1785776105881,
-            "sell-order-place-time": 1787065155815
-          },
-          {
-            "partial-sold-amount": 59,
-            "partial-selling-amount": 61,
-            "price-bought": 19232,
-            "projected-profit": 880004.2999999999,
-            "time-bought": 1786047855940,
-            "sell-order-place-time": 1787065155815
-          }
-        ]
-      },
-      {
-        "item-name": "? Fine Citrine Gemstone",
-        "price-sold": 26247.6,
-        "earliest-time-bought": 1786835716530,
-        "total-selling-amount": 1879,
-        "has-been-claimed": false,
-        "has-been-filled": false,
-        "sell-order-place-time": 1787065148549,
-        "sub-orders": [
-          {
-            "partial-sold-amount": 41,
-            "partial-selling-amount": 1879,
-            "price-bought": 25223.2,
-            "projected-profit": 1431610.0999999999,
-            "time-bought": 1786835716530,
-            "sell-order-place-time": 1787065148549
-          }
-        ]
-      },
-      {
         "item-name": "Ectoplasm",
-        "price-sold": 210696,
-        "earliest-time-bought": 1786860500337,
-        "total-selling-amount": 1488,
+        "price-sold": 149337.8,
+        "earliest-time-bought": 1787343694950,
+        "total-selling-amount": 967,
         "has-been-claimed": false,
         "has-been-filled": false,
-        "sell-order-place-time": 1787080979475,
+        "sell-order-place-time": 1787665965571,
         "sub-orders": [
           {
-            "partial-sold-amount": 201,
-            "partial-selling-amount": 1488,
-            "price-bought": 186329,
-            "projected-profit": 33122880,
-            "time-bought": 1786860500337,
-            "sell-order-place-time": 1787080979475
+            "partial-sold-amount": 967,
+            "partial-selling-amount": 967,
+            "price-bought": 116534,
+            "projected-profit": 30277156.8,
+            "time-bought": 1787343694950,
+            "sell-order-place-time": 1787665965571
           }
         ]
       }
@@ -188,14 +26,14 @@
   "buy-order-overview": {
     "buy-orders": [
       {
-        "item-name": "Enchanted Ink Sac",
-        "bought-amount": 1,
-        "buying-amount": 2000,
-        "price-buying": 94099.4,
-        "projected-profit": 80855282,
+        "item-name": "Great White Shark Tooth",
+        "bought-amount": 256,
+        "buying-amount": 256,
+        "price-buying": 2415000,
+        "projected-profit": 38161110,
         "has-been-claimed": false,
         "has-been-filled": false,
-        "buy-order-place-time": 1787081311160
+        "buy-order-place-time": 1787666067272
       }
     ]
   },
@@ -277,16 +115,6 @@
           "partial-amount": 13,
           "price-bought": 70609,
           "time-bought": 1784444958791
-        }
-      ]
-    },
-    "? Fine Jasper Gemstone": {
-      "type": "short-term-investment",
-      "sub-orders": [
-        {
-          "partial-amount": 1517,
-          "price-bought": 66888.6,
-          "time-bought": 1784004716158
         }
       ]
     },
@@ -479,7 +307,7 @@
       "type": "short-term-investment",
       "sub-orders": [
         {
-          "partial-amount": 256,
+          "partial-amount": 128,
           "price-bought": 419.986328125,
           "time-bought": 1785478139986
         }
@@ -622,6 +450,11 @@
           "partial-amount": 10,
           "price-bought": 21493.9,
           "time-bought": 1786407702796
+        },
+        {
+          "partial-amount": 20,
+          "price-bought": 24295.75,
+          "time-bought": 1787342055383
         }
       ]
     },
@@ -799,7 +632,7 @@
       "type": "short-term-investment",
       "sub-orders": [
         {
-          "partial-amount": 186,
+          "partial-amount": 178,
           "price-bought": 19660,
           "time-bought": 1786685364590
         }
@@ -822,16 +655,6 @@
           "partial-amount": 3,
           "price-bought": 198229,
           "time-bought": 1786811719041
-        }
-      ]
-    },
-    "Exportable Carrots": {
-      "type": "short-term-investment",
-      "sub-orders": [
-        {
-          "partial-amount": 368,
-          "price-bought": 6658.5,
-          "time-bought": 1786773912389
         }
       ]
     },
@@ -915,16 +738,6 @@
         }
       ]
     },
-    "Chill Shard": {
-      "type": "short-term-investment",
-      "sub-orders": [
-        {
-          "partial-amount": 2240,
-          "price-bought": 4416.6,
-          "time-bought": 1786860379524
-        }
-      ]
-    },
     "? Fine Aquamarine Gemstone": {
       "type": "short-term-investment",
       "sub-orders": [
@@ -934,29 +747,19 @@
           "time-bought": 1786860238066
         }
       ]
+    },
+    "Compacted Moonflower": {
+      "type": "short-term-investment",
+      "sub-orders": [
+        {
+          "partial-amount": 4000,
+          "price-bought": 102848,
+          "time-bought": 1787585090722
+        }
+      ]
     }
   },
   "long-term-investments": {
-    "Griffin Feather": {
-      "type": "long-term-investment",
-      "sub-orders": [
-        {
-          "partial-amount": 1696,
-          "price-bought": 240054,
-          "time-bought": 1783455215119
-        },
-        {
-          "partial-amount": 2000,
-          "price-bought": 226149.3,
-          "time-bought": 1783666824198
-        },
-        {
-          "partial-amount": 2000,
-          "price-bought": 222484,
-          "time-bought": 1783835919475
-        }
-      ]
-    },
     "Nurse Shark Tooth": {
       "type": "long-term-investment",
       "sub-orders": [
@@ -976,9 +779,39 @@
       "type": "long-term-investment",
       "sub-orders": [
         {
-          "partial-amount": 296,
-          "price-bought": 126587.6,
-          "time-bought": 1786729926342
+          "partial-amount": 506,
+          "price-bought": 116760,
+          "time-bought": 1787340099184
+        },
+        {
+          "partial-amount": 244,
+          "price-bought": 116759,
+          "time-bought": 1787200732549
+        },
+        {
+          "partial-amount": 140,
+          "price-bought": 116753,
+          "time-bought": 1787148975328
+        },
+        {
+          "partial-amount": 2000,
+          "price-bought": 115250,
+          "time-bought": 1786860320739
+        },
+        {
+          "partial-amount": 231,
+          "price-bought": 115249,
+          "time-bought": 1786835738150
+        },
+        {
+          "partial-amount": 179,
+          "price-bought": 115248,
+          "time-bought": 1786811779486
+        },
+        {
+          "partial-amount": 13,
+          "price-bought": 113746,
+          "time-bought": 1786773856608
         },
         {
           "partial-amount": 6,
@@ -1001,24 +834,9 @@
           "time-bought": 1785171760390
         },
         {
-          "partial-amount": 13,
-          "price-bought": 113746,
-          "time-bought": 1786773856608
-        },
-        {
-          "partial-amount": 179,
-          "price-bought": 115248,
-          "time-bought": 1786811779486
-        },
-        {
-          "partial-amount": 231,
-          "price-bought": 115249,
-          "time-bought": 1786835738150
-        },
-        {
-          "partial-amount": 2000,
-          "price-bought": 115250,
-          "time-bought": 1786860320739
+          "partial-amount": 1,
+          "price-bought": 94099,
+          "time-bought": 1787081311160
         }
       ]
     },
@@ -1459,6 +1277,46 @@
           "partial-amount": 1,
           "price-bought": 650000,
           "time-bought": 1787067458026
+        },
+        {
+          "partial-amount": 1,
+          "price-bought": 474998,
+          "time-bought": 1787448407873
+        },
+        {
+          "partial-amount": 1,
+          "price-bought": 474999,
+          "time-bought": 1787448410994
+        },
+        {
+          "partial-amount": 1,
+          "price-bought": 474999,
+          "time-bought": 1787448413838
+        },
+        {
+          "partial-amount": 1,
+          "price-bought": 474999,
+          "time-bought": 1787448416590
+        },
+        {
+          "partial-amount": 1,
+          "price-bought": 475000,
+          "time-bought": 1787448420019
+        },
+        {
+          "partial-amount": 1,
+          "price-bought": 475000,
+          "time-bought": 1787448422673
+        },
+        {
+          "partial-amount": 1,
+          "price-bought": 475000,
+          "time-bought": 1787448429038
+        },
+        {
+          "partial-amount": 1,
+          "price-bought": 499000,
+          "time-bought": 1787448432703
         }
       ]
     },
@@ -1471,6 +1329,41 @@
           "time-bought": 1786860352905
         }
       ]
+    },
+    "Great White Shark Tooth": {
+      "type": "long-term-investment",
+      "sub-orders": [
+        {
+          "partial-amount": 256,
+          "price-bought": 2139556,
+          "time-bought": 1787292154944
+        },
+        {
+          "partial-amount": 67,
+          "price-bought": 2139556,
+          "time-bought": 1787292162659
+        },
+        {
+          "partial-amount": 83,
+          "price-bought": 2139557,
+          "time-bought": 1787339858918
+        },
+        {
+          "partial-amount": 28,
+          "price-bought": 2147589,
+          "time-bought": 1787448313840
+        },
+        {
+          "partial-amount": 8,
+          "price-bought": 2400088,
+          "time-bought": 1787584967275
+        },
+        {
+          "partial-amount": 230,
+          "price-bought": 2414259,
+          "time-bought": 1787607392134
+        }
+      ]
     }
   },
   "auction-house-overview": {
@@ -1479,7 +1372,7 @@
   "forge": [],
   "all-products": {
     "Carrot": {
-      "current-amount": 1,
+      "current-amount": 0,
       "buy-order-stats": {
         "total-buy-orders-created": 6,
         "total-buy-amount-claimed": 134,
@@ -1519,20 +1412,20 @@
     "Ectoplasm": {
       "current-amount": 0,
       "buy-order-stats": {
-        "total-buy-orders-created": 19,
-        "total-buy-amount-claimed": 10158,
-        "total-buy-amount-placed-for-buying": 30724,
-        "buy-average": 534.6315789473684
+        "total-buy-orders-created": 20,
+        "total-buy-amount-claimed": 11613,
+        "total-buy-amount-placed-for-buying": 32724,
+        "buy-average": 580.65
       },
       "sell-order-stats": {
-        "total-sell-orders-created": 46,
-        "total-sell-amount-claimed": 8311,
-        "total-sell-amount-placed-for-selling": 52772,
-        "sell-average": 180.67391304347825
+        "total-sell-orders-created": 58,
+        "total-sell-amount-claimed": 10287,
+        "total-sell-amount-placed-for-selling": 65184,
+        "sell-average": 177.36206896551724
       },
       "max-amount": 2000,
-      "total-profit-made": 191896584.1,
-      "total-sold": 8312,
+      "total-profit-made": 240302148.45,
+      "total-sold": 10288,
       "crafting-materials": "none"
     },
     "Enchanted Acacia Log": {
@@ -1935,7 +1828,7 @@
       "crafting-materials": "none"
     },
     "Exportable Carrots": {
-      "current-amount": 368,
+      "current-amount": 0,
       "buy-order-stats": {
         "total-buy-orders-created": 25,
         "total-buy-amount-claimed": 48495,
@@ -1949,8 +1842,8 @@
         "sell-average": 989.8541666666666
       },
       "max-amount": 2000,
-      "total-profit-made": 77705252.37000002,
-      "total-sold": 48127,
+      "total-profit-made": 78481214.58000001,
+      "total-sold": 48495,
       "crafting-materials": "none"
     },
     "Enchanted Lush Berberis": {
@@ -2076,14 +1969,14 @@
         "buy-average": 1164.1290322580646
       },
       "sell-order-stats": {
-        "total-sell-orders-created": 41,
-        "total-sell-amount-claimed": 33397,
-        "total-sell-amount-placed-for-selling": 34891,
-        "sell-average": 814.560975609756
+        "total-sell-orders-created": 42,
+        "total-sell-amount-claimed": 35047,
+        "total-sell-amount-placed-for-selling": 35662,
+        "sell-average": 834.452380952381
       },
       "max-amount": 2000,
-      "total-profit-made": 81159493.07800001,
-      "total-sold": 33524,
+      "total-profit-made": 82977147.47800002,
+      "total-sold": 35174,
       "crafting-materials": "none"
     },
     "Treasure Bait": {
@@ -2190,14 +2083,14 @@
         "buy-average": 2590.2
       },
       "sell-order-stats": {
-        "total-sell-orders-created": 11,
-        "total-sell-amount-claimed": 15193,
-        "total-sell-amount-placed-for-selling": 20414,
-        "sell-average": 1381.1818181818182
+        "total-sell-orders-created": 13,
+        "total-sell-amount-claimed": 17072,
+        "total-sell-amount-placed-for-selling": 24090,
+        "sell-average": 1313.2307692307693
       },
       "max-amount": 2000,
-      "total-profit-made": 16586575.860000009,
-      "total-sold": 16495,
+      "total-profit-made": 17973484.640000008,
+      "total-sold": 18374,
       "crafting-materials": "none"
     },
     "? Fine Jade Gemstone": {
@@ -2239,7 +2132,7 @@
       "crafting-materials": "none"
     },
     "Purple Candy": {
-      "current-amount": 186,
+      "current-amount": 178,
       "buy-order-stats": {
         "total-buy-orders-created": 5,
         "total-buy-amount-claimed": 13001,
@@ -2253,8 +2146,8 @@
         "sell-average": 1601.875
       },
       "max-amount": 2000,
-      "total-profit-made": 22232988.84999999,
-      "total-sold": 12815,
+      "total-profit-made": 22218356.95999999,
+      "total-sold": 12823,
       "crafting-materials": "none"
     },
     "Orb of Energy": {
@@ -2486,12 +2379,12 @@
       "crafting-materials": "none"
     },
     "Compacted Moonflower": {
-      "current-amount": 0,
+      "current-amount": 4000,
       "buy-order-stats": {
-        "total-buy-orders-created": 9,
-        "total-buy-amount-claimed": 9355,
-        "total-buy-amount-placed-for-buying": 19749,
-        "buy-average": 1039.4444444444443
+        "total-buy-orders-created": 10,
+        "total-buy-amount-claimed": 13355,
+        "total-buy-amount-placed-for-buying": 27269,
+        "buy-average": 1335.5
       },
       "sell-order-stats": {
         "total-sell-orders-created": 12,
@@ -2581,7 +2474,7 @@
       "crafting-materials": "none"
     },
     "Griffin Feather": {
-      "current-amount": 5696,
+      "current-amount": 0,
       "buy-order-stats": {
         "total-buy-orders-created": 4,
         "total-buy-amount-claimed": 8000,
@@ -2589,14 +2482,14 @@
         "buy-average": 2000
       },
       "sell-order-stats": {
-        "total-sell-orders-created": 4,
-        "total-sell-amount-claimed": 1680,
-        "total-sell-amount-placed-for-selling": 2960,
-        "sell-average": 420
+        "total-sell-orders-created": 12,
+        "total-sell-amount-claimed": 7368,
+        "total-sell-amount-placed-for-selling": 15896,
+        "sell-average": 614
       },
       "max-amount": 2000,
-      "total-profit-made": -17252709.6,
-      "total-sold": 1680,
+      "total-profit-made": 63386205.18000002,
+      "total-sold": 7368,
       "crafting-materials": "none"
     },
     "Enchanted Gunpowder": {
@@ -2684,14 +2577,14 @@
         "buy-average": 558.1923076923077
       },
       "sell-order-stats": {
-        "total-sell-orders-created": 39,
-        "total-sell-amount-claimed": 11776,
-        "total-sell-amount-placed-for-selling": 22224,
-        "sell-average": 301.94871794871796
+        "total-sell-orders-created": 40,
+        "total-sell-amount-claimed": 13470,
+        "total-sell-amount-placed-for-selling": 22763,
+        "sell-average": 336.75
       },
       "max-amount": 2000,
-      "total-profit-made": 67400971.13000003,
-      "total-sold": 11776,
+      "total-profit-made": 75561872.67000002,
+      "total-sold": 13470,
       "crafting-materials": "none"
     },
     "Ice Essence": {
@@ -2980,12 +2873,12 @@
       "crafting-materials": "none"
     },
     "Enchanted Ink Sac": {
-      "current-amount": 2783,
+      "current-amount": 3378,
       "buy-order-stats": {
-        "total-buy-orders-created": 38,
-        "total-buy-amount-claimed": 15356,
-        "total-buy-amount-placed-for-buying": 66500,
-        "buy-average": 404.10526315789474
+        "total-buy-orders-created": 42,
+        "total-buy-amount-claimed": 16943,
+        "total-buy-amount-placed-for-buying": 74500,
+        "buy-average": 403.4047619047619
       },
       "sell-order-stats": {
         "total-sell-orders-created": 7,
@@ -3384,7 +3277,7 @@
       }
     },
     "? Fine Jasper Gemstone": {
-      "current-amount": 1517,
+      "current-amount": 0,
       "buy-order-stats": {
         "total-buy-orders-created": 1,
         "total-buy-amount-claimed": 2000,
@@ -3392,14 +3285,14 @@
         "buy-average": 2000
       },
       "sell-order-stats": {
-        "total-sell-orders-created": 4,
-        "total-sell-amount-claimed": 483,
-        "total-sell-amount-placed-for-selling": 6888,
-        "sell-average": 120.75
+        "total-sell-orders-created": 8,
+        "total-sell-amount-claimed": 2000,
+        "total-sell-amount-placed-for-selling": 11892,
+        "sell-average": 250
       },
       "max-amount": 2000,
-      "total-profit-made": 2376683.009999997,
-      "total-sold": 483,
+      "total-profit-made": 4158781.259999988,
+      "total-sold": 2000,
       "crafting-materials": "none"
     },
     "Fried Feather": {
@@ -3423,16 +3316,16 @@
     },
     "Bait Ring": {
       "current-amount": 0,
-      "total-profit-made": 67288397.79999998,
-      "total-sold": 7,
+      "total-profit-made": 75740388.99999997,
+      "total-sold": 8,
       "crafting-materials": {
         "Enchanted Ink Sac": 288
       }
     },
     "Spiked Atrocity": {
       "current-amount": 0,
-      "total-profit-made": 180582658.29999995,
-      "total-sold": 11,
+      "total-profit-made": 188817119.24999994,
+      "total-sold": 12,
       "crafting-materials": {
         "Bait Ring": 1,
         "Spiked Bait": 128,
@@ -3744,7 +3637,7 @@
       "crafting-materials": "none"
     },
     "Red Claw Egg": {
-      "current-amount": 39,
+      "current-amount": 47,
       "max-amount": 2000,
       "total-profit-made": 0,
       "total-sold": 0,
@@ -3847,12 +3740,12 @@
       "crafting-materials": "none"
     },
     "Great White Shark Tooth": {
-      "current-amount": 0,
+      "current-amount": 672,
       "buy-order-stats": {
-        "total-buy-orders-created": 2,
-        "total-buy-amount-claimed": 35,
-        "total-buy-amount-placed-for-buying": 96,
-        "buy-average": 17.5
+        "total-buy-orders-created": 25,
+        "total-buy-amount-claimed": 707,
+        "total-buy-amount-placed-for-buying": 4092,
+        "buy-average": 28.28
       },
       "sell-order-stats": {
         "total-sell-orders-created": 1,
@@ -4644,7 +4537,7 @@
       "crafting-materials": "none"
     },
     "Spiked Bait": {
-      "current-amount": 256,
+      "current-amount": 128,
       "buy-order-stats": {
         "total-buy-orders-created": 0,
         "total-buy-amount-claimed": 0,
@@ -4946,14 +4839,14 @@
         "buy-average": 1948
       },
       "sell-order-stats": {
-        "total-sell-orders-created": 17,
-        "total-sell-amount-claimed": 10078,
-        "total-sell-amount-placed-for-selling": 31876,
-        "sell-average": 592.8235294117648
+        "total-sell-orders-created": 19,
+        "total-sell-amount-claimed": 11573,
+        "total-sell-amount-placed-for-selling": 32539,
+        "sell-average": 609.1052631578947
       },
       "max-amount": 2000,
-      "total-profit-made": 11265866.570000002,
-      "total-sold": 10193,
+      "total-profit-made": 14547944.490000002,
+      "total-sold": 11688,
       "crafting-materials": "none"
     },
     "Golden Ghoul Shard": {
@@ -5085,7 +4978,7 @@
       "crafting-materials": "none"
     },
     "Kada Lead": {
-      "current-amount": 10,
+      "current-amount": 30,
       "buy-order-stats": {
         "total-buy-orders-created": 1,
         "total-buy-amount-claimed": 4000,
@@ -7379,14 +7272,14 @@
         "buy-average": 2673.6666666666665
       },
       "sell-order-stats": {
-        "total-sell-orders-created": 9,
-        "total-sell-amount-claimed": 4000,
-        "total-sell-amount-placed-for-selling": 17791,
-        "sell-average": 444.44444444444446
+        "total-sell-orders-created": 19,
+        "total-sell-amount-claimed": 8000,
+        "total-sell-amount-placed-for-selling": 31908,
+        "sell-average": 421.05263157894734
       },
       "max-amount": 2000,
-      "total-profit-made": 9159907.769,
-      "total-sold": 4000,
+      "total-profit-made": 12390197.237000002,
+      "total-sold": 8000,
       "crafting-materials": "none"
     },
     "Smart Skeleton Master Chestplate": {
@@ -7463,7 +7356,7 @@
       "crafting-materials": "none"
     },
     "Chill Shard": {
-      "current-amount": 2240,
+      "current-amount": 0,
       "buy-order-stats": {
         "total-buy-orders-created": 1,
         "total-buy-amount-claimed": 4000,
@@ -19562,18 +19455,18 @@
       ]
     },
     "1787029200000": {
-      "daily-profit": 24311395.320000023,
+      "daily-profit": 42602798.22000001,
       "forge-profit": 0,
       "auction-house-profit": 0,
-      "bazaar-profit": 24311395.320000023,
+      "bazaar-profit": 42602798.22000001,
       "trades": [
         {
           "item-name": "Ectoplasm",
-          "count": 512,
+          "count": 738,
           "buy-price": 186329,
           "sell-price": 210696,
           "profit-per-unit": 22260.04,
-          "total-profit": 11397140.48,
+          "total-profit": 16427909.520000001,
           "date-bought": 1786860500337,
           "date-sold": 1787065106826
         },
@@ -19646,6 +19539,414 @@
           "total-profit": 744463.6799999999,
           "date-bought": 1786860299847,
           "date-sold": 1787065164708
+        },
+        {
+          "item-name": "Silver Fang",
+          "count": 855,
+          "buy-price": 9151.5,
+          "sell-price": 10356,
+          "profit-per-unit": 1100.94,
+          "total-profit": 941303.7000000001,
+          "date-bought": 1786729906175,
+          "date-sold": 1787089462174
+        },
+        {
+          "item-name": "Silver Fang",
+          "count": 24,
+          "buy-price": 9150.5,
+          "sell-price": 10356,
+          "profit-per-unit": 1101.94,
+          "total-profit": 26446.56,
+          "date-bought": 1786583117808,
+          "date-sold": 1787089462174
+        },
+        {
+          "item-name": "Silver Fang",
+          "count": 771,
+          "buy-price": 9150.1,
+          "sell-price": 10356,
+          "profit-per-unit": 1102.3399999999997,
+          "total-profit": 849904.1399999998,
+          "date-bought": 1786860287944,
+          "date-sold": 1787089462174
+        },
+        {
+          "item-name": "Superior Dragon Fragment",
+          "count": 484,
+          "buy-price": 79500,
+          "sell-price": 83809,
+          "profit-per-unit": 3470.91,
+          "total-profit": 1679920.44,
+          "date-bought": 1786860299847,
+          "date-sold": 1787089462821
+        },
+        {
+          "item-name": "Superior Dragon Fragment",
+          "count": 671,
+          "buy-price": 79499,
+          "sell-price": 83809,
+          "profit-per-unit": 3471.91,
+          "total-profit": 2329651.61,
+          "date-bought": 1786835754816,
+          "date-sold": 1787089462821
+        },
+        {
+          "item-name": "Superior Dragon Fragment",
+          "count": 539,
+          "buy-price": 75269,
+          "sell-price": 83809,
+          "profit-per-unit": 7701.91,
+          "total-profit": 4151329.4899999998,
+          "date-bought": 1786729592390,
+          "date-sold": 1787089462822
+        },
+        {
+          "item-name": "? Fine Sapphire Gemstone",
+          "count": 893,
+          "buy-price": 31841.2,
+          "sell-price": 33998,
+          "profit-per-unit": 1816.8199999999993,
+          "total-profit": 1622420.2599999993,
+          "date-bought": 1785776105881,
+          "date-sold": 1787091938898
+        },
+        {
+          "item-name": "? Fine Sapphire Gemstone",
+          "count": 541,
+          "buy-price": 31841.2,
+          "sell-price": 33657,
+          "profit-per-unit": 1479.2299999999993,
+          "total-profit": 800263.4299999996,
+          "date-bought": 1785776105881,
+          "date-sold": 1787106045351
+        },
+        {
+          "item-name": "? Fine Sapphire Gemstone",
+          "count": 61,
+          "buy-price": 19232,
+          "sell-price": 33657,
+          "profit-per-unit": 14088.43,
+          "total-profit": 859394.23,
+          "date-bought": 1786047855940,
+          "date-sold": 1787106045351
+        }
+      ]
+    },
+    "1787115600000": {
+      "daily-profit": 30714156.720000003,
+      "forge-profit": 0,
+      "auction-house-profit": 0,
+      "bazaar-profit": 30714156.720000003,
+      "trades": [
+        {
+          "item-name": "Ectoplasm",
+          "count": 1262,
+          "buy-price": 186329,
+          "sell-price": 210696,
+          "profit-per-unit": 22260.04,
+          "total-profit": 28092170.48,
+          "date-bought": 1786860500337,
+          "date-sold": 1787116672225
+        },
+        {
+          "item-name": "Howling Spirit Shard",
+          "count": 75,
+          "buy-price": 6252,
+          "sell-price": 9995.6,
+          "profit-per-unit": 3643.6440000000002,
+          "total-profit": 273273.30000000005,
+          "date-bought": 1786860415292,
+          "date-sold": 1787116683542
+        },
+        {
+          "item-name": "Howling Spirit Shard",
+          "count": 21,
+          "buy-price": 7582.3,
+          "sell-price": 9799.1,
+          "profit-per-unit": 2118.809,
+          "total-profit": 44494.989,
+          "date-bought": 1786501070996,
+          "date-sold": 1787149181237
+        },
+        {
+          "item-name": "Howling Spirit Shard",
+          "count": 659,
+          "buy-price": 6252,
+          "sell-price": 9799.1,
+          "profit-per-unit": 3449.1090000000004,
+          "total-profit": 2272962.8310000002,
+          "date-bought": 1786860415292,
+          "date-sold": 1787149181238
+        },
+        {
+          "item-name": "? Fine Citrine Gemstone",
+          "count": 41,
+          "buy-price": 25223.2,
+          "sell-price": 26248,
+          "profit-per-unit": 762.3199999999993,
+          "total-profit": 31255.11999999997,
+          "date-bought": 1786835716530,
+          "date-sold": 1787171080077
+        }
+      ]
+    },
+    "1787202000000": {
+      "daily-profit": 1355653.6599999985,
+      "forge-profit": 0,
+      "auction-house-profit": 0,
+      "bazaar-profit": 1355653.6599999985,
+      "trades": [
+        {
+          "item-name": "? Fine Citrine Gemstone",
+          "count": 1838,
+          "buy-price": 25223.2,
+          "sell-price": 26223,
+          "profit-per-unit": 737.5699999999993,
+          "total-profit": 1355653.6599999985,
+          "date-bought": 1786835716530,
+          "date-sold": 1787281551029
+        }
+      ]
+    },
+    "1787288400000": {
+      "daily-profit": 83060571.378,
+      "forge-profit": 0,
+      "auction-house-profit": 0,
+      "bazaar-profit": 83060571.378,
+      "trades": [
+        {
+          "item-name": "Howling Spirit Shard",
+          "count": 1685,
+          "buy-price": 6252,
+          "sell-price": 6514.2,
+          "profit-per-unit": 197.05799999999982,
+          "total-profit": 332042.7299999997,
+          "date-bought": 1786860415292,
+          "date-sold": 1787291840211
+        },
+        {
+          "item-name": "? Fine Jasper Gemstone",
+          "count": 53,
+          "buy-price": 66888.6,
+          "sell-price": 70613,
+          "profit-per-unit": 3018.269999999994,
+          "total-profit": 159968.30999999968,
+          "date-bought": 1784004716158,
+          "date-sold": 1787291842826
+        },
+        {
+          "item-name": "Howling Spirit Shard",
+          "count": 1394,
+          "buy-price": 6252,
+          "sell-price": 6514.3,
+          "profit-per-unit": 197.15700000000018,
+          "total-profit": 274836.85800000024,
+          "date-bought": 1786860415292,
+          "date-sold": 1787291857705
+        },
+        {
+          "item-name": "Howling Spirit Shard",
+          "count": 166,
+          "buy-price": 6252,
+          "sell-price": 6514,
+          "profit-per-unit": 196.86,
+          "total-profit": 32678.760000000002,
+          "date-bought": 1786860415292,
+          "date-sold": 1787339657631
+        },
+        {
+          "item-name": "Griffin Feather",
+          "count": 196,
+          "buy-price": 226149.3,
+          "sell-price": 263798,
+          "profit-per-unit": 35010.72000000001,
+          "total-profit": 6862101.120000002,
+          "date-bought": 1783666824198,
+          "date-sold": 1787339659360
+        },
+        {
+          "item-name": "? Fine Jasper Gemstone",
+          "count": 40,
+          "buy-price": 66888.6,
+          "sell-price": 70399,
+          "profit-per-unit": 2806.4099999999944,
+          "total-profit": 112256.39999999978,
+          "date-bought": 1784004716158,
+          "date-sold": 1787339673942
+        },
+        {
+          "item-name": "Griffin Feather",
+          "count": 1525,
+          "buy-price": 240054,
+          "sell-price": 244998,
+          "profit-per-unit": 2494.02,
+          "total-profit": 3803380.5,
+          "date-bought": 1783455215119,
+          "date-sold": 1787339870441
+        },
+        {
+          "item-name": "Griffin Feather",
+          "count": 65,
+          "buy-price": 222484,
+          "sell-price": 244998,
+          "profit-per-unit": 20064.02,
+          "total-profit": 1304161.3,
+          "date-bought": 1783835919475,
+          "date-sold": 1787348212642
+        },
+        {
+          "item-name": "? Fine Jasper Gemstone",
+          "count": 366,
+          "buy-price": 66888.6,
+          "sell-price": 68636,
+          "profit-per-unit": 1061.039999999994,
+          "total-profit": 388340.6399999978,
+          "date-bought": 1784004716158,
+          "date-sold": 1787348225431
+        },
+        {
+          "item-name": "Griffin Feather",
+          "count": 171,
+          "buy-price": 240054,
+          "sell-price": 244997,
+          "profit-per-unit": 2493.0299999999997,
+          "total-profit": 426308.12999999995,
+          "date-bought": 1783455215119,
+          "date-sold": 1787362591143
+        },
+        {
+          "item-name": "Griffin Feather",
+          "count": 1804,
+          "buy-price": 226149.3,
+          "sell-price": 244997,
+          "profit-per-unit": 16397.73000000001,
+          "total-profit": 29581504.92000002,
+          "date-bought": 1783666824198,
+          "date-sold": 1787362591143
+        },
+        {
+          "item-name": "Griffin Feather",
+          "count": 1927,
+          "buy-price": 222484,
+          "sell-price": 244997,
+          "profit-per-unit": 20063.03,
+          "total-profit": 38661458.809999995,
+          "date-bought": 1783835919475,
+          "date-sold": 1787362591144
+        },
+        {
+          "item-name": "? Fine Jasper Gemstone",
+          "count": 1058,
+          "buy-price": 66888.6,
+          "sell-price": 68635,
+          "profit-per-unit": 1060.0499999999943,
+          "total-profit": 1121532.8999999939,
+          "date-bought": 1784004716158,
+          "date-sold": 1787362592642
+        }
+      ]
+    },
+    "1787374800000": {
+      "daily-profit": 2303939.3099999954,
+      "forge-profit": 0,
+      "auction-house-profit": 2318571.1999999955,
+      "bazaar-profit": -14631.89,
+      "trades": [
+        {
+          "item-name": "Bait Ring",
+          "count": 1,
+          "buy-price": 38561428.800000004,
+          "sell-price": 40880000,
+          "profit-per-unit": 2318571.1999999955,
+          "total-profit": 2318571.1999999955,
+          "date-bought": 1787340079269,
+          "date-sold": 1787448183976
+        },
+        {
+          "item-name": "Purple Candy",
+          "count": 8,
+          "buy-price": 19660,
+          "sell-price": 18011.125,
+          "profit-per-unit": -1828.98625,
+          "total-profit": -14631.89,
+          "date-bought": 1786685364590,
+          "date-sold": 1787448338580
+        }
+      ]
+    },
+    "1787547600000": {
+      "daily-profit": 28805092.310000002,
+      "forge-profit": 0,
+      "auction-house-profit": 14367880.950000003,
+      "bazaar-profit": 14437211.36,
+      "trades": [
+        {
+          "item-name": "Spiked Atrocity",
+          "count": 1,
+          "buy-price": 50465539.05,
+          "sell-price": 58700000,
+          "profit-per-unit": 8234460.950000003,
+          "total-profit": 8234460.950000003,
+          "date-bought": 1787448175058,
+          "date-sold": 1787585109904
+        },
+        {
+          "item-name": "Ectoplasm",
+          "count": 118,
+          "buy-price": 116534,
+          "sell-price": 149358,
+          "profit-per-unit": 31330.42,
+          "total-profit": 3696989.5599999996,
+          "date-bought": 1787343694950,
+          "date-sold": 1787600726090
+        },
+        {
+          "item-name": "Bait Ring",
+          "count": 1,
+          "buy-price": 34856580,
+          "sell-price": 40990000,
+          "profit-per-unit": 6133420,
+          "total-profit": 6133420,
+          "date-bought": 1787448151368,
+          "date-sold": 1787600747288
+        },
+        {
+          "item-name": "Ectoplasm",
+          "count": 343,
+          "buy-price": 116534,
+          "sell-price": 149340,
+          "profit-per-unit": 31312.6,
+          "total-profit": 10740221.799999999,
+          "date-bought": 1787343694950,
+          "date-sold": 1787633555309
+        }
+      ]
+    },
+    "1787634000000": {
+      "daily-profit": 1621375.6800000002,
+      "forge-profit": 0,
+      "auction-house-profit": 0,
+      "bazaar-profit": 1621375.6800000002,
+      "trades": [
+        {
+          "item-name": "Ectoplasm",
+          "count": 27,
+          "buy-price": 116534,
+          "sell-price": 149339,
+          "profit-per-unit": 31311.61,
+          "total-profit": 845413.47,
+          "date-bought": 1787343694950,
+          "date-sold": 1787665955623
+        },
+        {
+          "item-name": "Exportable Carrots",
+          "count": 368,
+          "buy-price": 6658.5,
+          "sell-price": 8855.64945652174,
+          "profit-per-unit": 2108.5929619565227,
+          "total-profit": 775962.2100000003,
+          "date-bought": 1786773912389,
+          "date-sold": 1787692745070
         }
       ]
     }

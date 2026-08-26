@@ -7,5 +7,6 @@ NPC buyback doesnt remove the profit
 Issues:
 better way to track forge (none of it works lol)
 
+see if the total-buy-amount-placed-for-buying still updates properly in trader data after i added the [0] after the splice
 
 for the lists:

@@ -8927,11 +8927,6 @@
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Slime Block": {
-    "api-name": "SLIME_BLOCK",
-    "type": "short-term-investment",
-    "has-weights": true
-  },
   "Slimeball": {
     "api-name": "SLIME_BALL",
     "type": "short-term-investment",
@@ -11155,11 +11150,6 @@
   },
   "Uncommon Sweep Booster": {
     "api-name": "SWEEP_BOOSTER_UNCOMMON",
-    "type": "short-term-investment",
-    "has-weights": true
-  },
-  "undefined": {
-    "api-name": "SHARD_WIKI_TIKI",
     "type": "short-term-investment",
     "has-weights": true
   },

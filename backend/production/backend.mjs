@@ -5,42 +5,6 @@ import { fileURLToPath } from 'node:url';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-// // Import the functions you need from the SDKs you need
-// import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.11.1/firebase-app.js'
-// // TODO: Add SDKs for Firebase products that you want to use
-// // https://firebase.google.com/docs/web/setup#available-libraries
-
-// // Your web app's Firebase configuration
-// const firebaseConfig = {
-//     apiKey: "AIzaSyDrWRQ8CY4Saxuyuyq0Gh8Px6e1tIH0zFg",
-//     authDomain: "skyblock-flips.firebaseapp.com",
-//     projectId: "skyblock-flips",
-//     storageBucket: "skyblock-flips.appspot.com",
-//     messagingSenderId: "574210914225",
-//     appId: "1:574210914225:web:d1d543d3d2867edb4aaf90"
-// };
-
-// // Initialize Firebase
-// const app = initializeApp(firebaseConfig);
-
-// let trader_data = {
-//     "username": "Kargone",
-//     "sell-order-overview": {
-//         "sell-orders": []
-//     },
-//     "buy-order-overview": {
-//         "buy-orders": []
-//     },
-//     "short-term-investments": {},
-//     "long-term-investments": {},
-//     "auction-house-overview": {
-//         "auctions": []
-//     },
-//     "forge": [],
-//     "all-products": {},
-//     "daily-profits": {}
-// };
-
 import product_list from './product-list.json' with { type: "json" };
 
 export const marketData = {
@@ -161,9 +125,81 @@ try {
     };
 }
 
+// Append-only log of order placements/progress/outcomes, used to train a model
+// that predicts how much of an order will actually fill. Kept as JSONL (one JSON
+// object per line) rather than a single growing JSON array so appending never
+// requires reading/rewriting the whole file.
+const tradeLogPath = path.join(__dirname, '..', 'Testing', 'trade-outcomes.jsonl');
+
+function appendTradeLog(record) {
+    fs.appendFile(tradeLogPath, JSON.stringify(record) + '\n', function (err) {
+        if (err) console.error('Error appending to trade log:', err);
+    });
+}
+
+function makeOrderId(orderType, name, placeTime) {
+    return `${orderType}:${name}:${placeTime}`;
+}
+
+// Logged once when an order is placed: the order itself plus a snapshot of the
+// market conditions (relevant side only - buy-side stats for a buy order, sell-side
+// for a sell order) at that exact moment, so it can later be joined against the
+// order's eventual outcome to train a fill-prediction model.
+function logPlacedOrder(orderType, name, placeTime, orderAmount, orderPrice, currentHoldingAmount) {
+    const apiName = product_list[name]?.["api-name"];
+    const quickStatus = (apiName && bazaar_data[apiName]?.["quick_status"]) || {};
+    const stats = (apiName && getVolumeStats()[apiName]) || {};
+    const isBuy = orderType === "buy";
+
+    appendTradeLog({
+        event: "placed",
+        order_id: makeOrderId(orderType, name, placeTime),
+        order_type: orderType,
+        item_name: name,
+        place_time: placeTime,
+        order_amount: orderAmount,
+        order_price: orderPrice,
+        current_buy_price: quickStatus.buyPrice ?? null,
+        current_sell_price: quickStatus.sellPrice ?? null,
+        volume_7_day: isBuy ? (quickStatus.buyMovingWeek ?? null) : (quickStatus.sellMovingWeek ?? null),
+        volume_24_hour: isBuy
+            ? (stats.buyVolumePerHour24h != null ? stats.buyVolumePerHour24h * 24 : null)
+            : (stats.sellVolumePerHour24h != null ? stats.sellVolumePerHour24h * 24 : null),
+        past_quantity_per_hour: isBuy ? (stats.buyVolumePerHour1h ?? null) : (stats.sellVolumePerHour1h ?? null),
+        new_listings_per_hour: isBuy ? (stats.newBuyListingsPerHour ?? null) : (stats.newSellListingsPerHour ?? null),
+        current_holding_amount: currentHoldingAmount ?? 0
+    });
+}
+
+// Logged whenever UpdateOrderFillAmounts actually changes an open order's filled
+// amount (not every poll tick - only on an actual change), giving a fill trajectory
+// over time rather than a single before/after snapshot.
+function logOrderProgress(orderType, name, placeTime, filledAmountSoFar) {
+    appendTradeLog({
+        event: "progress",
+        order_id: makeOrderId(orderType, name, placeTime),
+        timestamp: Date.now(),
+        filled_amount_so_far: filledAmountSoFar
+    });
+}
+
+// Logged once an order is done - either fully filled or cancelled beforehand.
+function logResolvedOrder(orderType, name, placeTime, outcome, filledAmount) {
+    const resolveTime = Date.now();
+    appendTradeLog({
+        event: "resolved",
+        order_id: makeOrderId(orderType, name, placeTime),
+        resolve_time: resolveTime,
+        outcome: outcome,
+        filled_amount: filledAmount,
+        time_to_resolve_ms: resolveTime - placeTime
+    });
+}
+
 class Main extends EventEmitter {
     constructor() {
         super();
+        this.lastTradeTime = null;
         this.listenForTrades();
     }
     listenForTrades() {
@@ -180,6 +216,7 @@ class Main extends EventEmitter {
     }
     // Public method for HTTP server or other sources to submit trade messages
     submitTrade(tradeMessage) {
+        this.lastTradeTime = Date.now();
         this.emit('tradeMessage', tradeMessage);
     }
 }
@@ -839,6 +876,7 @@ class ProcesTrade {
         const apiName = product_list[name]["api-name"];
         const currentResellPrice = Math.round(bazaar_data[apiName]["quick_status"]["buyPrice"] * 10) / 10;
         const bazaarFees = currentResellPrice * 0.01 * amount;
+        const placeTime = Date.now();
 
         // add the buy order
         trader_data['buy-order-overview']['buy-orders'].push({
@@ -849,8 +887,10 @@ class ProcesTrade {
             "projected-profit": Math.round((currentResellPrice - price) * amount - bazaarFees),
             "has-been-claimed": false,
             "has-been-filled": false,
-            "buy-order-place-time": Date.now()
+            "buy-order-place-time": placeTime
         });
+
+        logPlacedOrder("buy", name, placeTime, amount, price, trader_data["all-products"][name]?.["current-amount"]);
 
         return 'Buy order setup completed';
     }
@@ -869,6 +909,8 @@ class ProcesTrade {
                 trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["has-been-filled"] = true;
                 trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["bought-amount"] =
                     copy(trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["buying-amount"]);
+
+                logResolvedOrder("buy", name, buyOrder["buy-order-place-time"], "filled", amount);
 
                 return 'Buy order filling completed';
             }
@@ -980,7 +1022,12 @@ class ProcesTrade {
         // now we should have a single buy order that matches the dollar amount
         // remove that order
         const buyOrderIndex = trader_data['buy-order-overview']['buy-orders'].indexOf(closestBuyOrder);
-        const removedOrder = trader_data['buy-order-overview']['buy-orders'].splice(buyOrderIndex, 1);
+        const removedOrder = trader_data['buy-order-overview']['buy-orders'].splice(buyOrderIndex, 1)[0];
+
+        logResolvedOrder(
+            "buy", closestBuyOrder["item-name"], closestBuyOrder["buy-order-place-time"],
+            "cancelled", closestBuyOrder["bought-amount"] || 0
+        );
 
         if (!(removedOrder["buying-amount"] === 0 || removedOrder["buying-amount"] === removedOrder["bought-amount"])) console.error("Strange, the buy order being cancelled has a bought amount that is not 0 or equal to the buying amount. This should not happen. The buy order is: ", removedOrder);
 
@@ -1023,6 +1070,7 @@ class ProcesTrade {
         const resellPrice = price;
         const invesmentType = getInvestmentType(product_list[name]["type"]);
         const sellOrderPlaceTime = Date.now();
+        const currentHoldingAmountBeforeSell = trader_data["all-products"][name]?.["current-amount"];
         let earliest_time_bought = "10000000000000000000000000000";
         let total_selling_amount = 0;
 
@@ -1130,6 +1178,8 @@ class ProcesTrade {
             "sub-orders": sell_sub_orders
         });
 
+        logPlacedOrder("sell", name, sellOrderPlaceTime, total_selling_amount, price, currentHoldingAmountBeforeSell);
+
         return 'Sell order setup completed';
     }
     sellOrderFill(amount, name) {
@@ -1144,12 +1194,14 @@ class ProcesTrade {
             // console.log("Checking sell order: ", sellOrder, " against name: ", name, " and amount: ", amount);
             if (sellOrder["item-name"] === name &&
                 sellOrder["total-selling-amount"] === amount) {
-                
+
                 sellOrder["has-been-filled"] = true;
                 sellOrder["sub-orders"].map(subOrder => {
                     subOrder["partial-sold-amount"] = subOrder["partial-selling-amount"];
                 });
                 trader_data['sell-order-overview']['sell-orders'][sellOrderIndex] = sellOrder;
+
+                logResolvedOrder("sell", name, sellOrder["sell-order-place-time"], "filled", amount);
 
                 // console.log("Filled sell order: ", trader_data['sell-order-overview']['sell-orders'][sellOrderIndex]);
                 return 'Sell order filling completed';
@@ -1408,7 +1460,7 @@ class ProcesTrade {
             const price = subSellOrder["price-bought"];
             const time_bought = subSellOrder["time-bought"];
             const subSellAmount = subSellOrder["partial-selling-amount"];
-            if (subSellOrder["partial-sold-amount"] != 0) consoleWarn("ERROR: Suborder has been partially sold, but the sell order is being cancelled. This should not happen. The suborder is: ", subSellOrder);
+            if (subSellOrder["partial-sold-amount"] != 0) consoleWarn("ERROR: Suborder has been partially sold, but the sell order is being cancelled. This should not happen. Some info: ", subSellAmount, subSellOrder, currentSellOrder, name, invesmentType, price);
 
             if (trader_data[invesmentType][name] != undefined) {
                 let found = false;
@@ -1443,6 +1495,11 @@ class ProcesTrade {
                 }
             }
         }
+
+        const filledAmountBeforeCancel = currentSellOrder["sub-orders"].reduce(
+            (acc, subOrder) => acc + (subOrder["partial-sold-amount"] || 0), 0
+        );
+        logResolvedOrder("sell", name, currentSellOrder["sell-order-place-time"], "cancelled", filledAmountBeforeCancel);
 
         trader_data["sell-order-overview"]["sell-orders"].splice(current_sell_order_index, 1);
 
@@ -1876,6 +1933,153 @@ let auction_data = [];
 const update_seconds = 3;
 setInterval(updateBazaarData, update_seconds * 1000);
 
+// Rolling per-product history used to compute real 1h/24h volume and new-listing
+// rates, since Hypixel's quick_status only ever gives a 7-day rolling total.
+const BAZAAR_HISTORY_SAMPLE_INTERVAL_MS = 5 * 60 * 1000; // only keep one sample per 5 min
+const BAZAAR_HISTORY_RETENTION_MS = 25 * 60 * 60 * 1000; // a little over 24h of samples
+const bazaarHistory = new Map(); // productId -> [{ timestamp, sellMovingWeek, buyMovingWeek, sellOrders, buyOrders }]
+let lastHistorySampleTime = 0;
+
+function recordBazaarHistorySnapshot(products, now) {
+    for (const [productId, product] of Object.entries(products)) {
+        const quickStatus = product.quick_status;
+        if (!quickStatus) continue;
+
+        let history = bazaarHistory.get(productId);
+        if (!history) {
+            history = [];
+            bazaarHistory.set(productId, history);
+        }
+
+        history.push({
+            timestamp: now,
+            sellMovingWeek: quickStatus.sellMovingWeek || 0,
+            buyMovingWeek: quickStatus.buyMovingWeek || 0,
+            sellOrders: quickStatus.sellOrders || 0,
+            buyOrders: quickStatus.buyOrders || 0,
+        });
+
+        while (history.length > 0 && now - history[0].timestamp > BAZAAR_HISTORY_RETENTION_MS) {
+            history.shift();
+        }
+    }
+}
+
+function findClosestSnapshot(history, targetTime) {
+    let closest = null;
+    for (const entry of history) {
+        if (closest === null || Math.abs(entry.timestamp - targetTime) < Math.abs(closest.timestamp - targetTime)) {
+            closest = entry;
+        }
+    }
+    return closest;
+}
+
+// Diffs the given field between the latest sample and the sample closest to
+// `hoursAgo` in the past, returning a per-hour rate (or null if there isn't
+// enough history yet, e.g. right after a server restart).
+function computeHourlyRate(history, hoursAgo, field) {
+    if (!history || history.length < 2) return null;
+
+    const latest = history[history.length - 1];
+    const target = findClosestSnapshot(history, latest.timestamp - hoursAgo * 60 * 60 * 1000);
+    if (!target || target === latest) return null;
+
+    const elapsedHours = (latest.timestamp - target.timestamp) / (60 * 60 * 1000);
+    if (elapsedHours <= 0) return null;
+
+    return Math.max(0, latest[field] - target[field]) / elapsedHours;
+}
+
+// EMAs used as a "typical past" baseline for the three trend weights (7-day
+// volume, 24-hour volume, new-listings/hour), maintained per product and updated
+// on the same 5-minute tick as bazaarHistory. Using an EMA instead of storing raw
+// history for this means constant memory per product forever, rather than a log
+// that grows with time. Memory lengths are starting points, not tuned.
+const SAMPLES_PER_HOUR = 60 * 60 * 1000 / BAZAAR_HISTORY_SAMPLE_INTERVAL_MS;
+const SEVEN_DAY_VOLUME_EMA_SAMPLES = 4 * 7 * 24 * SAMPLES_PER_HOUR; // ~4 weeks: slow, catches multi-week trend
+const TWENTY_FOUR_HOUR_VOLUME_EMA_SAMPLES = 7 * 24 * SAMPLES_PER_HOUR; // ~1 week
+const NEW_LISTINGS_EMA_SAMPLES = 2 * 7 * 24 * SAMPLES_PER_HOUR; // ~2 weeks
+
+const TREND_WEIGHT_MIN = 0.5;
+const TREND_WEIGHT_MAX = 2;
+
+const bazaarEma = new Map(); // productId -> { sellVolume7d, buyVolume7d, sellVolume24h, buyVolume24h, newSellListings, newBuyListings }
+
+function emaAlpha(sampleCount) {
+    return 2 / (sampleCount + 1);
+}
+
+function updateEma(previous, value, alpha) {
+    if (value == null) return previous;
+    if (previous == null) return value;
+    return alpha * value + (1 - alpha) * previous;
+}
+
+function recordBazaarEmaSnapshot(products, volumeStats) {
+    for (const productId of Object.keys(products)) {
+        const quickStatus = products[productId].quick_status;
+        if (!quickStatus) continue;
+
+        let ema = bazaarEma.get(productId);
+        if (!ema) {
+            ema = {
+                sellVolume7d: null, buyVolume7d: null,
+                sellVolume24h: null, buyVolume24h: null,
+                newSellListings: null, newBuyListings: null
+            };
+            bazaarEma.set(productId, ema);
+        }
+
+        const stats = volumeStats[productId] || {};
+        const sellVolume24h = stats.sellVolumePerHour24h != null ? stats.sellVolumePerHour24h * 24 : null;
+        const buyVolume24h = stats.buyVolumePerHour24h != null ? stats.buyVolumePerHour24h * 24 : null;
+
+        ema.sellVolume7d = updateEma(ema.sellVolume7d, quickStatus.sellMovingWeek, emaAlpha(SEVEN_DAY_VOLUME_EMA_SAMPLES));
+        ema.buyVolume7d = updateEma(ema.buyVolume7d, quickStatus.buyMovingWeek, emaAlpha(SEVEN_DAY_VOLUME_EMA_SAMPLES));
+        ema.sellVolume24h = updateEma(ema.sellVolume24h, sellVolume24h, emaAlpha(TWENTY_FOUR_HOUR_VOLUME_EMA_SAMPLES));
+        ema.buyVolume24h = updateEma(ema.buyVolume24h, buyVolume24h, emaAlpha(TWENTY_FOUR_HOUR_VOLUME_EMA_SAMPLES));
+        ema.newSellListings = updateEma(ema.newSellListings, stats.newSellListingsPerHour, emaAlpha(NEW_LISTINGS_EMA_SAMPLES));
+        ema.newBuyListings = updateEma(ema.newBuyListings, stats.newBuyListingsPerHour, emaAlpha(NEW_LISTINGS_EMA_SAMPLES));
+    }
+}
+
+// current / baseline, clamped so one noisy or still-warming-up sample can't send
+// the weight wild; neutral (1) until there's a real baseline to compare against.
+function computeTrendWeight(current, baseline) {
+    if (current == null || baseline == null || baseline <= 0) return 1;
+    return Math.min(TREND_WEIGHT_MAX, Math.max(TREND_WEIGHT_MIN, current / baseline));
+}
+
+export function getVolumeStats() {
+    const stats = {};
+    for (const [productId, history] of bazaarHistory.entries()) {
+        const sellVolumePerHour24h = computeHourlyRate(history, 24, 'sellMovingWeek');
+        const buyVolumePerHour24h = computeHourlyRate(history, 24, 'buyMovingWeek');
+        const newSellListingsPerHour = computeHourlyRate(history, 1, 'sellOrders');
+        const newBuyListingsPerHour = computeHourlyRate(history, 1, 'buyOrders');
+
+        const quickStatus = bazaar_data[productId]?.quick_status || {};
+        const ema = bazaarEma.get(productId);
+
+        stats[productId] = {
+            sellVolumePerHour1h: computeHourlyRate(history, 1, 'sellMovingWeek'),
+            sellVolumePerHour24h,
+            buyVolumePerHour1h: computeHourlyRate(history, 1, 'buyMovingWeek'),
+            buyVolumePerHour24h,
+            newSellListingsPerHour,
+            newBuyListingsPerHour,
+            sellVolume7DayWeight: computeTrendWeight(quickStatus.sellMovingWeek, ema?.sellVolume7d),
+            buyVolume7DayWeight: computeTrendWeight(quickStatus.buyMovingWeek, ema?.buyVolume7d),
+            sellVolume24HourWeight: computeTrendWeight(sellVolumePerHour24h != null ? sellVolumePerHour24h * 24 : null, ema?.sellVolume24h),
+            buyVolume24HourWeight: computeTrendWeight(buyVolumePerHour24h != null ? buyVolumePerHour24h * 24 : null, ema?.buyVolume24h),
+            newSellListingsWeight: computeTrendWeight(newSellListingsPerHour, ema?.newSellListings),
+            newBuyListingsWeight: computeTrendWeight(newBuyListingsPerHour, ema?.newBuyListings),
+        };
+    }
+    return stats;
+}
+
 async function updateBazaarData() {
     try {
         const response = await fetch("https://api.hypixel.net/v2/skyblock/bazaar");
@@ -1883,6 +2087,14 @@ async function updateBazaarData() {
         marketData.lastUpdated.bazaar = bazaar_data.lastUpdated;
         bazaar_data = bazaar_data['products'];
         marketData.bazaarProducts = bazaar_data;
+
+        const now = Date.now();
+        if (now - lastHistorySampleTime >= BAZAAR_HISTORY_SAMPLE_INTERVAL_MS) {
+            recordBazaarHistorySnapshot(bazaar_data, now);
+            lastHistorySampleTime = now;
+            recordBazaarEmaSnapshot(bazaar_data, getVolumeStats());
+        }
+
         new UpdateOrderFillAmounts().updateOrders();
     } catch (e) {
         console.error('Fetch failed', e);
@@ -2021,10 +2233,15 @@ class UpdateOrderFillAmounts {
             }
         }
 
+        const previousSoldTotal = this.findTotalSold(sellOrder);
+
         if (sell_order_sell_summary_index === -1) {
             const amountSold = sellOrder["total-selling-amount"];
 
             trader_data["sell-order-overview"]["sell-orders"][sellOrderIndex] = this.updateSellOrderTraderData(amountSold, sellOrder);
+            if (amountSold !== previousSoldTotal) {
+                logOrderProgress("sell", sellOrder["item-name"], sellOrder["sell-order-place-time"], amountSold);
+            }
 
             return 'Completed the amount update for the sell order';
         }
@@ -2035,6 +2252,9 @@ class UpdateOrderFillAmounts {
         const amountSold = sellOrder["total-selling-amount"] - amountLeftOnSellOrder;
 
         trader_data["sell-order-overview"]["sell-orders"][sellOrderIndex] = this.updateSellOrderTraderData(amountSold, sellOrder);
+        if (amountSold !== previousSoldTotal) {
+            logOrderProgress("sell", sellOrder["item-name"], sellOrder["sell-order-place-time"], amountSold);
+        }
 
         return 'Completed the amount update for the sell order';
     }
@@ -2097,10 +2317,15 @@ class UpdateOrderFillAmounts {
             }
         }
 
+        const previousBoughtAmount = buyOrder["bought-amount"];
+
         if (buy_order_buy_summary_index === -1) {
             const amountSold = buyOrder["buying-amount"];
 
             trader_data["buy-order-overview"]["buy-orders"][buyOrderIndex]["bought-amount"] = amountSold;
+            if (amountSold !== previousBoughtAmount) {
+                logOrderProgress("buy", buyOrder["item-name"], buyOrder["buy-order-place-time"], amountSold);
+            }
 
             return 'Completed the amount update for the buy order';
         }
@@ -2111,6 +2336,9 @@ class UpdateOrderFillAmounts {
         const amountSold = buyOrder["buying-amount"] - amountLeftOnBuyOrder;
 
         trader_data["buy-order-overview"]["buy-orders"][buyOrderIndex]["bought-amount"] = amountSold;
+        if (amountSold !== previousBoughtAmount) {
+            logOrderProgress("buy", buyOrder["item-name"], buyOrder["buy-order-place-time"], amountSold);
+        }
 
         return 'Completed the amount update for the buy order';
     }

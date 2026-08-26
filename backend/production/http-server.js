@@ -1,4 +1,4 @@
-import Main, { marketData } from './backend.mjs';
+import Main, { marketData, getVolumeStats } from './backend.mjs';
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -56,8 +56,30 @@ let server = http.createServer(function (request, response) {
         response.end(JSON.stringify({
             bazaarProducts: marketData.bazaarProducts || {},
             lowestBinPrices: marketData.lowestBinPrices || {},
-            lastUpdated: marketData.lastUpdated || null
+            lastUpdated: marketData.lastUpdated || null,
+            volumeStats: getVolumeStats()
         }));
+        return;
+    }
+
+    // API endpoint for the static product list (display name -> api-name/type/etc)
+    if (request.url === '/api/product-list' && request.method === 'GET') {
+        response.writeHead(200, { "Content-Type": "application/json" });
+        try {
+            const fileContent = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'product-list.json'), 'utf8');
+            response.end(fileContent);
+        } catch (error) {
+            console.error('Error reading product list:', error);
+            response.end(JSON.stringify({}));
+        }
+        return;
+    }
+
+    // API endpoint for the timestamp of the most recently submitted trade,
+    // used by main.py to detect a fresh trade after a period of inactivity
+    if (request.url === '/api/last-trade-time' && request.method === 'GET') {
+        response.writeHead(200, { "Content-Type": "application/json" });
+        response.end(JSON.stringify({ lastTradeTime: main.lastTradeTime }));
         return;
     }
 
@@ -72,14 +94,19 @@ let server = http.createServer(function (request, response) {
             // console.log('Data: ' + data, typeof data);
 
             data = JSON.parse(data.toString());
-            for (const value of data) {
-                // console.log('Data value: ' + JSON.stringify(value));
-                pastTradesLogs.push(JSON.stringify(value));
-                main.submitTrade(JSON.stringify(value));
+
+            if (!Array.isArray(data)) {
+                main.submitTrade(JSON.stringify(data));
+            } else {
+                for (const value of data) {
+                    // console.log('Data value: ' + JSON.stringify(value));
+                    pastTradesLogs.push(JSON.stringify(value));
+                    main.submitTrade(JSON.stringify(value));
+                }
             }
 
             fs.writeFile(
-                path.join(path.dirname(fileURLToPath(import.meta.url)), 'Testing/pastTradesLogs.json'), 
+                path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'Testing', 'pastTradesLogs.json'), 
                 JSON.stringify(pastTradesLogs, null, 2), 
                 function(err) {
                     if (err) {
@@ -101,7 +128,7 @@ let server = http.createServer(function (request, response) {
 let pastTradesLogs = [];
 
 try {
-    const fileContent = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'Testing/pastTradesLogs.json'), 'utf8');
+    const fileContent = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'Testing', 'pastTradesLogs.json'), 'utf8');
     pastTradesLogs = JSON.parse(fileContent);
 } catch (error) {
     console.error('Error occurred while processing past trade logs.', error);
@@ -117,7 +144,7 @@ try {
     
 //     const trader_data = JSON.parse(fileContent);
 //     fs.writeFile(
-//         path.join(path.dirname(fileURLToPath(import.meta.url)), 'Testing/trader-data-start.json'), 
+//         path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'Testing', 'trader-data-start.json'),
 //         JSON.stringify(trader_data, null, 2), 
 //         function(err) {
 //             if (err) {

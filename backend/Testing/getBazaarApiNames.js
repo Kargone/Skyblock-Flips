@@ -7,7 +7,7 @@ const __dirname = path.dirname(__filename);
 
 const BAZAAR_API_URL = 'https://api.hypixel.net/v2/skyblock/bazaar';
 const ITEMS_API_URL = 'https://api.hypixel.net/v2/resources/skyblock/items';
-const productListPath = path.join(__dirname, '..', 'product-list.json');
+const productListPath = path.join(__dirname, '..', 'production', 'product-list.json');
 const outputPath = path.join(__dirname, 'bazaar-api-name-map.json');
 
 function sortObjectByKey(object) {

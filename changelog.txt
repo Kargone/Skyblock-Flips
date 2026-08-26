@@ -1,7 +1,5 @@
-Added a system to reject auctions if they arent in the product list for tracking
-Added a file to get all recipe based accesorys via hypixel api with getAcessoryItems
-Added a couple new files to auto make craft recipes for more product list in the accessory-items
-Updated the product list with the new recipes
-Made the partial filling amount errors one line
-Automatically calculates have mats better for the auction/forge section to determine current costs
-Removed one undeeded file
+Fixed a couple errors in backend.mjs (forgot which ones)
+Added a whole new folder for python stuff in flip optmizer
+Changed the file structure of the project
+Made a bunch of stuff for logging in the backend file
+Added some new endpoints for the flip optimizer in the http server file
