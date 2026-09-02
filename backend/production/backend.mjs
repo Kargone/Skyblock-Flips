@@ -101,6 +101,7 @@ const IGNORE_INSTA_SELL = [
 ];
 
 const ALLOW_INSTA_SELL_BUY = [
+    "Enchanted Rotten Flesh"
 ];
 
 // Load trader_data manually so we can modify and write it back
@@ -111,18 +112,12 @@ try {
     const data = fs.readFileSync(traderDataPath, 'utf8');
     trader_data = JSON.parse(data);
 } catch (err) {
-    console.error('Error loading trader data:', err);
-    trader_data = {
-        "username": "Kargone",
-        "sell-order-overview": { "sell-orders": [] },
-        "buy-order-overview": { "buy-orders": [] },
-        "short-term-investments": {},
-        "long-term-investments": {},
-        "auction-house-overview": { "auctions": [] },
-        "forge": [],
-        "all-products": {},
-        "daily-profits": {}
-    };
+    // Do NOT fall back to an empty trader_data object here: the update loop
+    // autosaves trader_data back to disk, so a silent empty fallback gets
+    // written over the real file the next time it runs. Fail loudly instead
+    // so a corrupted/missing file gets noticed and restored before that happens.
+    console.error('FATAL: could not load trader-data.json, refusing to start with empty data:', err);
+    throw err;
 }
 
 // Append-only log of order placements/progress/outcomes, used to train a model
@@ -344,7 +339,7 @@ class ProcesTrade {
         const tradeObject = JSON.parse(tradeJSON);
         const trade_message = formatTradeMessage(tradeObject[0]?.plainText || tradeObject.plainText);
         // console.log("Processing trade message: ", trade_message);
-        
+
         const detectedRarity = tradeObject.detectedRarity;
 
         this.message = trade_message;
@@ -887,7 +882,11 @@ class ProcesTrade {
             "projected-profit": Math.round((currentResellPrice - price) * amount - bazaarFees),
             "has-been-claimed": false,
             "has-been-filled": false,
-            "buy-order-place-time": placeTime
+            "buy-order-place-time": placeTime,
+            // cumulative amount ever claimed off this order across all partial claims -
+            // unlike "bought-amount" (which resets to 0 on every partial claim), this
+            // never resets, so the true lifetime fill total can be logged on resolution.
+            "total-amount-claimed": 0
         });
 
         logPlacedOrder("buy", name, placeTime, amount, price, trader_data["all-products"][name]?.["current-amount"]);
@@ -900,20 +899,35 @@ class ProcesTrade {
         // get the current buy orders
         const buyOrders = trader_data['buy-order-overview']['buy-orders'];
 
-        // find a current buy order that matches the name and buying amount as an order already placed
-        for (let buyOrderIndex = 0; buyOrderIndex < buyOrders.length; buyOrderIndex++) {
-            const buyOrder = buyOrders[buyOrderIndex];
-            if (buyOrder["item-name"] === name &&
-                buyOrder["buying-amount"] === amount) {
-                // alter the bought and buying amounts to reflect that the order has filled
-                trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["has-been-filled"] = true;
-                trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["bought-amount"] =
-                    copy(trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["buying-amount"]);
-
-                logResolvedOrder("buy", name, buyOrder["buy-order-place-time"], "filled", amount);
-
-                return 'Buy order filling completed';
+        // The fill message only gives us item name + remaining amount, not a unique
+        // order id, so multiple open orders for the same item can share both (e.g.
+        // two orders that started at 2240 and were each independently partially
+        // claimed down to the same remaining amount). Pick the oldest still-open
+        // match (FIFO) instead of whichever the array happens to iterate to first -
+        // the array's order isn't reliably chronological since other flows re-sort it.
+        let buyOrderIndex = -1;
+        for (let index = 0; index < buyOrders.length; index++) {
+            const candidate = buyOrders[index];
+            if (candidate["item-name"] === name &&
+                candidate["buying-amount"] === amount &&
+                !candidate["has-been-filled"] &&
+                (buyOrderIndex === -1 || candidate["buy-order-place-time"] < buyOrders[buyOrderIndex]["buy-order-place-time"])) {
+                buyOrderIndex = index;
             }
+        }
+        if (buyOrderIndex !== -1) {
+            const buyOrder = buyOrders[buyOrderIndex];
+            // alter the bought and buying amounts to reflect that the order has filled
+            trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["has-been-filled"] = true;
+            trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["bought-amount"] =
+                copy(trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["buying-amount"]);
+
+            // "amount" here is just this final unclaimed chunk - add back whatever was
+            // already claimed earlier in the order's life so filled_amount reflects the
+            // true lifetime total, comparable against order_amount from the placed event.
+            logResolvedOrder("buy", name, buyOrder["buy-order-place-time"], "filled", (buyOrder["total-amount-claimed"] || 0) + amount);
+
+            return 'Buy order filling completed';
         }
 
         throw new Error('ERROR: Failed to fill a buy order');
@@ -929,6 +943,8 @@ class ProcesTrade {
             const buyOrder = buyOrders[buyOrderIndex];
             if (buyOrder["item-name"] === name && (Math.ceil(buyOrder["price-buying"]) === price || buyOrder["price-buying"] === price || Math.floor(buyOrder["price-buying"]) === price)) {
                 trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["has-been-claimed"] = true;
+                trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["total-amount-claimed"] =
+                    (buyOrder["total-amount-claimed"] || 0) + amount;
 
                 // add the products claimed to the investments
                 this.instaBuy(amount, price, name, buyOrder["buy-order-place-time"]);
@@ -1024,12 +1040,14 @@ class ProcesTrade {
         const buyOrderIndex = trader_data['buy-order-overview']['buy-orders'].indexOf(closestBuyOrder);
         const removedOrder = trader_data['buy-order-overview']['buy-orders'].splice(buyOrderIndex, 1)[0];
 
+        // add back whatever was already claimed earlier in this order's life, since
+        // "bought-amount" alone only reflects unclaimed progress since the last claim.
         logResolvedOrder(
             "buy", closestBuyOrder["item-name"], closestBuyOrder["buy-order-place-time"],
-            "cancelled", closestBuyOrder["bought-amount"] || 0
+            "cancelled", (closestBuyOrder["total-amount-claimed"] || 0) + (closestBuyOrder["bought-amount"] || 0)
         );
 
-        if (!(removedOrder["buying-amount"] === 0 || removedOrder["buying-amount"] === removedOrder["bought-amount"])) console.error("Strange, the buy order being cancelled has a bought amount that is not 0 or equal to the buying amount. This should not happen. The buy order is: ", removedOrder);
+        if (!(removedOrder["bought-amount"] === 0 || removedOrder["buying-amount"] === removedOrder["bought-amount"])) console.error("Strange, the buy order being cancelled has a bought amount that is not 0 or equal to the buying amount. This should not happen. The buy order is: ", removedOrder);
 
         if (!removedOrder["has-been-claimed"]) {
             const name = removedOrder["item-name"];
@@ -1175,7 +1193,12 @@ class ProcesTrade {
             "has-been-claimed": false,
             "has-been-filled": false,
             "sell-order-place-time": sellOrderPlaceTime,
-            "sub-orders": sell_sub_orders
+            "sub-orders": sell_sub_orders,
+            // cumulative amount ever claimed off this order across all partial claims -
+            // unlike each sub-order's "partial-sold-amount" (which gets zeroed out on a
+            // partial claim), this never resets, so the true lifetime fill total can be
+            // logged on resolution.
+            "total-amount-claimed": 0
         });
 
         logPlacedOrder("sell", name, sellOrderPlaceTime, total_selling_amount, price, currentHoldingAmountBeforeSell);
@@ -1188,24 +1211,36 @@ class ProcesTrade {
         // get the current sell orders
         const sellOrders = trader_data['sell-order-overview']['sell-orders'];
 
-        // find a current sell order that matches the name and selling amount as an order already placed
-        for (let sellOrderIndex = 0; sellOrderIndex < sellOrders.length; sellOrderIndex++) {
-            const sellOrder = sellOrders[sellOrderIndex];
-            // console.log("Checking sell order: ", sellOrder, " against name: ", name, " and amount: ", amount);
-            if (sellOrder["item-name"] === name &&
-                sellOrder["total-selling-amount"] === amount) {
-
-                sellOrder["has-been-filled"] = true;
-                sellOrder["sub-orders"].map(subOrder => {
-                    subOrder["partial-sold-amount"] = subOrder["partial-selling-amount"];
-                });
-                trader_data['sell-order-overview']['sell-orders'][sellOrderIndex] = sellOrder;
-
-                logResolvedOrder("sell", name, sellOrder["sell-order-place-time"], "filled", amount);
-
-                // console.log("Filled sell order: ", trader_data['sell-order-overview']['sell-orders'][sellOrderIndex]);
-                return 'Sell order filling completed';
+        // The fill message only gives us item name + remaining amount, not a unique
+        // order id, so multiple open orders for the same item can share both (e.g.
+        // two orders that started at 2240 and were each independently partially
+        // claimed down to the same remaining amount). Pick the oldest still-open
+        // match (FIFO) instead of whichever the array happens to iterate to first -
+        // the array's order isn't reliably chronological since sellOrderClaim re-sorts it.
+        let sellOrderIndex = -1;
+        for (let index = 0; index < sellOrders.length; index++) {
+            const candidate = sellOrders[index];
+            if (candidate["item-name"] === name &&
+                candidate["total-selling-amount"] === amount &&
+                !candidate["has-been-filled"] &&
+                (sellOrderIndex === -1 || candidate["sell-order-place-time"] < sellOrders[sellOrderIndex]["sell-order-place-time"])) {
+                sellOrderIndex = index;
             }
+        }
+        if (sellOrderIndex !== -1) {
+            const sellOrder = sellOrders[sellOrderIndex];
+            sellOrder["has-been-filled"] = true;
+            sellOrder["sub-orders"].map(subOrder => {
+                subOrder["partial-sold-amount"] = subOrder["partial-selling-amount"];
+            });
+            trader_data['sell-order-overview']['sell-orders'][sellOrderIndex] = sellOrder;
+
+            // "amount" here is just this final unclaimed chunk - add back whatever was
+            // already claimed earlier in the order's life so filled_amount reflects the
+            // true lifetime total, comparable against order_amount from the placed event.
+            logResolvedOrder("sell", name, sellOrder["sell-order-place-time"], "filled", (sellOrder["total-amount-claimed"] || 0) + amount);
+
+            return 'Sell order filling completed';
         }
 
         consoleWarn('ERROR: Failed to fill a sell order');
@@ -1226,6 +1261,9 @@ class ProcesTrade {
         }
 
         trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["has-been-claimed"] = true;
+        // capture the claim total now, before the loop below mutates "amount"
+        trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["total-amount-claimed"] =
+            (trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["total-amount-claimed"] || 0) + amount;
 
         // adjust the amounts to reflect the sell claim
         let suborders = trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"];
@@ -1405,7 +1443,11 @@ class ProcesTrade {
         // index that the sell order that was claimed will be at
         let current_sell_order_index = -1;
 
-        // find the index of the sell order that was just claimed
+        // The cancel message only gives us item name + refunded amount, not a unique
+        // order id, so multiple open orders for the same item can share the same
+        // unsold amount (e.g. two orders split off the same original order, each
+        // independently partially filled down to the same remaining amount). Pick the
+        // oldest match (FIFO) instead of whichever the array happens to put last.
         for (const sellOrderIndex of Object.keys(sellOrders)) {
             const sellOrder = sellOrders[sellOrderIndex];
 
@@ -1415,9 +1457,11 @@ class ProcesTrade {
                 totalUnsold += sellOrder["sub-orders"][subSellOrderIndex]["partial-selling-amount"];
             }
 
-            // check that the unsold amounts and name are the same as the current sell order 
+            // check that the unsold amounts and name are the same as the current sell order
             if (sellOrder["item-name"] === name &&
-                totalUnsold === amount) {
+                totalUnsold === amount &&
+                (current_sell_order_index === -1 ||
+                    sellOrder["sell-order-place-time"] < sellOrders[current_sell_order_index]["sell-order-place-time"])) {
                 current_sell_order_index = sellOrderIndex;
             }
         }
@@ -1496,7 +1540,9 @@ class ProcesTrade {
             }
         }
 
-        const filledAmountBeforeCancel = currentSellOrder["sub-orders"].reduce(
+        // add back whatever was already claimed earlier in this order's life, since
+        // "partial-sold-amount" alone only reflects unclaimed progress since the last claim.
+        const filledAmountBeforeCancel = (currentSellOrder["total-amount-claimed"] || 0) + currentSellOrder["sub-orders"].reduce(
             (acc, subOrder) => acc + (subOrder["partial-sold-amount"] || 0), 0
         );
         logResolvedOrder("sell", name, currentSellOrder["sell-order-place-time"], "cancelled", filledAmountBeforeCancel);
@@ -1512,11 +1558,25 @@ class ProcesTrade {
         const buyOrders = trader_data["buy-order-overview"]["buy-orders"];
         let current_buy_order_index = -1;
 
-        // go through each and find which one matches the flip
+        // The flip message only gives us item name + amount, not a unique order id, so
+        // multiple open orders for the same item can share both (e.g. two orders that
+        // started at 2240 and were each independently partially claimed down to the
+        // same remaining amount). Pick the oldest still-unfilled match (FIFO) instead
+        // of whichever the array happens to put last - if this order was already
+        // filled and just left unclaimed, prefer that one since the flip is claiming it.
         for (const buyOrderIndex of Object.keys(buyOrders)) {
             const buyOrder = buyOrders[buyOrderIndex];
             if (buyOrder["item-name"] === name && buyOrder["buying-amount"] === amount) {
-                current_buy_order_index = buyOrderIndex;
+                if (current_buy_order_index === -1) {
+                    current_buy_order_index = buyOrderIndex;
+                    continue;
+                }
+                const current = buyOrders[current_buy_order_index];
+                const candidateIsBetter =
+                    (buyOrder["has-been-filled"] === current["has-been-filled"] &&
+                        buyOrder["buy-order-place-time"] < current["buy-order-place-time"]) ||
+                    (buyOrder["has-been-filled"] && !current["has-been-filled"]);
+                if (candidateIsBetter) current_buy_order_index = buyOrderIndex;
             }
         }
         if (current_buy_order_index === -1 || buyOrders.length === 0) throw new Error('ERROR: No buy order found to flip');
@@ -1524,6 +1584,19 @@ class ProcesTrade {
         const currentBuyOrder = buyOrders[current_buy_order_index];
         const priceBought = currentBuyOrder["price-buying"];
         const profitPerUnit = profit / amount;
+
+        // An order-flipped message usually means this buy order filled and was
+        // immediately reused as a sell order, skipping the normal "[Bazaar] Your Buy
+        // Order ... was filled!" message that buyOrderFill() logs a resolved event
+        // from - so log it here instead, or the trade log would never see this order
+        // resolve. But if the order was left unclaimed after a normal fill and only
+        // flipped later, buyOrderFill() already logged it - the has-been-filled flag
+        // still matches then, so skip logging again to avoid a duplicate.
+        if (!currentBuyOrder["has-been-filled"]) {
+            // add back whatever was already claimed earlier in this order's life, since
+            // "amount" here is just this final flipped chunk.
+            logResolvedOrder("buy", name, currentBuyOrder["buy-order-place-time"], "filled", (currentBuyOrder["total-amount-claimed"] || 0) + amount);
+        }
 
         this.buyOrderClaim(amount, priceBought, name);
         this.sellOrderSetup(amount, (priceBought + profitPerUnit), name);
@@ -1933,17 +2006,80 @@ let auction_data = [];
 const update_seconds = 3;
 setInterval(updateBazaarData, update_seconds * 1000);
 
-// Rolling per-product history used to compute real 1h/24h volume and new-listing
-// rates, since Hypixel's quick_status only ever gives a 7-day rolling total.
-const BAZAAR_HISTORY_SAMPLE_INTERVAL_MS = 5 * 60 * 1000; // only keep one sample per 5 min
+// Rolling per-product history used to compute real 1h/6h/24h volume and new-listing
+// rates, since Hypixel's quick_status only gives a 7-day rolling total and a current
+// order count (not a listings-created rate). Each tick diffs the live order book
+// (sell_summary/buy_summary) against the previous tick's snapshot: a price tier whose
+// amount shrank, or that vanished entirely, means that quantity got traded (volume); a
+// price tier whose order count grew, or that's brand new, means new orders were listed
+// (new listings). Sampled every minute for finer granularity, at the cost of more
+// memory - each product keeps up to ~25h of per-minute deltas instead of ~25h of 5-min
+// deltas.
+const BAZAAR_HISTORY_SAMPLE_INTERVAL_MS = 1 * 60 * 1000; // one sample per minute
 const BAZAAR_HISTORY_RETENTION_MS = 25 * 60 * 60 * 1000; // a little over 24h of samples
-const bazaarHistory = new Map(); // productId -> [{ timestamp, sellMovingWeek, buyMovingWeek, sellOrders, buyOrders }]
+const bazaarHistory = new Map(); // productId -> [{ timestamp, sellVolumeTick, buyVolumeTick, sellNewListingsTick, buyNewListingsTick, sellMovingWeek, buyMovingWeek }]
+const lastOrderBook = new Map(); // productId -> { sell: sell_summary array, buy: buy_summary array } from the previous tick, for diffing only - not retained as history
 let lastHistorySampleTime = 0;
+
+function roundPrice(price) {
+    return Math.round(price * 10) / 10;
+}
+
+// Diffs one side of the order book (an array of {pricePerUnit, amount, orders}) between
+// two ticks. A shrunk price tier's decrease is counted as traded volume. A vanished
+// tier is deliberately NOT counted as fully traded - Hypixel's summary only exposes the
+// top ~20 price tiers, so at 1-minute granularity a tier disappearing usually means it
+// got pushed out of that visible window by repricing/competition, not that it was
+// consumed. Measured against volume_7_day, counting vanished tiers as full volume
+// overcounted by up to ~40x; dropping it undercounts real full-consumption events
+// instead (a smaller, safer error than the alternative). A grown price tier's
+// order-count increase, or a brand-new tier's order count, is counted as new listings.
+function diffOrderBookSide(oldEntries, newEntries) {
+    const oldByPrice = new Map();
+    for (const entry of oldEntries || []) oldByPrice.set(roundPrice(entry.pricePerUnit), entry);
+    const newByPrice = new Map();
+    for (const entry of newEntries || []) newByPrice.set(roundPrice(entry.pricePerUnit), entry);
+
+    let volume = 0;
+    for (const [price, oldEntry] of oldByPrice) {
+        const newEntry = newByPrice.get(price);
+        if (newEntry && newEntry.amount < oldEntry.amount) {
+            volume += oldEntry.amount - newEntry.amount;
+        }
+    }
+
+    let newListings = 0;
+    for (const [price, newEntry] of newByPrice) {
+        const oldEntry = oldByPrice.get(price);
+        if (!oldEntry) {
+            newListings += newEntry.orders;
+        } else if (newEntry.orders > oldEntry.orders) {
+            newListings += newEntry.orders - oldEntry.orders;
+        }
+    }
+
+    return { volume, newListings };
+}
 
 function recordBazaarHistorySnapshot(products, now) {
     for (const [productId, product] of Object.entries(products)) {
         const quickStatus = product.quick_status;
         if (!quickStatus) continue;
+
+        const sellBook = product.sell_summary || [];
+        const buyBook = product.buy_summary || [];
+        const previousBook = lastOrderBook.get(productId);
+
+        let sellVolumeTick = 0, buyVolumeTick = 0, sellNewListingsTick = 0, buyNewListingsTick = 0;
+        if (previousBook) {
+            const sellDiff = diffOrderBookSide(previousBook.sell, sellBook);
+            const buyDiff = diffOrderBookSide(previousBook.buy, buyBook);
+            sellVolumeTick = sellDiff.volume;
+            sellNewListingsTick = sellDiff.newListings;
+            buyVolumeTick = buyDiff.volume;
+            buyNewListingsTick = buyDiff.newListings;
+        }
+        lastOrderBook.set(productId, { sell: sellBook, buy: buyBook });
 
         let history = bazaarHistory.get(productId);
         if (!history) {
@@ -1953,10 +2089,12 @@ function recordBazaarHistorySnapshot(products, now) {
 
         history.push({
             timestamp: now,
+            sellVolumeTick,
+            buyVolumeTick,
+            sellNewListingsTick,
+            buyNewListingsTick,
             sellMovingWeek: quickStatus.sellMovingWeek || 0,
             buyMovingWeek: quickStatus.buyMovingWeek || 0,
-            sellOrders: quickStatus.sellOrders || 0,
-            buyOrders: quickStatus.buyOrders || 0,
         });
 
         while (history.length > 0 && now - history[0].timestamp > BAZAAR_HISTORY_RETENTION_MS) {
@@ -1965,30 +2103,25 @@ function recordBazaarHistorySnapshot(products, now) {
     }
 }
 
-function findClosestSnapshot(history, targetTime) {
-    let closest = null;
-    for (const entry of history) {
-        if (closest === null || Math.abs(entry.timestamp - targetTime) < Math.abs(closest.timestamp - targetTime)) {
-            closest = entry;
-        }
-    }
-    return closest;
-}
-
-// Diffs the given field between the latest sample and the sample closest to
-// `hoursAgo` in the past, returning a per-hour rate (or null if there isn't
-// enough history yet, e.g. right after a server restart).
-function computeHourlyRate(history, hoursAgo, field) {
+// Sums a per-tick field (e.g. sellVolumeTick) across the trailing `hoursAgo` window.
+// Returns null if the retained history doesn't yet cover close to that long - e.g.
+// right after a restart, with only a few minutes of ticks recorded, summing that
+// partial window and calling it a 24-hour (or 6-hour, or 1-hour) total would badly
+// understate the true rate rather than just being imprecise.
+function sumOverWindow(history, hoursAgo, field) {
     if (!history || history.length < 2) return null;
 
     const latest = history[history.length - 1];
-    const target = findClosestSnapshot(history, latest.timestamp - hoursAgo * 60 * 60 * 1000);
-    if (!target || target === latest) return null;
+    const oldest = history[0];
+    const coveredHours = (latest.timestamp - oldest.timestamp) / (60 * 60 * 1000);
+    if (coveredHours < hoursAgo * 0.8) return null;
 
-    const elapsedHours = (latest.timestamp - target.timestamp) / (60 * 60 * 1000);
-    if (elapsedHours <= 0) return null;
-
-    return Math.max(0, latest[field] - target[field]) / elapsedHours;
+    const windowStart = latest.timestamp - hoursAgo * 60 * 60 * 1000;
+    let sum = 0;
+    for (const entry of history) {
+        if (entry.timestamp > windowStart) sum += entry[field] || 0;
+    }
+    return sum;
 }
 
 // EMAs used as a "typical past" baseline for the three trend weights (7-day
@@ -2054,18 +2187,25 @@ function computeTrendWeight(current, baseline) {
 export function getVolumeStats() {
     const stats = {};
     for (const [productId, history] of bazaarHistory.entries()) {
-        const sellVolumePerHour24h = computeHourlyRate(history, 24, 'sellMovingWeek');
-        const buyVolumePerHour24h = computeHourlyRate(history, 24, 'buyMovingWeek');
-        const newSellListingsPerHour = computeHourlyRate(history, 1, 'sellOrders');
-        const newBuyListingsPerHour = computeHourlyRate(history, 1, 'buyOrders');
+        const sellVolume24hSum = sumOverWindow(history, 24, 'sellVolumeTick');
+        const buyVolume24hSum = sumOverWindow(history, 24, 'buyVolumeTick');
+        const sellVolumePerHour24h = sellVolume24hSum != null ? sellVolume24hSum / 24 : null;
+        const buyVolumePerHour24h = buyVolume24hSum != null ? buyVolume24hSum / 24 : null;
+
+        // new-listings rate is averaged over a trailing 6 hours instead of a single
+        // hour, since raw per-tick listing counts are noisy from one hour to the next.
+        const newSellListingsSum6h = sumOverWindow(history, 6, 'sellNewListingsTick');
+        const newBuyListingsSum6h = sumOverWindow(history, 6, 'buyNewListingsTick');
+        const newSellListingsPerHour = newSellListingsSum6h != null ? newSellListingsSum6h / 6 : null;
+        const newBuyListingsPerHour = newBuyListingsSum6h != null ? newBuyListingsSum6h / 6 : null;
 
         const quickStatus = bazaar_data[productId]?.quick_status || {};
         const ema = bazaarEma.get(productId);
 
         stats[productId] = {
-            sellVolumePerHour1h: computeHourlyRate(history, 1, 'sellMovingWeek'),
+            sellVolumePerHour1h: sumOverWindow(history, 1, 'sellVolumeTick'),
             sellVolumePerHour24h,
-            buyVolumePerHour1h: computeHourlyRate(history, 1, 'buyMovingWeek'),
+            buyVolumePerHour1h: sumOverWindow(history, 1, 'buyVolumeTick'),
             buyVolumePerHour24h,
             newSellListingsPerHour,
             newBuyListingsPerHour,
@@ -2190,22 +2330,31 @@ class UpdateOrderFillAmounts {
 
         // Atomic write: write to temp file first, then rename to avoid corruption on read
         const tempPath = traderDataPath + '.tmp';
-        fs.writeFile(
-            tempPath,
-            JSON.stringify(trader_data, null, 2),
-            function (err) {
-                if (err) {
-                    console.error('Error writing temp trader data file:', err);
-                } else {
-                    // Atomic rename - replaces the original file
-                    fs.rename(tempPath, traderDataPath, function (renameErr) {
-                        if (renameErr) {
-                            console.error('Error renaming temp file:', renameErr);
-                        }
-                    });
+        const backupPath = traderDataPath + '.backup.json';
+
+        // Snapshot the last-known-good file before overwriting it, so a bad
+        // save (or a crash/sleep leaving trader_data in a bad in-memory state)
+        // can be recovered from without falling back to git history.
+        fs.copyFile(traderDataPath, backupPath, function (copyErr) {
+            if (copyErr) console.error('Error backing up trader data file:', copyErr);
+
+            fs.writeFile(
+                tempPath,
+                JSON.stringify(trader_data, null, 2),
+                function (err) {
+                    if (err) {
+                        console.error('Error writing temp trader data file:', err);
+                    } else {
+                        // Atomic rename - replaces the original file
+                        fs.rename(tempPath, traderDataPath, function (renameErr) {
+                            if (renameErr) {
+                                console.error('Error renaming temp file:', renameErr);
+                            }
+                        });
+                    }
                 }
-            }
-        );
+            );
+        });
     }
     updateSellOrderFillAmount(sellOrderIndex, sellOrders) {
         const sellOrder = sellOrders[sellOrderIndex];

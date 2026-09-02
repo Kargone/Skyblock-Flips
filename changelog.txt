@@ -1,5 +1,5 @@
-Fixed a couple errors in backend.mjs (forgot which ones)
-Added a whole new folder for python stuff in flip optmizer
-Changed the file structure of the project
-Made a bunch of stuff for logging in the backend file
-Added some new endpoints for the flip optimizer in the http server file
+Fixed issues after the file restructering
+Fixed the past trade log logging
+Fixed some more logging of the orders in the trade outcomes
+Fixed a logging issue with buy order canceling
+Fixed an error with it saving the new trader data

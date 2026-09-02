@@ -8,5 +8,7 @@ Issues:
 better way to track forge (none of it works lol)
 
 see if the total-buy-amount-placed-for-buying still updates properly in trader data after i added the [0] after the splice
+make sure that the stats are being recorded correctly on order claim
+
 
 for the lists:

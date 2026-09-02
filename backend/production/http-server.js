@@ -97,6 +97,7 @@ let server = http.createServer(function (request, response) {
 
             if (!Array.isArray(data)) {
                 main.submitTrade(JSON.stringify(data));
+                pastTradesLogs.push(JSON.stringify(data));
             } else {
                 for (const value of data) {
                     // console.log('Data value: ' + JSON.stringify(value));

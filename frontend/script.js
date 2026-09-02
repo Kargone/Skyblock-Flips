@@ -84,15 +84,15 @@ class TraderDashboard {
     async fetchTraderData() {
         let response = await fetch('http://localhost:8000/api/trader-data');
         if (!response.ok) {
-            response = await fetch('../backend/trader-data.json');
+            response = await fetch('../backend/production/trader-data.json');
         }
         return response;
     }
 
     async fetchProductList() {
-        let response = await fetch('../backend/product-list.json');
+        let response = await fetch('../backend/production/product-list.json');
         if (!response.ok) {
-            response = await fetch('./backend/product-list.json');
+            response = await fetch('./backend/production/product-list.json');
         }
         return response;
     }
