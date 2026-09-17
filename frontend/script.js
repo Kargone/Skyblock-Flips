@@ -1,3 +1,23 @@
+// Base transaction fee rates. When mayor Derpy is active (quadruples bazaar
+// tax, and here also scales auction fees), just bump DERPY_TAX_MULTIPLIER -
+// e.g. to 4 - and set it back to 1 once Derpy is no longer mayor.
+let BAZAAR_TAX_RATE = 0.01;
+let AUCTION_FEE_RATE_LOW = 0.01;   // auctions selling for <= 10M
+let AUCTION_FEE_RATE_MID = 0.02;   // auctions selling for > 10M
+let AUCTION_FEE_RATE_HIGH = 0.025; // auctions selling for > 100M
+let DERPY_TAX_MULTIPLIER = 1;
+
+function getBazaarTaxRate() {
+    return BAZAAR_TAX_RATE * DERPY_TAX_MULTIPLIER;
+}
+
+function getAuctionFeeRate(price) {
+    const baseRate = price > 100000000 ? AUCTION_FEE_RATE_HIGH
+        : price > 10000000 ? AUCTION_FEE_RATE_MID
+        : AUCTION_FEE_RATE_LOW;
+    return baseRate * DERPY_TAX_MULTIPLIER;
+}
+
 // Trader Data Dashboard
 class TraderDashboard {
     constructor() {
@@ -291,7 +311,7 @@ class TraderDashboard {
             const sellOrders = bazaarProduct.buy_summary || [];
             const buyPrice = buyOrders[0]?.pricePerUnit || 0;
             const sellPrice = sellOrders[0]?.pricePerUnit || 0;
-            const spread = Math.abs((sellPrice * 0.99) - buyPrice);
+            const spread = Math.abs((sellPrice * (1 - getBazaarTaxRate())) - buyPrice);
             if (spread <= 0) return false;
             if ((quickStatus.buyMovingWeek || 0) < minVolumeThreshold || (quickStatus.sellMovingWeek || 0) < minVolumeThreshold) return false;
             // console.log(`Tracked product: ${name}, Spread: ${spread}, Buy Volume: ${quickStatus.buyMovingWeek}, Sell Volume: ${quickStatus.sellMovingWeek}`);
@@ -309,8 +329,8 @@ class TraderDashboard {
             const productBBuyPrice = productBBuyOrders[0]?.pricePerUnit || 0;
             const productASellPrice = productASellOrders[0]?.pricePerUnit || 0;
             const productBSellPrice = productBSellOrders[0]?.pricePerUnit || 0;
-            const spreadA = productA?.quick_status ? Math.abs((productASellPrice || 0) * 0.99 - (productABuyPrice || 0)) : 0;
-            const spreadB = productB?.quick_status ? Math.abs((productBSellPrice || 0) * 0.99 - (productBBuyPrice || 0)) : 0;
+            const spreadA = productA?.quick_status ? Math.abs((productASellPrice || 0) * (1 - getBazaarTaxRate()) - (productABuyPrice || 0)) : 0;
+            const spreadB = productB?.quick_status ? Math.abs((productBSellPrice || 0) * (1 - getBazaarTaxRate()) - (productBBuyPrice || 0)) : 0;
             return spreadB - spreadA;
         }).map((name) => ({ name, apiName: this.getApiName(name) })).slice(0, 40); // top 40 products by spread
         // console.log('Tracked products for bazaar snapshot:', trackedProducts);
@@ -334,7 +354,7 @@ class TraderDashboard {
             const quickStatus = product.quick_status || {};
             const buyPrice = product.sell_summary[0]?.pricePerUnit || 0;
             const sellPrice = product.buy_summary[0]?.pricePerUnit || 0;
-            const spread = Math.abs((sellPrice * 0.99) - buyPrice);
+            const spread = Math.abs((sellPrice * (1 - getBazaarTaxRate())) - buyPrice);
 
             return `
                 <tr>
@@ -378,7 +398,7 @@ class TraderDashboard {
             const isOpen = this.openBuyOrders.has(orderKey);
             const status = totalBought >= totalAmount ? 'Filled' : 'Pending';
             const bazaarPrice = this.getBazaarSellOrderPrice(order['item-name']);
-            const margin = bazaarPrice ? (bazaarPrice * 0.99) - (order['price-buying'] || 0) : 0;
+            const margin = bazaarPrice ? (bazaarPrice * (1 - getBazaarTaxRate())) - (order['price-buying'] || 0) : 0;
             const projectedProfit = margin * totalAmount || 0;
 
             totalSoldAmount += totalBought;
@@ -596,8 +616,8 @@ class TraderDashboard {
                 Math.max(...invB['sub-orders'].map(o => o["price-bought"] || o["price-crafted"])) : 0;
             const currentSellPriceA = this.getCraftingMarketValue(nameA);
             const currentSellPriceB = this.getCraftingMarketValue(nameB);
-            const marginA = currentSellPriceA * 0.99 - highestPriceA;
-            const marginB = currentSellPriceB * 0.99 - highestPriceB;
+            const marginA = currentSellPriceA * (1 - getBazaarTaxRate()) - highestPriceA;
+            const marginB = currentSellPriceB * (1 - getBazaarTaxRate()) - highestPriceB;
             const currentProfitA = marginA * totalAmountA || 0;
             const currentProfitB = marginB * totalAmountB || 0;
             return currentProfitB - currentProfitA;
@@ -609,7 +629,7 @@ class TraderDashboard {
             const highestPrice = inv['sub-orders'].length > 0 ?
                 Math.max(...inv['sub-orders'].map(o => o["price-bought"] || o["price-crafted"])) : 0;
             const currentSellPrice = this.getCraftingMarketValue(name);
-            const margin = currentSellPrice * 0.99 - highestPrice;
+            const margin = currentSellPrice * (1 - getBazaarTaxRate()) - highestPrice;
             const currentProfit = margin * totalAmount || 0;
             const rowClass = this.getAllProductBuyOrderCount(name) === 0 && investmentType === 'Short-term'? 'zero-buy-orders' : '';
             // get the date-bought from the earliest sub-order
@@ -660,7 +680,7 @@ class TraderDashboard {
                 <td>${this.formatCoin(this.getCraftingMarketValue(auction['item-name']))}</td>
                 <td>${this.formatCoin(auction['price-selling'])}</td>
                 <td>${this.formatCoin(auction['material-cost'])}</td>
-                <td class="${auction['price-selling'] * 0.99 - auction['material-cost'] >= 0 ? 'profit-positive' : 'profit-negative'}">${this.formatCoin(auction['price-selling'] * 0.99 - auction['material-cost'])}<span class="${this.getCraftingMarketValue(auction['item-name']) * 0.99 - auction['material-cost'] - this.calcAuctionFee(auction['price-selling']) >= 0 ? 'profit-positive' : 'profit-negative'}"> (${this.formatCoin(this.getCraftingMarketValue(auction['item-name']) * 0.99 - auction['material-cost'] - this.calcAuctionFee(auction['price-selling']))})</span></td>
+                <td class="${auction['price-selling'] * (1 - getAuctionFeeRate(auction['price-selling'])) - auction['material-cost'] >= 0 ? 'profit-positive' : 'profit-negative'}">${this.formatCoin(auction['price-selling'] * (1 - getAuctionFeeRate(auction['price-selling'])) - auction['material-cost'])}<span class="${this.getCraftingMarketValue(auction['item-name']) * (1 - getAuctionFeeRate(auction['price-selling'])) - auction['material-cost'] - this.calcAuctionFee(auction['price-selling']) >= 0 ? 'profit-positive' : 'profit-negative'}"> (${this.formatCoin(this.getCraftingMarketValue(auction['item-name']) * (1 - getAuctionFeeRate(auction['price-selling'])) - auction['material-cost'] - this.calcAuctionFee(auction['price-selling']))})</span></td>
                 <td>
                     <span class="status-badge ${auction['sold'] ? 'status-filled' : 'status-partial'}">
                         ${auction['sold'] ? 'Sold' : 'Active'}
@@ -671,13 +691,7 @@ class TraderDashboard {
     }
 
     calcAuctionFee(price_not_sold) {
-        if (price_not_sold > 100000000) {
-            return price_not_sold * 0.025;
-        } else if (price_not_sold > 10000000) {
-            return price_not_sold * 0.02;
-        } else {
-            return price_not_sold * 0.01;
-        }
+        return price_not_sold * getAuctionFeeRate(price_not_sold);
     }
 
     updateAuctionCrafts() {
@@ -824,7 +838,7 @@ class TraderDashboard {
         const marketValue =this.getCraftingMarketValue(name);
         const entry = this.getProductEntry(name);
         const isAuctionProduct = entry?.type === 'auction-product' || entry?.type === 'forge-product';
-        const fee = isAuctionProduct ? (marketValue > 10000000 ? 0.02 : 0.01) : 0.01;
+        const fee = isAuctionProduct ? getAuctionFeeRate(marketValue) : getBazaarTaxRate();
         const margin = marketValue * (1 - fee) - buyOrder;
 
         return {
@@ -1127,9 +1141,9 @@ class TraderDashboard {
 
         if (entry?.['api-name']) {
             const bazaarProduct = this.bazaarData?.[entry['api-name']];
-            const buyOrders = bazaarProduct?.sell_summary || [];
-            const sellOrders = bazaarProduct?.buy_summary || [];
-            return buyOrders[0]?.pricePerUnit || sellOrders[0]?.pricePerUnit || 0;
+            const instaSellOrders = bazaarProduct?.buy_summary || [];
+            const instaBuyOrders = bazaarProduct?.sell_summary || [];
+            return instaSellOrders[0]?.pricePerUnit || instaBuyOrders[0]?.pricePerUnit || 0;
         }
 
         const auctionPrice = this.lowestBinPrices[normalizedName];
@@ -1149,9 +1163,6 @@ class TraderDashboard {
         
         // add functionality to calculate an auction if you dont have it in your inventory, but you could craft it with materials you do have in your inventory, and return that cost instead of null
         // console.log(`Debug: Getting owned unit cost for ${name} with amount needed: ${amountNeeded}`);
-        if ("Bait Ring" === name) {
-            console.log("Debug: Bait Ring owned unit cost calculation");
-        }
         
         if (this.isCraftableProduct(name)) {
             const craftCost = this.getRecipeCost(name, 'owned', inventorySnapshot);

@@ -7,6 +7,48 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 import product_list from './product-list.json' with { type: "json" };
 
+function timestampPrefix() {
+    const now = new Date();
+    const pad = (n) => String(n).padStart(2, '0');
+    return `[${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}]`;
+}
+
+for (const method of ['log', 'error', 'warn', 'info']) {
+    const original = console[method].bind(console);
+    console[method] = (...args) => {
+        if (typeof args[0] === 'string') {
+            args[0] = `${timestampPrefix()} ${args[0]}`;
+        } else {
+            args.unshift(timestampPrefix());
+        }
+        original(...args);
+    };
+}
+
+// Base transaction fee rates. When mayor Derpy is active (quadruples bazaar
+// tax, and here also scales auction fees), just bump DERPY_TAX_MULTIPLIER -
+// e.g. to 4 - and set it back to 1 once Derpy is no longer mayor.
+export let BAZAAR_TAX_RATE = 0.01;
+export let AUCTION_FEE_RATE_LOW = 0.01;   // auctions selling for <= 10M
+export let AUCTION_FEE_RATE_MID = 0.02;   // auctions selling for > 10M
+export let AUCTION_FEE_RATE_HIGH = 0.025; // auctions selling for > 100M
+export let DERPY_TAX_MULTIPLIER = 1;
+
+function getBazaarTaxRate() {
+    return BAZAAR_TAX_RATE * DERPY_TAX_MULTIPLIER;
+}
+
+function getAuctionFeeRate(price) {
+    const baseRate = price > 100000000 ? AUCTION_FEE_RATE_HIGH
+        : price > 10000000 ? AUCTION_FEE_RATE_MID
+        : AUCTION_FEE_RATE_LOW;
+    return baseRate * DERPY_TAX_MULTIPLIER;
+}
+
+function calcAuctionFee(price_not_sold) {
+    return price_not_sold * getAuctionFeeRate(price_not_sold);
+}
+
 export const marketData = {
     bazaarProducts: {},
     lowestBinPrices: {},
@@ -98,6 +140,7 @@ const IGNORE_INSTA_BUY = [
 
 const IGNORE_INSTA_SELL = [
     "Enchanted Rotten Flesh",
+    "Glacite Jewel",
 ];
 
 const ALLOW_INSTA_SELL_BUY = [
@@ -425,7 +468,7 @@ class ProcesTrade {
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
             const totalPrice = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            result = this.sellOrderSetup(amount, Math.round(totalPrice / amount / 0.99 * 10) / 10, nameString);
+            result = this.sellOrderSetup(amount, Math.round(totalPrice / amount / (1 - getBazaarTaxRate()) * 10) / 10, nameString);
         } else if (this.message.includes('[Bazaar] Your Sell Offer for')) {
             this.type = "sell-order-fill";
             const amountStringStart = findEnd(this.message, 'for ');
@@ -621,7 +664,7 @@ class ProcesTrade {
             return false;
         }
 
-        if (trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"] === 0 &&
+        if (trader_data["all-products"][name] && trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"] === 0 &&
             trader_data["all-products"][name]["sell-order-stats"]["total-sell-orders-created"] === 0 &&
             !this.isItemInCraftingRecipe(name)) {
             // consoleError('ERROR: Product is not in a crafting recipe and has no buy or sell orders: ' + name);
@@ -789,7 +832,7 @@ class ProcesTrade {
         // calculate the current profit
         let profitPerUnit;
         if (type === 'bazaar' && doFees) {
-            const bazaarFeesPerUnit = sell_price * 0.01;
+            const bazaarFeesPerUnit = sell_price * getBazaarTaxRate();
             profitPerUnit = (sell_price - buy_price) - bazaarFeesPerUnit;
         } else {
             profitPerUnit = (sell_price - buy_price);
@@ -870,7 +913,7 @@ class ProcesTrade {
         // get the hypixel api name and the current sell order price
         const apiName = product_list[name]["api-name"];
         const currentResellPrice = Math.round(bazaar_data[apiName]["quick_status"]["buyPrice"] * 10) / 10;
-        const bazaarFees = currentResellPrice * 0.01 * amount;
+        const bazaarFees = currentResellPrice * getBazaarTaxRate() * amount;
         const placeTime = Date.now();
 
         // add the buy order
@@ -1073,6 +1116,7 @@ class ProcesTrade {
                     "crafting-materials": "none"
                 };
             } else {
+                // console.log(trader_data["all-products"][name]);
                 trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"] += 1;
                 trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-placed-for-buying"] += removedOrder["buying-amount"];
                 trader_data["all-products"][name]["buy-order-stats"]["buy-average"] =
@@ -1106,7 +1150,7 @@ class ProcesTrade {
                 trader_data[invesmentType][name]["sub-orders"][0]["partial-amount"] -= amount;
 
                 // add the new sub sell order
-                const bazaarFeesPerUnit = resellPrice * 0.01;
+                const bazaarFeesPerUnit = resellPrice * getBazaarTaxRate();
                 const projectedProfitPerUnit = Math.round((resellPrice - investmentSubOrder["price-bought"] - bazaarFeesPerUnit) * 10) / 10;
                 total_selling_amount += amount;
                 sell_sub_orders.push({
@@ -1133,7 +1177,7 @@ class ProcesTrade {
                     if (amount > 0) throw new Error('ERROR: Sell order setup requires more products then found in investments');
 
                     // add the new sub sell order
-                    const bazaarFeesPerUnit = resellPrice * 0.01;
+                    const bazaarFeesPerUnit = resellPrice * getBazaarTaxRate();
                     const projectedProfitPerUnit = Math.round((resellPrice - investmentSubOrder["price-bought"] - bazaarFeesPerUnit) * 10) / 10;
                     total_selling_amount += investmentSubOrder["partial-amount"];
                     sell_sub_orders.push({
@@ -1159,7 +1203,7 @@ class ProcesTrade {
                     amount -= investmentSubOrder["partial-amount"];
 
                     // add the new sub sell order
-                    const bazaarFeesPerUnit = resellPrice * 0.01;
+                    const bazaarFeesPerUnit = resellPrice * getBazaarTaxRate();
                     const projectedProfitPerUnit = Math.round((resellPrice - investmentSubOrder["price-bought"] - bazaarFeesPerUnit) * 10) / 10;
                     total_selling_amount += investmentSubOrder["partial-amount"];
                     sell_sub_orders.push({
@@ -1365,7 +1409,7 @@ class ProcesTrade {
         // console.log(`🔍 Searching for nearest sell order: Name=${name}, Amount=${amount}, Price Sold=${price_sold}, Coins Earned=${coins_earned}, Has Decimal=${has_decimal}`);
 
         let sellOrders = new Sort(trader_data["sell-order-overview"]["sell-orders"], false, "sell-order-place-time");
-        const actualPrice = (coins_earned / amount) / 0.99;
+        const actualPrice = (coins_earned / amount) / (1 - getBazaarTaxRate());
 
         const potentialMatches = sellOrders.filter(order => {
             const itemMatch = order["item-name"] === name;
@@ -1397,7 +1441,7 @@ class ProcesTrade {
                 // console.log(`Comparing rounded prices: DB=${order["price-sold"]}, Chat=${price_sold}`);
                 // console.log(`Rounded DB Price: ${roundDown(order["price-sold"])}, Rounded Chat Price: ${roundDown(actualPrice)}, Chat Price Sold: ${price_sold}`);
                 const dbRoundedPrice = roundDown(order["price-sold"]);
-                if (dbRoundedPrice === roundDown(actualPrice) || Math.abs(order["price-sold"] - actualPrice) <= 0.15 || dbRoundedPrice === price_sold) {
+                if (dbRoundedPrice === roundDown(actualPrice) || Math.abs(order["price-sold"] - actualPrice) <= 0.5 || dbRoundedPrice === price_sold) {
                     isPriceMatch = true;
 
                     // Tie breaker: Calculate the difference between the underlying raw data fractions.
@@ -1664,23 +1708,13 @@ class ProcesTrade {
         trader_data["all-products"][name]["current-amount"] -= 1;
 
         return 'Auction created';
-
-        function calcAuctionFee(price_not_sold) {
-            if (price_not_sold > 100000000) {
-                return price_not_sold * 0.025;
-            } else if (price_not_sold > 10000000) {
-                return price_not_sold * 0.02;
-            } else {
-                return price_not_sold * 0.01;
-            }
-        }
     }
     auctionClaim(price, name, detectedRarity) {
         name = this.fixRarity(name, detectedRarity);
         
         if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Auction item name not found in product list';
 
-        const priceSold = price / 0.99;
+        const priceSold = price / (1 - AUCTION_FEE_RATE_LOW * DERPY_TAX_MULTIPLIER);
 
         // remove auction
         const auctions = trader_data["auction-house-overview"]["auctions"];
@@ -1703,7 +1737,7 @@ class ProcesTrade {
         const removedAuction = trader_data["auction-house-overview"]["auctions"].splice(current_auction_index, 1)[0];
 
         // add auction fee to daily profit
-        const auctionFees = priceSold * 0.01;
+        const auctionFees = priceSold * AUCTION_FEE_RATE_LOW * DERPY_TAX_MULTIPLIER;
         this.addProfit(1, name, removedAuction["material-cost"] + auctionFees, priceSold, removedAuction["date-placed"], Date.now(), false, "auction-house");
 
         return 'Auction claimed';
@@ -2139,6 +2173,61 @@ const TREND_WEIGHT_MAX = 2;
 
 const bazaarEma = new Map(); // productId -> { sellVolume7d, buyVolume7d, sellVolume24h, buyVolume24h, newSellListings, newBuyListings }
 
+// bazaarEma is the "typical past" baseline the trend weights compare against, and
+// the slowest of the three (SEVEN_DAY_VOLUME_EMA_SAMPLES) takes ~4 weeks to converge.
+// Without persisting it, every restart would reset every weight to neutral (1) and
+// the anomaly protection those weights exist for would go blind for weeks at a time.
+// bazaarHistory is persisted alongside it since it's cheap to include and lets the
+// 1h/6h/24h rates (sumOverWindow) stay populated across a restart too, instead of
+// returning null for the first ~24h while it re-accumulates.
+const bazaarTrendDataPath = path.join(__dirname, 'bazaar-trend-data.json');
+const BAZAAR_TREND_SAVE_INTERVAL_MS = 5 * 60 * 1000; // this data doesn't need to be real-time on disk
+
+function loadBazaarTrendData() {
+    let raw;
+    try {
+        raw = fs.readFileSync(bazaarTrendDataPath, 'utf8');
+    } catch (err) {
+        if (err.code !== 'ENOENT') console.error('Error reading bazaar-trend-data.json, starting with empty trend history:', err);
+        return;
+    }
+
+    try {
+        const parsed = JSON.parse(raw);
+        for (const [productId, history] of Object.entries(parsed.history || {})) bazaarHistory.set(productId, history);
+        for (const [productId, ema] of Object.entries(parsed.ema || {})) bazaarEma.set(productId, ema);
+        console.log(`Loaded persisted bazaar trend data: ${bazaarHistory.size} products with history, ${bazaarEma.size} with EMA baselines`);
+    } catch (err) {
+        console.error('Error parsing bazaar-trend-data.json, starting with empty trend history:', err);
+    }
+}
+
+function saveBazaarTrendData() {
+    const data = {
+        history: Object.fromEntries(bazaarHistory),
+        ema: Object.fromEntries(bazaarEma),
+    };
+
+    // Synchronous + atomic (write to temp, then rename) so a save either fully lands
+    // or doesn't happen at all, and so it can be trusted to complete on process exit.
+    const tempPath = bazaarTrendDataPath + '.tmp';
+    try {
+        fs.writeFileSync(tempPath, JSON.stringify(data));
+        fs.renameSync(tempPath, bazaarTrendDataPath);
+    } catch (err) {
+        console.error('Error saving bazaar-trend-data.json:', err);
+    }
+}
+
+loadBazaarTrendData();
+setInterval(saveBazaarTrendData, BAZAAR_TREND_SAVE_INTERVAL_MS);
+for (const signal of ['SIGINT', 'SIGTERM']) {
+    process.on(signal, () => {
+        saveBazaarTrendData();
+        process.exit();
+    });
+}
+
 function emaAlpha(sampleCount) {
     return 2 / (sampleCount + 1);
 }
@@ -2220,9 +2309,25 @@ export function getVolumeStats() {
     return stats;
 }
 
+// Node's fetch throws a bare TypeError with the real reason nested in `cause`
+// (DNS failures, connection refused, timeouts, etc.) - printing that whole
+// object dumps a multi-line stack trace for what's usually just a transient
+// network blip. Collapse those specific cases to one line; anything else
+// (a genuine bug) still gets logged in full so it isn't silently flattened.
+function formatFetchError(e) {
+    if (e instanceof TypeError && e.cause?.code) {
+        return `network error (${e.cause.code}${e.cause.hostname ? ' ' + e.cause.hostname : ''})`;
+    }
+    return e;
+}
+
 async function updateBazaarData() {
     try {
         const response = await fetch("https://api.hypixel.net/v2/skyblock/bazaar");
+        if (!response.ok) {
+            console.error(`Bazaar fetch failed: ${response.status} ${response.statusText}`);
+            return;
+        }
         bazaar_data = await response.json();
         marketData.lastUpdated.bazaar = bazaar_data.lastUpdated;
         bazaar_data = bazaar_data['products'];
@@ -2237,7 +2342,7 @@ async function updateBazaarData() {
 
         new UpdateOrderFillAmounts().updateOrders();
     } catch (e) {
-        console.error('Fetch failed', e);
+        console.error('Bazaar fetch failed:', formatFetchError(e));
     }
 }
 
@@ -2250,12 +2355,18 @@ updateAuctionData();
 async function updateAuctionData() {
     try {
         const response = await fetch("https://api.hypixel.net/v2/skyblock/auctions");
-        if (!response.ok) return;
+        if (!response.ok) {
+            console.error(`Auction fetch failed: ${response.status} ${response.statusText}`);
+            return;
+        }
         const data = await response.json();
         marketData.lastUpdated.auctions = await data.lastUpdated;
 
         const firstPageResponse = await fetch('https://api.hypixel.net/v2/skyblock/auctions?page=0');
-        if (!firstPageResponse.ok) return;
+        if (!firstPageResponse.ok) {
+            console.error(`Auction fetch (page 0) failed: ${firstPageResponse.status} ${firstPageResponse.statusText}`);
+            return;
+        }
 
         const firstPage = await firstPageResponse.json();
         const totalPages = firstPage.totalPages || 1;
@@ -2263,7 +2374,11 @@ async function updateAuctionData() {
 
         const pageRequests = [];
         for (let page = 1; page < totalPages; page += 1) {
-            pageRequests.push(fetch(`https://api.hypixel.net/v2/skyblock/auctions?page=${page}`).then(response => response.ok ? response.json() : null));
+            pageRequests.push(fetch(`https://api.hypixel.net/v2/skyblock/auctions?page=${page}`).then(response => {
+                if (response.ok) return response.json();
+                console.error(`Auction fetch (page ${page}) failed: ${response.status} ${response.statusText}`);
+                return null;
+            }));
         }
 
         const remainingPages = await Promise.all(pageRequests);
@@ -2276,7 +2391,7 @@ async function updateAuctionData() {
         auction_data = allAuctions;
         marketData.lowestBinPrices = buildLowestBinPrices(allAuctions);
     } catch (error) {
-        console.error('Auction fetch failed', error);
+        console.error('Auction fetch failed:', formatFetchError(error));
     }
 }
 
@@ -2398,7 +2513,12 @@ class UpdateOrderFillAmounts {
         if (sellSummary[sell_order_sell_summary_index]["orders"] > 1) return ('Sell order has multi order, not updating', sellOrder);
 
         const amountLeftOnSellOrder = sellSummary[sell_order_sell_summary_index]["amount"];
-        const amountSold = sellOrder["total-selling-amount"] - amountLeftOnSellOrder;
+        const rawAmountSold = sellOrder["total-selling-amount"] - amountLeftOnSellOrder;
+        // The matched order-book tier can belong to a different player's order resting
+        // at the same price (e.g. bazaar_data is up to 3s stale right after placing, or
+        // another order coincidentally lands on the same price) - clamp so a bad read
+        // can't push the sold amount backwards or past the order's own size.
+        const amountSold = Math.min(sellOrder["total-selling-amount"], Math.max(previousSoldTotal, rawAmountSold));
 
         trader_data["sell-order-overview"]["sell-orders"][sellOrderIndex] = this.updateSellOrderTraderData(amountSold, sellOrder);
         if (amountSold !== previousSoldTotal) {
@@ -2482,7 +2602,12 @@ class UpdateOrderFillAmounts {
         if (buySummary[buy_order_buy_summary_index]["orders"] > 1) return ('Buy order has multi order, not updating', buyOrder);
 
         const amountLeftOnBuyOrder = buySummary[buy_order_buy_summary_index]["amount"];
-        const amountSold = buyOrder["buying-amount"] - amountLeftOnBuyOrder;
+        const rawAmountSold = buyOrder["buying-amount"] - amountLeftOnBuyOrder;
+        // The matched order-book tier can belong to a different player's order resting
+        // at the same price (e.g. bazaar_data is up to 3s stale right after placing, or
+        // another order coincidentally lands on the same price) - clamp so a bad read
+        // can't push the bought amount backwards or past the order's own size.
+        const amountSold = Math.min(buyOrder["buying-amount"], Math.max(previousBoughtAmount, rawAmountSold));
 
         trader_data["buy-order-overview"]["buy-orders"][buyOrderIndex]["bought-amount"] = amountSold;
         if (amountSold !== previousBoughtAmount) {

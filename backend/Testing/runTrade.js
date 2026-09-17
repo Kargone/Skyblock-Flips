@@ -36,3 +36,21 @@ async function runTrade(tradeMessage) {
 }
 
 runPrompt();
+
+// async function runTrades(trades) {
+//     for (const trade of trades) {
+//         let tradeMessage = trade.replace(/\\/g, '');
+//         await runTrade(tradeMessage);
+//     }
+// }
+
+// import fs from 'node:fs';
+// import path from 'node:path';
+// import { fileURLToPath } from 'node:url';
+
+// try {
+//     const fileContent = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'pastTradesLogs.json'), 'utf8');
+//     runTrades(JSON.parse(fileContent).slice(2683));
+// } catch (error) {
+//     console.error('Error occurred while processing past trade logs.', error);
+// }

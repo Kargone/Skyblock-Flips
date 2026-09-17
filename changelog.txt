@@ -1,5 +1,6 @@
-Fixed issues after the file restructering
-Fixed the past trade log logging
-Fixed some more logging of the orders in the trade outcomes
-Fixed a logging issue with buy order canceling
-Fixed an error with it saving the new trader data
+Removed an old trader data file
+Changed it to insta sell for total investment worth
+Now writing ema weights to file
+Trader data accidently reset too
+Added timestampts to logging on backend.js
+Added a way to adjust taxes with derpy more easily (untested btw)
