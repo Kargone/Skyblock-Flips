@@ -1,6 +1,2 @@
-Removed an old trader data file
-Changed it to insta sell for total investment worth
-Now writing ema weights to file
-Trader data accidently reset too
-Added timestampts to logging on backend.js
-Added a way to adjust taxes with derpy more easily (untested btw)
+Fixed some of the error messaging (duplicated ERROR text, some dummy message filtering, partially sold log)
+Still working on flip optimizer files, mainly logging the correct data for history

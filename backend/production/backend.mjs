@@ -392,7 +392,10 @@ class ProcesTrade {
         let result = '';
 
         // determine message type
-        if (this.message.includes('[Bazaar] Bought')) {
+        if (this.message.includes('Guild >')) {
+            result = 'Nontrade message';
+            return "Nontrade message: " + this.message;
+        } else if (this.message.includes('[Bazaar] Bought')) {
             this.type = "insta-buy";
             const amountStringStart = findEnd(this.message, 'Bought ');
             const amountStringEnd = this.message.indexOf('x');
@@ -552,7 +555,7 @@ class ProcesTrade {
             const pricePerUnit = parseInt(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
             result = this.auctionCreation(pricePerUnit, nameString, detectedRarity);
-        } else if (this.message.includes('You collected')) {
+        } else if (this.message.includes('You collected') || !this.message.includes('[NPC] Jacob')) {
             this.type = "auction-claim";
             const priceStringStart = findEnd(this.message, 'collected ');
             const priceStringEnd = this.message.indexOf(' coins ')
@@ -621,7 +624,12 @@ class ProcesTrade {
             this.message.includes('BIN Auction started for') ||
             this.message.includes('You canceled your auction for') ||
             this.message.includes('You don\'t have anything to sell!') ||
-            this.message.includes('You claimed ')
+            this.message.includes('You claimed ') ||
+            this.message.includes('Cancelled parkour! You cannot fly.') ||
+            this.message.includes('[Bazaar] Somehow, there was nothing to claim!') ||
+            this.message.includes('[Bazaar] You reached the daily limit of coins you may create orders for on the Bazaar!') ||
+            this.message.includes('[NPC] Jacob') ||
+            this.message.includes('[Bazaar] You reached your maximum of 28 Bazaar orders!')
         ) {
             result = 'Nontrade message';
             return "Nontrade message: " + this.message;
@@ -630,7 +638,7 @@ class ProcesTrade {
         }
 
         if (result.includes('ERROR')) {
-            return consoleError('ERROR: ' + result + ' for trade message: ' + this.message);
+            return consoleError(result + ' for trade message: ' + this.message);
         } else {
             console.log('SUCCESS: ' + this.message + ' Result: ' + result);
         }
@@ -1548,7 +1556,7 @@ class ProcesTrade {
             const price = subSellOrder["price-bought"];
             const time_bought = subSellOrder["time-bought"];
             const subSellAmount = subSellOrder["partial-selling-amount"];
-            if (subSellOrder["partial-sold-amount"] != 0) consoleWarn("ERROR: Suborder has been partially sold, but the sell order is being cancelled. This should not happen. Some info: ", subSellAmount, subSellOrder, currentSellOrder, name, invesmentType, price);
+            if (subSellOrder["partial-sold-amount"] != 0) consoleWarn(`ERROR: Suborder has been partially sold, but the sell order is being cancelled. This should not happen. Some info: ${subSellAmount}, ${subSellOrder}, ${currentSellOrder}, ${name}, ${invesmentType}, ${price}`);
 
             if (trader_data[invesmentType][name] != undefined) {
                 let found = false;

@@ -50,7 +50,7 @@ runPrompt();
 
 // try {
 //     const fileContent = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'pastTradesLogs.json'), 'utf8');
-//     runTrades(JSON.parse(fileContent).slice(2683));
+//     runTrades(JSON.parse(fileContent).slice(6555));
 // } catch (error) {
 //     console.error('Error occurred while processing past trade logs.', error);
 // }
