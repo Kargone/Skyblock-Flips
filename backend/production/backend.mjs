@@ -555,7 +555,7 @@ class ProcesTrade {
             const pricePerUnit = parseInt(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
             result = this.auctionCreation(pricePerUnit, nameString, detectedRarity);
-        } else if (this.message.includes('You collected') || !this.message.includes('[NPC] Jacob')) {
+        } else if (this.message.includes('You collected') && !this.message.includes('[NPC] Jacob')) {
             this.type = "auction-claim";
             const priceStringStart = findEnd(this.message, 'collected ');
             const priceStringEnd = this.message.indexOf(' coins ')

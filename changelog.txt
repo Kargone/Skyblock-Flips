@@ -1,2 +1,0 @@
-Fixed some of the error messaging (duplicated ERROR text, some dummy message filtering, partially sold log)
-Still working on flip optimizer files, mainly logging the correct data for history

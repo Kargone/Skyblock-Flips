@@ -16729,3 +16729,1004 @@
 {"event":"progress","order_id":"buy:Suspicious Scrap:1790089711480","timestamp":1790093601681,"filled_amount_so_far":114}
 {"event":"progress","order_id":"buy:Enchanted Packed Ice:1790089728921","timestamp":1790093601681,"filled_amount_so_far":327}
 {"event":"progress","order_id":"buy:Enchanted Iron Block:1790089738597","timestamp":1790093601681,"filled_amount_so_far":981}
+{"event":"progress","order_id":"sell:Enchanted Cookie:1790089230981","timestamp":1790107566593,"filled_amount_so_far":2046}
+{"event":"progress","order_id":"sell:? Fine Ruby Gemstone:1790089347589","timestamp":1790107566593,"filled_amount_so_far":621}
+{"event":"progress","order_id":"sell:Warty:1790089431354","timestamp":1790107566593,"filled_amount_so_far":1310}
+{"event":"progress","order_id":"buy:Voracious Spider Shard:1790089687052","timestamp":1790107566593,"filled_amount_so_far":611}
+{"event":"progress","order_id":"buy:Golden Ghoul Shard:1790089660477","timestamp":1790107566593,"filled_amount_so_far":384}
+{"event":"progress","order_id":"buy:Enchanted Packed Ice:1790089728921","timestamp":1790107566593,"filled_amount_so_far":351}
+{"event":"progress","order_id":"buy:Honeybuzz Shard:1790089699607","timestamp":1790107566593,"filled_amount_so_far":2491}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790089329996","timestamp":1790107601489,"filled_amount_so_far":1999}
+{"event":"progress","order_id":"buy:Tepid Shard:1790089671542","timestamp":1790114301050,"filled_amount_so_far":461}
+{"event":"resolved","order_id":"sell:Busted Belt Buckle:1790089201421","resolve_time":1790114492636,"outcome":"cancelled","filled_amount":1,"time_to_resolve_ms":25291215}
+{"event":"resolved","order_id":"sell:Enchanted Cactus:1790089424593","resolve_time":1790114514020,"outcome":"cancelled","filled_amount":583,"time_to_resolve_ms":25089427}
+{"event":"progress","order_id":"sell:Compacted Wild Rose:1790089215401","timestamp":1790114521331,"filled_amount_so_far":2240}
+{"event":"progress","order_id":"sell:Compacted Wild Rose:1790089209853","timestamp":1790114521331,"filled_amount_so_far":1854}
+{"event":"resolved","order_id":"sell:Enchanted Emerald Block:1790089243034","resolve_time":1790114526654,"outcome":"cancelled","filled_amount":74,"time_to_resolve_ms":25283620}
+{"event":"placed","order_id":"sell:Enchanted Emerald Block:1790114529051","order_type":"sell","item_name":"Enchanted Emerald Block","place_time":1790114529051,"order_amount":2040,"order_price":102634.1,"current_buy_price":102634.41699604742,"current_sell_price":99001.30229665071,"volume_7_day":63423,"volume_24_hour":4000,"past_quantity_per_hour":97,"new_listings_per_hour":1.3333333333333333,"current_holding_amount":2040}
+{"event":"resolved","order_id":"sell:Enchanted Honeycomb:1790089260592","resolve_time":1790114533413,"outcome":"cancelled","filled_amount":0,"time_to_resolve_ms":25272821}
+{"event":"placed","order_id":"sell:Enchanted Honeycomb:1790114535538","order_type":"sell","item_name":"Enchanted Honeycomb","place_time":1790114535538,"order_amount":2240,"order_price":16507.7,"current_buy_price":16507.8,"current_sell_price":15225.439009738786,"volume_7_day":613188,"volume_24_hour":45628,"past_quantity_per_hour":4955,"new_listings_per_hour":1.5,"current_holding_amount":3193}
+{"event":"resolved","order_id":"sell:Enchanted Ruby Veilshroom:1790089455017","resolve_time":1790114539673,"outcome":"cancelled","filled_amount":74,"time_to_resolve_ms":25084656}
+{"event":"placed","order_id":"sell:Enchanted Ruby Veilshroom:1790114541796","order_type":"sell","item_name":"Enchanted Ruby Veilshroom","place_time":1790114541796,"order_amount":1693,"order_price":16752.3,"current_buy_price":16752.65046511628,"current_sell_price":13017.100000000002,"volume_7_day":194442,"volume_24_hour":16286,"past_quantity_per_hour":1153,"new_listings_per_hour":2.5,"current_holding_amount":1783}
+{"event":"resolved","order_id":"sell:? Fine Aquamarine Gemstone:1790089296292","resolve_time":1790114545193,"outcome":"cancelled","filled_amount":149,"time_to_resolve_ms":25248901}
+{"event":"placed","order_id":"sell:? Fine Aquamarine Gemstone:1790114547203","order_type":"sell","item_name":"? Fine Aquamarine Gemstone","place_time":1790114547203,"order_amount":1592,"order_price":25422.3,"current_buy_price":25422.4,"current_sell_price":24346.9234421365,"volume_7_day":472392,"volume_24_hour":29061,"past_quantity_per_hour":2339,"new_listings_per_hour":2.5,"current_holding_amount":1592}
+{"event":"resolved","order_id":"sell:? Fine Ruby Gemstone:1790089314641","resolve_time":1790114551108,"outcome":"cancelled","filled_amount":0,"time_to_resolve_ms":25236467}
+{"event":"placed","order_id":"sell:? Fine Ruby Gemstone:1790114553350","order_type":"sell","item_name":"? Fine Ruby Gemstone","place_time":1790114553350,"order_amount":2240,"order_price":23905.3,"current_buy_price":23905.399964285716,"current_sell_price":22280.1,"volume_7_day":442481,"volume_24_hour":58525,"past_quantity_per_hour":2785,"new_listings_per_hour":2.6666666666666665,"current_holding_amount":2649}
+{"event":"resolved","order_id":"sell:? Fine Ruby Gemstone:1790089347589","resolve_time":1790114556753,"outcome":"cancelled","filled_amount":621,"time_to_resolve_ms":25209164}
+{"event":"placed","order_id":"sell:? Fine Ruby Gemstone:1790114558819","order_type":"sell","item_name":"? Fine Ruby Gemstone","place_time":1790114558819,"order_amount":1066,"order_price":23905.2,"current_buy_price":23905.399964285716,"current_sell_price":22280.1,"volume_7_day":442481,"volume_24_hour":58525,"past_quantity_per_hour":2785,"new_listings_per_hour":2.6666666666666665,"current_holding_amount":1475}
+{"event":"resolved","order_id":"sell:Silver Fang:1790089438317","resolve_time":1790114562436,"outcome":"cancelled","filled_amount":25,"time_to_resolve_ms":25124119}
+{"event":"placed","order_id":"sell:Silver Fang:1790114564445","order_type":"sell","item_name":"Silver Fang","place_time":1790114564445,"order_amount":2215,"order_price":12050.4,"current_buy_price":12050.73301540719,"current_sell_price":8120.6,"volume_7_day":106759,"volume_24_hour":12995,"past_quantity_per_hour":1801,"new_listings_per_hour":3.5,"current_holding_amount":2814}
+{"event":"resolved","order_id":"sell:Young Dragon Fragment:1790089324350","resolve_time":1790114567698,"outcome":"cancelled","filled_amount":28,"time_to_resolve_ms":25243348}
+{"event":"placed","order_id":"sell:Young Dragon Fragment:1790114579809","order_type":"sell","item_name":"Young Dragon Fragment","place_time":1790114579809,"order_amount":2240,"order_price":13833.1,"current_buy_price":13967.243874425727,"current_sell_price":12357.489901989902,"volume_7_day":623729,"volume_24_hour":80396,"past_quantity_per_hour":4060,"new_listings_per_hour":1.6666666666666667,"current_holding_amount":3972}
+{"event":"progress","order_id":"sell:? Fine Aquamarine Gemstone:1790114547203","timestamp":1790114581525,"filled_amount_so_far":4}
+{"event":"resolved","order_id":"buy:Enchanted Iron Block:1790089738597","resolve_time":1790114590832,"outcome":"cancelled","filled_amount":981,"time_to_resolve_ms":24852235}
+{"event":"placed","order_id":"sell:Enchanted Iron Block:1790114599872","order_type":"sell","item_name":"Enchanted Iron Block","place_time":1790114599872,"order_amount":981,"order_price":57799.7,"current_buy_price":57856.05231164384,"current_sell_price":52229.7787113402,"volume_7_day":237594,"volume_24_hour":40707,"past_quantity_per_hour":2090,"new_listings_per_hour":15.166666666666666,"current_holding_amount":981}
+{"event":"progress","order_id":"sell:? Fine Aquamarine Gemstone:1790114547203","timestamp":1790114602604,"filled_amount_so_far":7}
+{"event":"resolved","order_id":"buy:Enchanted Packed Ice:1790089728921","resolve_time":1790114602802,"outcome":"cancelled","filled_amount":351,"time_to_resolve_ms":24873881}
+{"event":"placed","order_id":"sell:Enchanted Packed Ice:1790114613753","order_type":"sell","item_name":"Enchanted Packed Ice","place_time":1790114613753,"order_amount":1709,"order_price":14520.7,"current_buy_price":14520.99480233705,"current_sell_price":12845.2,"volume_7_day":266221,"volume_24_hour":16719,"past_quantity_per_hour":1067,"new_listings_per_hour":1.3333333333333333,"current_holding_amount":1709}
+{"event":"resolved","order_id":"buy:Exportable Carrots:1790089627296","resolve_time":1790114617337,"outcome":"cancelled","filled_amount":0,"time_to_resolve_ms":24990041}
+{"event":"resolved","order_id":"buy:Rusty Coin:1790089588940","resolve_time":1790114622189,"outcome":"cancelled","filled_amount":76,"time_to_resolve_ms":25033249}
+{"event":"resolved","order_id":"buy:Golden Ghoul Shard:1790089660477","resolve_time":1790114625539,"outcome":"cancelled","filled_amount":384,"time_to_resolve_ms":24965062}
+{"event":"resolved","order_id":"buy:Tepid Shard:1790089671542","resolve_time":1790114628644,"outcome":"cancelled","filled_amount":461,"time_to_resolve_ms":24957102}
+{"event":"resolved","order_id":"buy:Superior Dragon Fragment:1790089575920","resolve_time":1790114631674,"outcome":"cancelled","filled_amount":14,"time_to_resolve_ms":25055754}
+{"event":"resolved","order_id":"buy:Suspicious Scrap:1790089711480","resolve_time":1790114634993,"outcome":"cancelled","filled_amount":114,"time_to_resolve_ms":24923513}
+{"event":"resolved","order_id":"buy:Fermento:1790089533416","resolve_time":1790114639593,"outcome":"cancelled","filled_amount":411,"time_to_resolve_ms":25106177}
+{"event":"progress","order_id":"sell:Enchanted Packed Ice:1790114613753","timestamp":1790114641718,"filled_amount_so_far":72}
+{"event":"progress","order_id":"buy:Voracious Spider Shard:1790089687052","timestamp":1790114641718,"filled_amount_so_far":35}
+{"event":"progress","order_id":"sell:Enchanted Emerald Block:1790114529051","timestamp":1790114662786,"filled_amount_so_far":2}
+{"event":"progress","order_id":"sell:Enchanted Honeycomb:1790114535538","timestamp":1790114662786,"filled_amount_so_far":21}
+{"event":"progress","order_id":"sell:Enchanted Emerald Block:1790114529051","timestamp":1790114680908,"filled_amount_so_far":3}
+{"event":"resolved","order_id":"buy:Voracious Spider Shard:1790089687052","resolve_time":1790114684914,"outcome":"cancelled","filled_amount":611,"time_to_resolve_ms":24997862}
+{"event":"placed","order_id":"sell:Voracious Spider Shard:1790114687613","order_type":"sell","item_name":"Voracious Spider Shard","place_time":1790114687613,"order_amount":611,"order_price":10249,"current_buy_price":10249.197448979592,"current_sell_price":3192.1,"volume_7_day":70781,"volume_24_hour":12873,"past_quantity_per_hour":198,"new_listings_per_hour":0.8333333333333334,"current_holding_amount":611}
+{"event":"resolved","order_id":"sell:? Fine Ruby Gemstone:1790114558819","resolve_time":1790114691652,"outcome":"cancelled","filled_amount":0,"time_to_resolve_ms":132833}
+{"event":"placed","order_id":"sell:? Fine Ruby Gemstone:1790114693937","order_type":"sell","item_name":"? Fine Ruby Gemstone","place_time":1790114693937,"order_amount":1475,"order_price":23905.2,"current_buy_price":23905.267755595887,"current_sell_price":22280.1,"volume_7_day":442481,"volume_24_hour":58523,"past_quantity_per_hour":2784,"new_listings_per_hour":2.6666666666666665,"current_holding_amount":1475}
+{"event":"progress","order_id":"sell:? Fine Ruby Gemstone:1790114693937","timestamp":1790114695933,"filled_amount_so_far":409}
+{"event":"progress","order_id":"buy:Honeybuzz Shard:1790089699607","timestamp":1790114698928,"filled_amount_so_far":251}
+{"event":"placed","order_id":"sell:Honeybuzz Shard:1790114700596","order_type":"sell","item_name":"Honeybuzz Shard","place_time":1790114700596,"order_amount":2240,"order_price":6309.3,"current_buy_price":6309.4,"current_sell_price":3866.7,"volume_7_day":141200,"volume_24_hour":12461,"past_quantity_per_hour":1072,"new_listings_per_hour":0.3333333333333333,"current_holding_amount":2240}
+{"event":"resolved","order_id":"buy:Honeybuzz Shard:1790089699607","resolve_time":1790114703632,"outcome":"cancelled","filled_amount":2491,"time_to_resolve_ms":25004025}
+{"event":"resolved","order_id":"buy:Purple Candy:1790089650343","resolve_time":1790114707072,"outcome":"cancelled","filled_amount":912,"time_to_resolve_ms":25056729}
+{"event":"progress","order_id":"sell:Enchanted Ruby Veilshroom:1790114541796","timestamp":1790114720008,"filled_amount_so_far":15}
+{"event":"placed","order_id":"sell:Silver Lotus:1790114731196","order_type":"sell","item_name":"Silver Lotus","place_time":1790114731196,"order_amount":981,"order_price":12600.2,"current_buy_price":12600.372156862744,"current_sell_price":8000.800000000001,"volume_7_day":445718,"volume_24_hour":47544,"past_quantity_per_hour":5024,"new_listings_per_hour":0.8333333333333334,"current_holding_amount":981}
+{"event":"progress","order_id":"sell:Honeybuzz Shard:1790114700596","timestamp":1790114741349,"filled_amount_so_far":1}
+{"event":"progress","order_id":"sell:? Fine Aquamarine Gemstone:1790114547203","timestamp":1790114780117,"filled_amount_so_far":12}
+{"event":"placed","order_id":"buy:Enchanted Golden Carrot:1790114796902","order_type":"buy","item_name":"Enchanted Golden Carrot","place_time":1790114796902,"order_amount":4000,"order_price":75500.1,"current_buy_price":78500,"current_sell_price":75500,"volume_7_day":1086082,"volume_24_hour":52877,"past_quantity_per_hour":4023,"new_listings_per_hour":6.5,"current_holding_amount":0}
+{"event":"placed","order_id":"buy:Enchanted Cactus:1790114808344","order_type":"buy","item_name":"Enchanted Cactus","place_time":1790114808344,"order_amount":2000,"order_price":100000.6,"current_buy_price":103910.3,"current_sell_price":100000.33108013937,"volume_7_day":283179,"volume_24_hour":11694,"past_quantity_per_hour":1757,"new_listings_per_hour":2.5,"current_holding_amount":311}
+{"event":"placed","order_id":"buy:Enchanted Sugar Cane:1790114815189","order_type":"buy","item_name":"Enchanted Sugar Cane","place_time":1790114815189,"order_amount":2000,"order_price":99476.8,"current_buy_price":102466.6309063893,"current_sell_price":99476.70004173623,"volume_7_day":779543,"volume_24_hour":37454,"past_quantity_per_hour":1882,"new_listings_per_hour":10.666666666666666,"current_holding_amount":0}
+{"event":"placed","order_id":"buy:Warty:1790114830836","order_type":"buy","item_name":"Warty","place_time":1790114830836,"order_amount":4000,"order_price":9482.2,"current_buy_price":12339.753821656052,"current_sell_price":9015.609710586445,"volume_7_day":153123,"volume_24_hour":2590,"past_quantity_per_hour":0,"new_listings_per_hour":2.1666666666666665,"current_holding_amount":0}
+{"event":"progress","order_id":"buy:Enchanted Golden Carrot:1790114796902","timestamp":1790114840295,"filled_amount_so_far":12}
+{"event":"progress","order_id":"buy:Enchanted Cactus:1790114808344","timestamp":1790114840295,"filled_amount_so_far":3}
+{"event":"placed","order_id":"buy:Helianthus:1790114847099","order_type":"buy","item_name":"Helianthus","place_time":1790114847099,"order_amount":1000,"order_price":403946.2,"current_buy_price":426859.3366666666,"current_sell_price":403945.93285198556,"volume_7_day":80785,"volume_24_hour":2344,"past_quantity_per_hour":53,"new_listings_per_hour":18.333333333333332,"current_holding_amount":804}
+{"event":"placed","order_id":"buy:Tool Exp Capsule:1790114860515","order_type":"buy","item_name":"Tool Exp Capsule","place_time":1790114860515,"order_amount":4000,"order_price":97197.4,"current_buy_price":101975.5,"current_sell_price":97197.20185790118,"volume_7_day":157950,"volume_24_hour":9871,"past_quantity_per_hour":824,"new_listings_per_hour":2.5,"current_holding_amount":0}
+{"event":"progress","order_id":"buy:Warty:1790114830836","timestamp":1790114861366,"filled_amount_so_far":15}
+{"event":"progress","order_id":"buy:Helianthus:1790114847099","timestamp":1790114861366,"filled_amount_so_far":2}
+{"event":"progress","order_id":"sell:? Fine Aquamarine Gemstone:1790114547203","timestamp":1790114882415,"filled_amount_so_far":13}
+{"event":"progress","order_id":"buy:Helianthus:1790114847099","timestamp":1790114882415,"filled_amount_so_far":11}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790114882415,"filled_amount_so_far":5}
+{"event":"placed","order_id":"buy:Glacite Jewel:1790114898125","order_type":"buy","item_name":"Glacite Jewel","place_time":1790114898125,"order_amount":4000,"order_price":39421.6,"current_buy_price":46357.90438356165,"current_sell_price":39019.43922330098,"volume_7_day":165684,"volume_24_hour":11710,"past_quantity_per_hour":492,"new_listings_per_hour":20.333333333333332,"current_holding_amount":0}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790114900474,"filled_amount_so_far":37}
+{"event":"placed","order_id":"buy:Enchanted Gold Block:1790114915975","order_type":"buy","item_name":"Enchanted Gold Block","place_time":1790114915975,"order_amount":4000,"order_price":76881.3,"current_buy_price":79962.82065337762,"current_sell_price":76881.2,"volume_7_day":405640,"volume_24_hour":44479,"past_quantity_per_hour":2408,"new_listings_per_hour":14.166666666666666,"current_holding_amount":836}
+{"event":"progress","order_id":"sell:Enchanted Emerald Block:1790114529051","timestamp":1790114921529,"filled_amount_so_far":5}
+{"event":"progress","order_id":"buy:Enchanted Sugar Cane:1790114815189","timestamp":1790114921529,"filled_amount_so_far":6}
+{"event":"progress","order_id":"sell:Honeybuzz Shard:1790114700596","timestamp":1790114921529,"filled_amount_so_far":65}
+{"event":"progress","order_id":"buy:Glacite Jewel:1790114898125","timestamp":1790114921529,"filled_amount_so_far":1}
+{"event":"placed","order_id":"buy:Superior Dragon Fragment:1790114934849","order_type":"buy","item_name":"Superior Dragon Fragment","place_time":1790114934849,"order_amount":4000,"order_price":74002.4,"current_buy_price":86526.79702675917,"current_sell_price":74002.20149625935,"volume_7_day":59581,"volume_24_hour":2817,"past_quantity_per_hour":387,"new_listings_per_hour":24.5,"current_holding_amount":401}
+{"event":"placed","order_id":"buy:Rusty Coin:1790114942324","order_type":"buy","item_name":"Rusty Coin","place_time":1790114942324,"order_amount":4000,"order_price":22444,"current_buy_price":27998,"current_sell_price":22442.64354765162,"volume_7_day":451821,"volume_24_hour":33812,"past_quantity_per_hour":2733,"new_listings_per_hour":8,"current_holding_amount":76}
+{"event":"progress","order_id":"sell:Young Dragon Fragment:1790114579809","timestamp":1790114942612,"filled_amount_so_far":26}
+{"event":"progress","order_id":"buy:Enchanted Gold Block:1790114915975","timestamp":1790114942612,"filled_amount_so_far":1}
+{"event":"progress","order_id":"buy:Enchanted Golden Carrot:1790114796902","timestamp":1790114942612,"filled_amount_so_far":13}
+{"event":"progress","order_id":"buy:Glacite Jewel:1790114898125","timestamp":1790114942612,"filled_amount_so_far":3}
+{"event":"placed","order_id":"buy:Can of Worms:1790114953477","order_type":"buy","item_name":"Can of Worms","place_time":1790114953477,"order_amount":4000,"order_price":10518.7,"current_buy_price":14998.8,"current_sell_price":10518.6,"volume_7_day":169254,"volume_24_hour":7257,"past_quantity_per_hour":131,"new_listings_per_hour":6.333333333333333,"current_holding_amount":104}
+{"event":"progress","order_id":"sell:Young Dragon Fragment:1790114579809","timestamp":1790114960736,"filled_amount_so_far":56}
+{"event":"progress","order_id":"buy:Glacite Jewel:1790114898125","timestamp":1790114960736,"filled_amount_so_far":8}
+{"event":"placed","order_id":"buy:Exportable Carrots:1790114965596","order_type":"buy","item_name":"Exportable Carrots","place_time":1790114965596,"order_amount":4000,"order_price":5558.3,"current_buy_price":9552.2,"current_sell_price":5558.026984411396,"volume_7_day":375248,"volume_24_hour":22291,"past_quantity_per_hour":640,"new_listings_per_hour":1.6666666666666667,"current_holding_amount":475}
+{"event":"placed","order_id":"buy:Agarimoo Tongue:1790114970487","order_type":"buy","item_name":"Agarimoo Tongue","place_time":1790114970487,"order_amount":4000,"order_price":7005.7,"current_buy_price":10599.9,"current_sell_price":7005.403812092712,"volume_7_day":197164,"volume_24_hour":9742,"past_quantity_per_hour":62,"new_listings_per_hour":1.3333333333333333,"current_holding_amount":168}
+{"event":"placed","order_id":"buy:Jacob's Ticket:1790114980847","order_type":"buy","item_name":"Jacob's Ticket","place_time":1790114980847,"order_amount":2000,"order_price":37100.6,"current_buy_price":39560.30352348993,"current_sell_price":37100.311349556425,"volume_7_day":2987160,"volume_24_hour":113985,"past_quantity_per_hour":8533,"new_listings_per_hour":101.5,"current_holding_amount":0}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790114981811,"filled_amount_so_far":1}
+{"event":"progress","order_id":"buy:Glacite Jewel:1790114898125","timestamp":1790114981811,"filled_amount_so_far":10}
+{"event":"progress","order_id":"buy:Rusty Coin:1790114942324","timestamp":1790114981811,"filled_amount_so_far":48}
+{"event":"progress","order_id":"buy:Enchanted Sugar Cane:1790114815189","timestamp":1790114981811,"filled_amount_so_far":12}
+{"event":"progress","order_id":"buy:Rusty Coin:1790114942324","timestamp":1790115002783,"filled_amount_so_far":55}
+{"event":"progress","order_id":"buy:Agarimoo Tongue:1790114970487","timestamp":1790115002783,"filled_amount_so_far":3}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790115002783,"filled_amount_so_far":7}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790115020783,"filled_amount_so_far":14}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115020783,"filled_amount_so_far":10}
+{"event":"progress","order_id":"buy:Enchanted Golden Carrot:1790114796902","timestamp":1790115020783,"filled_amount_so_far":31}
+{"event":"progress","order_id":"buy:Rusty Coin:1790114942324","timestamp":1790115020783,"filled_amount_so_far":71}
+{"event":"progress","order_id":"buy:Enchanted Golden Carrot:1790114796902","timestamp":1790115081268,"filled_amount_so_far":41}
+{"event":"progress","order_id":"buy:Enchanted Sugar Cane:1790114815189","timestamp":1790115081268,"filled_amount_so_far":23}
+{"event":"progress","order_id":"buy:Warty:1790114830836","timestamp":1790115081268,"filled_amount_so_far":22}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115081268,"filled_amount_so_far":11}
+{"event":"progress","order_id":"buy:Exportable Carrots:1790114965596","timestamp":1790115081268,"filled_amount_so_far":128}
+{"event":"progress","order_id":"buy:Enchanted Golden Carrot:1790114796902","timestamp":1790115102348,"filled_amount_so_far":43}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115102348,"filled_amount_so_far":21}
+{"event":"progress","order_id":"buy:Enchanted Sugar Cane:1790114815189","timestamp":1790115120418,"filled_amount_so_far":64}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115120418,"filled_amount_so_far":44}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115141441,"filled_amount_so_far":58}
+{"event":"progress","order_id":"buy:Rusty Coin:1790114942324","timestamp":1790115141441,"filled_amount_so_far":80}
+{"event":"progress","order_id":"buy:Enchanted Golden Carrot:1790114796902","timestamp":1790115141441,"filled_amount_so_far":51}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790115141441,"filled_amount_so_far":15}
+{"event":"progress","order_id":"buy:Rusty Coin:1790114942324","timestamp":1790115162507,"filled_amount_so_far":82}
+{"event":"progress","order_id":"buy:Enchanted Sugar Cane:1790114815189","timestamp":1790115162507,"filled_amount_so_far":132}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115162507,"filled_amount_so_far":79}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115180543,"filled_amount_so_far":114}
+{"event":"progress","order_id":"buy:Enchanted Sugar Cane:1790114815189","timestamp":1790115180543,"filled_amount_so_far":133}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115180543,"filled_amount_so_far":23}
+{"event":"progress","order_id":"buy:Rusty Coin:1790114942324","timestamp":1790115180543,"filled_amount_so_far":92}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115201595,"filled_amount_so_far":135}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790115201595,"filled_amount_so_far":17}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115201595,"filled_amount_so_far":25}
+{"event":"progress","order_id":"buy:Enchanted Sugar Cane:1790114815189","timestamp":1790115201595,"filled_amount_so_far":134}
+{"event":"progress","order_id":"buy:Enchanted Sugar Cane:1790114815189","timestamp":1790115222650,"filled_amount_so_far":138}
+{"event":"progress","order_id":"buy:Warty:1790114830836","timestamp":1790115222650,"filled_amount_so_far":48}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115222650,"filled_amount_so_far":148}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790115222651,"filled_amount_so_far":20}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115222651,"filled_amount_so_far":32}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115240746,"filled_amount_so_far":33}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115261777,"filled_amount_so_far":152}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115261777,"filled_amount_so_far":38}
+{"event":"progress","order_id":"buy:Enchanted Golden Carrot:1790114796902","timestamp":1790115261777,"filled_amount_so_far":62}
+{"event":"progress","order_id":"buy:Enchanted Golden Carrot:1790114796902","timestamp":1790115279846,"filled_amount_so_far":72}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115279846,"filled_amount_so_far":161}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115279846,"filled_amount_so_far":55}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115300901,"filled_amount_so_far":187}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115300901,"filled_amount_so_far":62}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115321967,"filled_amount_so_far":221}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115340093,"filled_amount_so_far":247}
+{"event":"progress","order_id":"sell:Honeybuzz Shard:1790114700596","timestamp":1790115340093,"filled_amount_so_far":2112}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115361065,"filled_amount_so_far":70}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115361065,"filled_amount_so_far":267}
+{"event":"resolved","order_id":"sell:Honeybuzz Shard:1790114700596","resolve_time":1790115372278,"outcome":"filled","filled_amount":2240,"time_to_resolve_ms":671682}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115382097,"filled_amount_so_far":316}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790115382097,"filled_amount_so_far":25}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115382097,"filled_amount_so_far":71}
+{"event":"progress","order_id":"buy:Agarimoo Tongue:1790114970487","timestamp":1790115382097,"filled_amount_so_far":4}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115400124,"filled_amount_so_far":324}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790115400124,"filled_amount_so_far":26}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115421188,"filled_amount_so_far":327}
+{"event":"progress","order_id":"buy:Rusty Coin:1790114942324","timestamp":1790115421188,"filled_amount_so_far":137}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790115421188,"filled_amount_so_far":27}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115442250,"filled_amount_so_far":347}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115460286,"filled_amount_so_far":348}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115481313,"filled_amount_so_far":369}
+{"event":"progress","order_id":"buy:Enchanted Golden Carrot:1790114796902","timestamp":1790115481312,"filled_amount_so_far":75}
+{"event":"progress","order_id":"buy:Rusty Coin:1790114942324","timestamp":1790115481313,"filled_amount_so_far":147}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115481313,"filled_amount_so_far":72}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790115481313,"filled_amount_so_far":28}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115502377,"filled_amount_so_far":373}
+{"event":"progress","order_id":"buy:Rusty Coin:1790114942324","timestamp":1790115502377,"filled_amount_so_far":152}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115520401,"filled_amount_so_far":377}
+{"event":"progress","order_id":"buy:Enchanted Gold Block:1790114915975","timestamp":1790115520402,"filled_amount_so_far":279}
+{"event":"progress","order_id":"buy:Enchanted Gold Block:1790114915975","timestamp":1790115562502,"filled_amount_so_far":303}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115562502,"filled_amount_so_far":84}
+{"event":"progress","order_id":"buy:Rusty Coin:1790114942324","timestamp":1790115562502,"filled_amount_so_far":170}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115562502,"filled_amount_so_far":406}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790115562502,"filled_amount_so_far":30}
+{"event":"progress","order_id":"buy:Exportable Carrots:1790114965596","timestamp":1790115562502,"filled_amount_so_far":1024}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115580526,"filled_amount_so_far":423}
+{"event":"progress","order_id":"sell:Enchanted Packed Ice:1790114613753","timestamp":1790115580526,"filled_amount_so_far":118}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115601594,"filled_amount_so_far":430}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115601594,"filled_amount_so_far":126}
+{"event":"progress","order_id":"buy:Rusty Coin:1790114942324","timestamp":1790115601594,"filled_amount_so_far":171}
+{"event":"progress","order_id":"buy:Enchanted Golden Carrot:1790114796902","timestamp":1790115622628,"filled_amount_so_far":108}
+{"event":"progress","order_id":"buy:Warty:1790114830836","timestamp":1790115622628,"filled_amount_so_far":63}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115622628,"filled_amount_so_far":128}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115622628,"filled_amount_so_far":442}
+{"event":"progress","order_id":"buy:Enchanted Gold Block:1790114915975","timestamp":1790115622628,"filled_amount_so_far":304}
+{"event":"progress","order_id":"buy:Rusty Coin:1790114942324","timestamp":1790115622628,"filled_amount_so_far":186}
+{"event":"progress","order_id":"buy:Agarimoo Tongue:1790114970487","timestamp":1790115622628,"filled_amount_so_far":433}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790115622628,"filled_amount_so_far":35}
+{"event":"progress","order_id":"buy:Enchanted Golden Carrot:1790114796902","timestamp":1790115641199,"filled_amount_so_far":109}
+{"event":"progress","order_id":"buy:Tool Exp Capsule:1790114860515","timestamp":1790115641200,"filled_amount_so_far":659}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115641200,"filled_amount_so_far":129}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115661741,"filled_amount_so_far":133}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790115682762,"filled_amount_so_far":41}
+{"event":"progress","order_id":"buy:Enchanted Gold Block:1790114915975","timestamp":1790115700893,"filled_amount_so_far":315}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790115700893,"filled_amount_so_far":66}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115721973,"filled_amount_so_far":202}
+{"event":"progress","order_id":"buy:Rusty Coin:1790114942324","timestamp":1790115721973,"filled_amount_so_far":187}
+{"event":"progress","order_id":"buy:Enchanted Golden Carrot:1790114796902","timestamp":1790115721972,"filled_amount_so_far":114}
+{"event":"progress","order_id":"buy:Enchanted Gold Block:1790114915975","timestamp":1790115721973,"filled_amount_so_far":316}
+{"event":"progress","order_id":"buy:Rusty Coin:1790114942324","timestamp":1790115739997,"filled_amount_so_far":191}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790115739997,"filled_amount_so_far":67}
+{"event":"progress","order_id":"buy:Enchanted Cactus:1790114808344","timestamp":1790115800135,"filled_amount_so_far":97}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115821184,"filled_amount_so_far":203}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790115821184,"filled_amount_so_far":72}
+{"event":"progress","order_id":"buy:Rusty Coin:1790114942324","timestamp":1790115821184,"filled_amount_so_far":230}
+{"event":"progress","order_id":"sell:Enchanted Packed Ice:1790114613753","timestamp":1790115842257,"filled_amount_so_far":502}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115881338,"filled_amount_so_far":209}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115902376,"filled_amount_so_far":211}
+{"event":"progress","order_id":"buy:Rusty Coin:1790114942324","timestamp":1790115902376,"filled_amount_so_far":240}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115920403,"filled_amount_so_far":214}
+{"event":"progress","order_id":"buy:Rusty Coin:1790114942324","timestamp":1790115920403,"filled_amount_so_far":247}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790115920403,"filled_amount_so_far":80}
+{"event":"progress","order_id":"buy:Enchanted Cactus:1790114808344","timestamp":1790115942708,"filled_amount_so_far":103}
+{"event":"progress","order_id":"buy:Enchanted Cactus:1790114808344","timestamp":1790115960761,"filled_amount_so_far":113}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790115960761,"filled_amount_so_far":215}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790114599872","timestamp":1790115981779,"filled_amount_so_far":9}
+{"event":"progress","order_id":"buy:Rusty Coin:1790114942324","timestamp":1790115981779,"filled_amount_so_far":250}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790115981779,"filled_amount_so_far":83}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790116000012,"filled_amount_so_far":218}
+{"event":"progress","order_id":"buy:Agarimoo Tongue:1790114970487","timestamp":1790116000012,"filled_amount_so_far":455}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790114599872","timestamp":1790116020894,"filled_amount_so_far":15}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790116041908,"filled_amount_so_far":220}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790116059989,"filled_amount_so_far":223}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790116081055,"filled_amount_so_far":225}
+{"event":"progress","order_id":"buy:Rusty Coin:1790114942324","timestamp":1790116081059,"filled_amount_so_far":255}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790114599872","timestamp":1790116102099,"filled_amount_so_far":16}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790116120098,"filled_amount_so_far":227}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790116141199,"filled_amount_so_far":229}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790116162256,"filled_amount_so_far":231}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790114599872","timestamp":1790116162256,"filled_amount_so_far":48}
+{"event":"progress","order_id":"buy:Rusty Coin:1790114942324","timestamp":1790116162256,"filled_amount_so_far":275}
+{"event":"progress","order_id":"buy:Enchanted Gold Block:1790114915975","timestamp":1790116183326,"filled_amount_so_far":435}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790114599872","timestamp":1790116222428,"filled_amount_so_far":55}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790116222428,"filled_amount_so_far":232}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790116261489,"filled_amount_so_far":94}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790116282521,"filled_amount_so_far":234}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790114599872","timestamp":1790116282521,"filled_amount_so_far":59}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790114599872","timestamp":1790116321648,"filled_amount_so_far":66}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790116360725,"filled_amount_so_far":236}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790116381772,"filled_amount_so_far":95}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790114599872","timestamp":1790116399959,"filled_amount_so_far":71}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790116441916,"filled_amount_so_far":104}
+{"event":"progress","order_id":"buy:Enchanted Cactus:1790114808344","timestamp":1790116441916,"filled_amount_so_far":398}
+{"event":"progress","order_id":"sell:Enchanted Packed Ice:1790114613753","timestamp":1790116481054,"filled_amount_so_far":529}
+{"event":"progress","order_id":"sell:Enchanted Packed Ice:1790114613753","timestamp":1790116502118,"filled_amount_so_far":537}
+{"event":"progress","order_id":"buy:Enchanted Golden Carrot:1790114796902","timestamp":1790116523126,"filled_amount_so_far":284}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790116523126,"filled_amount_so_far":106}
+{"event":"progress","order_id":"sell:Enchanted Packed Ice:1790114613753","timestamp":1790116541179,"filled_amount_so_far":633}
+{"event":"progress","order_id":"buy:Enchanted Gold Block:1790114915975","timestamp":1790116541179,"filled_amount_so_far":443}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790116541179,"filled_amount_so_far":110}
+{"event":"progress","order_id":"sell:Enchanted Packed Ice:1790114613753","timestamp":1790116562268,"filled_amount_so_far":697}
+{"event":"progress","order_id":"buy:Enchanted Golden Carrot:1790114796902","timestamp":1790116562268,"filled_amount_so_far":294}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790116580344,"filled_amount_so_far":126}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790116601632,"filled_amount_so_far":141}
+{"event":"progress","order_id":"sell:Enchanted Emerald Block:1790114529051","timestamp":1790143559240,"filled_amount_so_far":338}
+{"event":"progress","order_id":"sell:Enchanted Packed Ice:1790114613753","timestamp":1790143559241,"filled_amount_so_far":1255}
+{"event":"progress","order_id":"buy:Enchanted Golden Carrot:1790114796902","timestamp":1790143559241,"filled_amount_so_far":3999}
+{"event":"progress","order_id":"buy:Glacite Jewel:1790114898125","timestamp":1790143559241,"filled_amount_so_far":460}
+{"event":"progress","order_id":"buy:Enchanted Cactus:1790114808344","timestamp":1790143559241,"filled_amount_so_far":871}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790114934849","timestamp":1790143559241,"filled_amount_so_far":1753}
+{"event":"progress","order_id":"buy:Rusty Coin:1790114942324","timestamp":1790143559241,"filled_amount_so_far":752}
+{"event":"progress","order_id":"buy:Can of Worms:1790114953477","timestamp":1790143559241,"filled_amount_so_far":540}
+{"event":"resolved","order_id":"sell:Enchanted Emerald Block:1790114529051","resolve_time":1790143705682,"outcome":"cancelled","filled_amount":338,"time_to_resolve_ms":29176631}
+{"event":"placed","order_id":"sell:Enchanted Emerald Block:1790143707730","order_type":"sell","item_name":"Enchanted Emerald Block","place_time":1790143707730,"order_amount":1702,"order_price":102633.7,"current_buy_price":102633.87834394904,"current_sell_price":99001.31213418987,"volume_7_day":63447,"volume_24_hour":2939,"past_quantity_per_hour":54,"new_listings_per_hour":0,"current_holding_amount":1702}
+{"event":"resolved","order_id":"sell:Enchanted Honeycomb:1790114535538","resolve_time":1790143711380,"outcome":"cancelled","filled_amount":21,"time_to_resolve_ms":29175842}
+{"event":"resolved","order_id":"sell:Voracious Spider Shard:1790114687613","resolve_time":1790143739715,"outcome":"cancelled","filled_amount":0,"time_to_resolve_ms":29052102}
+{"event":"placed","order_id":"sell:Voracious Spider Shard:1790143742787","order_type":"sell","item_name":"Voracious Spider Shard","place_time":1790143742787,"order_amount":611,"order_price":10248.5,"current_buy_price":10248.6,"current_sell_price":3510.2023503011687,"volume_7_day":69431,"volume_24_hour":3826,"past_quantity_per_hour":0,"new_listings_per_hour":0,"current_holding_amount":611}
+{"event":"resolved","order_id":"sell:Silver Lotus:1790114731196","resolve_time":1790143746458,"outcome":"cancelled","filled_amount":0,"time_to_resolve_ms":29015262}
+{"event":"placed","order_id":"sell:Silver Lotus:1790143748949","order_type":"sell","item_name":"Silver Lotus","place_time":1790143748949,"order_amount":981,"order_price":12596.8,"current_buy_price":12597.089655172413,"current_sell_price":8002.702864746399,"volume_7_day":448557,"volume_24_hour":26071,"past_quantity_per_hour":4,"new_listings_per_hour":0,"current_holding_amount":981}
+{"event":"resolved","order_id":"sell:Silver Fang:1790114564445","resolve_time":1790143752558,"outcome":"cancelled","filled_amount":0,"time_to_resolve_ms":29188113}
+{"event":"placed","order_id":"sell:Silver Fang:1790143754238","order_type":"sell","item_name":"Silver Fang","place_time":1790143754238,"order_amount":2215,"order_price":11302.6,"current_buy_price":11835.474269911505,"current_sell_price":8121.900000000001,"volume_7_day":108045,"volume_24_hour":8277,"past_quantity_per_hour":0,"new_listings_per_hour":0,"current_holding_amount":2814}
+{"event":"resolved","order_id":"sell:? Fine Aquamarine Gemstone:1790114547203","resolve_time":1790143757439,"outcome":"cancelled","filled_amount":13,"time_to_resolve_ms":29210236}
+{"event":"placed","order_id":"sell:? Fine Aquamarine Gemstone:1790143759406","order_type":"sell","item_name":"? Fine Aquamarine Gemstone","place_time":1790143759406,"order_amount":1579,"order_price":25311.7,"current_buy_price":25311.990215755144,"current_sell_price":24349.205162578437,"volume_7_day":464862,"volume_24_hour":18884,"past_quantity_per_hour":53,"new_listings_per_hour":0,"current_holding_amount":1579}
+{"event":"resolved","order_id":"sell:Enchanted Ruby Veilshroom:1790114541796","resolve_time":1790143763281,"outcome":"cancelled","filled_amount":15,"time_to_resolve_ms":29221485}
+{"event":"placed","order_id":"sell:Enchanted Ruby Veilshroom:1790143765741","order_type":"sell","item_name":"Enchanted Ruby Veilshroom","place_time":1790143765741,"order_amount":1678,"order_price":16377.9,"current_buy_price":16378,"current_sell_price":13012.8,"volume_7_day":193637,"volume_24_hour":8901,"past_quantity_per_hour":0,"new_listings_per_hour":0,"current_holding_amount":1768}
+{"event":"resolved","order_id":"sell:Enchanted Packed Ice:1790114613753","resolve_time":1790143769609,"outcome":"cancelled","filled_amount":1255,"time_to_resolve_ms":29155856}
+{"event":"resolved","order_id":"sell:Enchanted Iron Block:1790114599872","resolve_time":1790143773383,"outcome":"cancelled","filled_amount":473,"time_to_resolve_ms":29173511}
+{"event":"progress","order_id":"sell:Enchanted Emerald Block:1790143707730","timestamp":1790143780622,"filled_amount_so_far":13}
+{"event":"placed","order_id":"sell:Enchanted Iron Block:1790143786125","order_type":"sell","item_name":"Enchanted Iron Block","place_time":1790143786125,"order_amount":508,"order_price":57798.2,"current_buy_price":57799.154191176465,"current_sell_price":53727.28265560166,"volume_7_day":241784,"volume_24_hour":26045,"past_quantity_per_hour":24,"new_listings_per_hour":0.3333333333333333,"current_holding_amount":508}
+{"event":"resolved","order_id":"buy:Enchanted Gold Block:1790114915975","resolve_time":1790143798444,"outcome":"filled","filled_amount":4000,"time_to_resolve_ms":28882469}
+{"event":"placed","order_id":"sell:Enchanted Gold Block:1790143798445","order_type":"sell","item_name":"Enchanted Gold Block","place_time":1790143798445,"order_amount":4000,"order_price":79963,"current_buy_price":79964.78360969388,"current_sell_price":76884.6774209734,"volume_7_day":558339,"volume_24_hour":15829,"past_quantity_per_hour":57,"new_listings_per_hour":0.5,"current_holding_amount":4836}
+{"event":"resolved","order_id":"buy:Enchanted Golden Carrot:1790114796902","resolve_time":1790143806258,"outcome":"filled","filled_amount":4000,"time_to_resolve_ms":29009356}
+{"event":"placed","order_id":"sell:Enchanted Golden Carrot:1790143806259","order_type":"sell","item_name":"Enchanted Golden Carrot","place_time":1790143806259,"order_amount":4000,"order_price":79127,"current_buy_price":79128,"current_sell_price":75681.5,"volume_7_day":700928,"volume_24_hour":29684,"past_quantity_per_hour":51,"new_listings_per_hour":0,"current_holding_amount":4000}
+{"event":"resolved","order_id":"buy:Tool Exp Capsule:1790114860515","resolve_time":1790143810175,"outcome":"cancelled","filled_amount":2040,"time_to_resolve_ms":28949660}
+{"event":"placed","order_id":"sell:Tool Exp Capsule:1790143812014","order_type":"sell","item_name":"Tool Exp Capsule","place_time":1790143812014,"order_amount":2040,"order_price":101981.5,"current_buy_price":101981.6,"current_sell_price":97200.3,"volume_7_day":526512,"volume_24_hour":22113,"past_quantity_per_hour":177,"new_listings_per_hour":0,"current_holding_amount":2040}
+{"event":"resolved","order_id":"buy:Warty:1790114830836","resolve_time":1790143816300,"outcome":"cancelled","filled_amount":63,"time_to_resolve_ms":28985464}
+{"event":"resolved","order_id":"buy:Jacob's Ticket:1790114980847","resolve_time":1790143819579,"outcome":"cancelled","filled_amount":0,"time_to_resolve_ms":28838732}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790143786125","timestamp":1790143822703,"filled_amount_so_far":8}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790143822703,"filled_amount_so_far":14}
+{"event":"resolved","order_id":"buy:Helianthus:1790114847099","resolve_time":1790143823277,"outcome":"cancelled","filled_amount":11,"time_to_resolve_ms":28976178}
+{"event":"resolved","order_id":"buy:Glacite Jewel:1790114898125","resolve_time":1790143826409,"outcome":"cancelled","filled_amount":460,"time_to_resolve_ms":28928284}
+{"event":"resolved","order_id":"buy:Enchanted Sugar Cane:1790114815189","resolve_time":1790143829924,"outcome":"cancelled","filled_amount":138,"time_to_resolve_ms":29014735}
+{"event":"resolved","order_id":"buy:Can of Worms:1790114953477","resolve_time":1790143834311,"outcome":"cancelled","filled_amount":540,"time_to_resolve_ms":28880834}
+{"event":"resolved","order_id":"buy:Agarimoo Tongue:1790114970487","resolve_time":1790143837845,"outcome":"cancelled","filled_amount":455,"time_to_resolve_ms":28867358}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790143840798,"filled_amount_so_far":5}
+{"event":"resolved","order_id":"buy:Superior Dragon Fragment:1790114934849","resolve_time":1790143866431,"outcome":"cancelled","filled_amount":1753,"time_to_resolve_ms":28931582}
+{"event":"placed","order_id":"sell:Superior Dragon Fragment:1790143876780","order_type":"sell","item_name":"Superior Dragon Fragment","place_time":1790143876780,"order_amount":2140,"order_price":86525.8,"current_buy_price":86526.75756410258,"current_sell_price":74002.50175054705,"volume_7_day":82325,"volume_24_hour":3446,"past_quantity_per_hour":26,"new_listings_per_hour":0,"current_holding_amount":2154}
+{"event":"resolved","order_id":"buy:Rusty Coin:1790114942324","resolve_time":1790143882018,"outcome":"cancelled","filled_amount":752,"time_to_resolve_ms":28939694}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790143882903,"filled_amount_so_far":31}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790143882903,"filled_amount_so_far":17}
+{"event":"resolved","order_id":"buy:Exportable Carrots:1790114965596","resolve_time":1790143885297,"outcome":"cancelled","filled_amount":1024,"time_to_resolve_ms":28919701}
+{"event":"placed","order_id":"sell:Rusty Coin:1790143899295","order_type":"sell","item_name":"Rusty Coin","place_time":1790143899295,"order_amount":828,"order_price":27995.7,"current_buy_price":27995.850224215246,"current_sell_price":23940.005935427762,"volume_7_day":403662,"volume_24_hour":12192,"past_quantity_per_hour":70,"new_listings_per_hour":0.5,"current_holding_amount":828}
+{"event":"placed","order_id":"sell:Exportable Carrots:1790143912162","order_type":"sell","item_name":"Exportable Carrots","place_time":1790143912162,"order_amount":1499,"order_price":9997.3,"current_buy_price":9997.4,"current_sell_price":6215.778929384966,"volume_7_day":212490,"volume_24_hour":3625,"past_quantity_per_hour":0,"new_listings_per_hour":0,"current_holding_amount":1499}
+{"event":"resolved","order_id":"buy:Enchanted Cactus:1790114808344","resolve_time":1790143917088,"outcome":"cancelled","filled_amount":871,"time_to_resolve_ms":29108744}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790143921977,"filled_amount_so_far":37}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790143786125","timestamp":1790143921977,"filled_amount_so_far":9}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790143921977,"filled_amount_so_far":30}
+{"event":"placed","order_id":"sell:Enchanted Cactus:1790143925316","order_type":"sell","item_name":"Enchanted Cactus","place_time":1790143925316,"order_amount":1182,"order_price":103519.4,"current_buy_price":103519.5,"current_sell_price":100001.34842767296,"volume_7_day":330361,"volume_24_hour":15247,"past_quantity_per_hour":70,"new_listings_per_hour":0,"current_holding_amount":1182}
+{"event":"placed","order_id":"sell:Young Dragon Fragment:1790143936021","order_type":"sell","item_name":"Young Dragon Fragment","place_time":1790143936021,"order_amount":1732,"order_price":15174.8,"current_buy_price":15176.535489152682,"current_sell_price":12568.92628294036,"volume_7_day":626194,"volume_24_hour":56676,"past_quantity_per_hour":156,"new_listings_per_hour":0,"current_holding_amount":1732}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790143940016,"filled_amount_so_far":35}
+{"event":"placed","order_id":"sell:Helixis:1790143946620","order_type":"sell","item_name":"Helixis","place_time":1790143946620,"order_amount":132,"order_price":539997.9,"current_buy_price":539998.0578947369,"current_sell_price":505544.7226027397,"volume_7_day":35422,"volume_24_hour":969,"past_quantity_per_hour":0,"new_listings_per_hour":0.16666666666666666,"current_holding_amount":132}
+{"event":"placed","order_id":"sell:Fermento:1790143956144","order_type":"sell","item_name":"Fermento","place_time":1790143956144,"order_amount":411,"order_price":256089.4,"current_buy_price":256090.3177570094,"current_sell_price":247063.1,"volume_7_day":226510,"volume_24_hour":8486,"past_quantity_per_hour":37,"new_listings_per_hour":0,"current_holding_amount":411}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790143961050,"filled_amount_so_far":53}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790143961050,"filled_amount_so_far":59}
+{"event":"placed","order_id":"sell:Can of Worms:1790143979781","order_type":"sell","item_name":"Can of Worms","place_time":1790143979781,"order_amount":644,"order_price":15649.6,"current_buy_price":15649.7,"current_sell_price":10518.722883195833,"volume_7_day":187013,"volume_24_hour":10112,"past_quantity_per_hour":87,"new_listings_per_hour":0,"current_holding_amount":644}
+{"event":"progress","order_id":"sell:? Fine Aquamarine Gemstone:1790143759406","timestamp":1790143982094,"filled_amount_so_far":2}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790143982094,"filled_amount_so_far":56}
+{"event":"placed","order_id":"sell:Glacite Jewel:1790144000142","order_type":"sell","item_name":"Glacite Jewel","place_time":1790144000142,"order_amount":460,"order_price":46596.5,"current_buy_price":46597.28188494492,"current_sell_price":41075.949878934625,"volume_7_day":230737,"volume_24_hour":15564,"past_quantity_per_hour":60,"new_listings_per_hour":1.1666666666666667,"current_holding_amount":460}
+{"event":"placed","order_id":"sell:Golden Ghoul Shard:1790144009631","order_type":"sell","item_name":"Golden Ghoul Shard","place_time":1790144009631,"order_amount":384,"order_price":11280.6,"current_buy_price":11280.699999999999,"current_sell_price":5277.490699006875,"volume_7_day":52562,"volume_24_hour":4976,"past_quantity_per_hour":0,"new_listings_per_hour":0,"current_holding_amount":384}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790143786125","timestamp":1790144021177,"filled_amount_so_far":16}
+{"event":"progress","order_id":"sell:Helixis:1790143946620","timestamp":1790144042264,"filled_amount_so_far":22}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790144042264,"filled_amount_so_far":91}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790144060236,"filled_amount_so_far":107}
+{"event":"progress","order_id":"sell:Helixis:1790143946620","timestamp":1790144060236,"filled_amount_so_far":25}
+{"event":"progress","order_id":"sell:Glacite Jewel:1790144000142","timestamp":1790144060236,"filled_amount_so_far":35}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144081326,"filled_amount_so_far":2}
+{"event":"progress","order_id":"sell:Glacite Jewel:1790144000142","timestamp":1790144081326,"filled_amount_so_far":70}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790144081326,"filled_amount_so_far":70}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144120456,"filled_amount_so_far":8}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144141529,"filled_amount_so_far":39}
+{"event":"progress","order_id":"sell:Helixis:1790143946620","timestamp":1790144141529,"filled_amount_so_far":26}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790143786125","timestamp":1790144141529,"filled_amount_so_far":22}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144162848,"filled_amount_so_far":43}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790143786125","timestamp":1790144180819,"filled_amount_so_far":29}
+{"event":"progress","order_id":"sell:Fermento:1790143956144","timestamp":1790144180819,"filled_amount_so_far":4}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790144201852,"filled_amount_so_far":120}
+{"event":"progress","order_id":"sell:Helixis:1790143946620","timestamp":1790144201852,"filled_amount_so_far":41}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144201852,"filled_amount_so_far":45}
+{"event":"progress","order_id":"sell:Glacite Jewel:1790144000142","timestamp":1790144201852,"filled_amount_so_far":104}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790144222924,"filled_amount_so_far":171}
+{"event":"placed","order_id":"buy:Squash:1790144226278","order_type":"buy","item_name":"Squash","place_time":1790144226278,"order_amount":4000,"order_price":73043.9,"current_buy_price":75468.7,"current_sell_price":72917.50865215424,"volume_7_day":253169,"volume_24_hour":8559,"past_quantity_per_hour":149,"new_listings_per_hour":0,"current_holding_amount":0}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790144240969,"filled_amount_so_far":136}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790144262003,"filled_amount_so_far":9}
+{"event":"placed","order_id":"buy:Green Goblin Egg:1790144277929","order_type":"buy","item_name":"Green Goblin Egg","place_time":1790144277929,"order_amount":4000,"order_price":2015.2,"current_buy_price":3339.4680300500836,"current_sell_price":2015.1,"volume_7_day":131646,"volume_24_hour":3577,"past_quantity_per_hour":0,"new_listings_per_hour":0.5,"current_holding_amount":77}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790144280080,"filled_amount_so_far":139}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144280080,"filled_amount_so_far":47}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790144280080,"filled_amount_so_far":13}
+{"event":"placed","order_id":"buy:Absolute Ender Pearl:1790144290779","order_type":"buy","item_name":"Absolute Ender Pearl","place_time":1790144290779,"order_amount":4000,"order_price":11206.7,"current_buy_price":16755.2,"current_sell_price":11206.176029300328,"volume_7_day":210886,"volume_24_hour":5016,"past_quantity_per_hour":173,"new_listings_per_hour":0,"current_holding_amount":0}
+{"event":"placed","order_id":"buy:Superior Dragon Fragment:1790144303586","order_type":"buy","item_name":"Superior Dragon Fragment","place_time":1790144303586,"order_amount":4000,"order_price":74002.6,"current_buy_price":86525.79990662933,"current_sell_price":74002.5,"volume_7_day":58425,"volume_24_hour":1494,"past_quantity_per_hour":0,"new_listings_per_hour":0.6666666666666666,"current_holding_amount":14}
+{"event":"placed","order_id":"buy:Helixis:1790144316076","order_type":"buy","item_name":"Helixis","place_time":1790144316076,"order_amount":1000,"order_price":505545,"current_buy_price":539997.9,"current_sell_price":505544.49604863225,"volume_7_day":87559,"volume_24_hour":2575,"past_quantity_per_hour":41,"new_listings_per_hour":0.5,"current_holding_amount":0}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790144322156,"filled_amount_so_far":77}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144322156,"filled_amount_so_far":54}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790144322156,"filled_amount_so_far":2}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144322156,"filled_amount_so_far":1}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144340225,"filled_amount_so_far":2}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790144340225,"filled_amount_so_far":5}
+{"event":"placed","order_id":"buy:Agarimoo Tongue:1790144357930","order_type":"buy","item_name":"Agarimoo Tongue","place_time":1790144357930,"order_amount":4000,"order_price":7836.2,"current_buy_price":10598.7,"current_sell_price":7835.907397967519,"volume_7_day":198449,"volume_24_hour":8174,"past_quantity_per_hour":512,"new_listings_per_hour":0,"current_holding_amount":623}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790144303586","timestamp":1790144361274,"filled_amount_so_far":2}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144361274,"filled_amount_so_far":4}
+{"event":"placed","order_id":"buy:Extremely Real Shuriken:1790144379566","order_type":"buy","item_name":"Extremely Real Shuriken","place_time":1790144379566,"order_amount":4000,"order_price":54506.1,"current_buy_price":58163.454275827986,"current_sell_price":54505.82443115633,"volume_7_day":311117,"volume_24_hour":16618,"past_quantity_per_hour":119,"new_listings_per_hour":0.5,"current_holding_amount":285}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144382331,"filled_amount_so_far":55}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790144382331,"filled_amount_so_far":7}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144382331,"filled_amount_so_far":16}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144400361,"filled_amount_so_far":56}
+{"event":"progress","order_id":"sell:Fermento:1790143956144","timestamp":1790144400361,"filled_amount_so_far":8}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790144400361,"filled_amount_so_far":40}
+{"event":"placed","order_id":"buy:Lapis Zombie Shard:1790144419240","order_type":"buy","item_name":"Lapis Zombie Shard","place_time":1790144419240,"order_amount":4000,"order_price":6003.2,"current_buy_price":7996.598251457119,"current_sell_price":6002.349644513138,"volume_7_day":204240,"volume_24_hour":5953,"past_quantity_per_hour":0,"new_listings_per_hour":0.5,"current_holding_amount":1216}
+{"event":"progress","order_id":"sell:Fermento:1790143956144","timestamp":1790144421466,"filled_amount_so_far":12}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144421466,"filled_amount_so_far":17}
+{"event":"progress","order_id":"buy:Agarimoo Tongue:1790144357930","timestamp":1790144421466,"filled_amount_so_far":1}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790144421466,"filled_amount_so_far":51}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144442531,"filled_amount_so_far":21}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144481609,"filled_amount_so_far":60}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144502686,"filled_amount_so_far":67}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790144520724,"filled_amount_so_far":232}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144520724,"filled_amount_so_far":22}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790144541737,"filled_amount_so_far":79}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144562829,"filled_amount_so_far":23}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790144303586","timestamp":1790144562829,"filled_amount_so_far":7}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790144303586","timestamp":1790144580846,"filled_amount_so_far":15}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144580845,"filled_amount_so_far":73}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144580846,"filled_amount_so_far":24}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144601913,"filled_amount_so_far":81}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790144601913,"filled_amount_so_far":82}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144622962,"filled_amount_so_far":84}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790144622962,"filled_amount_so_far":84}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790144303586","timestamp":1790144622962,"filled_amount_so_far":17}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144622962,"filled_amount_so_far":26}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144640982,"filled_amount_so_far":86}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790144640982,"filled_amount_so_far":286}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144640982,"filled_amount_so_far":93}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144662031,"filled_amount_so_far":88}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790144662031,"filled_amount_so_far":53}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790144662031,"filled_amount_so_far":291}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144680105,"filled_amount_so_far":90}
+{"event":"progress","order_id":"sell:Fermento:1790143956144","timestamp":1790144680105,"filled_amount_so_far":13}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144701134,"filled_amount_so_far":93}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790144303586","timestamp":1790144701134,"filled_amount_so_far":21}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144722201,"filled_amount_so_far":95}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144722201,"filled_amount_so_far":95}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790144722201,"filled_amount_so_far":303}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144740281,"filled_amount_so_far":96}
+{"event":"progress","order_id":"sell:Fermento:1790143956144","timestamp":1790144761280,"filled_amount_so_far":18}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790144761280,"filled_amount_so_far":306}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144761280,"filled_amount_so_far":98}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144782330,"filled_amount_so_far":100}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144782330,"filled_amount_so_far":103}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790144303586","timestamp":1790144782330,"filled_amount_so_far":22}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144800392,"filled_amount_so_far":103}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790144800392,"filled_amount_so_far":316}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790144800392,"filled_amount_so_far":56}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144800392,"filled_amount_so_far":125}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790144821413,"filled_amount_so_far":318}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144821413,"filled_amount_so_far":145}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790144821413,"filled_amount_so_far":1}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144842454,"filled_amount_so_far":146}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144860529,"filled_amount_so_far":105}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790144303586","timestamp":1790144860529,"filled_amount_so_far":28}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790144860529,"filled_amount_so_far":66}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144881584,"filled_amount_so_far":151}
+{"event":"progress","order_id":"sell:Silver Fang:1790143754238","timestamp":1790144902623,"filled_amount_so_far":508}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144902623,"filled_amount_so_far":116}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790144303586","timestamp":1790144902623,"filled_amount_so_far":36}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144902623,"filled_amount_so_far":152}
+{"event":"progress","order_id":"sell:Silver Fang:1790143754238","timestamp":1790144920639,"filled_amount_so_far":700}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144920639,"filled_amount_so_far":156}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790144920639,"filled_amount_so_far":68}
+{"event":"progress","order_id":"sell:Helixis:1790143946620","timestamp":1790144920639,"filled_amount_so_far":44}
+{"event":"progress","order_id":"sell:Enchanted Ruby Veilshroom:1790143765741","timestamp":1790144941703,"filled_amount_so_far":243}
+{"event":"progress","order_id":"sell:Silver Fang:1790143754238","timestamp":1790144941703,"filled_amount_so_far":956}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790144941703,"filled_amount_so_far":118}
+{"event":"progress","order_id":"sell:Fermento:1790143956144","timestamp":1790144941703,"filled_amount_so_far":24}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790144941703,"filled_amount_so_far":69}
+{"event":"resolved","order_id":"sell:Helixis:1790143946620","resolve_time":1790144950900,"outcome":"filled","filled_amount":132,"time_to_resolve_ms":1004280}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790144962722,"filled_amount_so_far":319}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790144303586","timestamp":1790144962722,"filled_amount_so_far":37}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790144962722,"filled_amount_so_far":73}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144962722,"filled_amount_so_far":160}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790144962722,"filled_amount_so_far":4}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790144980754,"filled_amount_so_far":164}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145001796,"filled_amount_so_far":133}
+{"event":"progress","order_id":"buy:Extremely Real Shuriken:1790144379566","timestamp":1790145001797,"filled_amount_so_far":31}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145022848,"filled_amount_so_far":139}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790144303586","timestamp":1790145022848,"filled_amount_so_far":50}
+{"event":"progress","order_id":"sell:Silver Fang:1790143754238","timestamp":1790145040902,"filled_amount_so_far":1980}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145040902,"filled_amount_so_far":320}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790145040902,"filled_amount_so_far":74}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790144303586","timestamp":1790145040902,"filled_amount_so_far":57}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145061946,"filled_amount_so_far":321}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790145061946,"filled_amount_so_far":165}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145080026,"filled_amount_so_far":323}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790144303586","timestamp":1790145080026,"filled_amount_so_far":61}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790145080026,"filled_amount_so_far":75}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790144303586","timestamp":1790145101040,"filled_amount_so_far":63}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145122042,"filled_amount_so_far":163}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145122042,"filled_amount_so_far":344}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790145122042,"filled_amount_so_far":166}
+{"event":"progress","order_id":"buy:Lapis Zombie Shard:1790144419240","timestamp":1790145122042,"filled_amount_so_far":1}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145143115,"filled_amount_so_far":345}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790145143115,"filled_amount_so_far":11}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790145143115,"filled_amount_so_far":172}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790145161145,"filled_amount_so_far":75}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145161145,"filled_amount_so_far":355}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145182219,"filled_amount_so_far":356}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790145182219,"filled_amount_so_far":173}
+{"event":"progress","order_id":"buy:Extremely Real Shuriken:1790144379566","timestamp":1790145182219,"filled_amount_so_far":61}
+{"event":"progress","order_id":"sell:Enchanted Ruby Veilshroom:1790143765741","timestamp":1790145200288,"filled_amount_so_far":307}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145200288,"filled_amount_so_far":228}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145200288,"filled_amount_so_far":366}
+{"event":"progress","order_id":"buy:Extremely Real Shuriken:1790144379566","timestamp":1790145200288,"filled_amount_so_far":196}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145221303,"filled_amount_so_far":231}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790145221303,"filled_amount_so_far":78}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790145221303,"filled_amount_so_far":139}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145242366,"filled_amount_so_far":408}
+{"event":"progress","order_id":"sell:Fermento:1790143956144","timestamp":1790145242366,"filled_amount_so_far":56}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790145242366,"filled_amount_so_far":82}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145260415,"filled_amount_so_far":234}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145260415,"filled_amount_so_far":418}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790145260415,"filled_amount_so_far":232}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145281416,"filled_amount_so_far":236}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145281416,"filled_amount_so_far":444}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790145302493,"filled_amount_so_far":244}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145302493,"filled_amount_so_far":446}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145320591,"filled_amount_so_far":239}
+{"event":"progress","order_id":"sell:Fermento:1790143956144","timestamp":1790145380724,"filled_amount_so_far":66}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790145380725,"filled_amount_so_far":246}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790145401808,"filled_amount_so_far":83}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790145401808,"filled_amount_so_far":74}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790145422811,"filled_amount_so_far":248}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145422811,"filled_amount_so_far":242}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145440888,"filled_amount_so_far":456}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145440888,"filled_amount_so_far":243}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790145440888,"filled_amount_so_far":250}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790143786125","timestamp":1790145461906,"filled_amount_so_far":37}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145461906,"filled_amount_so_far":462}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145461906,"filled_amount_so_far":249}
+{"event":"progress","order_id":"sell:Fermento:1790143956144","timestamp":1790145461906,"filled_amount_so_far":69}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790145480010,"filled_amount_so_far":161}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145480010,"filled_amount_so_far":279}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790145501001,"filled_amount_so_far":189}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145501001,"filled_amount_so_far":378}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790145501001,"filled_amount_so_far":254}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790145501001,"filled_amount_so_far":89}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790143786125","timestamp":1790145522031,"filled_amount_so_far":45}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790145522031,"filled_amount_so_far":217}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145522031,"filled_amount_so_far":472}
+{"event":"progress","order_id":"sell:Fermento:1790143956144","timestamp":1790145522031,"filled_amount_so_far":71}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790145522031,"filled_amount_so_far":256}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790145540108,"filled_amount_so_far":171}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790145540108,"filled_amount_so_far":242}
+{"event":"progress","order_id":"sell:Fermento:1790143956144","timestamp":1790145540108,"filled_amount_so_far":87}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145540108,"filled_amount_so_far":473}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790143786125","timestamp":1790145561163,"filled_amount_so_far":52}
+{"event":"progress","order_id":"sell:Enchanted Ruby Veilshroom:1790143765741","timestamp":1790145561163,"filled_amount_so_far":479}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790145561163,"filled_amount_so_far":90}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790145561163,"filled_amount_so_far":259}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145561163,"filled_amount_so_far":385}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790145561163,"filled_amount_so_far":235}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790145582188,"filled_amount_so_far":290}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790145600282,"filled_amount_so_far":312}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145600282,"filled_amount_so_far":478}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145600282,"filled_amount_so_far":387}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790145600282,"filled_amount_so_far":257}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790145621293,"filled_amount_so_far":337}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145642365,"filled_amount_so_far":481}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790145642365,"filled_amount_so_far":359}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790145660535,"filled_amount_so_far":383}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790145660535,"filled_amount_so_far":267}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790145681467,"filled_amount_so_far":407}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145681467,"filled_amount_so_far":389}
+{"event":"progress","order_id":"sell:Fermento:1790143956144","timestamp":1790145681467,"filled_amount_so_far":89}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145681467,"filled_amount_so_far":482}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790145681467,"filled_amount_so_far":271}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145702525,"filled_amount_so_far":391}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790145702525,"filled_amount_so_far":412}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790145702525,"filled_amount_so_far":273}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790143786125","timestamp":1790145702525,"filled_amount_so_far":54}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790143786125","timestamp":1790145720560,"filled_amount_so_far":68}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790145741605,"filled_amount_so_far":279}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145762660,"filled_amount_so_far":590}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790145762660,"filled_amount_so_far":240}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790145762660,"filled_amount_so_far":82}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790145762660,"filled_amount_so_far":336}
+{"event":"progress","order_id":"buy:Agarimoo Tongue:1790144357930","timestamp":1790145780684,"filled_amount_so_far":2}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145801731,"filled_amount_so_far":608}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790145822784,"filled_amount_so_far":272}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145822785,"filled_amount_so_far":622}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790145822785,"filled_amount_so_far":93}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790145822785,"filled_amount_so_far":337}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790145840818,"filled_amount_so_far":342}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790145861884,"filled_amount_so_far":280}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145861884,"filled_amount_so_far":640}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790145861884,"filled_amount_so_far":95}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145861884,"filled_amount_so_far":407}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145880037,"filled_amount_so_far":658}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145880037,"filled_amount_so_far":409}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790143786125","timestamp":1790145900994,"filled_amount_so_far":70}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145900994,"filled_amount_so_far":410}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145900994,"filled_amount_so_far":669}
+{"event":"progress","order_id":"sell:Fermento:1790143956144","timestamp":1790145900994,"filled_amount_so_far":93}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790145900994,"filled_amount_so_far":343}
+{"event":"progress","order_id":"buy:Agarimoo Tongue:1790144357930","timestamp":1790145900994,"filled_amount_so_far":3}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145922042,"filled_amount_so_far":671}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145922042,"filled_amount_so_far":417}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145940123,"filled_amount_so_far":420}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790145940123,"filled_amount_so_far":345}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790145961105,"filled_amount_so_far":96}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790145961105,"filled_amount_so_far":423}
+{"event":"progress","order_id":"sell:Glacite Jewel:1790144000142","timestamp":1790145982171,"filled_amount_so_far":111}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790145982171,"filled_amount_so_far":683}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790146000246,"filled_amount_so_far":350}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790146000246,"filled_amount_so_far":97}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790146000246,"filled_amount_so_far":290}
+{"event":"progress","order_id":"sell:Glacite Jewel:1790144000142","timestamp":1790146021264,"filled_amount_so_far":151}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146021264,"filled_amount_so_far":435}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790143786125","timestamp":1790146021264,"filled_amount_so_far":72}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790146021264,"filled_amount_so_far":685}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146042314,"filled_amount_so_far":439}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146060392,"filled_amount_so_far":440}
+{"event":"progress","order_id":"sell:Enchanted Ruby Veilshroom:1790143765741","timestamp":1790146081414,"filled_amount_so_far":481}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790146081414,"filled_amount_so_far":413}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790146081415,"filled_amount_so_far":713}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790146102499,"filled_amount_so_far":306}
+{"event":"progress","order_id":"sell:Enchanted Ruby Veilshroom:1790143765741","timestamp":1790146120554,"filled_amount_so_far":497}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146141584,"filled_amount_so_far":443}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790146141584,"filled_amount_so_far":464}
+{"event":"progress","order_id":"sell:Glacite Jewel:1790144000142","timestamp":1790146162623,"filled_amount_so_far":179}
+{"event":"progress","order_id":"sell:Enchanted Ruby Veilshroom:1790143765741","timestamp":1790146180699,"filled_amount_so_far":537}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790146180699,"filled_amount_so_far":99}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790146180699,"filled_amount_so_far":714}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790146201743,"filled_amount_so_far":469}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790146222771,"filled_amount_so_far":290}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790146222771,"filled_amount_so_far":717}
+{"event":"progress","order_id":"sell:Glacite Jewel:1790144000142","timestamp":1790146222771,"filled_amount_so_far":319}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146240830,"filled_amount_so_far":444}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790146240830,"filled_amount_so_far":474}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790146261869,"filled_amount_so_far":718}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790146280000,"filled_amount_so_far":740}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146280000,"filled_amount_so_far":469}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146300968,"filled_amount_so_far":472}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790146300969,"filled_amount_so_far":747}
+{"event":"progress","order_id":"sell:Glacite Jewel:1790144000142","timestamp":1790146300969,"filled_amount_so_far":329}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790146300969,"filled_amount_so_far":1770}
+{"event":"progress","order_id":"sell:Enchanted Emerald Block:1790143707730","timestamp":1790146322058,"filled_amount_so_far":28}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790146340099,"filled_amount_so_far":482}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146340099,"filled_amount_so_far":478}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790146361145,"filled_amount_so_far":1831}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790146382468,"filled_amount_so_far":483}
+{"event":"progress","order_id":"sell:Glacite Jewel:1790144000142","timestamp":1790146400273,"filled_amount_so_far":330}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146421323,"filled_amount_so_far":488}
+{"event":"progress","order_id":"sell:Glacite Jewel:1790144000142","timestamp":1790146442374,"filled_amount_so_far":340}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790146442374,"filled_amount_so_far":1834}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146460410,"filled_amount_so_far":490}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790146460410,"filled_amount_so_far":759}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790146481496,"filled_amount_so_far":773}
+{"event":"progress","order_id":"buy:Extremely Real Shuriken:1790144379566","timestamp":1790146481496,"filled_amount_so_far":253}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146502517,"filled_amount_so_far":492}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790146502517,"filled_amount_so_far":799}
+{"event":"progress","order_id":"sell:Glacite Jewel:1790144000142","timestamp":1790146520560,"filled_amount_so_far":355}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146520560,"filled_amount_so_far":493}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790146520560,"filled_amount_so_far":816}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146563070,"filled_amount_so_far":497}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146580892,"filled_amount_so_far":499}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790146580892,"filled_amount_so_far":485}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146622902,"filled_amount_so_far":501}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790146622902,"filled_amount_so_far":865}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790146622902,"filled_amount_so_far":487}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790146640943,"filled_amount_so_far":868}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790146662018,"filled_amount_so_far":881}
+{"event":"progress","order_id":"sell:Glacite Jewel:1790144000142","timestamp":1790146662018,"filled_amount_so_far":376}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790146662018,"filled_amount_so_far":488}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146680022,"filled_amount_so_far":505}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790146680022,"filled_amount_so_far":1839}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790146680022,"filled_amount_so_far":887}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790146701043,"filled_amount_so_far":502}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790146722047,"filled_amount_so_far":417}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790146740132,"filled_amount_so_far":292}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790146740132,"filled_amount_so_far":505}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790146740132,"filled_amount_so_far":438}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790146740132,"filled_amount_so_far":894}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790146761108,"filled_amount_so_far":451}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146761108,"filled_amount_so_far":509}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790146761108,"filled_amount_so_far":507}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790146761108,"filled_amount_so_far":1840}
+{"event":"progress","order_id":"sell:Glacite Jewel:1790144000142","timestamp":1790146782142,"filled_amount_so_far":377}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790143786125","timestamp":1790146800272,"filled_amount_so_far":74}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790146800272,"filled_amount_so_far":895}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790146800272,"filled_amount_so_far":1846}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146821297,"filled_amount_so_far":511}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790146821297,"filled_amount_so_far":307}
+{"event":"progress","order_id":"sell:Glacite Jewel:1790144000142","timestamp":1790146821297,"filled_amount_so_far":407}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790146821297,"filled_amount_so_far":508}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790146821297,"filled_amount_so_far":896}
+{"event":"progress","order_id":"sell:Enchanted Emerald Block:1790143707730","timestamp":1790146842559,"filled_amount_so_far":29}
+{"event":"progress","order_id":"sell:Enchanted Ruby Veilshroom:1790143765741","timestamp":1790146862817,"filled_amount_so_far":577}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790146881433,"filled_amount_so_far":897}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146881433,"filled_amount_so_far":514}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146902472,"filled_amount_so_far":539}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790146902472,"filled_amount_so_far":1849}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146920628,"filled_amount_so_far":543}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790146920628,"filled_amount_so_far":511}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790143786125","timestamp":1790146941687,"filled_amount_so_far":80}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790146941687,"filled_amount_so_far":898}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790146941687,"filled_amount_so_far":452}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790146941687,"filled_amount_so_far":329}
+{"event":"progress","order_id":"sell:Enchanted Ruby Veilshroom:1790143765741","timestamp":1790146962671,"filled_amount_so_far":669}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790143786125","timestamp":1790146962671,"filled_amount_so_far":208}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790146962671,"filled_amount_so_far":331}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146962671,"filled_amount_so_far":545}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790146962671,"filled_amount_so_far":478}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790146962671,"filled_amount_so_far":1856}
+{"event":"progress","order_id":"sell:Glacite Jewel:1790144000142","timestamp":1790146962671,"filled_amount_so_far":408}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790146980694,"filled_amount_so_far":332}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790146980694,"filled_amount_so_far":498}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790146980694,"filled_amount_so_far":554}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790147001711,"filled_amount_so_far":530}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790147001711,"filled_amount_so_far":410}
+{"event":"progress","order_id":"sell:Glacite Jewel:1790144000142","timestamp":1790147022739,"filled_amount_so_far":443}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790147022739,"filled_amount_so_far":556}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790147022739,"filled_amount_so_far":558}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790147040801,"filled_amount_so_far":412}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790147040801,"filled_amount_so_far":901}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790147040801,"filled_amount_so_far":574}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790147040801,"filled_amount_so_far":559}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790147061852,"filled_amount_so_far":1864}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790147061852,"filled_amount_so_far":902}
+{"event":"progress","order_id":"sell:Glacite Jewel:1790144000142","timestamp":1790147061852,"filled_amount_so_far":447}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790147082885,"filled_amount_so_far":561}
+{"event":"progress","order_id":"sell:Glacite Jewel:1790144000142","timestamp":1790147101018,"filled_amount_so_far":452}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790147101018,"filled_amount_so_far":911}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790147140040,"filled_amount_so_far":625}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790147140040,"filled_amount_so_far":977}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790147161066,"filled_amount_so_far":689}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790147182095,"filled_amount_so_far":989}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790147182095,"filled_amount_so_far":585}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790147200157,"filled_amount_so_far":593}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790147200157,"filled_amount_so_far":690}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790147221188,"filled_amount_so_far":691}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790147242250,"filled_amount_so_far":556}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790147242250,"filled_amount_so_far":597}
+{"event":"resolved","order_id":"sell:Glacite Jewel:1790144000142","resolve_time":1790147246448,"outcome":"filled","filled_amount":460,"time_to_resolve_ms":3246306}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790147281334,"filled_amount_so_far":620}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790147281335,"filled_amount_so_far":605}
+{"event":"progress","order_id":"sell:Enchanted Iron Block:1790143786125","timestamp":1790147302408,"filled_amount_so_far":221}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790147320523,"filled_amount_so_far":697}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790147320523,"filled_amount_so_far":999}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790147320523,"filled_amount_so_far":1865}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790147341478,"filled_amount_so_far":700}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790147362525,"filled_amount_so_far":820}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790147362525,"filled_amount_so_far":610}
+{"event":"progress","order_id":"sell:Enchanted Ruby Veilshroom:1790143765741","timestamp":1790147380600,"filled_amount_so_far":671}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790147380600,"filled_amount_so_far":701}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790147380600,"filled_amount_so_far":612}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790147401603,"filled_amount_so_far":702}
+{"event":"progress","order_id":"sell:Enchanted Ruby Veilshroom:1790143765741","timestamp":1790147401603,"filled_amount_so_far":687}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790147401603,"filled_amount_so_far":889}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790147422627,"filled_amount_so_far":726}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790147440703,"filled_amount_so_far":729}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790147440703,"filled_amount_so_far":1003}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790147440703,"filled_amount_so_far":615}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790147461718,"filled_amount_so_far":733}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790147482752,"filled_amount_so_far":1009}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790147521843,"filled_amount_so_far":617}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790147660168,"filled_amount_so_far":736}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790147660168,"filled_amount_so_far":1017}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790147681225,"filled_amount_so_far":770}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790147702269,"filled_amount_so_far":1037}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790147702269,"filled_amount_so_far":772}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790147720345,"filled_amount_so_far":776}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790147720345,"filled_amount_so_far":621}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790147762786,"filled_amount_so_far":1041}
+{"event":"progress","order_id":"buy:Extremely Real Shuriken:1790144379566","timestamp":1790147780826,"filled_amount_so_far":432}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790144303586","timestamp":1790147801862,"filled_amount_so_far":65}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790147801861,"filled_amount_so_far":777}
+{"event":"progress","order_id":"buy:Extremely Real Shuriken:1790144379566","timestamp":1790147801862,"filled_amount_so_far":471}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790147862002,"filled_amount_so_far":779}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790147880130,"filled_amount_so_far":623}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790147901096,"filled_amount_so_far":1042}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790147901096,"filled_amount_so_far":632}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790147940228,"filled_amount_so_far":634}
+{"event":"progress","order_id":"sell:Enchanted Emerald Block:1790143707730","timestamp":1790147982302,"filled_amount_so_far":31}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790147982302,"filled_amount_so_far":1047}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790148000358,"filled_amount_so_far":1052}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790148042433,"filled_amount_so_far":1185}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790148042433,"filled_amount_so_far":783}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790148060985,"filled_amount_so_far":796}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790148060985,"filled_amount_so_far":651}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790148081508,"filled_amount_so_far":1223}
+{"event":"progress","order_id":"sell:Enchanted Cactus:1790143925316","timestamp":1790148102558,"filled_amount_so_far":798}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790148141648,"filled_amount_so_far":1317}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790148162718,"filled_amount_so_far":1322}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790148180815,"filled_amount_so_far":652}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790148201822,"filled_amount_so_far":84}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790148201822,"filled_amount_so_far":3310}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790148201822,"filled_amount_so_far":1323}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790148240929,"filled_amount_so_far":689}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790148240929,"filled_amount_so_far":3312}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790148280039,"filled_amount_so_far":1325}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790148280039,"filled_amount_so_far":3546}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790148301077,"filled_amount_so_far":691}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790148340217,"filled_amount_so_far":1332}
+{"event":"progress","order_id":"buy:Absolute Ender Pearl:1790144290779","timestamp":1790148340217,"filled_amount_so_far":3553}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790148382303,"filled_amount_so_far":1343}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790148382303,"filled_amount_so_far":86}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790148421401,"filled_amount_so_far":1385}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790148442436,"filled_amount_so_far":1386}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790148481542,"filled_amount_so_far":1394}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790148481542,"filled_amount_so_far":697}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790148562729,"filled_amount_so_far":701}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790148580761,"filled_amount_so_far":708}
+{"event":"resolved","order_id":"sell:Enchanted Iron Block:1790143786125","resolve_time":1790148589462,"outcome":"filled","filled_amount":508,"time_to_resolve_ms":4803337}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790148640947,"filled_amount_so_far":710}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790148661972,"filled_amount_so_far":1441}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790148701053,"filled_amount_so_far":713}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790148701053,"filled_amount_so_far":87}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790148722113,"filled_amount_so_far":1520}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790148740234,"filled_amount_so_far":732}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790148761177,"filled_amount_so_far":1574}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790148782221,"filled_amount_so_far":1585}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790148800287,"filled_amount_so_far":1618}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790148842344,"filled_amount_so_far":1632}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790148902497,"filled_amount_so_far":1639}
+{"event":"progress","order_id":"buy:Lapis Zombie Shard:1790144419240","timestamp":1790148920536,"filled_amount_so_far":41}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790148920536,"filled_amount_so_far":741}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790148962787,"filled_amount_so_far":89}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790149001895,"filled_amount_so_far":1682}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790149022905,"filled_amount_so_far":1800}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790149022905,"filled_amount_so_far":743}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790149040950,"filled_amount_so_far":1812}
+{"event":"progress","order_id":"buy:Lapis Zombie Shard:1790144419240","timestamp":1790149040950,"filled_amount_so_far":42}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790149080113,"filled_amount_so_far":1813}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790149122126,"filled_amount_so_far":1815}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790149122126,"filled_amount_so_far":744}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790149140183,"filled_amount_so_far":1849}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790149161215,"filled_amount_so_far":1884}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149182268,"filled_amount_so_far":49}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149221364,"filled_amount_so_far":55}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790149221364,"filled_amount_so_far":1953}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790149242407,"filled_amount_so_far":2009}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149260520,"filled_amount_so_far":61}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149281480,"filled_amount_so_far":77}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149302550,"filled_amount_so_far":85}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790149320587,"filled_amount_so_far":90}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149341631,"filled_amount_so_far":99}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149362685,"filled_amount_so_far":107}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149380753,"filled_amount_so_far":171}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790149380753,"filled_amount_so_far":2025}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149401810,"filled_amount_so_far":182}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790149401810,"filled_amount_so_far":2029}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149440867,"filled_amount_so_far":203}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149461890,"filled_amount_so_far":227}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790149461890,"filled_amount_so_far":2061}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149500943,"filled_amount_so_far":232}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790149500943,"filled_amount_so_far":2062}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790149521983,"filled_amount_so_far":2106}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149521983,"filled_amount_so_far":256}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149540025,"filled_amount_so_far":280}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790149540025,"filled_amount_so_far":2177}
+{"event":"progress","order_id":"buy:Squash:1790144226278","timestamp":1790149561054,"filled_amount_so_far":2190}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149561054,"filled_amount_so_far":284}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149582127,"filled_amount_so_far":945}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149600162,"filled_amount_so_far":974}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149621198,"filled_amount_so_far":979}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149642239,"filled_amount_so_far":985}
+{"event":"progress","order_id":"buy:Green Goblin Egg:1790144277929","timestamp":1790149642239,"filled_amount_so_far":1136}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149660300,"filled_amount_so_far":1002}
+{"event":"resolved","order_id":"buy:Absolute Ender Pearl:1790144290779","resolve_time":1790149675657,"outcome":"filled","filled_amount":4000,"time_to_resolve_ms":5384878}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149681327,"filled_amount_so_far":1008}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149702386,"filled_amount_so_far":1009}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149720439,"filled_amount_so_far":1012}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149741486,"filled_amount_so_far":1014}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149762538,"filled_amount_so_far":1018}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790149780562,"filled_amount_so_far":1024}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790149780562,"filled_amount_so_far":99}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790150042218,"filled_amount_so_far":1028}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790150060308,"filled_amount_so_far":1053}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790150081303,"filled_amount_so_far":1063}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790150102353,"filled_amount_so_far":1069}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790150120493,"filled_amount_so_far":1071}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790150120493,"filled_amount_so_far":107}
+{"event":"progress","order_id":"sell:Enchanted Golden Carrot:1790143806259","timestamp":1790150141440,"filled_amount_so_far":1073}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790150180908,"filled_amount_so_far":109}
+{"event":"progress","order_id":"buy:Lapis Zombie Shard:1790144419240","timestamp":1790150180908,"filled_amount_so_far":70}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790150201903,"filled_amount_so_far":110}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790150460568,"filled_amount_so_far":120}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790150680091,"filled_amount_so_far":139}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790150740141,"filled_amount_so_far":140}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790150860424,"filled_amount_so_far":142}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790150902589,"filled_amount_so_far":145}
+{"event":"progress","order_id":"buy:Lapis Zombie Shard:1790144419240","timestamp":1790151182111,"filled_amount_so_far":134}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790151341479,"filled_amount_so_far":171}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790151359961,"filled_amount_so_far":175}
+{"event":"progress","order_id":"buy:Lapis Zombie Shard:1790144419240","timestamp":1790151401936,"filled_amount_so_far":164}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790151462103,"filled_amount_so_far":176}
+{"event":"progress","order_id":"buy:Lapis Zombie Shard:1790144419240","timestamp":1790151540316,"filled_amount_so_far":304}
+{"event":"progress","order_id":"buy:Lapis Zombie Shard:1790144419240","timestamp":1790151660623,"filled_amount_so_far":305}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790151840967,"filled_amount_so_far":182}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790151940201,"filled_amount_so_far":588}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790151961210,"filled_amount_so_far":614}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790151982289,"filled_amount_so_far":644}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790152000317,"filled_amount_so_far":678}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790152021364,"filled_amount_so_far":690}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790152042382,"filled_amount_so_far":705}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790152060466,"filled_amount_so_far":183}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790143798445","timestamp":1790152102477,"filled_amount_so_far":909}
+{"event":"progress","order_id":"sell:? Fine Aquamarine Gemstone:1790143759406","timestamp":1790152261922,"filled_amount_so_far":26}
+{"event":"progress","order_id":"sell:? Fine Aquamarine Gemstone:1790143759406","timestamp":1790152301021,"filled_amount_so_far":28}
+{"event":"progress","order_id":"sell:? Fine Aquamarine Gemstone:1790143759406","timestamp":1790152322034,"filled_amount_so_far":33}
+{"event":"progress","order_id":"sell:? Fine Aquamarine Gemstone:1790143759406","timestamp":1790152340135,"filled_amount_so_far":578}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790152361118,"filled_amount_so_far":187}
+{"event":"progress","order_id":"sell:? Fine Aquamarine Gemstone:1790143759406","timestamp":1790152382149,"filled_amount_so_far":1129}
+{"event":"resolved","order_id":"sell:? Fine Aquamarine Gemstone:1790143759406","resolve_time":1790152409016,"outcome":"filled","filled_amount":1579,"time_to_resolve_ms":8649610}
+{"event":"progress","order_id":"buy:Lapis Zombie Shard:1790144419240","timestamp":1790152442278,"filled_amount_so_far":404}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790152562862,"filled_amount_so_far":190}
+{"event":"progress","order_id":"buy:Lapis Zombie Shard:1790144419240","timestamp":1790152662030,"filled_amount_so_far":1104}
+{"event":"progress","order_id":"sell:Enchanted Emerald Block:1790143707730","timestamp":1790152683044,"filled_amount_so_far":45}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790152701095,"filled_amount_so_far":199}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790152860586,"filled_amount_so_far":203}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790153001851,"filled_amount_so_far":208}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790153022892,"filled_amount_so_far":209}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790153182218,"filled_amount_so_far":481}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790153500961,"filled_amount_so_far":505}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790153500961,"filled_amount_so_far":210}
+{"event":"progress","order_id":"buy:Lapis Zombie Shard:1790144419240","timestamp":1790153522010,"filled_amount_so_far":1166}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790153642309,"filled_amount_so_far":714}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790153660385,"filled_amount_so_far":715}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790153802029,"filled_amount_so_far":569}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790153880265,"filled_amount_so_far":573}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790153961395,"filled_amount_so_far":597}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790154042579,"filled_amount_so_far":716}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790154060734,"filled_amount_so_far":717}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790154081661,"filled_amount_so_far":629}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790154141815,"filled_amount_so_far":633}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790154280190,"filled_amount_so_far":720}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790154301191,"filled_amount_so_far":634}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790154340298,"filled_amount_so_far":666}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790154340298,"filled_amount_so_far":733}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790154382380,"filled_amount_so_far":730}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790154421441,"filled_amount_so_far":734}
+{"event":"progress","order_id":"buy:Lapis Zombie Shard:1790144419240","timestamp":1790154421441,"filled_amount_so_far":1231}
+{"event":"progress","order_id":"sell:Rusty Coin:1790143899295","timestamp":1790154481546,"filled_amount_so_far":798}
+{"event":"resolved","order_id":"sell:Rusty Coin:1790143899295","resolve_time":1790154584858,"outcome":"filled","filled_amount":828,"time_to_resolve_ms":10685563}
+{"event":"progress","order_id":"buy:Lapis Zombie Shard:1790144419240","timestamp":1790154800233,"filled_amount_so_far":1232}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790154902487,"filled_amount_so_far":212}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790154941593,"filled_amount_so_far":213}
+{"event":"progress","order_id":"buy:Lapis Zombie Shard:1790144419240","timestamp":1790154981007,"filled_amount_so_far":1233}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790155002038,"filled_amount_so_far":734}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790155242496,"filled_amount_so_far":218}
+{"event":"progress","order_id":"buy:Lapis Zombie Shard:1790144419240","timestamp":1790155281610,"filled_amount_so_far":1292}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790155302638,"filled_amount_so_far":219}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790155320662,"filled_amount_so_far":220}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790155762599,"filled_amount_so_far":739}
+{"event":"progress","order_id":"sell:Superior Dragon Fragment:1790143876780","timestamp":1790155762599,"filled_amount_so_far":191}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790155822729,"filled_amount_so_far":754}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790143812014","timestamp":1790155840802,"filled_amount_so_far":882}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790156159989,"filled_amount_so_far":221}
+{"event":"progress","order_id":"buy:Helixis:1790144316076","timestamp":1790156601864,"filled_amount_so_far":234}
+{"event":"progress","order_id":"buy:Lapis Zombie Shard:1790144419240","timestamp":1790156601864,"filled_amount_so_far":1417}
+{"event":"progress","order_id":"buy:Lapis Zombie Shard:1790144419240","timestamp":1790157061895,"filled_amount_so_far":1453}
+{"event":"progress","order_id":"sell:Superior Dragon Fragment:1790143876780","timestamp":1790157802038,"filled_amount_so_far":1736}
+{"event":"progress","order_id":"buy:Superior Dragon Fragment:1790144303586","timestamp":1790157820147,"filled_amount_so_far":472}
+{"event":"progress","order_id":"sell:Superior Dragon Fragment:1790143876780","timestamp":1790160202125,"filled_amount_so_far":1921}
+{"event":"progress","order_id":"sell:Superior Dragon Fragment:1790143876780","timestamp":1790161540565,"filled_amount_so_far":2046}
+{"event":"progress","order_id":"sell:Superior Dragon Fragment:1790143876780","timestamp":1790163721147,"filled_amount_so_far":2138}
+{"event":"progress","order_id":"sell:Superior Dragon Fragment:1790143876780","timestamp":1790164181297,"filled_amount_so_far":2140}
+{"event":"progress","order_id":"sell:Voracious Spider Shard:1790143742787","timestamp":1790169202494,"filled_amount_so_far":4}
+{"event":"progress","order_id":"sell:Voracious Spider Shard:1790143742787","timestamp":1790170140849,"filled_amount_so_far":5}
+{"event":"progress","order_id":"sell:Voracious Spider Shard:1790143742787","timestamp":1790170462694,"filled_amount_so_far":69}
+{"event":"progress","order_id":"sell:Voracious Spider Shard:1790143742787","timestamp":1790170480680,"filled_amount_so_far":101}
+{"event":"progress","order_id":"sell:Exportable Carrots:1790143912162","timestamp":1790174581586,"filled_amount_so_far":80}
+{"event":"progress","order_id":"sell:Exportable Carrots:1790143912162","timestamp":1790176720001,"filled_amount_so_far":1243}
+{"event":"resolved","order_id":"sell:Can of Worms:1790143979781","resolve_time":1790177064436,"outcome":"cancelled","filled_amount":0,"time_to_resolve_ms":33084655}
+{"event":"placed","order_id":"sell:Can of Worms:1790177067265","order_type":"sell","item_name":"Can of Worms","place_time":1790177067265,"order_amount":644,"order_price":15646.4,"current_buy_price":15646.565630299605,"current_sell_price":10519.5,"volume_7_day":186323,"volume_24_hour":9359,"past_quantity_per_hour":1167,"new_listings_per_hour":1,"current_holding_amount":644}
+{"event":"resolved","order_id":"sell:Enchanted Cactus:1790143925316","resolve_time":1790177071944,"outcome":"cancelled","filled_amount":798,"time_to_resolve_ms":33146628}
+{"event":"resolved","order_id":"sell:Enchanted Emerald Block:1790143707730","resolve_time":1790177082145,"outcome":"cancelled","filled_amount":87,"time_to_resolve_ms":33374415}
+{"event":"placed","order_id":"sell:Enchanted Emerald Block:1790177087756","order_type":"sell","item_name":"Enchanted Emerald Block","place_time":1790177087756,"order_amount":1615,"order_price":102632.2,"current_buy_price":102632.56023965143,"current_sell_price":99001.80052527906,"volume_7_day":62452,"volume_24_hour":3649,"past_quantity_per_hour":101,"new_listings_per_hour":3.1666666666666665,"current_holding_amount":1615}
+{"event":"resolved","order_id":"sell:Enchanted Golden Carrot:1790143806259","resolve_time":1790177093367,"outcome":"cancelled","filled_amount":1073,"time_to_resolve_ms":33287108}
+{"event":"placed","order_id":"sell:Enchanted Golden Carrot:1790177095797","order_type":"sell","item_name":"Enchanted Golden Carrot","place_time":1790177095797,"order_amount":2240,"order_price":78457.2,"current_buy_price":78457.33712801134,"current_sell_price":75681.5,"volume_7_day":661847,"volume_24_hour":27723,"past_quantity_per_hour":1038,"new_listings_per_hour":23.5,"current_holding_amount":2927}
+{"event":"resolved","order_id":"sell:Enchanted Gold Block:1790143798445","resolve_time":1790177100284,"outcome":"cancelled","filled_amount":3159,"time_to_resolve_ms":33301839}
+{"event":"placed","order_id":"sell:Enchanted Gold Block:1790177112728","order_type":"sell","item_name":"Enchanted Gold Block","place_time":1790177112728,"order_amount":1677,"order_price":79962.9,"current_buy_price":79963.37637028015,"current_sell_price":76881.3000439449,"volume_7_day":540071,"volume_24_hour":20387,"past_quantity_per_hour":4599,"new_listings_per_hour":21.833333333333332,"current_holding_amount":1677}
+{"event":"resolved","order_id":"sell:Enchanted Ruby Veilshroom:1790143765741","resolve_time":1790177116718,"outcome":"cancelled","filled_amount":687,"time_to_resolve_ms":33350977}
+{"event":"placed","order_id":"sell:Enchanted Ruby Veilshroom:1790177134520","order_type":"sell","item_name":"Enchanted Ruby Veilshroom","place_time":1790177134520,"order_amount":1081,"order_price":16039.7,"current_buy_price":16039.89656507015,"current_sell_price":13012.7,"volume_7_day":191489,"volume_24_hour":10839,"past_quantity_per_hour":1776,"new_listings_per_hour":1.5,"current_holding_amount":1081}
+{"event":"progress","order_id":"sell:Enchanted Ruby Veilshroom:1790177134520","timestamp":1790177135134,"filled_amount_so_far":1080}
+{"event":"resolved","order_id":"sell:Fermento:1790143956144","resolve_time":1790177140704,"outcome":"cancelled","filled_amount":93,"time_to_resolve_ms":33184560}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790177112728","timestamp":1790177141173,"filled_amount_so_far":12}
+{"event":"placed","order_id":"sell:Fermento:1790177146193","order_type":"sell","item_name":"Fermento","place_time":1790177146193,"order_amount":318,"order_price":254411.5,"current_buy_price":254411.69928057556,"current_sell_price":247470.5,"volume_7_day":222518,"volume_24_hour":8615,"past_quantity_per_hour":836,"new_listings_per_hour":8.833333333333334,"current_holding_amount":318}
+{"event":"resolved","order_id":"sell:Silver Lotus:1790143748949","resolve_time":1790177151167,"outcome":"cancelled","filled_amount":0,"time_to_resolve_ms":33402218}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790177112728","timestamp":1790177163112,"filled_amount_so_far":396}
+{"event":"resolved","order_id":"sell:Golden Ghoul Shard:1790144009631","resolve_time":1790177165792,"outcome":"cancelled","filled_amount":0,"time_to_resolve_ms":33156161}
+{"event":"placed","order_id":"sell:Golden Ghoul Shard:1790177175233","order_type":"sell","item_name":"Golden Ghoul Shard","place_time":1790177175233,"order_amount":384,"order_price":11279.7,"current_buy_price":11279.926000000001,"current_sell_price":5279.422561471246,"volume_7_day":52663,"volume_24_hour":2296,"past_quantity_per_hour":235,"new_listings_per_hour":6.666666666666667,"current_holding_amount":384}
+{"event":"resolved","order_id":"sell:Voracious Spider Shard:1790143742787","resolve_time":1790177181267,"outcome":"cancelled","filled_amount":101,"time_to_resolve_ms":33438480}
+{"event":"placed","order_id":"sell:Voracious Spider Shard:1790177189914","order_type":"sell","item_name":"Voracious Spider Shard","place_time":1790177189914,"order_amount":510,"order_price":7955.6,"current_buy_price":8400.7104468219,"current_sell_price":3511.6007965686276,"volume_7_day":68224,"volume_24_hour":4509,"past_quantity_per_hour":293,"new_listings_per_hour":3.1666666666666665,"current_holding_amount":510}
+{"event":"resolved","order_id":"sell:Silver Fang:1790143754238","resolve_time":1790177194229,"outcome":"cancelled","filled_amount":1980,"time_to_resolve_ms":33439991}
+{"event":"progress","order_id":"sell:Fermento:1790177146193","timestamp":1790177201459,"filled_amount_so_far":1}
+{"event":"resolved","order_id":"sell:Tool Exp Capsule:1790143812014","resolve_time":1790177203008,"outcome":"cancelled","filled_amount":882,"time_to_resolve_ms":33390994}
+{"event":"placed","order_id":"sell:Tool Exp Capsule:1790177205425","order_type":"sell","item_name":"Tool Exp Capsule","place_time":1790177205425,"order_amount":1158,"order_price":101500.3,"current_buy_price":101500.4,"current_sell_price":97201.68114884164,"volume_7_day":524927,"volume_24_hour":30709,"past_quantity_per_hour":2994,"new_listings_per_hour":4.833333333333333,"current_holding_amount":1158}
+{"event":"resolved","order_id":"sell:Young Dragon Fragment:1790143936021","resolve_time":1790177208835,"outcome":"cancelled","filled_amount":0,"time_to_resolve_ms":33272814}
+{"event":"placed","order_id":"sell:Young Dragon Fragment:1790177212895","order_type":"sell","item_name":"Young Dragon Fragment","place_time":1790177212895,"order_amount":1732,"order_price":15172.9,"current_buy_price":15174.648847262248,"current_sell_price":12086.104113732608,"volume_7_day":627650,"volume_24_hour":36169,"past_quantity_per_hour":4566,"new_listings_per_hour":10.5,"current_holding_amount":1732}
+{"event":"placed","order_id":"sell:Enchanted Sea Lumies:1790177223464","order_type":"sell","item_name":"Enchanted Sea Lumies","place_time":1790177223464,"order_amount":2240,"order_price":90889,"current_buy_price":92888.81149294494,"current_sell_price":72699.11631139944,"volume_7_day":219577,"volume_24_hour":5476,"past_quantity_per_hour":455,"new_listings_per_hour":65,"current_holding_amount":2546}
+{"event":"placed","order_id":"sell:Absolute Ender Pearl:1790177235308","order_type":"sell","item_name":"Absolute Ender Pearl","place_time":1790177235308,"order_amount":4000,"order_price":17333,"current_buy_price":17377.2,"current_sell_price":11350.14172513413,"volume_7_day":409098,"volume_24_hour":14774,"past_quantity_per_hour":1765,"new_listings_per_hour":8.5,"current_holding_amount":4000}
+{"event":"resolved","order_id":"buy:Agarimoo Tongue:1790144357930","resolve_time":1790177238365,"outcome":"cancelled","filled_amount":3,"time_to_resolve_ms":32880435}
+{"event":"resolved","order_id":"buy:Helixis:1790144316076","resolve_time":1790177242833,"outcome":"cancelled","filled_amount":234,"time_to_resolve_ms":32926757}
+{"event":"resolved","order_id":"buy:Superior Dragon Fragment:1790144303586","resolve_time":1790177247030,"outcome":"cancelled","filled_amount":472,"time_to_resolve_ms":32943444}
+{"event":"resolved","order_id":"buy:Extremely Real Shuriken:1790144379566","resolve_time":1790177250553,"outcome":"cancelled","filled_amount":471,"time_to_resolve_ms":32870987}
+{"event":"placed","order_id":"sell:Helixis:1790177259837","order_type":"sell","item_name":"Helixis","place_time":1790177259837,"order_amount":234,"order_price":590544.6,"current_buy_price":590544.82,"current_sell_price":506200.0967177243,"volume_7_day":34988,"volume_24_hour":1269,"past_quantity_per_hour":46,"new_listings_per_hour":35,"current_holding_amount":234}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790177112728","timestamp":1790177261595,"filled_amount_so_far":655}
+{"event":"placed","order_id":"sell:Superior Dragon Fragment:1790177264389","order_type":"sell","item_name":"Superior Dragon Fragment","place_time":1790177264389,"order_amount":472,"order_price":86526.5,"current_buy_price":86526.89083441417,"current_sell_price":74003.4193661972,"volume_7_day":84259,"volume_24_hour":5105,"past_quantity_per_hour":432,"new_listings_per_hour":3.5,"current_holding_amount":486}
+{"event":"resolved","order_id":"buy:Squash:1790144226278","resolve_time":1790177282601,"outcome":"cancelled","filled_amount":2190,"time_to_resolve_ms":33056323}
+{"event":"progress","order_id":"sell:Enchanted Gold Block:1790177112728","timestamp":1790177283054,"filled_amount_so_far":765}
+{"event":"progress","order_id":"sell:Enchanted Sea Lumies:1790177223464","timestamp":1790177283054,"filled_amount_so_far":44}
+{"event":"progress","order_id":"sell:Helixis:1790177259837","timestamp":1790177283054,"filled_amount_so_far":1}
+{"event":"placed","order_id":"sell:Squash:1790177285920","order_type":"sell","item_name":"Squash","place_time":1790177285920,"order_amount":2190,"order_price":75523,"current_buy_price":75523.1,"current_sell_price":73231.34335877861,"volume_7_day":586349,"volume_24_hour":24643,"past_quantity_per_hour":2763,"new_listings_per_hour":13.833333333333334,"current_holding_amount":2190}
+{"event":"resolved","order_id":"buy:Lapis Zombie Shard:1790144419240","resolve_time":1790177290638,"outcome":"cancelled","filled_amount":1453,"time_to_resolve_ms":32871398}
+{"event":"placed","order_id":"sell:Lapis Zombie Shard:1790177299661","order_type":"sell","item_name":"Lapis Zombie Shard","place_time":1790177299661,"order_amount":2240,"order_price":7998.8,"current_buy_price":7998.9,"current_sell_price":6003.4267935258085,"volume_7_day":144015,"volume_24_hour":7743,"past_quantity_per_hour":1550,"new_listings_per_hour":4.833333333333333,"current_holding_amount":2669}
+{"event":"resolved","order_id":"buy:Green Goblin Egg:1790144277929","resolve_time":1790177306636,"outcome":"cancelled","filled_amount":1136,"time_to_resolve_ms":33028707}
+{"event":"placed","order_id":"sell:Green Goblin Egg:1790177311082","order_type":"sell","item_name":"Green Goblin Egg","place_time":1790177311082,"order_amount":1136,"order_price":3337.9,"current_buy_price":3338.289064327486,"current_sell_price":2015.6,"volume_7_day":186362,"volume_24_hour":8691,"past_quantity_per_hour":738,"new_listings_per_hour":1,"current_holding_amount":1213}
+{"event":"progress","order_id":"sell:Fermento:1790177146193","timestamp":1790177321818,"filled_amount_so_far":11}
+{"event":"placed","order_id":"sell:Silver Fang:1790177325401","order_type":"sell","item_name":"Silver Fang","place_time":1790177325401,"order_amount":834,"order_price":11300.2,"current_buy_price":11300.515515086592,"current_sell_price":8120.9,"volume_7_day":113840,"volume_24_hour":6175,"past_quantity_per_hour":203,"new_listings_per_hour":2,"current_holding_amount":834}
+{"event":"progress","order_id":"sell:Voracious Spider Shard:1790177189914","timestamp":1790177342839,"filled_amount_so_far":128}
+{"event":"progress","order_id":"sell:Enchanted Emerald Block:1790177087756","timestamp":1790177342839,"filled_amount_so_far":2}
+{"event":"progress","order_id":"sell:Young Dragon Fragment:1790177212895","timestamp":1790177342839,"filled_amount_so_far":107}
+{"event":"progress","order_id":"sell:Green Goblin Egg:1790177311082","timestamp":1790177342839,"filled_amount_so_far":1}
+{"event":"progress","order_id":"sell:Fermento:1790177146193","timestamp":1790177360895,"filled_amount_so_far":14}
+{"event":"placed","order_id":"sell:Extremely Real Shuriken:1790177365931","order_type":"sell","item_name":"Extremely Real Shuriken","place_time":1790177365931,"order_amount":756,"order_price":57797.6,"current_buy_price":58163.72713517149,"current_sell_price":54506.40193302142,"volume_7_day":267401,"volume_24_hour":5966,"past_quantity_per_hour":1462,"new_listings_per_hour":8.333333333333334,"current_holding_amount":756}
+{"event":"placed","order_id":"sell:Suspicious Scrap:1790177373279","order_type":"sell","item_name":"Suspicious Scrap","place_time":1790177373279,"order_amount":114,"order_price":159999.9,"current_buy_price":159999.9,"current_sell_price":125631.72178217821,"volume_7_day":200125,"volume_24_hour":7967,"past_quantity_per_hour":1381,"new_listings_per_hour":13.166666666666666,"current_holding_amount":114}
+{"event":"progress","order_id":"sell:Suspicious Scrap:1790177373279","timestamp":1790177375839,"filled_amount_so_far":72}
+{"event":"progress","order_id":"sell:Fermento:1790177146193","timestamp":1790177399983,"filled_amount_so_far":18}
+{"event":"progress","order_id":"sell:Green Goblin Egg:1790177311082","timestamp":1790177399983,"filled_amount_so_far":8}
+{"event":"progress","order_id":"sell:Voracious Spider Shard:1790177189914","timestamp":1790177423958,"filled_amount_so_far":221}
+{"event":"progress","order_id":"sell:Squash:1790177285920","timestamp":1790177423958,"filled_amount_so_far":5}
+{"event":"progress","order_id":"sell:Lapis Zombie Shard:1790177299661","timestamp":1790177441964,"filled_amount_so_far":64}
+{"event":"progress","order_id":"sell:Voracious Spider Shard:1790177189914","timestamp":1790177460763,"filled_amount_so_far":222}
+{"event":"progress","order_id":"sell:Tool Exp Capsule:1790177205425","timestamp":1790177481748,"filled_amount_so_far":128}
+{"event":"progress","order_id":"sell:Lapis Zombie Shard:1790177299661","timestamp":1790177481748,"filled_amount_so_far":74}
+{"event":"progress","order_id":"sell:Golden Ghoul Shard:1790177175233","timestamp":1790184436853,"filled_amount_so_far":384}
+{"event":"progress","order_id":"sell:Enchanted Emerald Block:1790177087756","timestamp":1790184436854,"filled_amount_so_far":220}
+{"event":"progress","order_id":"sell:Lapis Zombie Shard:1790177299661","timestamp":1790184436854,"filled_amount_so_far":2240}
+{"event":"progress","order_id":"sell:Helixis:1790177259837","timestamp":1790184436854,"filled_amount_so_far":18}
+{"event":"progress","order_id":"sell:Green Goblin Egg:1790177311082","timestamp":1790184436854,"filled_amount_so_far":1136}
+{"event":"progress","order_id":"sell:Silver Fang:1790177325401","timestamp":1790184436854,"filled_amount_so_far":834}
+{"event":"progress","order_id":"sell:Enchanted Emerald Block:1790177087756","timestamp":1790184441115,"filled_amount_so_far":224}
+{"event":"progress","order_id":"sell:Enchanted Emerald Block:1790177087756","timestamp":1790184681825,"filled_amount_so_far":230}
+{"event":"progress","order_id":"sell:Enchanted Emerald Block:1790177087756","timestamp":1790184904699,"filled_amount_so_far":231}
