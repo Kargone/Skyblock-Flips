@@ -5,7 +5,7 @@
     "has-weights": true
   },
   "Razor-sharp Shark Tooth Necklace": {
-    "api-name": "",
+    "api-name": "RAZOR_SHARP_SHARK_TOOTH_NECKLACE",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -234,7 +234,7 @@
     "has-weights": true
   },
   "Bait Ring": {
-    "api-name": "",
+    "api-name": "BAIT_RING",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -272,7 +272,7 @@
     "has-weights": true
   },
   "Bat Person Artifact": {
-    "api-name": "",
+    "api-name": "BAT_PERSON_ARTIFACT",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -282,7 +282,7 @@
     }
   },
   "Bat Person Ring": {
-    "api-name": "",
+    "api-name": "BAT_PERSON_RING",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -292,7 +292,7 @@
     }
   },
   "Bat Person Talisman": {
-    "api-name": "",
+    "api-name": "BAT_PERSON_TALISMAN",
     "type": "crafting-material",
     "has-weights": false
   },
@@ -701,7 +701,7 @@
     "has-weights": true
   },
   "Capsaicin Eyedrops": {
-    "api-name": "CAPSAICIN_EYEDROPS_NO_CHARGES",
+    "api-name": "CAPSAICIN_EYEDROPS",
     "type": "short-term-investment",
     "has-weights": true
   },
@@ -1256,7 +1256,7 @@
     "has-weights": true
   },
   "Dull Shark Tooth Necklace": {
-    "api-name": "",
+    "api-name": "DULL_SHARK_TOOTH_NECKLACE",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -1635,7 +1635,7 @@
     "has-weights": true
   },
   "Enchanted Hay Bale": {
-    "api-name": "ENCHANTED_HAY_BALE",
+    "api-name": "ENCHANTED_HAY_BLOCK",
     "type": "short-term-investment",
     "has-weights": true
   },
@@ -6855,7 +6855,7 @@
     "has-weights": true
   },
   "Hay Bale": {
-    "api-name": "HAY_BLOCK",
+    "api-name": "HAY_BALE",
     "type": "short-term-investment",
     "has-weights": true
   },
@@ -6965,7 +6965,7 @@
     "has-weights": true
   },
   "Honed Shark Tooth Necklace": {
-    "api-name": "",
+    "api-name": "HONED_SHARK_TOOTH_NECKLACE",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -7454,7 +7454,7 @@
     "has-weights": true
   },
   "Lush Artifact": {
-    "api-name": "",
+    "api-name": "LUSH_ARTIFACT",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -7468,7 +7468,7 @@
     "has-weights": true
   },
   "Lush Ring": {
-    "api-name": "",
+    "api-name": "LUSH_RING",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -7477,7 +7477,7 @@
     }
   },
   "Lush Talisman": {
-    "api-name": "",
+    "api-name": "LUSH_TALISMAN",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -7635,7 +7635,7 @@
     "has-weights": true
   },
   "Melon": {
-    "api-name": "MELON_BLOCK",
+    "api-name": "BUILDER_MELON",
     "type": "short-term-investment",
     "has-weights": true
   },
@@ -7860,7 +7860,7 @@
     "has-weights": true
   },
   "Nether Star": {
-    "api-name": "CORRUPTED_NETHER_STAR",
+    "api-name": "NETHER_STAR",
     "type": "short-term-investment",
     "has-weights": true
   },
@@ -8365,7 +8365,7 @@
     "has-weights": true
   },
   "Raggedy Shark Tooth Necklace": {
-    "api-name": "",
+    "api-name": "RAGGEDY_SHARK_TOOTH_NECKLACE",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -8454,7 +8454,7 @@
     "has-weights": true
   },
   "Red Claw Artifact": {
-    "api-name": "",
+    "api-name": "RED_CLAW_ARTIFACT",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -8465,17 +8465,27 @@
     }
   },
   "Red Claw Egg": {
-    "api-name": "",
+    "api-name": "RED_CLAW_EGG",
     "type": "crafting-material",
     "has-weights": false
   },
   "Red Claw Ring": {
-    "api-name": "",
+    "api-name": "RED_CLAW_RING",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
       "Enchanted Leather": 96,
-      "Golden Tooth": 8
+      "Golden Tooth": 8,
+      "Red Claw Talisman": 1
+    }
+  },
+  "Red Claw Talisman": {
+    "api-name": "RED_CLAW_TALISMAN",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Wolf Tooth": 8,
+      "Enchanted Bone": 1
     }
   },
   "Red Gift": {
@@ -8839,7 +8849,7 @@
     "has-weights": true
   },
   "Sharp Shark Tooth Necklace": {
-    "api-name": "",
+    "api-name": "SHARP_SHARK_TOOTH_NECKLACE",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -9033,7 +9043,7 @@
     "has-weights": true
   },
   "Speed Artifact": {
-    "api-name": "",
+    "api-name": "SPEED_ARTIFACT",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -9042,7 +9052,7 @@
     }
   },
   "Speed Ring": {
-    "api-name": "",
+    "api-name": "SPEED_RING",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -9060,7 +9070,7 @@
     "has-weights": true
   },
   "Spider Artifact": {
-    "api-name": "",
+    "api-name": "SPIDER_ARTIFACT",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -9085,7 +9095,7 @@
     "has-weights": true
   },
   "Spider Ring": {
-    "api-name": "",
+    "api-name": "SPIDER_RING",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -9094,7 +9104,7 @@
     }
   },
   "Spider Talisman": {
-    "api-name": "",
+    "api-name": "SPIDER_TALISMAN",
     "type": "crafting-material",
     "has-weights": false
   },
@@ -9104,7 +9114,7 @@
     "has-weights": true
   },
   "Spiked Atrocity": {
-    "api-name": "",
+    "api-name": "SPIKED_ATROCITY",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -9729,7 +9739,7 @@
     "has-weights": true
   },
   "Vaccine Artifact": {
-    "api-name": "",
+    "api-name": "VACCINE_ARTIFACT",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -9738,11 +9748,20 @@
     }
   },
   "Vaccine Ring": {
-    "api-name": "",
+    "api-name": "VACCINE_RING",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
-      "Arachne's Fang": 8
+      "Arachne's Fang": 8,
+      "Vaccine Talisman": 1
+    }
+  },
+  "Vaccine Talisman": {
+    "api-name": "VACCINE_TALISMAN",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Poisonous Potato": 9
     }
   },
   "Vampire Fang": {
@@ -10081,7 +10100,7 @@
     "has-weights": true
   },
   "Personal Compactor 7000": {
-    "api-name": "",
+    "api-name": "PERSONAL_COMPACTOR_7000",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -10091,26 +10110,53 @@
     }
   },
   "Agarimoo Artifact": {
-    "api-name": "",
+    "api-name": "AGARIMOO_ARTIFACT",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
-      "Agarimoo Tongue": 617
+      "Agarimoo Tongue": 512,
+      "Agarimoo Ring": 1
+    }
+  },
+  "Agarimoo Ring": {
+    "api-name": "AGARIMOO_RING",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Agarimoo Tongue": 96,
+      "Agarimoo Talisman": 1
+    }
+  },
+  "Agarimoo Talisman": {
+    "api-name": "AGARIMOO_TALISMAN",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Agarimoo Tongue": 9
     }
   },
   "Glacial Artifact": {
-    "api-name": "",
+    "api-name": "GLACIAL_ARTIFACT",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Glacial Ring": 1,
+      "Glacial Fragment": 40,
+      "Enchanted Packed Ice": 8
+    }
+  },
+  "Glacial Ring": {
+    "api-name": "GLACIAL_RING",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
       "Glacial Talisman": 1,
       "Enchanted Ice": 128,
-      "Glacial Fragment": 60,
-      "Enchanted Packed Ice": 8
+      "Glacial Fragment": 20
     }
   },
   "Hunter Talisman": {
-    "api-name": "",
+    "api-name": "HUNTER_TALISMAN",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -10183,7 +10229,7 @@
     }
   },
   "Titanium Artifact": {
-    "api-name": "",
+    "api-name": "TITANIUM_ARTIFACT",
     "seconds-to-craft": 129600,
     "type": "forge-product",
     "has-weights": false,
@@ -10193,7 +10239,7 @@
     }
   },
   "Titanium Ring": {
-    "api-name": "",
+    "api-name": "TITANIUM_RING",
     "seconds-to-craft": 72000,
     "type": "forge-product",
     "has-weights": false,
@@ -10203,7 +10249,7 @@
     }
   },
   "Titanium Gauntlet": {
-    "api-name": "",
+    "api-name": "TITANIUM_GAUNTLET",
     "seconds-to-craft": 16200,
     "type": "forge-product",
     "has-weights": false,
@@ -10214,7 +10260,7 @@
     }
   },
   "Titanium Cloak": {
-    "api-name": "",
+    "api-name": "TITANIUM_CLOAK",
     "seconds-to-craft": 16200,
     "type": "forge-product",
     "has-weights": false,
@@ -10225,7 +10271,7 @@
     }
   },
   "Titanium Belt": {
-    "api-name": "",
+    "api-name": "TITANIUM_BELT",
     "seconds-to-craft": 16200,
     "type": "forge-product",
     "has-weights": false,
@@ -10288,7 +10334,7 @@
     }
   },
   "Mithril-Plated Drill Engine": {
-    "api-name": "",
+    "api-name": "MITHRIL_DRILL_ENGINE",
     "seconds-to-craft": 86400,
     "type": "forge-product",
     "has-weights": false,
@@ -10298,7 +10344,7 @@
     }
   },
   "Mithril-Infused Fuel Tank": {
-    "api-name": "",
+    "api-name": "MITHRIL_FUEL_TANK",
     "seconds-to-craft": 86400,
     "type": "forge-product",
     "has-weights": false,
@@ -10309,7 +10355,7 @@
     }
   },
   "Gemstone Drill LT-522": {
-    "api-name": "",
+    "api-name": "GEMSTONE_DRILL_2",
     "seconds-to-craft": 30,
     "type": "forge-product",
     "has-weights": false,
@@ -10319,7 +10365,7 @@
     }
   },
   "Glacial Talisman": {
-    "api-name": "",
+    "api-name": "GLACIAL_TALISMAN",
     "type": "crafting-material",
     "has-weights": false
   },
@@ -11219,12 +11265,12 @@
     "has-weights": true
   },
   "Mineral Talisman": {
-    "api-name": "",
+    "api-name": "MINERAL_TALISMAN",
     "type": "crafting-material",
     "has-weights": false
   },
   "Glossy Mineral Talisman": {
-    "api-name": "",
+    "api-name": "GLOSSY_MINERAL_TALISMAN",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11233,12 +11279,12 @@
     }
   },
   "Scavenger Talisman": {
-    "api-name": "",
+    "api-name": "SCAVENGER_TALISMAN",
     "type": "crafting-material",
     "has-weights": false
   },
   "Scavenger Ring": {
-    "api-name": "",
+    "api-name": "SCAVENGER_RING",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11248,7 +11294,7 @@
     }
   },
   "Scavenger Artifact": {
-    "api-name": "",
+    "api-name": "SCAVENGER_ARTIFACT",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11258,12 +11304,12 @@
     }
   },
   "Talisman of Coins": {
-    "api-name": "",
+    "api-name": "COIN_TALISMAN",
     "type": "crafting-material",
     "has-weights": false
   },
   "Ring of Coins": {
-    "api-name": "",
+    "api-name": "RING_OF_COINS",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11272,7 +11318,7 @@
     }
   },
   "Artifact of Coins": {
-    "api-name": "",
+    "api-name": "ARTIFACT_OF_COINS",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11281,7 +11327,7 @@
     }
   },
   "Catacombs Expert Ring": {
-    "api-name": "",
+    "api-name": "CATACOMBS_EXPERT_RING",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11289,12 +11335,12 @@
     }
   },
   "Wither Artifact": {
-    "api-name": "",
+    "api-name": "WITHER_ARTIFACT",
     "type": "crafting-material",
     "has-weights": false
   },
   "Wither Relic": {
-    "api-name": "",
+    "api-name": "WITHER_RELIC",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11303,12 +11349,12 @@
     }
   },
   "Treasure Talisman": {
-    "api-name": "",
+    "api-name": "TREASURE_TALISMAN",
     "type": "crafting-material",
     "has-weights": false
   },
   "Treasure Ring": {
-    "api-name": "",
+    "api-name": "TREASURE_RING",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11316,7 +11362,7 @@
     }
   },
   "Treasure Artifact": {
-    "api-name": "",
+    "api-name": "TREASURE_ARTIFACT",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11324,17 +11370,17 @@
     }
   },
   "Scare Fragment": {
-    "api-name": "",
+    "api-name": "SCARE_FRAGMENT",
     "type": "crafting-material",
     "has-weights": false
   },
   "Intimidation Artifact": {
-    "api-name": "",
+    "api-name": "INTIMIDATION_ARTIFACT",
     "type": "crafting-material",
     "has-weights": false
   },
   "Intimidation Relic": {
-    "api-name": "",
+    "api-name": "INTIMIDATION_RELIC",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11343,7 +11389,7 @@
     }
   },
   "Blaze Talisman": {
-    "api-name": "",
+    "api-name": "BLAZE_TALISMAN",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11352,7 +11398,7 @@
     }
   },
   "Burststopper Talisman": {
-    "api-name": "",
+    "api-name": "BURSTSTOPPER_TALISMAN",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11362,12 +11408,15 @@
     }
   },
   "Soulflow Pile": {
-    "api-name": "",
-    "type": "crafting-material",
-    "has-weights": false
+    "api-name": "SOULFLOW_PILE",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Null Sphere": 90
+    }
   },
   "Soulflow Battery": {
-    "api-name": "",
+    "api-name": "SOULFLOW_BATTERY",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11376,7 +11425,7 @@
     }
   },
   "Soulflow Supercell": {
-    "api-name": "",
+    "api-name": "SOULFLOW_SUPERCELL",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11386,17 +11435,17 @@
     }
   },
   "Ender Artifact": {
-    "api-name": "",
+    "api-name": "ENDER_ARTIFACT",
     "type": "crafting-material",
     "has-weights": false
   },
   "Exceedingly Rare Ender Artifact Upgrade": {
-    "api-name": "",
+    "api-name": "EXCEEDINGLY_RARE_ENDER_ARTIFACT_UPGRADER",
     "type": "crafting-material",
     "has-weights": false
   },
   "Ender Relic": {
-    "api-name": "",
+    "api-name": "ENDER_RELIC",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11407,25 +11456,20 @@
     }
   },
   "Scythe Blade": {
-    "api-name": "",
+    "api-name": "SCYTHE_BLADE",
     "type": "crafting-material",
     "has-weights": false
   },
   "Reaper Orb": {
-    "api-name": "",
+    "api-name": "REAPER_ORB",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
       "Scythe Blade": 8
     }
   },
-  "Zombie Ring": {
-    "api-name": "",
-    "type": "crafting-material",
-    "has-weights": false
-  },
   "Zombie Artifact": {
-    "api-name": "",
+    "api-name": "ZOMBIE_ARTIFACT",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11435,8 +11479,16 @@
       "Zombie Ring": 1
     }
   },
+  "Zombie Ring": {
+    "api-name": "ZOMBIE_RING",
+    "type": "auction-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Revenant Flesh": 64
+    }
+  },
   "Devour Ring": {
-    "api-name": "",
+    "api-name": "DEVOUR_RING",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11446,7 +11498,7 @@
     }
   },
   "Cropie Talisman": {
-    "api-name": "",
+    "api-name": "CROPIE_TALISMAN",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11454,7 +11506,7 @@
     }
   },
   "Squash Ring": {
-    "api-name": "",
+    "api-name": "SQUASH_RING",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11463,7 +11515,7 @@
     }
   },
   "Fermento Artifact": {
-    "api-name": "",
+    "api-name": "FERMENTO_ARTIFACT",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11472,7 +11524,7 @@
     }
   },
   "Draconic Talisman": {
-    "api-name": "",
+    "api-name": "DRACONIC_TALISMAN",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11482,7 +11534,7 @@
     }
   },
   "Draconic Ring": {
-    "api-name": "",
+    "api-name": "DRACONIC_RING",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11493,7 +11545,7 @@
     }
   },
   "Draconic Artifact": {
-    "api-name": "",
+    "api-name": "DRACONIC_ARTIFACT",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
@@ -11504,11 +11556,277 @@
     }
   },
   "Pulse Ring": {
-    "api-name": "",
+    "api-name": "PULSE_RING",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
       "Orb of Energy": 256
+    }
+  },
+  "Titanium Relic": {
+    "api-name": "TITANIUM_RELIC",
+    "seconds-to-craft": 259200,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Titanium Artifact": 1,
+      "Refined Titanium": 20
+    }
+  },
+  "Amber Necklace": {
+    "api-name": "AMBER_NECKLACE",
+    "seconds-to-craft": 86400,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Glossy Gemstone": 32,
+      "Flawless Amber Gemstone": 2
+    }
+  },
+  "Sapphire Cloak": {
+    "api-name": "SAPPHIRE_CLOAK",
+    "seconds-to-craft": 86400,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Flawless Sapphire Gemstone": 2,
+      "Glossy Gemstone": 32
+    }
+  },
+  "Jade Belt": {
+    "api-name": "JADE_BELT",
+    "seconds-to-craft": 86400,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Glossy Gemstone": 32,
+      "Flawless Jade Gemstone": 2
+    }
+  },
+  "Amethyst Gauntlet": {
+    "api-name": "AMETHYST_GAUNTLET",
+    "seconds-to-craft": 86400,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Glossy Gemstone": 32,
+      "Flawless Amethyst Gemstone": 2
+    }
+  },
+  "Gemstone Chamber": {
+    "api-name": "GEMSTONE_CHAMBER",
+    "seconds-to-craft": 14400,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Worm Membrane": 100,
+      "Gemstone Mixture": 1
+    }
+  },
+  "Amber Material (forge)": {
+    "api-name": "AMBER_MATERIAL",
+    "seconds-to-craft": 21600,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Golden Plate": 1,
+      "? Fine Amber Gemstone": 12
+    }
+  },
+  "Beacon II": {
+    "api-name": "BEACON_2",
+    "type": "crafting-material",
+    "has-weights": false
+  },
+  "Beacon III": {
+    "api-name": "BEACON_3",
+    "seconds-to-craft": 108000,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Refined Mithril": 10,
+      "Beacon II": 1
+    }
+  },
+  "Beacon IV": {
+    "api-name": "BEACON_4",
+    "seconds-to-craft": 144000,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Refined Mithril": 20,
+      "Beacon III": 1,
+      "Plasma": 1
+    }
+  },
+  "Beacon V": {
+    "api-name": "BEACON_5",
+    "seconds-to-craft": 180000,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Beacon IV": 1,
+      "Refined Mithril": 40,
+      "Plasma": 5
+    }
+  },
+  "Goblin Omelette": {
+    "api-name": "GOBLIN_OMELETTE",
+    "type": "crafting-material",
+    "has-weights": false
+  },
+  "Blue Cheese Goblin Omelette": {
+    "api-name": "GOBLIN_OMELETTE_BLUE_CHEESE",
+    "seconds-to-craft": 64800,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Goblin Omelette": 1,
+      "Flawless Sapphire Gemstone": 1,
+      "Blue Goblin Egg": 96
+    }
+  },
+  "Sunny Side Goblin Omelette": {
+    "api-name": "GOBLIN_OMELETTE_SUNNY_SIDE",
+    "seconds-to-craft": 64800,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Yellow Goblin Egg": 96,
+      "Flawless Topaz Gemstone": 1,
+      "Goblin Omelette": 1
+    }
+  },
+  "Spicy Goblin Omelette": {
+    "api-name": "GOBLIN_OMELETTE_SPICY",
+    "seconds-to-craft": 64800,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Flawless Ruby Gemstone": 1,
+      "Goblin Omelette": 1,
+      "Red Goblin Egg": 96
+    }
+  },
+  "Pesto Goblin Omelette": {
+    "api-name": "GOBLIN_OMELETTE_PESTO",
+    "seconds-to-craft": 64800,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Flawless Jade Gemstone": 1,
+      "Green Goblin Egg": 96,
+      "Goblin Omelette": 1
+    }
+  },
+  "Helmet of Divan": {
+    "api-name": "DIVAN_HELMET",
+    "seconds-to-craft": 86400,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Flawless Ruby Gemstone": 1,
+      "Gemstone Mixture": 10,
+      "Divan Fragment": 5
+    }
+  },
+  "Chestplate of Divan": {
+    "api-name": "DIVAN_CHESTPLATE",
+    "seconds-to-craft": 86400,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Gemstone Mixture": 10,
+      "Flawless Ruby Gemstone": 1,
+      "Divan Fragment": 8
+    }
+  },
+  "Leggings of Divan": {
+    "api-name": "DIVAN_LEGGINGS",
+    "seconds-to-craft": 86400,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Divan Fragment": 7,
+      "Flawless Ruby Gemstone": 1,
+      "Gemstone Mixture": 10
+    }
+  },
+  "Boots of Divan": {
+    "api-name": "DIVAN_BOOTS",
+    "seconds-to-craft": 86400,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Gemstone Mixture": 10,
+      "Flawless Ruby Gemstone": 1,
+      "Divan Fragment": 4
+    }
+  },
+  "Titanium-Plated Drill Engine": {
+    "api-name": "TITANIUM_DRILL_ENGINE",
+    "seconds-to-craft": 30,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Mithril-Plated Drill Engine": 1,
+      "Refined Titanium": 8,
+      "Drill Motor": 2
+    }
+  },
+  "Ruby-Polished Drill Engine": {
+    "api-name": "RUBY_POLISHED_DRILL_ENGINE",
+    "seconds-to-craft": 30,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Titanium-Plated Drill Engine": 1,
+      "Perfect Ruby Gemstone": 1,
+      "Precursor Apparatus": 4,
+      "Drill Motor": 5
+    }
+  },
+  "Titanium-Infused Fuel Tank": {
+    "api-name": "TITANIUM_FUEL_TANK",
+    "seconds-to-craft": 30,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Mithril-Infused Fuel Tank": 1,
+      "Refined Titanium": 10,
+      "Refined Diamond": 5,
+      "Fuel Canister": 5
+    }
+  },
+  "Gemstone Fuel Tank": {
+    "api-name": "GEMSTONE_FUEL_TANK",
+    "seconds-to-craft": 30,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Titanium-Infused Fuel Tank": 1,
+      "Precursor Apparatus": 4,
+      "Gemstone Mixture": 10
+    }
+  },
+  "Bejeweled Collar": {
+    "api-name": "",
+    "seconds-to-craft": 7200,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Refined Mithril": 4,
+      "Bejeweled Handle": 1
+    }
+  },
+  "Starfall Seasoning": {
+    "api-name": "STARFALL_SEASONING",
+    "seconds-to-craft": 64800,
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Treasurite": 16,
+      "Starfall": 64
     }
   }
 }

@@ -34,6 +34,13 @@ export let AUCTION_FEE_RATE_MID = 0.02;   // auctions selling for > 10M
 export let AUCTION_FEE_RATE_HIGH = 0.025; // auctions selling for > 100M
 export let DERPY_TAX_MULTIPLIER = 1;
 
+// Set by mayor.mjs from the live election data: 4 while Derpy's QUAD TAXES perk is
+// active, 1 otherwise, so the multiplier no longer has to be changed by hand.
+export function setDerpyTaxMultiplier(multiplier) {
+    if (DERPY_TAX_MULTIPLIER !== multiplier) console.log(`Bazaar tax multiplier set to ${multiplier}`);
+    DERPY_TAX_MULTIPLIER = multiplier;
+}
+
 function getBazaarTaxRate() {
     return BAZAAR_TAX_RATE * DERPY_TAX_MULTIPLIER;
 }
@@ -70,17 +77,14 @@ const IGNORE_INSTA_SELL_BUY = [
     "Superior Dragon Fragment",
     "Dwarven O's Ore Oats",
     "Enchanted Pumpkin",
-    "Golden Plate",
     "Mana Vampire V",
     "Spirit Leap",
     "Soulflow",
     "Super Compactor 3000",
     "Strong Dragon Fragment",
-    "Enchanted Bone",
     "Enchanted Hay Bale",
     "Unstable Dragon Fragment",
     "Young Dragon Fragment",
-    "Enchanted Sugar",
     "Rusty Coin",
     "Ethereal Vine",
     "Hot Potato Book",
@@ -89,15 +93,13 @@ const IGNORE_INSTA_SELL_BUY = [
     "Brown Mushroom",
     "Power VI",
     "Enchanted Carrot",
-    "Poisonous Potato",
     "Enchanted Golden Carrot",
-    "Wolf Tooth",
     "Enchanted Pumpkin",
     "Mutant Nether Wart",
     "Enchanted Brown Mushroom",
     "Titanic Experience Bottle",
     "Scorched Books",
-    "Enchanted Sugar Cane",
+    
     "Fuming Potato Book",
     "Enchanted Cactus",
     "Enchanted Cookie",
@@ -118,7 +120,6 @@ const IGNORE_INSTA_SELL_BUY = [
     "Enchanted Red Mushroom",
     "Celestial Mason Jar",
     "Mutated Blaze Ashes",
-    "Enchanted Rotten Flesh",
     "Raw Cod",
     "Superboom TNT",
     "Sugar Cane",
@@ -131,6 +132,8 @@ const IGNORE_INSTA_SELL_BUY = [
     "Enchanted Poppy",
     "Enchanted Brown Mushroom Block",
     "Tasty Cheese",
+    "Enchanted Sugar Cane",
+    "Enchanted Sugar",
 ];
 
 const IGNORE_INSTA_BUY = [
@@ -141,11 +144,10 @@ const IGNORE_INSTA_BUY = [
 const IGNORE_INSTA_SELL = [
     "Enchanted Rotten Flesh",
     "Glacite Jewel",
+    "Poisonous Potato",
 ];
 
-const ALLOW_INSTA_SELL_BUY = [
-    "Enchanted Rotten Flesh"
-];
+const ALLOW_INSTA_SELL_BUY = [];
 
 // Load trader_data manually so we can modify and write it back
 const traderDataPath = path.join(__dirname, 'trader-data.json');
@@ -244,17 +246,26 @@ class Main extends EventEmitter {
         // Listen for 'tradeMessage' events and process them
         this.on('tradeMessage', (tradeMessage) => {
             try {
+                // The mod's forge snapshots are not chat messages; see processForgeSnapshot.
+                const parsed = JSON.parse(tradeMessage);
+                if (parsed?.type === 'forge-snapshot') {
+                    const result = processForgeSnapshot(parsed);
+                    if (result !== FORGE_SNAPSHOT_UNCHANGED) console.log(result);
+                    return;
+                }
+
                 const trade = new ProcesTrade(tradeMessage);
                 // console.log(`Successfully processed trade: ${tradeMessage}`);
             } catch (error) {
-                console.error(`Error processing trade message: ${error}`);
+                consoleWarn(`Error processing trade message: ${error}`);
             }
         });
         console.log('Trade listener initialized');
     }
     // Public method for HTTP server or other sources to submit trade messages
     submitTrade(tradeMessage) {
-        this.lastTradeTime = Date.now();
+        // A forge snapshot is sent whenever the forge menu changes, which is not a trade.
+        if (!tradeMessage.includes('"forge-snapshot"')) this.lastTradeTime = Date.now();
         this.emit('tradeMessage', tradeMessage);
     }
 }
@@ -625,11 +636,16 @@ class ProcesTrade {
             this.message.includes('You canceled your auction for') ||
             this.message.includes('You don\'t have anything to sell!') ||
             this.message.includes('You claimed ') ||
-            this.message.includes('Cancelled parkour! You cannot fly.') ||
+            this.message.includes('Cancelled parkour!') ||
             this.message.includes('[Bazaar] Somehow, there was nothing to claim!') ||
             this.message.includes('[Bazaar] You reached the daily limit of coins you may create orders for on the Bazaar!') ||
             this.message.includes('[NPC] Jacob') ||
-            this.message.includes('[Bazaar] You reached your maximum of 28 Bazaar orders!')
+            this.message.includes('[Bazaar] You reached your maximum of 28 Bazaar orders!') ||
+            this.message.includes("Couldn't parse that price!") ||
+            this.message.includes('is lower than the old price of') ||
+            this.message.includes('Escrow refunded') ||
+            this.message.includes('You are overbidding too much!') ||
+            this.message.includes('Allowd unit price: ')
         ) {
             result = 'Nontrade message';
             return "Nontrade message: " + this.message;
@@ -651,6 +667,9 @@ class ProcesTrade {
             // console.log('Tracking product: ' + name + ' for transaction type: ' + transactionType);
             return true;
         }
+
+        // Forged stock has no order history, but its sale still has to be counted.
+        if (hasForgeStock(name)) return true;
 
         // first check if the product is in the ignore lists
         if (IGNORE_INSTA_SELL_BUY.includes(name)) {
@@ -796,7 +815,7 @@ class ProcesTrade {
                     const date_bought = subOrder["time-bought"];
 
                     trader_data["all-products"][name]["current-amount"] -= amount;
-                    return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees) + " & Insta sell completed";
+                    return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees, profitTypeOf(subOrder, 'bazaar')) + " & Insta sell completed";
                 } else {
                     // determine if the last suborder is bought out
                     if (trader_data[invesmentType][name]["sub-orders"].length <= 1) {
@@ -811,7 +830,7 @@ class ProcesTrade {
                         const date_bought = subOrder["time-bought"];
 
                         trader_data["all-products"][name]["current-amount"] -= subOrder["partial-amount"];
-                        return this.addProfit(subOrder["partial-amount"], name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees) + " & Insta sell completed";
+                        return this.addProfit(subOrder["partial-amount"], name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees, profitTypeOf(subOrder, 'bazaar')) + " & Insta sell completed";
                     } else {
                         amount -= subOrder["partial-amount"];
 
@@ -822,7 +841,7 @@ class ProcesTrade {
                         const date_bought = subOrder["time-bought"];
 
                         trader_data["all-products"][name]["current-amount"] -= subOrder["partial-amount"];
-                        this.addProfit(subOrder["partial-amount"], name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees);
+                        this.addProfit(subOrder["partial-amount"], name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees, profitTypeOf(subOrder, 'bazaar'));
                     }
                 }
             }
@@ -839,7 +858,9 @@ class ProcesTrade {
 
         // calculate the current profit
         let profitPerUnit;
-        if (type === 'bazaar' && doFees) {
+        // Auction sales pass doFees false and fold the auction fee into buy_price, so
+        // this is bazaar tax on bazaar sales of anything, forged items included.
+        if (doFees && type !== 'auction-house') {
             const bazaarFeesPerUnit = sell_price * getBazaarTaxRate();
             profitPerUnit = (sell_price - buy_price) - bazaarFeesPerUnit;
         } else {
@@ -1137,6 +1158,16 @@ class ProcesTrade {
     sellOrderSetup(amount, price, name) {
         if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Product name not found in product list';
 
+        // The sell order message names the Bazaar item, but a forged one is held under
+        // its "(forge)" entry, so sell from that when there is no plain stock.
+        const sellOrderName = name;
+        const forgeName = name + " (forge)";
+        if (trader_data[getInvestmentType(product_list[name]["type"])][name] === undefined &&
+            product_list[forgeName] !== undefined &&
+            trader_data[getInvestmentType(product_list[forgeName]["type"])][forgeName] !== undefined) {
+            name = forgeName;
+        }
+
         const resellPrice = price;
         const invesmentType = getInvestmentType(product_list[name]["type"]);
         const sellOrderPlaceTime = Date.now();
@@ -1167,7 +1198,8 @@ class ProcesTrade {
                     "price-bought": investmentSubOrder["price-bought"],
                     "projected-profit": projectedProfitPerUnit * amount,
                     "time-bought": investmentSubOrder["time-bought"],
-                    "sell-order-place-time": sellOrderPlaceTime
+                    "sell-order-place-time": sellOrderPlaceTime,
+                    "source": investmentSubOrder["source"]
                 });
 
                 // update earliest time bought
@@ -1194,7 +1226,8 @@ class ProcesTrade {
                         "price-bought": investmentSubOrder["price-bought"],
                         "projected-profit": projectedProfitPerUnit * investmentSubOrder["partial-amount"],
                         "time-bought": investmentSubOrder["time-bought"],
-                        "sell-order-place-time": sellOrderPlaceTime
+                        "sell-order-place-time": sellOrderPlaceTime,
+                        "source": investmentSubOrder["source"]
                     });
 
                     // update earliest time bought
@@ -1220,7 +1253,8 @@ class ProcesTrade {
                         "price-bought": investmentSubOrder["price-bought"],
                         "projected-profit": projectedProfitPerUnit * investmentSubOrder["partial-amount"],
                         "time-bought": investmentSubOrder["time-bought"],
-                        "sell-order-place-time": sellOrderPlaceTime
+                        "sell-order-place-time": sellOrderPlaceTime,
+                        "source": investmentSubOrder["source"]
                     });
 
                     // update earliest time bought
@@ -1238,7 +1272,9 @@ class ProcesTrade {
 
         // add the sell order
         trader_data['sell-order-overview']['sell-orders'].push({
-            "item-name": name,
+            "item-name": sellOrderName,
+            // where the stock came from, when that is not the item's own entry
+            "investment-name": name !== sellOrderName ? name : undefined,
             "price-sold": price,
             "earliest-time-bought": earliest_time_bought,
             "total-selling-amount": total_selling_amount,
@@ -1339,7 +1375,7 @@ class ProcesTrade {
 
                 addSellClaimToProducts(amount, name, subOrder["partial-selling-amount"], false);
 
-                return this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true) + " & Sell order claim completed";
+                return this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true, profitTypeOf(subOrder, 'bazaar')) + " & Sell order claim completed";
             } else {
                 // determine if the last suborder is bought out
                 if (trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"].length <= 1) {
@@ -1354,7 +1390,7 @@ class ProcesTrade {
 
                     addSellClaimToProducts(subOrder["partial-selling-amount"], name, subOrder["partial-selling-amount"], true);
 
-                    return this.addProfit(subOrder["partial-selling-amount"], name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true) + " & Sell order claim completed";
+                    return this.addProfit(subOrder["partial-selling-amount"], name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true, profitTypeOf(subOrder, 'bazaar')) + " & Sell order claim completed";
                 } else {
                     amount -= subOrder["partial-selling-amount"];
 
@@ -1366,7 +1402,7 @@ class ProcesTrade {
 
                     addSellClaimToProducts(subOrder["partial-selling-amount"], name, subOrder["partial-selling-amount"], amount === 0);
 
-                    this.addProfit(subOrder["partial-selling-amount"], name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true);
+                    this.addProfit(subOrder["partial-selling-amount"], name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true, profitTypeOf(subOrder, 'bazaar'));
                 }
             }
         }
@@ -1412,12 +1448,9 @@ class ProcesTrade {
         }
     }
     determineNearestSellOrder(amount, price_sold, name, coins_earned, has_decimal) {
-        const EPSILON = 0.05; // Threshold to handle standard JS floating-point issues
-
         // console.log(`🔍 Searching for nearest sell order: Name=${name}, Amount=${amount}, Price Sold=${price_sold}, Coins Earned=${coins_earned}, Has Decimal=${has_decimal}`);
 
         let sellOrders = new Sort(trader_data["sell-order-overview"]["sell-orders"], false, "sell-order-place-time");
-        const actualPrice = (coins_earned / amount) / (1 - getBazaarTaxRate());
 
         const potentialMatches = sellOrders.filter(order => {
             const itemMatch = order["item-name"] === name;
@@ -1426,64 +1459,58 @@ class ProcesTrade {
             return itemMatch && remainingAmountMatch;
         });
 
-        // console.log(`Found ${potentialMatches} potential matches for sell order.`);
-        let bestOrder = null;
-        let smallestScore = Infinity;
+        let bestOrder;
 
-        for (const order of potentialMatches) {
-            // console.log(`🔍 Evaluating sell order: Name=${order["item-name"]}, Amount=${order["total-selling-amount"]}, Price=${order["price-sold"]}`);
-            let isPriceMatch = false;
-            let specializedPenalty = 0;
-            const totalSoldAmount = order["sub-orders"].reduce((acc, subOrder) => acc + subOrder["partial-sold-amount"], 0);
+        if (potentialMatches.length === 1) {
+            bestOrder = potentialMatches[0];
+        } else if (potentialMatches.length === 0) {
+            consoleWarn(`❌ Tracker mismatch: No database profiles fit the parsed pricing signature.`);
+            return -1;
+        } else {
+            bestOrder = findBestOrder(amount, price_sold, coins_earned, has_decimal, potentialMatches);
+        }
+        
 
+        // console.log(`✅ Success! Linked to Order ID: ${name} (Database Entry Price was: ${bestOrder["price-sold"]})`); 
+        // return the index of the best order in the original sellOrders array
+        const bestOrderIndex = sellOrders.findIndex(order => order["price-sold"] === bestOrder["price-sold"]
+            && order["item-name"] === bestOrder["item-name"]
+            && order["total-selling-amount"] === bestOrder["total-selling-amount"]);
+        return bestOrderIndex;
 
-            if (has_decimal) {
-                // Case A: Chat explicitly has a decimal. Use strict near-exact matching.
-                const priceDifference = Math.abs(order["price-sold"] - price_sold);
-                if (priceDifference <= 0.15) {
-                    isPriceMatch = true;
-                    specializedPenalty = priceDifference < EPSILON ? 0 : priceDifference * 10000;
-                }
-            } else {
-                // Case B: Chat lacks decimals (High Coinage). Use rounded matching with tie-breaker logic.
-                // console.log(`Comparing rounded prices: DB=${order["price-sold"]}, Chat=${price_sold}`);
-                // console.log(`Rounded DB Price: ${roundDown(order["price-sold"])}, Rounded Chat Price: ${roundDown(actualPrice)}, Chat Price Sold: ${price_sold}`);
-                const dbRoundedPrice = roundDown(order["price-sold"]);
-                if (dbRoundedPrice === roundDown(actualPrice) || Math.abs(order["price-sold"] - actualPrice) <= 0.5 || dbRoundedPrice === price_sold) {
-                    isPriceMatch = true;
+        function findBestOrder(amount, price_sold, coins_earned, has_decimal, potentialMatches) {
+            // console.log(`Found ${potentialMatches} potential matches for sell order.`);
+            const EPSILON = 0.05; // Threshold to handle standard JS floating-point issues
+            let smallestScore = Infinity;
+            const actualPrice = (coins_earned / amount) / (1 - getBazaarTaxRate());
 
+            for (const order of potentialMatches) {
+                // console.log(`🔍 Evaluating sell order: Name=${order["item-name"]}, Amount=${order["total-selling-amount"]}, Price=${order["price-sold"]}`);
+                let currentScore;
+
+                if (has_decimal) {
+                    // Case A: Chat explicitly has a decimal. Use strict near-exact matching.
+                    const priceDifference = Math.abs(order["price-sold"] - price_sold);
+                    if (priceDifference <= 0.15) {
+                        currentScore = priceDifference < EPSILON ? 0 : priceDifference * 10000;
+                    }
+                } else {
                     // Tie breaker: Calculate the difference between the underlying raw data fractions.
                     // We extract the fractional part (e.g. 26122.1 -> 0.1) to favor an exact matchup.
                     const decimalRemainder = Math.abs(order["price-sold"] - actualPrice);
-                    specializedPenalty = decimalRemainder * 1000; // Scale to prioritize exact matches over rounded ones
+                    currentScore = decimalRemainder * 10000; // Scale to prioritize exact matches over rounded ones
                 }
-            }
 
-            // If the price logic checks out, grade it alongside volume data
-            if (isPriceMatch) {
-                const volumeDifference = Math.abs(totalSoldAmount - amount);
 
                 // Total score: Lowest score represents the absolute best match
-                const currentScore = specializedPenalty + volumeDifference;
                 // console.log(`Evaluated Order: Name=${order["item-name"]}, Price=${order["price-sold"]}, Amount=${order["total-selling-amount"]}, Score=${currentScore.toFixed(4)}`);
-
                 if (currentScore < smallestScore) {
                     smallestScore = currentScore;
                     bestOrder = order;
                 }
             }
-        }
 
-        if (bestOrder) {
-            // console.log(`✅ Success! Linked to Order ID: ${name} (Database Entry Price was: ${bestOrder["price-sold"]})`); 
-            // return the index of the best order in the original sellOrders array
-            const bestOrderIndex = sellOrders.findIndex(order => order["price-sold"] === bestOrder["price-sold"]
-                && order["item-name"] === bestOrder["item-name"]
-                && order["total-selling-amount"] === bestOrder["total-selling-amount"]);
-            return bestOrderIndex;
-        } else {
-            consoleWarn(`❌ Tracker mismatch: No database profiles fit the parsed pricing signature.`);
-            return -1;
+            return bestOrder;
         }
     }
     sellOrderCancel(amount, name) {
@@ -1517,7 +1544,14 @@ class ProcesTrade {
                 current_sell_order_index = sellOrderIndex;
             }
         }
-        if (current_sell_order_index === -1 || sellOrders.length === 0) throw new Error('ERROR: No sell order found to cancel');
+        if (current_sell_order_index === -1 || sellOrders.length === 0) {
+            consoleWarn('ORDER NOT FOUND');
+            return 'ERROR: No sell order found to cancel';
+        }
+
+        // Forged stock goes back under the "(forge)" entry it was sold from, and is
+        // counted there, the same entry sellOrderSetup took it out of.
+        name = sellOrders[current_sell_order_index]["investment-name"] || name;
 
         if (Object.keys(trader_data["all-products"]).indexOf(name) === -1) {
             trader_data["all-products"][name] = {
@@ -1556,7 +1590,7 @@ class ProcesTrade {
             const price = subSellOrder["price-bought"];
             const time_bought = subSellOrder["time-bought"];
             const subSellAmount = subSellOrder["partial-selling-amount"];
-            if (subSellOrder["partial-sold-amount"] != 0) consoleWarn(`ERROR: Suborder has been partially sold, but the sell order is being cancelled. This should not happen. Some info: ${subSellAmount}, ${subSellOrder}, ${currentSellOrder}, ${name}, ${invesmentType}, ${price}`);
+            if (subSellOrder["partial-sold-amount"] != 0) consoleWarn(`ERROR: Suborder has been partially sold, but the sell order is being cancelled. This should not happen. Some info: ${subSellAmount}, ${JSON.stringify(subSellOrder)}, ${JSON.stringify(currentSellOrder)}, ${name}, ${invesmentType}, ${price}`);
 
             if (trader_data[invesmentType][name] != undefined) {
                 let found = false;
@@ -1575,7 +1609,8 @@ class ProcesTrade {
                     trader_data[invesmentType][name]["sub-orders"].push({
                         "partial-amount": subSellAmount,
                         "price-bought": price,
-                        "time-bought": time_bought
+                        "time-bought": time_bought,
+                        "source": subSellOrder["source"]
                     });
                 }
             } else {
@@ -1585,7 +1620,8 @@ class ProcesTrade {
                         {
                             "partial-amount": subSellOrder["partial-selling-amount"],
                             "price-bought": subSellOrder["price-bought"],
-                            "time-bought": subSellOrder["time-bought"]
+                            "time-bought": subSellOrder["time-bought"],
+                            "source": subSellOrder["source"]
                         }
                     ]
                 }
@@ -1710,7 +1746,8 @@ class ProcesTrade {
             "price-selling": price,
             "sold": false,
             "date-placed": Date.now(),
-            "time-crafted": removedInvestment["time-bought"]
+            "time-crafted": removedInvestment["time-bought"],
+            "source": removedInvestment["source"]
         });
 
         trader_data["all-products"][name]["current-amount"] -= 1;
@@ -1746,7 +1783,7 @@ class ProcesTrade {
 
         // add auction fee to daily profit
         const auctionFees = priceSold * AUCTION_FEE_RATE_LOW * DERPY_TAX_MULTIPLIER;
-        this.addProfit(1, name, removedAuction["material-cost"] + auctionFees, priceSold, removedAuction["date-placed"], Date.now(), false, "auction-house");
+        this.addProfit(1, name, removedAuction["material-cost"] + auctionFees, priceSold, removedAuction["date-placed"], Date.now(), false, profitTypeOf(removedAuction, "auction-house"));
 
         return 'Auction claimed';
     }
@@ -1785,7 +1822,8 @@ class ProcesTrade {
             trader_data["long-term-investments"][name]["sub-orders"].push({
                 "partial-amount": 1,
                 "price-crafted": removedAuction["material-cost"],
-                "time-bought": removedAuction["time-crafted"]
+                "time-bought": removedAuction["time-crafted"],
+                "source": removedAuction["source"]
             });
         } else {
             trader_data["long-term-investments"][name] = {
@@ -1794,7 +1832,8 @@ class ProcesTrade {
                     {
                         "partial-amount": 1,
                         "price-crafted": removedAuction["material-cost"],
-                        "time-bought": removedAuction["time-crafted"]
+                        "time-bought": removedAuction["time-crafted"],
+                        "source": removedAuction["source"]
                     }
                 ]
             }
@@ -1810,7 +1849,11 @@ class ProcesTrade {
     auctionSold(price, name, detectedRarity) {
         name = this.fixRarity(name, detectedRarity);
 
-        if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Auction item name not found in product list';
+        // The "[Auction] X bought Y" message carries no rarity, so a tiered item like
+        // Beastmaster Crest arrives as just "Beastmaster Crest". Match on the name
+        // without its " - RARITY" instead, and let the price pick out the listing.
+        // An exact name match still wins when there is one.
+        const baseName = (itemName) => itemName.split(" - ")[0];
 
         // find the first occurance of the auction
         const auctions = trader_data["auction-house-overview"]["auctions"];
@@ -1821,6 +1864,15 @@ class ProcesTrade {
             if (auction["item-name"] === name && auction["price-selling"] === price && !auction["sold"]) {
                 current_auction_index = auctionIndex;
                 break;
+            }
+        }
+        if (current_auction_index === -1) {
+            for (const auctionIndex in auctions) {
+                const auction = auctions[auctionIndex];
+                if (baseName(auction["item-name"]) === baseName(name) && auction["price-selling"] === price && !auction["sold"]) {
+                    current_auction_index = auctionIndex;
+                    break;
+                }
             }
         }
 
@@ -2040,6 +2092,284 @@ class ProcesTrade {
     checkForForgeableItmes() {
 
     }
+}
+
+// ---------------------------------------------------------------------------
+// Forge tracking
+//
+// Hypixel says nothing in chat about the forge, so the mod reads "The Forge"
+// menu and posts a snapshot of its seven slots whenever one of them changes:
+//
+//   { "type": "forge-snapshot", "time": <ms>, "slots": [
+//       { "slot": 1, "state": "forging", "item-name": "Drill Motor",
+//         "item-id": "DRILL_ENGINE", "amount": 1, "remaining-seconds": 3600 } ] }
+//
+// state is "empty", "forging", "ready" or "unknown" (a slot the mod could not
+// read, which is skipped). Comparing a snapshot with trader_data["forge"]:
+//
+//   empty -> item         a process started: its materials are used up
+//   item  -> empty        it was claimed: the product moves into investments
+//   item  -> other item   claimed and restarted while the menu was closed
+//
+// Finishing needs no event of its own: a process is ready once "time-ends" has
+// passed. Items with no forge recipe in the product list are not tracked at all.
+//
+// Active processes live in trader_data["forge"], claimed ones move to
+// trader_data["forge-history"]. A claimed product's sub-order is marked
+// "source": "forge", and that mark follows it through sell orders and auctions so
+// its sale counts as forge profit.
+// ---------------------------------------------------------------------------
+
+const FORGE_SNAPSHOT_UNCHANGED = 'Forge snapshot unchanged';
+const FORGE_SUFFIX = ' (forge)';
+
+// Slot number -> state in the last snapshot this server saw. Only used to tell a
+// process that was just started (the slot was empty a moment ago) from one first
+// seen part way through; not saved, so after a restart every process already in
+// the forge counts as first seen.
+const lastForgeSlotStates = new Map();
+
+function processForgeSnapshot(snapshot) {
+    if (!Array.isArray(snapshot.slots)) return 'ERROR: Forge snapshot has no slots';
+    if (!Array.isArray(trader_data["forge"])) trader_data["forge"] = [];
+    if (!Array.isArray(trader_data["forge-history"])) trader_data["forge-history"] = [];
+
+    const now = Date.now();
+    const results = [];
+
+    for (const slot of snapshot.slots) {
+        const wasEmpty = lastForgeSlotStates.get(slot.slot) === 'empty';
+        lastForgeSlotStates.set(slot.slot, slot.state);
+
+        if (slot.state !== 'empty' && slot.state !== 'forging' && slot.state !== 'ready') continue;
+
+        const active = trader_data["forge"].find(process => process["slot"] === slot.slot);
+
+        if (slot.state === 'empty') {
+            if (active) results.push(claimForgeProcess(active, now));
+            continue;
+        }
+
+        const recipeName = findForgeRecipe(slot["item-id"], slot["item-name"]);
+
+        if (active && active["item-name"] === recipeName) {
+            // The same process as last time. If it has finished, it finished no later
+            // than now, which corrects an end time that was only estimated.
+            if (slot.state === 'ready' && active["time-ends"] > now) active["time-ends"] = now;
+            continue;
+        }
+
+        // Something else is in the slot, so whatever was tracked there got claimed.
+        if (active) results.push(claimForgeProcess(active, now));
+
+        // No recipe, nothing to track.
+        if (!recipeName) continue;
+
+        results.push(startForgeProcess(slot, recipeName, wasEmpty, now));
+    }
+
+    return results.length > 0 ? results.join(' & ') : FORGE_SNAPSHOT_UNCHANGED;
+}
+
+// The product list key of a forge recipe. The item id from the menu is matched
+// against api names first, since some forge items are named differently in game
+// (Drill Motor is DRILL_ENGINE); then the name, with and without " (forge)".
+function findForgeRecipe(itemId, itemName) {
+    const isForgeRecipe = (name) => product_list[name]?.["type"] === "forge-product";
+
+    if (itemId) {
+        for (const name of Object.keys(product_list)) {
+            if (isForgeRecipe(name) && product_list[name]["api-name"] === itemId) return name;
+        }
+    }
+    if (itemName && isForgeRecipe(itemName + FORGE_SUFFIX)) return itemName + FORGE_SUFFIX;
+    if (itemName && isForgeRecipe(itemName)) return itemName;
+    return null;
+}
+
+function startForgeProcess(slot, recipeName, wasEmpty, now) {
+    const recipe = product_list[recipeName];
+    const amount = Math.max(1, parseInt(slot["amount"]) || 1);
+    const craftMs = (recipe["seconds-to-craft"] || 0) * 1000;
+    const remainingMs = Number.isFinite(slot["remaining-seconds"]) ? slot["remaining-seconds"] * 1000 : null;
+
+    // Started just now if the slot was empty in the previous snapshot. Otherwise it
+    // was started while nothing was watching, and the start is worked back from the
+    // recipe's duration (which Quick Forge shortens, hence "start-estimated").
+    let timeStarted;
+    let timeEnds;
+    if (slot.state === 'forging' && remainingMs !== null) {
+        timeEnds = now + remainingMs;
+        timeStarted = wasEmpty ? now : Math.min(now, timeEnds - craftMs);
+    } else {
+        timeEnds = now;
+        timeStarted = wasEmpty ? now : now - craftMs;
+    }
+
+    // A forge process uses its recipe once, however many items it makes.
+    let materialCost = 0;
+    for (const [materialName, quantity] of Object.entries(recipe["crafting-materials"] || {})) {
+        materialCost += useForgeMaterial(materialName, quantity);
+    }
+
+    const process = {
+        "forge-id": `${slot.slot}-${timeStarted}`,
+        "slot": slot.slot,
+        "item-name": recipeName,
+        "item-id": slot["item-id"] || recipe["api-name"] || "",
+        "amount": amount,
+        "material-cost": roundPrice(materialCost),
+        // what it should sell for right now, all items together; the dashboard sums this
+        "sell-price": roundPrice(forgeMarketValue(recipeName) * amount),
+        "time-started": timeStarted,
+        "time-ends": timeEnds,
+        "start-estimated": !wasEmpty
+    };
+    trader_data["forge"].push(process);
+
+    return `Forge: started ${recipeName} in slot ${slot.slot} for ${process["material-cost"]} coins of materials`;
+}
+
+function claimForgeProcess(process, now) {
+    trader_data["forge"].splice(trader_data["forge"].indexOf(process), 1);
+    trader_data["forge-history"].push({ ...process, "time-claimed": now });
+
+    const name = process["item-name"];
+    const amount = process["amount"];
+    const unitCost = amount > 0 ? process["material-cost"] / amount : 0;
+    const productType = product_list[name]?.["type"] ?? "forge-product";
+    const investmentType = getInvestmentType(productType);
+
+    if (trader_data[investmentType][name] === undefined) {
+        trader_data[investmentType][name] = { "type": productType, "sub-orders": [] };
+    }
+    // Both cost keys: bazaar flows read "price-bought", auction flows "price-crafted".
+    trader_data[investmentType][name]["sub-orders"].push({
+        "partial-amount": amount,
+        "price-bought": unitCost,
+        "price-crafted": unitCost,
+        "time-bought": now,
+        "source": "forge"
+    });
+
+    if (trader_data["all-products"][name] === undefined) {
+        // The full shape: trackProduct reads the order stats on every insta sell.
+        trader_data["all-products"][name] = {
+            "current-amount": amount,
+            "buy-order-stats": {
+                "total-buy-orders-created": 0,
+                "total-buy-amount-claimed": 0,
+                "total-buy-amount-placed-for-buying": 0,
+                "buy-average": 0
+            },
+            "sell-order-stats": {
+                "total-sell-orders-created": 0,
+                "total-sell-amount-claimed": 0,
+                "total-sell-amount-placed-for-selling": 0,
+                "sell-average": 0
+            },
+            "max-amount": 2000,
+            "total-profit-made": 0,
+            "total-sold": 0,
+            "crafting-materials": product_list[name]?.["crafting-materials"] ?? "none"
+        };
+    } else {
+        trader_data["all-products"][name]["current-amount"] += amount;
+    }
+
+    return `Forge: claimed ${amount}x ${name} from slot ${process["slot"]}`;
+}
+
+// Takes a forge material out of investments, most expensive lots first like
+// supercraft, and returns what it cost. A material forged earlier is held under
+// its "(forge)" entry, so that is drawn on once the plain stock runs out. Anything
+// not in investments at all is costed at the current buy order price instead.
+function useForgeMaterial(name, quantity) {
+    let cost = 0;
+    let remaining = quantity;
+
+    for (const holdingName of [name, name + FORGE_SUFFIX]) {
+        if (remaining <= 0) break;
+        if (product_list[holdingName] === undefined) continue;
+
+        const investmentType = getInvestmentType(product_list[holdingName]["type"]);
+        const holding = trader_data[investmentType][holdingName];
+        if (holding === undefined) continue;
+
+        const subOrders = holding["sub-orders"];
+        subOrders.sort((a, b) => subOrderUnitCost(b) - subOrderUnitCost(a));
+
+        let taken = 0;
+        while (remaining > 0 && subOrders.length > 0) {
+            const subOrder = subOrders[0];
+            const used = Math.min(remaining, subOrder["partial-amount"]);
+            cost += used * subOrderUnitCost(subOrder);
+            subOrder["partial-amount"] -= used;
+            remaining -= used;
+            taken += used;
+            if (subOrder["partial-amount"] <= 0) subOrders.shift();
+        }
+
+        if (subOrders.length === 0) delete trader_data[investmentType][holdingName];
+        if (trader_data["all-products"][holdingName] !== undefined) {
+            trader_data["all-products"][holdingName]["current-amount"] -= taken;
+        }
+    }
+
+    if (remaining > 0) {
+        const unitPrice = forgeMaterialPrice(name);
+        consoleWarn(`Forge: ${remaining}x ${name} was not in investments, costing it at ${unitPrice} each`);
+        cost += remaining * unitPrice;
+    }
+
+    return cost;
+}
+
+function subOrderUnitCost(subOrder) {
+    return subOrder["price-bought"] ?? subOrder["price-crafted"] ?? 0;
+}
+
+// Buy order price off the Bazaar (the dashboard's buy order cost), else lowest BIN.
+function forgeMaterialPrice(name) {
+    const apiName = product_list[name]?.["api-name"];
+    const product = apiName ? bazaar_data[apiName] : undefined;
+    if (product) return product["sell_summary"]?.[0]?.["pricePerUnit"] ?? product["quick_status"]?.["sellPrice"] ?? 0;
+
+    return marketData.lowestBinPrices[normalizeName(name, product_list[name]?.["tier"])] ?? 0;
+}
+
+// Mirrors the dashboard's getCraftingMarketValue for a forge recipe: a "(forge)"
+// product with a Bazaar listing is valued at its insta-sell price, anything else
+// at its lowest BIN.
+function forgeMarketValue(recipeName) {
+    const entry = product_list[recipeName];
+    const apiName = entry?.["api-name"];
+    const product = apiName ? bazaar_data[apiName] : undefined;
+
+    if (product) {
+        const sellPrice = product["sell_summary"]?.[0]?.["pricePerUnit"] ?? 0;
+        const buyPrice = product["buy_summary"]?.[0]?.["pricePerUnit"] ?? 0;
+        if (recipeName.includes('forge')) return sellPrice;
+        if (buyPrice !== 0) return buyPrice;
+    }
+
+    // Auction data is keyed by display name, never by api name.
+    const displayName = recipeName.endsWith(FORGE_SUFFIX) ? recipeName.slice(0, -FORGE_SUFFIX.length) : recipeName;
+    return marketData.lowestBinPrices[normalizeName(displayName, entry?.["tier"])] ?? 0;
+}
+
+// Whether any of a product's stock came out of the forge.
+function hasForgeStock(name) {
+    for (const investmentType of ["long-term-investments", "short-term-investments"]) {
+        if (trader_data[investmentType][name]?.["sub-orders"]?.some(subOrder => subOrder["source"] === "forge")) return true;
+    }
+    return false;
+}
+
+// Which daily profit bucket a sale belongs in: forge for anything that came out of
+// the forge, otherwise whatever the sale itself was.
+function profitTypeOf(lot, saleType) {
+    return lot?.["source"] === "forge" ? "forge" : saleType;
 }
 
 let bazaar_data = {};
@@ -2420,7 +2750,7 @@ function buildLowestBinPrices(auctions) {
     return prices;
 }
 
-function normalizeName(name, tier) {
+export function normalizeName(name, tier) {
     return String(name || '')
         .replace(/§./g, '')
         .replace(/\s+/g, ' ')
@@ -2471,7 +2801,7 @@ class UpdateOrderFillAmounts {
                         // Atomic rename - replaces the original file
                         fs.rename(tempPath, traderDataPath, function (renameErr) {
                             if (renameErr) {
-                                console.error('Error renaming temp file:', renameErr);
+                                console.error('Error renaming temp file');
                             }
                         });
                     }

@@ -1,4 +1,5 @@
 import Main, { marketData, getVolumeStats } from './backend.mjs';
+import { getMayorData } from './mayor.mjs';
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -43,6 +44,7 @@ let server = http.createServer(function (request, response) {
                 "long-term-investments": {},
                 "auction-house-overview": { "auctions": [] },
                 "forge": [],
+                "forge-history": [],
                 "all-products": {},
                 "daily-profits": {}
             };
@@ -63,6 +65,13 @@ let server = http.createServer(function (request, response) {
     }
 
     // API endpoint for the static product list (display name -> api-name/type/etc)
+    // Mayor reminders and the SkyBlock calendar; see mayor.mjs
+    if (request.url === '/api/mayor-data' && request.method === 'GET') {
+        response.writeHead(200, { "Content-Type": "application/json" });
+        response.end(JSON.stringify(getMayorData()));
+        return;
+    }
+
     if (request.url === '/api/product-list' && request.method === 'GET') {
         response.writeHead(200, { "Content-Type": "application/json" });
         try {

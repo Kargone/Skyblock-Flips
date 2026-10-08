@@ -18,6 +18,11 @@ function getAuctionFeeRate(price) {
     return baseRate * DERPY_TAX_MULTIPLIER;
 }
 
+// The Skyblock Flips server. It is looked for on whichever computer served this page,
+// so the dashboard keeps working when the server moves to another machine on the
+// network; opened straight from disk (file://), it falls back to this computer.
+const API_BASE = `http://${window.location.hostname || 'localhost'}:8000`;
+
 // Trader Data Dashboard
 class TraderDashboard {
     constructor() {
@@ -89,37 +94,60 @@ class TraderDashboard {
         this.updateDashboard();
     }
 
+    // Mayor, election and festival times come from the backend (mayor.mjs), which the
+    // mod's Bazaar window reads too, so the two always show the same times. It also
+    // says when Derpy's QUAD TAXES is on, which sets the tax multiplier here.
     async fetchMayorData() {
         try {
-            const response = await fetch('https://api.hypixel.net/v2/resources/skyblock/election');
+            const response = await fetch(`${API_BASE}/api/mayor-data`);
             if (!response.ok) return;
 
             const payload = await response.json();
             this.mayorData = payload;
+            DERPY_TAX_MULTIPLIER = payload['tax-multiplier'] || 1;
         } catch (error) {
             console.error('Error fetching mayor data:', error);
         }
     }
 
+    // From the server, falling back to the file on disk when the page is opened from
+    // the repo and the server is not reachable.
     async fetchTraderData() {
-        let response = await fetch('http://localhost:8000/api/trader-data');
-        if (!response.ok) {
-            response = await fetch('../backend/production/trader-data.json');
-        }
-        return response;
+        return this.fetchFirstAvailable([
+            `${API_BASE}/api/trader-data`,
+            '../backend/production/trader-data.json'
+        ]);
     }
 
     async fetchProductList() {
-        let response = await fetch('../backend/production/product-list.json');
-        if (!response.ok) {
-            response = await fetch('./backend/production/product-list.json');
+        return this.fetchFirstAvailable([
+            `${API_BASE}/api/product-list`,
+            '../backend/production/product-list.json',
+            './backend/production/product-list.json'
+        ]);
+    }
+
+    // The first of these that answers with a success, else the last response (or the
+    // last error) so the caller sees why.
+    async fetchFirstAvailable(urls) {
+        let lastResponse = null;
+        let lastError = null;
+        for (const url of urls) {
+            try {
+                const response = await fetch(url);
+                if (response.ok) return response;
+                lastResponse = response;
+            } catch (error) {
+                lastError = error;
+            }
         }
-        return response;
+        if (lastResponse) return lastResponse;
+        throw lastError;
     }
 
     async fetchBazaarData() {
         try {
-            const response = await fetch('http://localhost:8000/api/market-data');
+            const response = await fetch(`${API_BASE}/api/market-data`);
             if (!response.ok) return;
 
             const payload = await response.json();
@@ -133,7 +161,7 @@ class TraderDashboard {
 
     async fetchAuctionData() {
         try {
-            const response = await fetch('http://localhost:8000/api/market-data');
+            const response = await fetch(`${API_BASE}/api/market-data`);
             if (!response.ok) return;
 
             const payload = await response.json();
@@ -176,7 +204,7 @@ class TraderDashboard {
             const itemName = button.dataset.itemName || '';
             console.log(`Delete investment clicked for ${itemName} with amount ${amount}`);
             // Here you would implement the logic to delete the investment, e.g., sending a request to the backend
-            const response = await fetch('http://localhost:8000/trades', {
+            const response = await fetch(`${API_BASE}/trades`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -229,6 +257,7 @@ class TraderDashboard {
         this.updateAuctions();
         this.updateAuctionCrafts();
         this.updateForgeCrafts();
+        this.updateForge();
         this.updateDailyProfits();
         this.updateTodaysProducts();
         this.updateAllProducts();
@@ -629,8 +658,15 @@ class TraderDashboard {
             const highestPrice = inv['sub-orders'].length > 0 ?
                 Math.max(...inv['sub-orders'].map(o => o["price-bought"] || o["price-crafted"])) : 0;
             const currentSellPrice = this.getCraftingMarketValue(name);
+
+            const currentProfit = inv['sub-orders'].reduce((sum, subOrder) => {
+                const margin = currentSellPrice * (1 - getBazaarTaxRate()) - (subOrder["price-bought"] || subOrder["price-crafted"]);
+                const currentProfit = margin * subOrder['partial-amount'] || 0;
+                return sum + currentProfit;
+            }, 0);
+
             const margin = currentSellPrice * (1 - getBazaarTaxRate()) - highestPrice;
-            const currentProfit = margin * totalAmount || 0;
+            const currentProfitWithHighestPrice = margin * totalAmount || 0;
             const rowClass = this.getAllProductBuyOrderCount(name) === 0 && investmentType === 'Short-term'? 'zero-buy-orders' : '';
             // get the date-bought from the earliest sub-order
             const earliestSubOrder = inv['sub-orders'].reduce((earliest, sub) => {
@@ -648,7 +684,7 @@ class TraderDashboard {
                     <td>${this.formatCoin(currentSellPrice)}</td>
                     <!-- color the text if positive or negative -->
                     <td>${margin ? this.formatCoin(margin) : 'N/A'}</td>
-                    <td class="${currentProfit >= 0 ? 'profit-positive' : 'profit-negative'}">${this.formatCoin(currentProfit)}</td>
+                    <td class="${currentProfit >= 0 ? 'profit-positive' : 'profit-negative'}">${this.formatCoin(currentProfitWithHighestPrice)} (${this.formatCoin(currentProfit)})</td>
                     <td>${dateBought}</td>
                     <td class="investment-delete-cell">
                         <button
@@ -817,18 +853,15 @@ class TraderDashboard {
     getCraftingMarketValue(name) {
         const entry = this.getProductEntry(name);
 
-        if (entry?.['api-name']) {
-            const bazaarProduct = this.bazaarData?.[entry['api-name']];
-            const buyPrice = bazaarProduct?.buy_summary?.[0]?.pricePerUnit || 0;
-            const sellPrice = bazaarProduct?.sell_summary?.[0]?.pricePerUnit || 0;
+        const bazaarProduct = this.getBazaarProduct(entry);
+        if (bazaarProduct) {
+            const buyPrice = bazaarProduct.buy_summary?.[0]?.pricePerUnit || 0;
+            const sellPrice = bazaarProduct.sell_summary?.[0]?.pricePerUnit || 0;
             if (name.includes('forge')) return sellPrice;
             if (buyPrice) return buyPrice;
         }
 
-        const apiName = entry?.['api-name'];
-        const normalizedName = apiName ? this.normalizeName(apiName, entry?.tier) : this.normalizeName(name, entry?.tier);
-        // console.log(`Market value for ${apiName} (${normalizedName} ${entry?.tier}) not found in bazaar data.`);
-        return this.lowestBinPrices[normalizedName] || 0;
+        return this.getLowestBin(name, entry?.tier) || 0;
     }
 
     getCraftingCostBreakdown(name, inventorySnapshot = null) {
@@ -836,10 +869,7 @@ class TraderDashboard {
         const buyOrder = this.getRecipeCost(name, 'buy-order');
         const owned = this.getRecipeCost(name, 'owned', this.cloneInventorySnapshot(inventorySnapshot));
         const marketValue =this.getCraftingMarketValue(name);
-        const entry = this.getProductEntry(name);
-        const isAuctionProduct = entry?.type === 'auction-product' || entry?.type === 'forge-product';
-        const fee = isAuctionProduct ? getAuctionFeeRate(marketValue) : getBazaarTaxRate();
-        const margin = marketValue * (1 - fee) - buyOrder;
+        const margin = marketValue * (1 - this.getCraftingSaleFeeRate(name, marketValue)) - buyOrder;
 
         return {
             instaBuy,
@@ -850,6 +880,16 @@ class TraderDashboard {
         };
     }
 
+    // The fee taken when a crafted product sells at marketValue: auction fees for
+    // auction and forge products, Bazaar tax for everything else.
+    getCraftingSaleFeeRate(name, marketValue) {
+        const entry = this.getProductEntry(name);
+        const isAuctionProduct = entry?.type === 'auction-product' || entry?.type === 'forge-product';
+        // A "(forge)" product with a Bazaar listing is valued at its insta-sell price, so it pays Bazaar tax
+        const isBazaarSale = name.includes('forge') && !!this.bazaarData?.[entry?.['api-name']];
+        return isAuctionProduct && !isBazaarSale ? getAuctionFeeRate(marketValue) : getBazaarTaxRate();
+    }
+
     getBestCraftCost(costs) {
         const validCosts = costs.filter(cost => Number.isFinite(cost) && cost > 0);
         if (!validCosts.length) {
@@ -857,6 +897,116 @@ class TraderDashboard {
         }
 
         return Math.min(...validCosts);
+    }
+
+    // The Forge tab: what is in the forge now, what came out of it, and what it made.
+    // Processes are tracked by the mod reading the forge menu; a process is ready once
+    // its "time-ends" has passed, and its sale counts as forge profit.
+    updateForge() {
+        const active = [...(this.traderData['forge'] || [])].sort((a, b) => a['slot'] - b['slot']);
+        const history = this.traderData['forge-history'] || [];
+        const now = Date.now();
+
+        let readyCount = 0;
+        let totalValue = 0;
+        let totalProfit = 0;
+
+        const slotsBody = document.getElementById('forgeSlotsBody');
+        if (active.length === 0) {
+            slotsBody.innerHTML = '<tr><td colspan="7" class="empty">Nothing forging</td></tr>';
+        } else {
+            slotsBody.innerHTML = active.map(process => {
+                const name = process['item-name'];
+                const amount = process['amount'] || 1;
+                const cost = process['material-cost'] || 0;
+                const marketValue = this.getCraftingMarketValue(name) * amount;
+                const profit = marketValue * (1 - this.getCraftingSaleFeeRate(name, marketValue)) - cost;
+                const msLeft = (process['time-ends'] || 0) - now;
+                const ready = msLeft <= 0;
+
+                if (ready) readyCount++;
+                totalValue += marketValue;
+                totalProfit += profit;
+
+                const started = this.formatTimestamp(process['time-started']) + (process['start-estimated'] ? ' (est.)' : '');
+                const timeLeft = ready
+                    ? '<span class="status-badge status-filled">Ready</span>'
+                    : `<span class="status-badge status-active">${this.formatCountdown(msLeft)}</span>`;
+
+                return `
+                    <tr>
+                        <td>#${process['slot']}</td>
+                        <td>${this.escapeHtml(this.getForgeDisplayName(name))}${amount > 1 ? ` x${amount}` : ''}</td>
+                        <td>${started}</td>
+                        <td>${timeLeft}</td>
+                        <td>${this.formatCoin(cost)}</td>
+                        <td>${this.formatCoin(marketValue)}</td>
+                        <td class="${profit >= 0 ? 'profit-positive' : 'profit-negative'}">${this.formatCoin(profit)}</td>
+                    </tr>
+                `;
+            }).join('');
+        }
+
+        document.getElementById('forgeActiveCount').textContent = String(active.length);
+        document.getElementById('forgeReadyCount').textContent = String(readyCount);
+        document.getElementById('forgeValue').textContent = this.formatCoin(totalValue);
+        const projected = document.getElementById('forgeProjectedProfit');
+        projected.textContent = this.formatCoin(totalProfit);
+        projected.className = `value ${totalProfit >= 0 ? 'profit-positive' : 'profit-negative'}`;
+
+        const dailyProfits = this.traderData['daily-profits'] || {};
+        const todayKey = Object.keys(dailyProfits).pop();
+        const allTime = Object.values(dailyProfits).reduce((sum, day) => sum + (day['forge-profit'] || 0), 0);
+        document.getElementById('forgeProfitToday').textContent = this.formatCoin(todayKey ? dailyProfits[todayKey]['forge-profit'] || 0 : 0);
+        document.getElementById('forgeProfitAllTime').textContent = this.formatCoin(allTime);
+
+        const startOfToday = new Date().setHours(0, 0, 0, 0);
+        document.getElementById('forgeClaimedToday').textContent =
+            String(history.filter(process => process['time-claimed'] >= startOfToday).length);
+        document.getElementById('forgeClaimedAllTime').textContent = String(history.length);
+
+        const historyBody = document.getElementById('forgeHistoryBody');
+        if (history.length === 0) {
+            historyBody.innerHTML = '<tr><td colspan="6" class="empty">Nothing claimed yet</td></tr>';
+            return;
+        }
+
+        historyBody.innerHTML = [...history]
+            .sort((a, b) => b['time-claimed'] - a['time-claimed'])
+            .slice(0, 50) // the 50 most recent
+            .map(process => {
+                const amount = process['amount'] || 1;
+                const took = process['time-claimed'] - process['time-started'];
+                return `
+                    <tr>
+                        <td>${this.escapeHtml(this.getForgeDisplayName(process['item-name']))}${amount > 1 ? ` x${amount}` : ''}</td>
+                        <td>#${process['slot']}</td>
+                        <td>${this.formatTimestamp(process['time-started'])}${process['start-estimated'] ? ' (est.)' : ''}</td>
+                        <td>${this.formatTimestamp(process['time-claimed'])}</td>
+                        <td>${this.formatCountdown(took)}</td>
+                        <td>${this.formatCoin(process['material-cost'] || 0)}</td>
+                    </tr>
+                `;
+            }).join('');
+    }
+
+    // "Refined Diamond (forge)" is shown as "Refined Diamond".
+    getForgeDisplayName(name) {
+        return String(name || '').replace(/ \(forge\)$/i, '');
+    }
+
+    // A span of time as its two largest units: "1d 6h", "5h 3m", "2m 10s", "45s".
+    formatCountdown(ms) {
+        const totalSeconds = Math.max(0, Math.floor(ms / 1000));
+        const days = Math.floor(totalSeconds / 86400);
+        const hours = Math.floor((totalSeconds % 86400) / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        const seconds = totalSeconds % 60;
+
+        if (days > 0) return `${days}d ${hours}h`;
+        if (hours > 0) return `${hours}h ${minutes}m`;
+        if (minutes > 0) return `${minutes}m ${seconds}s`;
+        return `${seconds}s`;
     }
 
     updateDailyProfits() {
@@ -960,42 +1110,21 @@ class TraderDashboard {
     }
 
     updateCalendar() {
-        const EPOCH_TIMESTAMP_MILLISECONDS = 1560275700000; // June 11, 2019, 17:55:00 UTC
-        const ADJUSTMENT_FOR_ELECTION_MILLISECONDS = 29 * 3600 * 1000 + 20 * 60 * 1000; // Adjust this value if there are known maintenance periods that affect the cycle
-        const MILLISECONDS_PER_SB_YEAR = 124 * 3600 * 1000;
-        const targetElectionYear = (this.mayorData?.current?.year || this.mayorData?.mayor?.election.year || 0) + 1;
-        const targetElectionTimestampMilliseconds = EPOCH_TIMESTAMP_MILLISECONDS + ADJUSTMENT_FOR_ELECTION_MILLISECONDS + ((targetElectionYear - 1) * MILLISECONDS_PER_SB_YEAR);
-        
-        const ADJUSTMENT_FOR_SPOOKY_FESTIVAL_MILLISECONDS = 52 * 3600 * 1000 + 20 * 60 * 1000 + ADJUSTMENT_FOR_ELECTION_MILLISECONDS;
-        // the target year is correct only if the spooky festival hasnt passed yet, otherwise it should be the next year
-        // if the current date is after the spooky festival, we need to add a year
-        let targetSpookyFestivalYear = (this.mayorData?.current?.year || this.mayorData?.mayor?.election.year || 0);
-        let targetSpookyFestivalTimestampMilliseconds = EPOCH_TIMESTAMP_MILLISECONDS + ADJUSTMENT_FOR_SPOOKY_FESTIVAL_MILLISECONDS + ((targetSpookyFestivalYear - 1) * MILLISECONDS_PER_SB_YEAR);
-        const now = new Date();
-        const currentTimestamp = now.getTime();
-        if (currentTimestamp > targetSpookyFestivalTimestampMilliseconds) {
-            targetSpookyFestivalYear++;
-            targetSpookyFestivalTimestampMilliseconds = EPOCH_TIMESTAMP_MILLISECONDS + ADJUSTMENT_FOR_SPOOKY_FESTIVAL_MILLISECONDS + ((targetSpookyFestivalYear - 1) * MILLISECONDS_PER_SB_YEAR);
-        }
-
         const formatOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit', second: '2-digit' };
         const findtargetDate = (timestamp) => {
+            if (!timestamp) return 'N/A';
             const date = new Date(timestamp);
             return date.toLocaleString(undefined, formatOptions);
         };
-        const targetElectionDate = findtargetDate(targetElectionTimestampMilliseconds);
-        const targetSpookyFestivalDate = findtargetDate(targetSpookyFestivalTimestampMilliseconds);
-
-        let futureMayorList = this.mayorData?.current?.candidates || [];
-        futureMayorList.sort((a, b) => b.votes - a.votes);
-        const nextMayor = futureMayorList[0] || { name: 'N/A', votes: 0 };
+        const targetElectionDate = findtargetDate(this.mayorData?.election?.['ends-at']);
+        const targetSpookyFestivalDate = findtargetDate(this.mayorData?.['spooky-festival']?.['starts-at']);
 
         const calendarElement = document.getElementById('calendar');
         calendarElement.innerHTML = `
             <h2>Mayor Information</h2>
             <div class="mayor-info">
                 <p>Current Mayor: ${this.mayorData?.mayor?.name || 'N/A'}</p>
-                <p>Next Mayor: ${nextMayor.name}</p>
+                <p>Next Mayor: ${this.mayorData?.election?.leader || 'N/A'}</p>
                 <p>Election Ends: ${targetElectionDate}</p>
                 <p>Next Spooky Festival: ${targetSpookyFestivalDate}</p>
                 <p>Daily NPC Reset Time: 7:00 PM CDT</p>
@@ -1088,6 +1217,20 @@ class TraderDashboard {
         return this.productList?.[name] || null;
     }
 
+    // The Bazaar listing for a product, or null when it has none. An api name alone
+    // does not mean the Bazaar carries it: auction items have Hypixel ids too.
+    getBazaarProduct(entry) {
+        const apiName = entry?.['api-name'];
+        return (apiName && this.bazaarData?.[apiName]) || null;
+    }
+
+    // Lowest BIN for a product. The auction data is keyed by display name, never by
+    // api name, and the "(forge)" the product list uses to tell recipes apart is not
+    // part of an item's name.
+    getLowestBin(name, tier) {
+        return this.lowestBinPrices[this.normalizeName(String(name || '').replace(/ \(forge\)$/i, ''), tier)];
+    }
+
     isCraftableProduct(name) {
         const entry = this.getProductEntry(name);
         return Boolean(entry?.['crafting-materials'] && Object.keys(entry['crafting-materials']).length > 0);
@@ -1112,10 +1255,10 @@ class TraderDashboard {
             return this.getRecipeCost(name, mode, inventorySnapshot, path);
         }
 
-        if (entry?.['api-name']) {
-            const bazaarProduct = this.bazaarData?.[entry['api-name']];
-            const buyOrders = bazaarProduct?.sell_summary || [];
-            const sellOrders = bazaarProduct?.buy_summary || [];
+        const bazaarProduct = this.getBazaarProduct(entry);
+        if (bazaarProduct) {
+            const buyOrders = bazaarProduct.sell_summary || [];
+            const sellOrders = bazaarProduct.buy_summary || [];
             return mode === 'buy-order' ? (buyOrders[0]?.pricePerUnit || 0) : (sellOrders[0]?.pricePerUnit || 0);
         }
 
@@ -1139,10 +1282,10 @@ class TraderDashboard {
             return ownedUnitCost;
         }
 
-        if (entry?.['api-name']) {
-            const bazaarProduct = this.bazaarData?.[entry['api-name']];
-            const instaSellOrders = bazaarProduct?.buy_summary || [];
-            const instaBuyOrders = bazaarProduct?.sell_summary || [];
+        const bazaarProduct = this.getBazaarProduct(entry);
+        if (bazaarProduct) {
+            const instaSellOrders = bazaarProduct.buy_summary || [];
+            const instaBuyOrders = bazaarProduct.sell_summary || [];
             return instaSellOrders[0]?.pricePerUnit || instaBuyOrders[0]?.pricePerUnit || 0;
         }
 

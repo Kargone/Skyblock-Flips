@@ -72,6 +72,7 @@
             <button class="tab-button" type="button" data-tab-target="investments">Current investments</button>
             <button class="tab-button" type="button" data-tab-target="auctions">Active Auctions</button>
             <button class="tab-button" type="button" data-tab-target="crafts">Auction/forge Products</button>
+            <button class="tab-button" type="button" data-tab-target="forge">Forge</button>
             <button class="tab-button" type="button" data-tab-target="snapshot">Bazaar Snapshot</button>
             <button class="tab-button" type="button" data-tab-target="profits">Today's Profit Breakdown; All Products</button>
         </div>
@@ -252,6 +253,96 @@
                         </thead>
                         <tbody id="forgeCraftsBody">
                             <tr><td colspan="6" class="empty">No forge products</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Forge Summary Section -->
+            <section class="dashboard-section tab-panel" data-tab-group="forge">
+                <h2>Forge Summary</h2>
+                <div class="profit-breakdown">
+                    <div class="profit-item">
+                        <span class="label">Forging:</span>
+                        <span class="value" id="forgeActiveCount">-</span>
+                    </div>
+                    <div class="profit-item">
+                        <span class="label">Ready to Claim:</span>
+                        <span class="value" id="forgeReadyCount">-</span>
+                    </div>
+                    <div class="profit-item">
+                        <span class="label">Value in Forge:</span>
+                        <span class="value" id="forgeValue">-</span>
+                    </div>
+                    <div class="profit-item">
+                        <span class="label">Projected Profit:</span>
+                        <span class="value" id="forgeProjectedProfit">-</span>
+                    </div>
+                </div>
+            </section>
+
+            <section class="dashboard-section tab-panel" data-tab-group="forge">
+                <h2>Forge Results</h2>
+                <div class="profit-breakdown">
+                    <div class="profit-item">
+                        <span class="label">Forge Profit Today:</span>
+                        <span class="value" id="forgeProfitToday">-</span>
+                    </div>
+                    <div class="profit-item">
+                        <span class="label">Forge Profit All Time:</span>
+                        <span class="value" id="forgeProfitAllTime">-</span>
+                    </div>
+                    <div class="profit-item">
+                        <span class="label">Claimed Today:</span>
+                        <span class="value" id="forgeClaimedToday">-</span>
+                    </div>
+                    <div class="profit-item">
+                        <span class="label">Claimed All Time:</span>
+                        <span class="value" id="forgeClaimedAllTime">-</span>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Forge Slots Section -->
+            <section class="dashboard-section full-width tab-panel" data-tab-group="forge">
+                <h2>Forge Slots</h2>
+                <div class="table-container">
+                    <table id="forgeSlotsTable">
+                        <thead>
+                            <tr>
+                                <th>Slot</th>
+                                <th>Item</th>
+                                <th>Started</th>
+                                <th>Time Left</th>
+                                <th>Material Cost</th>
+                                <th>Market Value</th>
+                                <th>Projected Profit</th>
+                            </tr>
+                        </thead>
+                        <tbody id="forgeSlotsBody">
+                            <tr><td colspan="7" class="empty">Nothing forging</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Forge History Section -->
+            <section class="dashboard-section full-width tab-panel" data-tab-group="forge">
+                <h2>Forge History</h2>
+                <div class="table-container">
+                    <table id="forgeHistoryTable">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Slot</th>
+                                <th>Started</th>
+                                <th>Claimed</th>
+                                <th>Took</th>
+                                <th>Material Cost</th>
+                            </tr>
+                        </thead>
+                        <tbody id="forgeHistoryBody">
+                            <tr><td colspan="6" class="empty">Nothing claimed yet</td></tr>
                         </tbody>
                     </table>
                 </div>

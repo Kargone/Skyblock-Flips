@@ -1,0 +1,216 @@
+{
+    "Aatrox": {
+        "buy-before": [],
+        "sell-before": [
+            "Hamster Wheel",
+            "Revenant Flesh",
+            "Tarantula Silk",
+            "Wolf Tooth",
+            "Golden Tooth",
+            "Null Sphere"
+        ],
+        "buy-during": [
+            "Hamster Wheel",
+            "Revenant Flesh",
+            "Tarantula Silk",
+            "Wolf Tooth",
+            "Golden Tooth",
+            "Null Sphere"
+        ],
+        "sell-during": [],
+        "watch-during": [],
+        "buy-after": {},
+        "notes": []
+    },
+    "Cole": {
+        "buy-before": [],
+        "sell-before": [
+            "Fine Jasper Gemstone",
+            "Flawless Jasper Gemstone",
+            "Mithril",
+            "Titanium",
+            "Glacite",
+            "Umber",
+            "Tungsten"
+        ],
+        "buy-during": [
+            "Fine Jasper Gemstone",
+            "Flawless Jasper Gemstone",
+            "Mithril",
+            "Titanium",
+            "Glacite",
+            "Umber",
+            "Tungsten"
+        ],
+        "sell-during": [],
+        "watch-during": [],
+        "buy-after": {},
+        "notes": [
+            "Gemstones in general, especially Fine and Flawless: sell before / buy during"
+        ]
+    },
+    "Diana": {
+        "buy-before": [
+            "Epic Griffin Upgrade Stone",
+            "Legendary Griffin Upgrade Stone",
+            "Mythic Griffin Upgrade Stone"
+        ],
+        "sell-before": [
+            "Ultimate Chimera I",
+            "Daedalus Stick",
+            "Griffin Feather"
+        ],
+        "buy-during": [
+            "Ultimate Chimera I",
+            "Daedalus Stick",
+            "Griffin Feather"
+        ],
+        "sell-during": [
+            "Epic Griffin Upgrade Stone",
+            "Legendary Griffin Upgrade Stone",
+            "Mythic Griffin Upgrade Stone"
+        ],
+        "watch-during": [],
+        "buy-after": {
+            "Griffin Feather": 2
+        },
+        "notes": [
+            "Griffin Feather seen at 310k / 225k"
+        ]
+    },
+    "Diaz": {
+        "buy-before": [],
+        "sell-before": [
+            "Enchanted Ice",
+            "Enchanted Packed Ice"
+        ],
+        "buy-during": [
+            "Enchanted Ice",
+            "Enchanted Packed Ice"
+        ],
+        "sell-during": [],
+        "watch-during": [
+            "Stock of Stonks"
+        ],
+        "buy-after": {},
+        "notes": [
+            "Items affected by the higher NPC buy limits, and their enchanted versions: sell before / buy during",
+            "Stock of Stonks reacts to his perks, watch it closely"
+        ]
+    },
+    "Finnegan": {
+        "buy-before": [],
+        "sell-before": [
+            "Jacob's Ticket"
+        ],
+        "buy-during": [],
+        "sell-during": [],
+        "watch-during": [],
+        "buy-after": {},
+        "notes": [
+            "Jacob's Tickets: sell before, boosted contests flood them",
+            "Enchanted crops: sell before / buy during, extra fortune increases supply"
+        ]
+    },
+    "Foxy": {
+        "buy-before": [],
+        "sell-before": [
+            "Purple Candy",
+            "Green Candy",
+            "White Gift",
+            "Red Gift"
+        ],
+        "buy-during": [
+            "Purple Candy",
+            "Green Candy",
+            "White Gift",
+            "Red Gift"
+        ],
+        "sell-during": [],
+        "watch-during": [],
+        "buy-after": {},
+        "notes": [
+            "Items tied to the extra event (shark drops for Fishing Festival, gemstones for Mining Fiesta, Spooky or Winter items otherwise): sell before / buy during"
+        ]
+    },
+    "Marina": {
+        "buy-before": [],
+        "sell-before": [
+            "Enchanted Ink Sac",
+            "Great White Shark Tooth",
+            "Nurse Shark Tooth",
+            "Blue Shark Tooth",
+            "Tiger Shark Tooth"
+        ],
+        "buy-during": [
+            "Enchanted Ink Sac",
+            "Great White Shark Tooth",
+            "Nurse Shark Tooth",
+            "Blue Shark Tooth",
+            "Tiger Shark Tooth"
+        ],
+        "sell-during": [],
+        "watch-during": [],
+        "buy-after": {},
+        "notes": [
+            "Sea creature drops in general: sell before / buy during",
+            "Great White Shark Tooth seen at 1.9m, 3.2m"
+        ]
+    },
+    "Paul": {
+        "buy-before": [
+            "Kismet Feather"
+        ],
+        "sell-before": [
+            "Recombobulator 3000",
+            "Fuming Potato Book",
+            "Hot Potato Book",
+            "Wither Essence",
+            "Undead Essence"
+        ],
+        "buy-during": [
+            "Recombobulator 3000",
+            "Fuming Potato Book",
+            "Hot Potato Book",
+            "Wither Essence",
+            "Undead Essence"
+        ],
+        "sell-during": [
+            "Kismet Feather"
+        ],
+        "watch-during": [],
+        "buy-after": {},
+        "notes": [
+            "Kismet Feathers: more runs mean more rerolls"
+        ]
+    },
+    "Derpy": {
+        "buy-before": [],
+        "sell-before": [
+            "Hyper Catalyst",
+            "Enchanted Quartz Block"
+        ],
+        "buy-during": [
+            "Enchanted Quartz Block"
+        ],
+        "sell-during": [],
+        "watch-during": [],
+        "buy-after": {},
+        "notes": [
+            "Hyper Catalysts and other minion speed items: sell before, boosted minions cut demand",
+            "Quartz Blocks and other minion outputs: sell before / buy during",
+            "Bazaar tax is 4x: be careful with expensive flips"
+        ]
+    },
+    "Jerry": {
+        "buy-before": [],
+        "sell-before": [],
+        "buy-during": [],
+        "sell-during": [],
+        "watch-during": [],
+        "buy-after": {},
+        "notes": [
+            "His perks rotate: use the list of whichever mayor he is mimicking"
+        ]
+    }
+}

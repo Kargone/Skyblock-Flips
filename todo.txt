@@ -1,14 +1,10 @@
 Forseen problem:
-If a given sell order has already been filled, then before its claim, the amount it has left could be overwritten if another order has the same price selling
-same for buy orders
 if a sell order has already been claimed, not fully, then is reported as filled in chat. the sell order amounts wont match up (not important)
 NPC buyback doesnt remove the profit (not a big issue for what its used for)
+forging time changes (like uprgarding quick forge) doesn't change the time left
 
 Issues:
-better way to track forge (none of it works lol)
-
-
-ERROR: Auction item name not found in product list for trade message: Cancelled parkour!
 
 testing:
-ERROR: Suborder has been partially sold, but the sell order is being cancelled. This should not happen. Some info:
+forge
+beastmaster crest checking on price if no rarity, for setting action status to sold vs actually selling

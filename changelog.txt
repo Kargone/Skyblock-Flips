@@ -1,0 +1,15 @@
+Catching some more dummy trade messages
+Fixed an error logging for partial sell amount error
+Fixing trader data rename operation error to be shorter
+Fixed the determinenearestorder function again (it should actually be good)
+Made the no sell order found to cancel show more in the console
+Margins are based on highest price and acutal for investment reports
+Added in some of the sub reciepes for agarimoo, and glaical, and red claw
+Added more forge reciepes, and made test files to help with that
+Added more talisman reciepes
+Added forge support
+Changed the auctions to actually have api names now and the stuff supports it
+Added mayor information support
+Added info window with mayor, forge, and ectoplasm support
+Made a var where to host the server
+Added support for setting the status of beastmaster crest in auction set sold (not based on rarity anymore)

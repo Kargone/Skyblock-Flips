@@ -1,0 +1,78 @@
+Here's an expanded version in your format. I've split the timing into two directions, since an item can move either way:
+
+- **Sell before / buy during:** supply floods while the mayor is in, so prices dip
+- **Buy before / sell during:** demand spikes while the mayor is in, so prices rise
+
+**Aatrox** (slayer)
+Hamster Wheels (sell before / buy during)
+Revenant Flesh (sell before / buy during)
+Tarantula Silk (sell before / buy during)
+Wolf Tooth (sell before / buy during)
+Golden Tooth (sell before / buy during)
+Null Spheres / Enderman slayer drops (sell before / buy during)
+Rare slayer drops like Warden Heart, Overflux, and Judgement Core (sell before / buy during, since more runs means more rare rolls)
+
+**Cole** (mining)
+Gemstones, especially Fine and Flawless (sell before / buy during)
+Jasper (sell before / buy during)
+Mithril and Titanium (sell before / buy during)
+Glacite and Umber/Tungsten (sell before / buy during)
+Mining fortune and speed upgrades (buy before / sell during)
+
+**Diana** (mythological)
+Chimera (sell before / buy during)
+Daedalus Sticks (sell before / buy during)
+Griffin Feather (sell before / buy during)
+Minos Relic, Dwarf Turtle Shelmet, Antique Remedies, Crochet Tiger Plushie (sell before / buy during)
+Griffin pets and upgrade items (buy before / sell during)
+Ancestral Spade (buy before / sell during)
+
+**Diaz** (economy)
+Ice and other items affected by the higher NPC buy limits (sell before / buy during)
+Enchanted versions of NPC-bought items (sell before / buy during)
+Stock of Stonks (watch closely, as it reacts to his perks)
+
+**Finnegan** (farming)
+Jacob's Tickets (sell before, since boosted contests flood them)
+Gold and Platinum medal items (sell before / buy during)
+Trapper pelts and Trapper items (sell before / buy during)
+Enchanted crops (sell before / buy during, since extra fortune increases supply)
+Farming fortune gear, such as tools, armor upgrades, and pets (buy before / sell during)
+
+**Foxy** (events)
+Purple Candy and Green Candy (sell before / buy during)
+White and Red Gifts (sell before / buy during)
+Items tied to the extra event: shark drops if it's Fishing Festival, gemstones if it's Mining Fiesta, Spooky or Winter items otherwise (sell before / buy during)
+
+**Marina** (fishing)
+Enchanted Ink Sacks (sell before / buy during)
+Great White Shark Tooth (sell before / buy during)
+Nurse, Blue, and Tiger Shark Teeth (sell before / buy during)
+Megalodon pet (sell before / buy during)
+Sea creature drops in general (sell before / buy during)
+Fishing gear and Shark Scale armor upgrades (buy before / sell during)
+
+**Paul** (dungeons)
+Recombobulators (sell before / buy during)
+Fuming Potato Books (sell before / buy during)
+Necron's Handles (sell before / buy during)
+Hot Potato Books (sell before / buy during)
+Wither Essence and Undead Essence (sell before / buy during)
+Kismet Feathers (buy before / sell during, since more runs mean more rerolls)
+
+**Derpy** (special)
+Hyper Catalysts and other minion speed items (sell before, since boosted minions cut demand)
+Quartz Blocks and other minion outputs (sell before / buy during)
+Expensive flips (be careful during his term, since higher taxes cut your margins)
+
+**Scorpius** (special)
+Dark Auction items like the Midas Sword, Midas Staff, and Hegemony Artifact (sell before / buy during, since more items reach the market)
+
+**Jerry** (special)
+His perks rotate, so watch which mayor he's mimicking and use that mayor's list for each rotation.
+
+A few general tips:
+
+- **The Minister matters.** A Minister with a strong perk, like Paul's EZPZ or Cole's Mining Fiesta, can move prices almost as much as a Mayor.
+- **Elections are visible early.** Most of the price movement happens once it's clear who will win, not on the day they take office. Buy-before positions should be in while the election is still close.
+- **Big orders move prices.** At your scale, large buys and sells will shift the price themselves, especially on thinner markets like Chimera or Necron's Handles. Splitting orders across several days helps.

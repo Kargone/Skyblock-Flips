@@ -1,0 +1,42 @@
+{
+  "Helmet of Divan": {
+    "api-name": "DIVAN_HELMET",
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Flawless Ruby Gemstone": 1,
+      "Gemstone Mixture": 10,
+      "Divan Fragment": 5
+    }
+  },
+  "Chestplate of Divan": {
+    "api-name": "DIVAN_CHESTPLATE",
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Gemstone Mixture": 10,
+      "Flawless Ruby Gemstone": 1,
+      "Divan Fragment": 8
+    }
+  },
+  "Leggings of Divan": {
+    "api-name": "DIVAN_LEGGINGS",
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Divan Fragment": 7,
+      "Flawless Ruby Gemstone": 1,
+      "Gemstone Mixture": 10
+    }
+  },
+  "Boots of Divan": {
+    "api-name": "DIVAN_BOOTS",
+    "type": "forge-product",
+    "has-weights": false,
+    "crafting-materials": {
+      "Gemstone Mixture": 10,
+      "Flawless Ruby Gemstone": 1,
+      "Divan Fragment": 4
+    }
+  }
+}
