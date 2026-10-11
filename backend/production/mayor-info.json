@@ -7,7 +7,8 @@
             "Tarantula Silk",
             "Wolf Tooth",
             "Golden Tooth",
-            "Null Sphere"
+            "Null Sphere",
+            "Revenant Viscera"
         ],
         "buy-during": [
             "Hamster Wheel",
@@ -15,11 +16,15 @@
             "Tarantula Silk",
             "Wolf Tooth",
             "Golden Tooth",
-            "Null Sphere"
+            "Null Sphere",
+            "Revenant Viscera"
         ],
         "sell-during": [],
         "watch-during": [],
-        "buy-after": {},
+        "buy-after": {
+            "Golden Tooth": 1,
+            "Revenant Viscera": 1
+        },
         "notes": []
     },
     "Cole": {
@@ -31,7 +36,8 @@
             "Titanium",
             "Glacite",
             "Umber",
-            "Tungsten"
+            "Tungsten",
+            "Refined Mineral"
         ],
         "buy-during": [
             "Fine Jasper Gemstone",
@@ -40,11 +46,14 @@
             "Titanium",
             "Glacite",
             "Umber",
-            "Tungsten"
+            "Tungsten",
+            "Refined Mineral"
         ],
         "sell-during": [],
         "watch-during": [],
-        "buy-after": {},
+        "buy-after": {
+            "Refined Mineral": 1
+        },
         "notes": [
             "Gemstones in general, especially Fine and Flawless: sell before / buy during"
         ]
@@ -63,7 +72,8 @@
         "buy-during": [
             "Ultimate Chimera I",
             "Daedalus Stick",
-            "Griffin Feather"
+            "Griffin Feather",
+            "Enchanted Ancient Claw"
         ],
         "sell-during": [
             "Epic Griffin Upgrade Stone",
@@ -72,11 +82,10 @@
         ],
         "watch-during": [],
         "buy-after": {
-            "Griffin Feather": 2
+            "Griffin Feather": 2,
+            "Ultimate Chimera I": 2
         },
-        "notes": [
-            "Griffin Feather seen at 310k / 225k"
-        ]
+        "notes": []
     },
     "Diaz": {
         "buy-before": [],
@@ -151,10 +160,11 @@
         ],
         "sell-during": [],
         "watch-during": [],
-        "buy-after": {},
+        "buy-after": {
+            "Great White Shark Tooth": 2
+        },
         "notes": [
-            "Sea creature drops in general: sell before / buy during",
-            "Great White Shark Tooth seen at 1.9m, 3.2m"
+            "Sea creature drops in general: sell before / buy during"
         ]
     },
     "Paul": {
@@ -185,7 +195,9 @@
         ]
     },
     "Derpy": {
-        "buy-before": [],
+        "buy-before": [
+            "Hypergolic Gabagool"
+        ],
         "sell-before": [
             "Hyper Catalyst",
             "Enchanted Quartz Block"
@@ -195,7 +207,9 @@
         ],
         "sell-during": [],
         "watch-during": [],
-        "buy-after": {},
+        "buy-after": {
+            "Enchanted Quartz Block": 1
+        },
         "notes": [
             "Hyper Catalysts and other minion speed items: sell before, boosted minions cut demand",
             "Quartz Blocks and other minion outputs: sell before / buy during",

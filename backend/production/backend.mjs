@@ -645,7 +645,8 @@ class ProcesTrade {
             this.message.includes('is lower than the old price of') ||
             this.message.includes('Escrow refunded') ||
             this.message.includes('You are overbidding too much!') ||
-            this.message.includes('Allowd unit price: ')
+            this.message.includes('Allowd unit price: ') ||
+            this.message.includes('You don\'t have enough inventory space to fit all of those items!')
         ) {
             result = 'Nontrade message';
             return "Nontrade message: " + this.message;
@@ -2375,7 +2376,7 @@ function profitTypeOf(lot, saleType) {
 let bazaar_data = {};
 let auction_data = [];
 
-const update_seconds = 3;
+const update_seconds = 30;
 setInterval(updateBazaarData, update_seconds * 1000);
 
 // Rolling per-product history used to compute real 1h/6h/24h volume and new-listing

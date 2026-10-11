@@ -35,7 +35,7 @@ class TraderDashboard {
         this.openBuyOrders = new Set();
         this.openSellOrders = new Set();
         this.activeTab = 'bazaar-orders';
-        this.updateInterval = 1000; // 2.5 seconds
+        this.updateInterval = 500;
         this.bazaarUpdateInterval = 60000; // 1 minute
         this.auctionUpdateInterval = 300000; // 5 minutes
         this.mayorUpdateInterval = 300000; // 5 minutes
