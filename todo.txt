@@ -5,9 +5,11 @@ forging time changes (like uprgarding quick forge) doesn't change the time left
 
 Issues:
 
-make run trade but with item name and slice indeces
-ERROR: Invalid trade message: [Bazaar] You don't have the space required to claim that!
-the trader dashboard is slow
+
 
 testing:
 beastmaster crest checking on price if no rarity, for setting action status to sold vs actually selling
+make run trade but with item name and slice indeces
+pruning trades
+the trader dashboard is slow
+Fixed the supercraft function to not remove materials if the craft isn't valid

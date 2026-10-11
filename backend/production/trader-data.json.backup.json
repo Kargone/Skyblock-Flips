@@ -192,7 +192,7 @@
         "sell-order-place-time": 1791642185435,
         "sub-orders": [
           {
-            "partial-sold-amount": 677,
+            "partial-sold-amount": 764,
             "partial-selling-amount": 764,
             "price-bought": 65003,
             "projected-profit": 4929480.8,
@@ -200,7 +200,7 @@
             "sell-order-place-time": 1791642185435
           },
           {
-            "partial-sold-amount": 0,
+            "partial-sold-amount": 197,
             "partial-selling-amount": 884,
             "price-bought": 65003,
             "projected-profit": 5703744.8,
@@ -388,7 +388,7 @@
       "type": "short-term-investment",
       "sub-orders": [
         {
-          "partial-amount": 225,
+          "partial-amount": 161,
           "price-bought": 1060.7,
           "time-bought": 1788473717452
         }
@@ -439,31 +439,11 @@
         }
       ]
     },
-    "Enchanted Wet Sponge": {
-      "type": "short-term-investment",
-      "sub-orders": [
-        {
-          "partial-amount": 49,
-          "price-bought": 75491,
-          "time-bought": 1789421047503
-        }
-      ]
-    },
-    "? Fine Jade Gemstone": {
-      "type": "short-term-investment",
-      "sub-orders": [
-        {
-          "partial-amount": 21,
-          "price-bought": 24010,
-          "time-bought": 1791327559948
-        }
-      ]
-    },
     "? Fine Amber Gemstone": {
       "type": "short-term-investment",
       "sub-orders": [
         {
-          "partial-amount": 145,
+          "partial-amount": 144,
           "price-bought": 26157,
           "time-bought": 1791008608247
         }
@@ -496,26 +476,6 @@
           "partial-amount": 39,
           "price-bought": 1114.9,
           "time-bought": 1789517239337
-        }
-      ]
-    },
-    "Miner Zombie Shard": {
-      "type": "short-term-investment",
-      "sub-orders": [
-        {
-          "partial-amount": 1319,
-          "price-bought": 7845.6,
-          "time-bought": 1791353551563
-        },
-        {
-          "partial-amount": 29,
-          "price-bought": 7842.5,
-          "time-bought": 1791210661147
-        },
-        {
-          "partial-amount": 77,
-          "price-bought": 5284.2,
-          "time-bought": 1789939094337
         }
       ]
     },
@@ -613,7 +573,7 @@
       "type": "short-term-investment",
       "sub-orders": [
         {
-          "partial-amount": 26,
+          "partial-amount": 23,
           "price-bought": 4116.59375,
           "time-bought": 1790866764553
         }
@@ -734,16 +694,6 @@
         }
       ]
     },
-    "Enchanted Diamond": {
-      "type": "short-term-investment",
-      "sub-orders": [
-        {
-          "partial-amount": 16,
-          "price-bought": 1289.125,
-          "time-bought": 1791328336811
-        }
-      ]
-    },
     "Poisonous Potato": {
       "type": "short-term-investment",
       "sub-orders": [
@@ -813,7 +763,7 @@
       "type": "short-term-investment",
       "sub-orders": [
         {
-          "partial-amount": 208,
+          "partial-amount": 184,
           "price-bought": 666.94140625,
           "time-bought": 1791439274832
         }
@@ -858,16 +808,6 @@
           "time-bought": 1791559110314
         }
       ]
-    },
-    "Null Ovoid": {
-      "type": "short-term-investment",
-      "sub-orders": [
-        {
-          "partial-amount": 8,
-          "price-bought": 143565.9,
-          "time-bought": 1791583048607
-        }
-      ]
     }
   },
   "long-term-investments": {
@@ -875,12 +815,7 @@
       "type": "crafting-material",
       "sub-orders": [
         {
-          "partial-amount": 992,
-          "price-bought": 992.5751201923077,
-          "time-bought": 1791009042650
-        },
-        {
-          "partial-amount": 218,
+          "partial-amount": 154,
           "price-bought": 792.0564236111111,
           "time-bought": 1790976638741
         }
@@ -915,7 +850,7 @@
       "type": "crafting-material",
       "sub-orders": [
         {
-          "partial-amount": 1408,
+          "partial-amount": 1032,
           "price-bought": 215.53485576923077,
           "time-bought": 1791559815542
         },
@@ -980,7 +915,7 @@
       "type": "crafting-material",
       "sub-orders": [
         {
-          "partial-amount": 678,
+          "partial-amount": 620,
           "price-bought": 97382,
           "time-bought": 1790605562813
         },
@@ -1236,39 +1171,9 @@
         }
       ]
     },
-    "Red Claw Talisman": {
-      "type": "auction-product",
-      "sub-orders": [
-        {
-          "partial-amount": 1,
-          "price-crafted": 9452.125,
-          "time-bought": 1791559656469
-        },
-        {
-          "partial-amount": 1,
-          "price-crafted": 9452.125,
-          "time-bought": 1791559656770
-        }
-      ]
-    },
     "Red Claw Egg": {
       "type": "crafting-material",
       "sub-orders": [
-        {
-          "partial-amount": 1,
-          "price-bought": 500000,
-          "time-bought": 1791409847385
-        },
-        {
-          "partial-amount": 1,
-          "price-bought": 500000,
-          "time-bought": 1791439345259
-        },
-        {
-          "partial-amount": 1,
-          "price-bought": 500000,
-          "time-bought": 1791439349244
-        },
         {
           "partial-amount": 1,
           "price-bought": 500000,
@@ -1640,19 +1545,19 @@
       "type": "long-term-investment",
       "sub-orders": [
         {
-          "partial-amount": 2528,
+          "partial-amount": 2484,
           "price-bought": 124425,
           "time-bought": 1791439127659
-        },
-        {
-          "partial-amount": 2224,
-          "price-bought": 120002,
-          "time-bought": 1791499405595
         },
         {
           "partial-amount": 5000,
           "price-bought": 120728,
           "time-bought": 1791559012434
+        },
+        {
+          "partial-amount": 2224,
+          "price-bought": 120002,
+          "time-bought": 1791499405595
         },
         {
           "partial-amount": 7000,
@@ -1705,15 +1610,6 @@
         "material-cost": 6692737.366250001,
         "price-selling": 8190000,
         "sold": false,
-        "date-placed": 1791610164088,
-        "time-crafted": 1791500013547
-      },
-      {
-        "item-name": "Hunter Talisman",
-        "auction-id": "idk",
-        "material-cost": 6692737.366250001,
-        "price-selling": 8190000,
-        "sold": false,
         "date-placed": 1791610167650,
         "time-crafted": 1791500014016
       },
@@ -1731,7 +1627,7 @@
   "forge": [],
   "all-products": {
     "Griffin Feather": {
-      "current-amount": 16752,
+      "current-amount": 16708,
       "buy-order-stats": {
         "total-buy-orders-created": 12,
         "total-buy-amount-claimed": 19724,
@@ -1750,7 +1646,7 @@
       "crafting-materials": "none"
     },
     "Golden Tooth": {
-      "current-amount": 3120,
+      "current-amount": 3062,
       "buy-order-stats": {
         "total-buy-orders-created": 18,
         "total-buy-amount-claimed": 11435,
@@ -1769,7 +1665,7 @@
       "crafting-materials": "none"
     },
     "Red Claw Egg": {
-      "current-amount": 27,
+      "current-amount": 24,
       "max-amount": 2000,
       "total-profit-made": 0,
       "total-sold": 0,
@@ -1795,7 +1691,7 @@
       "crafting-materials": "none"
     },
     "Wolf Tooth": {
-      "current-amount": 208,
+      "current-amount": 184,
       "buy-order-stats": {
         "total-buy-orders-created": 1,
         "total-buy-amount-claimed": 0,
@@ -1833,7 +1729,7 @@
       "crafting-materials": "none"
     },
     "Enchanted Emerald": {
-      "current-amount": 225,
+      "current-amount": 161,
       "buy-order-stats": {
         "total-buy-orders-created": 1,
         "total-buy-amount-claimed": 1,
@@ -1852,7 +1748,7 @@
       "crafting-materials": "none"
     },
     "Enchanted Leather": {
-      "current-amount": 1210,
+      "current-amount": 154,
       "buy-order-stats": {
         "total-buy-orders-created": 1,
         "total-buy-amount-claimed": 1,
@@ -1930,7 +1826,7 @@
       "crafting-materials": "none"
     },
     "Ancient Claw": {
-      "current-amount": 1485,
+      "current-amount": 1109,
       "buy-order-stats": {
         "total-buy-orders-created": 1,
         "total-buy-amount-claimed": 1,
@@ -2234,7 +2130,7 @@
       "crafting-materials": "none"
     },
     "Enchanted Wet Sponge": {
-      "current-amount": 49,
+      "current-amount": 0,
       "buy-order-stats": {
         "total-buy-orders-created": 19,
         "total-buy-amount-claimed": 5909,
@@ -2540,8 +2436,8 @@
     },
     "Hunter Talisman": {
       "current-amount": 0,
-      "total-profit-made": 49838260.375,
-      "total-sold": 14,
+      "total-profit-made": 51253623.00875,
+      "total-sold": 15,
       "crafting-materials": {
         "Golden Tooth": 64,
         "Enchanted Rotten Flesh": 32
@@ -2948,7 +2844,7 @@
       "crafting-materials": "none"
     },
     "? Fine Jade Gemstone": {
-      "current-amount": 21,
+      "current-amount": 0,
       "buy-order-stats": {
         "total-buy-orders-created": 4,
         "total-buy-amount-claimed": 7312,
@@ -3081,7 +2977,7 @@
       "crafting-materials": "none"
     },
     "? Fine Amber Gemstone": {
-      "current-amount": 145,
+      "current-amount": 144,
       "buy-order-stats": {
         "total-buy-orders-created": 5,
         "total-buy-amount-claimed": 11362,
@@ -3547,7 +3443,7 @@
       "crafting-materials": "none"
     },
     "Miner Zombie Shard": {
-      "current-amount": 1425,
+      "current-amount": 0,
       "buy-order-stats": {
         "total-buy-orders-created": 7,
         "total-buy-amount-claimed": 12106,
@@ -4162,7 +4058,7 @@
       }
     },
     "Null Ovoid": {
-      "current-amount": 8,
+      "current-amount": 0,
       "buy-order-stats": {
         "total-buy-orders-created": 0,
         "total-buy-amount-claimed": 0,
@@ -4342,7 +4238,7 @@
       "crafting-materials": "none"
     },
     "Enchanted Diamond": {
-      "current-amount": 16,
+      "current-amount": 0,
       "buy-order-stats": {
         "total-buy-orders-created": 0,
         "total-buy-amount-claimed": 0,
@@ -4616,7 +4512,7 @@
       }
     },
     "Enchanted Bone": {
-      "current-amount": 26,
+      "current-amount": 23,
       "buy-order-stats": {
         "total-buy-orders-created": 0,
         "total-buy-amount-claimed": 0,
@@ -4635,7 +4531,7 @@
       "crafting-materials": "none"
     },
     "Red Claw Talisman": {
-      "current-amount": 2,
+      "current-amount": 0,
       "total-profit-made": 0,
       "total-sold": 0,
       "crafting-materials": {
@@ -21168,9 +21064,9 @@
       ]
     },
     "1791612000000": {
-      "daily-profit": 115557981.58542311,
+      "daily-profit": 116973344.2191731,
       "forge-profit": 7956015.1,
-      "auction-house-profit": 2312977.169423081,
+      "auction-house-profit": 3728339.80317308,
       "bazaar-profit": 105288989.31600004,
       "trades": [
         {
@@ -21542,6 +21438,16 @@
           "total-profit": 176104.11000000002,
           "date-bought": 1788631858442,
           "date-sold": 1791680230986
+        },
+        {
+          "item-name": "Hunter Talisman",
+          "count": 1,
+          "buy-price": 6774637.366250001,
+          "sell-price": 8190000,
+          "profit-per-unit": 1415362.633749999,
+          "total-profit": 1415362.633749999,
+          "date-bought": 1791610164088,
+          "date-sold": 1791680235707
         }
       ]
     }

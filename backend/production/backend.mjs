@@ -165,6 +165,62 @@ try {
     throw err;
 }
 
+// The dashboard and the mod read trader data from memory through /api/trader-data,
+// so a trade shows up as soon as it is processed rather than on the next save.
+export function getTraderData() {
+    return trader_data;
+}
+
+// Saves run one at a time since they share the temp file; a save asked for while
+// one is running is done once it finishes, with whatever trader_data is by then.
+let traderDataSaving = false;
+let traderDataSaveQueued = false;
+
+export function saveTraderData() {
+    if (traderDataSaving) {
+        traderDataSaveQueued = true;
+        return;
+    }
+    traderDataSaving = true;
+
+    // Atomic write: write to temp file first, then rename to avoid corruption on read
+    const tempPath = traderDataPath + '.tmp';
+    const backupPath = traderDataPath + '.backup.json';
+    const done = function () {
+        traderDataSaving = false;
+        if (traderDataSaveQueued) {
+            traderDataSaveQueued = false;
+            saveTraderData();
+        }
+    };
+
+    // Snapshot the last-known-good file before overwriting it, so a bad
+    // save (or a crash/sleep leaving trader_data in a bad in-memory state)
+    // can be recovered from without falling back to git history.
+    fs.copyFile(traderDataPath, backupPath, function (copyErr) {
+        if (copyErr) console.error('Error backing up trader data file:', copyErr);
+
+        fs.writeFile(
+            tempPath,
+            JSON.stringify(trader_data, null, 2),
+            function (err) {
+                if (err) {
+                    console.error('Error writing temp trader data file:', err);
+                    done();
+                    return;
+                }
+                // Atomic rename - replaces the original file
+                fs.rename(tempPath, traderDataPath, function (renameErr) {
+                    if (renameErr) {
+                        console.error('Error renaming temp file');
+                    }
+                    done();
+                });
+            }
+        );
+    });
+}
+
 // Append-only log of order placements/progress/outcomes, used to train a model
 // that predicts how much of an order will actually fill. Kept as JSONL (one JSON
 // object per line) rather than a single growing JSON array so appending never
@@ -245,19 +301,28 @@ class Main extends EventEmitter {
     listenForTrades() {
         // Listen for 'tradeMessage' events and process them
         this.on('tradeMessage', (tradeMessage) => {
+            // A trade that throws partway (a craft missing its third material, say)
+            // has already changed trader_data, so it is put back as it was before the
+            // trade rather than left half done.
+            const before = structuredClone(trader_data);
             try {
                 // The mod's forge snapshots are not chat messages; see processForgeSnapshot.
                 const parsed = JSON.parse(tradeMessage);
                 if (parsed?.type === 'forge-snapshot') {
                     const result = processForgeSnapshot(parsed);
-                    if (result !== FORGE_SNAPSHOT_UNCHANGED) console.log(result);
+                    if (result !== FORGE_SNAPSHOT_UNCHANGED) {
+                        console.log(result);
+                        saveTraderData();
+                    }
                     return;
                 }
 
                 const trade = new ProcesTrade(tradeMessage);
                 // console.log(`Successfully processed trade: ${tradeMessage}`);
+                saveTraderData();
             } catch (error) {
-                consoleWarn(`Error processing trade message: ${error}`);
+                trader_data = before;
+                consoleWarn(`Error processing trade message, nothing was changed: ${error}`);
             }
         });
         console.log('Trade listener initialized');
@@ -646,7 +711,8 @@ class ProcesTrade {
             this.message.includes('Escrow refunded') ||
             this.message.includes('You are overbidding too much!') ||
             this.message.includes('Allowd unit price: ') ||
-            this.message.includes('You don\'t have enough inventory space to fit all of those items!')
+            this.message.includes('You don\'t have enough inventory space to fit all of those items!') ||
+            this.message.includes('[Bazaar] You don\'t have the space required to claim that!')
         ) {
             result = 'Nontrade message';
             return "Nontrade message: " + this.message;
@@ -2782,33 +2848,7 @@ class UpdateOrderFillAmounts {
             // this.makeShortTermInvestmentLongTerm(investmentName);
         }
 
-        // Atomic write: write to temp file first, then rename to avoid corruption on read
-        const tempPath = traderDataPath + '.tmp';
-        const backupPath = traderDataPath + '.backup.json';
-
-        // Snapshot the last-known-good file before overwriting it, so a bad
-        // save (or a crash/sleep leaving trader_data in a bad in-memory state)
-        // can be recovered from without falling back to git history.
-        fs.copyFile(traderDataPath, backupPath, function (copyErr) {
-            if (copyErr) console.error('Error backing up trader data file:', copyErr);
-
-            fs.writeFile(
-                tempPath,
-                JSON.stringify(trader_data, null, 2),
-                function (err) {
-                    if (err) {
-                        console.error('Error writing temp trader data file:', err);
-                    } else {
-                        // Atomic rename - replaces the original file
-                        fs.rename(tempPath, traderDataPath, function (renameErr) {
-                            if (renameErr) {
-                                console.error('Error renaming temp file');
-                            }
-                        });
-                    }
-                }
-            );
-        });
+        saveTraderData();
     }
     updateSellOrderFillAmount(sellOrderIndex, sellOrders) {
         const sellOrder = sellOrders[sellOrderIndex];

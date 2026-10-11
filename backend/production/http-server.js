@@ -1,4 +1,4 @@
-import Main, { marketData, getVolumeStats } from './backend.mjs';
+import Main, { marketData, getVolumeStats, getTraderData } from './backend.mjs';
 import { getMayorData } from './mayor.mjs';
 import http from 'node:http';
 import fs from 'node:fs';
@@ -22,34 +22,10 @@ let server = http.createServer(function (request, response) {
 
     // API endpoint for trader data
     if (request.url === '/api/trader-data' && request.method === 'GET') {
+        // Served from memory so a trade from the mod shows up as soon as it is
+        // processed, not after the next save to trader-data.json.
         response.writeHead(200, { "Content-Type": "application/json" });
-        try {
-            const fileContent = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'trader-data.json'), 'utf8');
-            
-            // Check if file is empty
-            if (!fileContent || fileContent.trim() === '') {
-                throw new Error('File is empty');
-            }
-            
-            const trader_data = JSON.parse(fileContent);
-            response.end(JSON.stringify(trader_data));
-        } catch (error) {
-            console.error('Error reading trader data:', error);
-            // Return default empty structure if file is corrupted/empty
-            const defaultData = {
-                "username": "Kargone",
-                "sell-order-overview": { "sell-orders": [] },
-                "buy-order-overview": { "buy-orders": [] },
-                "short-term-investments": {},
-                "long-term-investments": {},
-                "auction-house-overview": { "auctions": [] },
-                "forge": [],
-                "forge-history": [],
-                "all-products": {},
-                "daily-profits": {}
-            };
-            response.end(JSON.stringify(defaultData));
-        }
+        response.end(JSON.stringify(getTraderData()));
         return;
     }
 
