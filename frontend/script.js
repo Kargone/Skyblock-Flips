@@ -1186,7 +1186,9 @@ class TraderDashboard {
             <h2>Mayor Information</h2>
             <div class="mayor-info">
                 <p>Current Mayor: ${this.mayorData?.mayor?.name || 'N/A'}</p>
+                <p>Current Minister: ${this.formatMinister(this.mayorData?.mayor?.minister)}</p>
                 <p>Next Mayor: ${this.mayorData?.election?.leader || 'N/A'}</p>
+                <p>Next Minister: ${this.formatMinister(this.mayorData?.election?.['runner-up'])}</p>
                 <p>Election Ends: ${targetElectionDate}</p>
                 <p>Next Spooky Festival: ${targetSpookyFestivalDate}</p>
                 <p>Daily NPC Reset Time: 7:00 PM CDT</p>
@@ -1222,6 +1224,13 @@ class TraderDashboard {
 
     getSellOrderKey(order, index) {
         return `${order['item-name'] || 'unknown'}-${order['sell-order-place-time'] || index}`;
+    }
+
+    // "Cole (Mining Fiesta)"; works for both the minister and the election runner-up.
+    formatMinister(minister) {
+        if (!minister?.name) return 'N/A';
+        const name = this.escapeHtml(minister.name);
+        return minister.perk ? `${name} (${this.escapeHtml(minister.perk)})` : name;
     }
 
     getSellOrderSoldAmount(order) {
