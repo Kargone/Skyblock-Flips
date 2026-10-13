@@ -1,8 +1,0 @@
-Updated some of the mayor info
-Added another dummy trade message catch
-Removed mayor.txt not needed anymore
-Made run trade file but with item name and slice indeces
-Made a pruning trades file
-Fixed the trader dashboard being slow (hopefully)
-Fixed the supercraft function to not remove materials if the craft isn't valid
-Pruned some of the past trade logs

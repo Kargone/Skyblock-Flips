@@ -10,7 +10,13 @@
     },
     {
       "mayor": "Paul",
-      "elected-year": 518
+      "elected-year": 518,
+      "perks": [
+        "Marauder",
+        "Benediction"
+      ],
+      "minister": "Cole",
+      "minister-perk": "Mining Fiesta"
     }
   ]
 }

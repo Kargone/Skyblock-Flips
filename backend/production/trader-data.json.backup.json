@@ -40,7 +40,7 @@
         "sell-order-place-time": 1791903221693,
         "sub-orders": [
           {
-            "partial-sold-amount": 326,
+            "partial-sold-amount": 731,
             "partial-selling-amount": 824,
             "price-bought": 237539.6,
             "projected-profit": 7165421.6,
@@ -91,42 +91,6 @@
         "total-amount-claimed": 0
       },
       {
-        "item-name": "Foxtrot Shard",
-        "price-sold": 5291.4,
-        "earliest-time-bought": 1790835703800,
-        "total-selling-amount": 570,
-        "has-been-claimed": false,
-        "has-been-filled": false,
-        "sell-order-place-time": 1791642647718,
-        "sub-orders": [
-          {
-            "partial-sold-amount": 135,
-            "partial-selling-amount": 135,
-            "price-bought": 3589.3,
-            "projected-profit": 222642,
-            "time-bought": 1791267459017,
-            "sell-order-place-time": 1791642647718
-          },
-          {
-            "partial-sold-amount": 371,
-            "partial-selling-amount": 371,
-            "price-bought": 3587.9,
-            "projected-profit": 612372.6,
-            "time-bought": 1791210670948,
-            "sell-order-place-time": 1791642647718
-          },
-          {
-            "partial-sold-amount": 64,
-            "partial-selling-amount": 64,
-            "price-bought": 2850.5,
-            "projected-profit": 152832,
-            "time-bought": 1790835703800,
-            "sell-order-place-time": 1791642647718
-          }
-        ],
-        "total-amount-claimed": 0
-      },
-      {
         "item-name": "Hideonsun Shard",
         "price-sold": 65554.7,
         "earliest-time-bought": 1791610601874,
@@ -136,8 +100,8 @@
         "sell-order-place-time": 1791642465920,
         "sub-orders": [
           {
-            "partial-sold-amount": 270,
-            "partial-selling-amount": 385,
+            "partial-sold-amount": 115,
+            "partial-selling-amount": 115,
             "price-bought": 44397,
             "projected-profit": 7893347,
             "time-bought": 1791610601874,
@@ -232,7 +196,7 @@
         "sell-order-place-time": 1791903256262,
         "sub-orders": [
           {
-            "partial-sold-amount": 462,
+            "partial-sold-amount": 1069,
             "partial-selling-amount": 2000,
             "price-bought": 100709.9,
             "projected-profit": 4300200,
@@ -304,7 +268,7 @@
         "sell-order-place-time": 1791903321237,
         "sub-orders": [
           {
-            "partial-sold-amount": 680,
+            "partial-sold-amount": 2231,
             "partial-selling-amount": 2240,
             "price-bought": 8005.9,
             "projected-profit": 3804192,
@@ -324,7 +288,7 @@
         "sell-order-place-time": 1791903328402,
         "sub-orders": [
           {
-            "partial-sold-amount": 216,
+            "partial-sold-amount": 344,
             "partial-selling-amount": 1432,
             "price-bought": 48367,
             "projected-profit": 8734627.200000001,
@@ -379,7 +343,7 @@
       },
       {
         "item-name": "Enchanted Cactus",
-        "bought-amount": 347,
+        "bought-amount": 2000,
         "buying-amount": 2000,
         "price-buying": 99002.5,
         "projected-profit": 4382878,
@@ -423,7 +387,7 @@
       },
       {
         "item-name": "Helianthus",
-        "bought-amount": 41,
+        "bought-amount": 458,
         "buying-amount": 1000,
         "price-buying": 398373.6,
         "projected-profit": 13109505,
@@ -434,7 +398,7 @@
       },
       {
         "item-name": "Enchanted Iron Block",
-        "bought-amount": 0,
+        "bought-amount": 2048,
         "buying-amount": 4000,
         "price-buying": 50726.2,
         "projected-profit": 13178144,
@@ -445,7 +409,7 @@
       },
       {
         "item-name": "Enchanted Quartz Block",
-        "bought-amount": 36,
+        "bought-amount": 234,
         "buying-amount": 1000,
         "price-buying": 148004.7,
         "projected-profit": 10331049,
@@ -456,7 +420,7 @@
       },
       {
         "item-name": "Plasma",
-        "bought-amount": 50,
+        "bought-amount": 121,
         "buying-amount": 1000,
         "price-buying": 186995.7,
         "projected-profit": 8461683,
@@ -467,7 +431,7 @@
       },
       {
         "item-name": "Golden Tooth",
-        "bought-amount": 0,
+        "bought-amount": 97,
         "buying-amount": 2000,
         "price-buying": 92181.5,
         "projected-profit": 19423154,
@@ -489,7 +453,7 @@
       },
       {
         "item-name": "Rusty Coin",
-        "bought-amount": 8,
+        "bought-amount": 116,
         "buying-amount": 4000,
         "price-buying": 23123,
         "projected-profit": 10353952,
@@ -522,7 +486,7 @@
       },
       {
         "item-name": "Red Gift",
-        "bought-amount": 11,
+        "bought-amount": 29,
         "buying-amount": 4000,
         "price-buying": 17756.7,
         "projected-profit": 10387236,
