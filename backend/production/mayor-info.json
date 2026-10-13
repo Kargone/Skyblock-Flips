@@ -129,9 +129,12 @@
                 "sell-before": [
                     "Jacob's Ticket"
                 ],
+<<<<<<< HEAD
                 "buy-during": [
                     "Jacob's Ticket"
                 ],
+=======
+>>>>>>> f19ca78153ab57d52628296950da735ca710b908
                 "notes": [
                     "Jacob's Tickets: sell before, boosted contests flood them"
                 ]
