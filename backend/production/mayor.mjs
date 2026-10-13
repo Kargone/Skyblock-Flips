@@ -1,16 +1,24 @@
-// Mayor reminders: what the current mayor, the election leader and recent mayors
-// mean for prices, served to the mod's Bazaar window and the dashboard from
-// GET /api/mayor-data.
+// Mayor reminders: what the current mayor and minister, the running election and
+// recent terms mean for prices, served to the mod's Bazaar window and the dashboard
+// from GET /api/mayor-data.
 //
-//   mayor-info.json           your notes, keyed by mayor name: buy-before, sell-before,
-//                             buy-during, sell-during, watch-during, buy-after
-//                             ({ product: SkyBlock years }) and free-text notes. Edit
+// A mayor's perks change from one election to the next, and a minister brings only
+// one of them, so the notes are kept per perk and apply only when that perk is in.
+//
+//   mayor-info.json           your notes: { mayor: { notes, perks: { perk: lists } } }.
+//                             Each perk has buy-before, sell-before, buy-during,
+//                             sell-during, watch-during, buy-after ({ product: SkyBlock
+//                             years }) and free-text notes. The mayor's own notes show
+//                             whenever they are mayor, whatever their perks. Edit
 //                             freely; it is re-read on every request.
 //   mayor-history.json        each term this server has seen, written here and re-read
 //                             on every request, so hand edits apply straight away. Hypixel's
 //                             election API only ever returns the current mayor, so a
 //                             term from before this file existed has to be added by
-//                             hand: { "mayor": "Diana", "elected-year": 510 }
+//                             hand: { "mayor": "Diana", "elected-year": 510 }. A term
+//                             without "perks" counts as having every perk in the notes.
+//                             The server also records "perks", "minister" and
+//                             "minister-perk" for the terms it sees.
 //   mayor-price-history.json  prices of every product in mayor-info.json, sampled every
 //                             half hour and kept for two weeks, for the trend hints
 //
@@ -88,6 +96,29 @@ function readMayorInfo() {
     return loadJson(mayorInfoPath, {});
 }
 
+// Perk names compared without case or punctuation, so "QUAD TAXES!!!" from the API
+// matches "QUAD TAXES" in the notes.
+function perkKey(name) {
+    return String(name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
+}
+
+function perkNames(perks) {
+    return (perks || []).map(perk => perk.name).filter(Boolean);
+}
+
+// [perk, notes] for each of `person`'s noted perks that is in `names`, or for all of
+// them when `names` is not known.
+function notedPerks(info, person, names) {
+    const perks = Object.entries(info[person]?.perks || {});
+    if (!names) return perks;
+    const wanted = new Set(names.map(perkKey));
+    return perks.filter(([perk]) => wanted.has(perkKey(perk)));
+}
+
+function hasQuadTaxes(names) {
+    return names.some(name => perkKey(name) === perkKey('QUAD TAXES'));
+}
+
 function readHistory() {
     const history = loadJson(historyPath, { terms: [] });
     if (!Array.isArray(history.terms)) history.terms = [];
@@ -107,26 +138,46 @@ async function updateElection() {
         election = payload;
         recordTerm(payload.mayor);
 
-        const quadTaxes = (payload.mayor.perks || []).some(perk => /QUAD TAXES/i.test(perk.name || ''));
-        setDerpyTaxMultiplier(quadTaxes ? 4 : 1);
+        setDerpyTaxMultiplier(currentTaxMultiplier());
     } catch (e) {
         console.error('Election fetch failed:', e?.message || e);
     }
 }
 
-// Adds the current mayor's term to mayor-history.json the first time it is seen.
+// QUAD TAXES quadruples the tax whether the mayor or the minister brings it.
+function currentTaxMultiplier() {
+    const mayor = election?.mayor;
+    if (!mayor) return 1;
+    return hasQuadTaxes([...perkNames(mayor.perks), mayor.minister?.perk?.name]) ? 4 : 1;
+}
+
+// Adds the current term to mayor-history.json the first time it is seen, with its
+// perks and minister, and fills those in on a term recorded before they were kept.
 function recordTerm(mayor) {
     const electedYear = mayor.election?.year;
     if (!electedYear) return;
 
+    const details = {
+        "perks": perkNames(mayor.perks),
+        ...(mayor.minister?.name ? {
+            "minister": mayor.minister.name,
+            "minister-perk": mayor.minister.perk?.name ?? null
+        } : {})
+    };
+
     // Read fresh, so a term added by hand since the last check is kept.
     const history = readHistory();
-    if (history.terms.some(term => term['elected-year'] === electedYear)) return;
-
-    history.terms.push({ "mayor": mayor.name, "elected-year": electedYear });
-    history.terms.sort((a, b) => a['elected-year'] - b['elected-year']);
+    const existing = history.terms.find(term => term['elected-year'] === electedYear);
+    if (existing) {
+        if (existing.perks && (existing.minister || !details.minister)) return;
+        Object.assign(existing, details);
+        console.log(`Mayor history: recorded perks and minister for year ${electedYear}`);
+    } else {
+        history.terms.push({ "mayor": mayor.name, "elected-year": electedYear, ...details });
+        history.terms.sort((a, b) => a['elected-year'] - b['elected-year']);
+        console.log(`Mayor history: recorded ${mayor.name} for year ${electedYear}`);
+    }
     saveJson(historyPath, history);
-    console.log(`Mayor history: recorded ${mayor.name} for year ${electedYear}`);
 }
 
 // A term with its start and end worked out from the year it was elected, so a
@@ -142,11 +193,13 @@ function termTimes(term) {
 // Every product named anywhere in mayor-info.json, plus Ectoplasm for the festival.
 function watchedProducts(info) {
     const names = new Set([ECTOPLASM]);
-    for (const notes of Object.values(info)) {
-        for (const list of ['buy-before', 'sell-before', 'buy-during', 'sell-during', 'watch-during']) {
-            for (const name of notes?.[list] || []) names.add(name);
+    for (const person of Object.keys(info)) {
+        for (const [, notes] of notedPerks(info, person, null)) {
+            for (const list of ['buy-before', 'sell-before', 'buy-during', 'sell-during', 'watch-during']) {
+                for (const name of notes?.[list] || []) names.add(name);
+            }
+            for (const name of Object.keys(notes?.['buy-after'] || {})) names.add(name);
         }
-        for (const name of Object.keys(notes?.['buy-after'] || {})) names.add(name);
     }
     return names;
 }
@@ -221,61 +274,99 @@ export function getMayorData() {
     const mayor = election?.mayor;
     const mayorName = mayor?.name ?? null;
     const electedYear = mayor?.election?.year ?? null;
+    const minister = mayor?.minister?.name ? {
+        "name": mayor.minister.name,
+        "perk": mayor.minister.perk?.name ?? null
+    } : null;
     const current = election?.current;
-    const leader = current?.candidates?.length
-        ? [...current.candidates].sort((a, b) => b.votes - a.votes)[0]
-        : null;
+    const ranked = current?.candidates?.length
+        ? [...current.candidates].sort((a, b) => b.votes - a.votes)
+        : [];
+    const leader = ranked[0] ?? null;
+    // Second place becomes minister with the one perk marked as their minister perk.
+    // Votes swing more there than at the top, so how far it is ahead of third is sent
+    // along to show how sure it is.
+    const runnerUp = ranked[1] ?? null;
+    const runnerUpPerk = (runnerUp?.perks || []).find(perk => perk.minister)?.name ?? null;
 
     const reminders = [];
     const notes = [];
-    const remind = (timing, action, from, product, extra = {}) => reminders.push({
-        "timing": timing,
-        "action": action,
-        "mayor": from,
-        "product": product,
-        "price": priceOf(product),
-        "trend": trendOf(product, extra.since),
-        ...extra
-    });
+    const seenReminders = new Set();
+    const remind = (timing, action, role, from, perk, product, extra = {}) => {
+        // EZPZ and Marauder list the same products; a product shows once per section.
+        const key = `${timing}|${role}|${from}|${action}|${product}`;
+        if (seenReminders.has(key)) return;
+        seenReminders.add(key);
+        reminders.push({
+            "timing": timing,
+            "action": action,
+            "role": role,
+            "mayor": from,
+            "perk": perk,
+            "product": product,
+            "price": priceOf(product),
+            "trend": trendOf(product, extra.since),
+            ...extra
+        });
+    };
+    const note = (timing, role, from, perk, text) =>
+        notes.push({ "timing": timing, "role": role, "mayor": from, "perk": perk, "text": text });
 
-    // During: the mayor in office now.
-    const inOffice = info[mayorName];
-    if (inOffice) {
-        for (const product of inOffice['buy-during'] || []) remind('during', 'buy', mayorName, product);
-        for (const product of inOffice['sell-during'] || []) remind('during', 'sell', mayorName, product);
-        for (const product of inOffice['watch-during'] || []) remind('during', 'watch', mayorName, product);
-        for (const text of inOffice['notes'] || []) notes.push({ "timing": "during", "mayor": mayorName, "text": text });
-    }
+    // What one person's perks say for a timing. A mayor's own notes come along when
+    // they are (or are about to be) mayor; a minister brings only their perk's.
+    const addPerks = (timing, role, person, names) => {
+        if (!person) return;
+        const actions = timing === 'during'
+            ? [['buy-during', 'buy'], ['sell-during', 'sell'], ['watch-during', 'watch']]
+            : [['buy-before', 'buy'], ['sell-before', 'sell']];
+        for (const [perk, perkNotes] of notedPerks(info, person, names)) {
+            for (const [list, action] of actions) {
+                for (const product of perkNotes[list] || []) remind(timing, action, role, person, perk, product);
+            }
+            for (const text of perkNotes['notes'] || []) note(timing, role, person, perk, text);
+        }
+        if (role === 'mayor') {
+            for (const text of info[person]?.['notes'] || []) note(timing, role, person, null, text);
+        }
+    };
 
-    // Before: whoever is leading the running election. Prices move once it is clear
-    // who will win, so these are worth acting on while the election is still open.
-    if (leader && leader.name !== mayorName && info[leader.name]) {
-        for (const product of info[leader.name]['buy-before'] || []) remind('before', 'buy', leader.name, product);
-        for (const product of info[leader.name]['sell-before'] || []) remind('before', 'sell', leader.name, product);
-        for (const text of info[leader.name]['notes'] || []) notes.push({ "timing": "before", "mayor": leader.name, "text": text });
-    }
+    // During: the mayor and minister in office now.
+    if (mayor) addPerks('during', 'mayor', mayorName, perkNames(mayor.perks));
+    if (minister?.perk) addPerks('during', 'minister', minister.name, [minister.perk]);
 
-    // After: the years following a term. The current mayor's show up already, as
-    // upcoming, so the watch starts the moment their term ends.
+    // Before: whoever is leading the running election, and the runner-up as minister.
+    // Prices move once it is clear who will win, so these are worth acting on while
+    // the election is still open.
+    if (leader && leader.name !== mayorName) addPerks('before', 'mayor', leader.name, perkNames(leader.perks));
+    if (runnerUpPerk) addPerks('before', 'minister', runnerUp.name, [runnerUpPerk]);
+
+    // After: the years following a term. The current term's show up already, as
+    // upcoming, so the watch starts the moment it ends.
     const seen = new Set();
     const terms = readHistory().terms.map(termTimes).sort((a, b) => b['elected-year'] - a['elected-year']);
-    for (const term of terms) {
-        for (const [product, years] of Object.entries(info[term.mayor]?.['buy-after'] || {})) {
-            const key = `${term.mayor}|${product}`;
-            if (seen.has(key)) continue;
+    const addAfter = (term, role, person, names) => {
+        for (const [perk, perkNotes] of notedPerks(info, person, names)) {
+            for (const [product, years] of Object.entries(perkNotes['buy-after'] || {})) {
+                const key = `${person}|${product}`;
+                if (seen.has(key)) continue;
 
-            const windowStart = term['term-end'];
-            const windowEnd = windowStart + years * SB_YEAR_MS;
-            const isCurrentTerm = term['elected-year'] === electedYear;
-            if (now >= windowEnd || (now < windowStart && !isCurrentTerm)) continue;
+                const windowStart = term['term-end'];
+                const windowEnd = windowStart + years * SB_YEAR_MS;
+                const isCurrentTerm = term['elected-year'] === electedYear;
+                if (now >= windowEnd || (now < windowStart && !isCurrentTerm)) continue;
 
-            seen.add(key);
-            remind('after', 'buy', term.mayor, product, {
-                "since": windowStart,
-                "window-starts": windowStart,
-                "window-ends": windowEnd
-            });
+                seen.add(key);
+                remind('after', 'buy', role, person, perk, product, {
+                    "since": windowStart,
+                    "window-starts": windowStart,
+                    "window-ends": windowEnd
+                });
+            }
         }
+    };
+    for (const term of terms) {
+        addAfter(term, 'mayor', term.mayor, term.perks ?? null);
+        if (term.minister && term['minister-perk']) addAfter(term, 'minister', term.minister, [term['minister-perk']]);
     }
 
     // The next festival, or the one running now.
@@ -288,12 +379,20 @@ export function getMayorData() {
         "mayor": mayor ? {
             "name": mayorName,
             "elected-year": electedYear,
-            "term-end": electionEnd(electedYear + 1)
+            "term-end": electionEnd(electedYear + 1),
+            "perks": perkNames(mayor.perks),
+            "minister": minister
         } : null,
         "election": electedYear ? {
             "year": current?.year ?? electedYear + 1,
             "ends-at": electionEnd(current?.year ?? electedYear + 1),
             "leader": leader?.name ?? null,
+            "runner-up": runnerUp ? {
+                "name": runnerUp.name,
+                "perk": runnerUpPerk,
+                "lead": runnerUp.votes - (ranked[2]?.votes ?? 0),
+                "lead-percent": runnerUp.votes > 0 ? (runnerUp.votes - (ranked[2]?.votes ?? 0)) / runnerUp.votes : 0
+            } : null,
             "candidates": (current?.candidates || []).map(c => ({ "name": c.name, "votes": c.votes }))
         } : null,
         "spooky-festival": {
@@ -301,7 +400,7 @@ export function getMayorData() {
             "ends-at": festivalStart + SPOOKY_DURATION_MS
         },
         "ectoplasm": { "price": priceOf(ECTOPLASM), "trend": trendOf(ECTOPLASM) },
-        "tax-multiplier": (mayor?.perks || []).some(perk => /QUAD TAXES/i.test(perk.name || '')) ? 4 : 1,
+        "tax-multiplier": currentTaxMultiplier(),
         "reminders": reminders,
         "notes": notes,
         "last-updated": election?.lastUpdated ?? null

@@ -1,230 +1,303 @@
 {
     "Aatrox": {
-        "buy-before": [],
-        "sell-before": [
-            "Hamster Wheel",
-            "Revenant Flesh",
-            "Tarantula Silk",
-            "Wolf Tooth",
-            "Golden Tooth",
-            "Null Sphere",
-            "Revenant Viscera"
-        ],
-        "buy-during": [
-            "Hamster Wheel",
-            "Revenant Flesh",
-            "Tarantula Silk",
-            "Wolf Tooth",
-            "Golden Tooth",
-            "Null Sphere",
-            "Revenant Viscera"
-        ],
-        "sell-during": [],
-        "watch-during": [],
-        "buy-after": {
-            "Golden Tooth": 1,
-            "Revenant Viscera": 1
-        },
-        "notes": []
+        "notes": [],
+        "perks": {
+            "Pathfinder": {
+                "sell-before": [
+                    "Hamster Wheel",
+                    "Golden Tooth",
+                    "Null Sphere",
+                    "Revenant Viscera",
+                    "Tarantula Silk"
+                ],
+                "buy-during": [
+                    "Hamster Wheel",
+                    "Golden Tooth",
+                    "Null Sphere",
+                    "Revenant Viscera",
+                    "Tarantula Silk"
+                ],
+                "buy-after": {
+                    "Golden Tooth": 1,
+                    "Revenant Viscera": 1,
+                    "Tarantula Silk": 1
+                },
+                "notes": [
+                    "Rare slayer drops are 20% more common: supply rises"
+                ]
+            }
+        }
     },
     "Cole": {
-        "buy-before": [],
-        "sell-before": [
-            "Fine Jasper Gemstone",
-            "Flawless Jasper Gemstone",
-            "Mithril",
-            "Titanium",
-            "Glacite",
-            "Umber",
-            "Tungsten",
-            "Refined Mineral"
-        ],
-        "buy-during": [
-            "Fine Jasper Gemstone",
-            "Flawless Jasper Gemstone",
-            "Mithril",
-            "Titanium",
-            "Glacite",
-            "Umber",
-            "Tungsten",
-            "Refined Mineral"
-        ],
-        "sell-during": [],
-        "watch-during": [],
-        "buy-after": {
-            "Refined Mineral": 1
-        },
-        "notes": [
-            "Gemstones in general, especially Fine and Flawless: sell before / buy during"
-        ]
+        "notes": [],
+        "perks": {
+            "Mining Fiesta": {
+                "sell-before": [
+                    "Fine Jasper Gemstone",
+                    "Flawless Jasper Gemstone",
+                    "Mithril",
+                    "Titanium",
+                    "Glacite",
+                    "Umber",
+                    "Tungsten",
+                    "Refined Mineral",
+                    "Glossy Gemstone"
+                ],
+                "buy-during": [
+                    "Fine Jasper Gemstone",
+                    "Flawless Jasper Gemstone",
+                    "Mithril",
+                    "Titanium",
+                    "Glacite",
+                    "Umber",
+                    "Tungsten",
+                    "Refined Mineral",
+                    "Glossy Gemstone"
+                ],
+                "buy-after": {
+                    "Glossy Gemstone": 1
+                },
+                "notes": [
+                    "Gemstones in general, especially Fine and Flawless: sell before / buy during"
+                ]
+            }
+        }
     },
     "Diana": {
-        "buy-before": [
-            "Epic Griffin Upgrade Stone",
-            "Legendary Griffin Upgrade Stone",
-            "Mythic Griffin Upgrade Stone"
-        ],
-        "sell-before": [
-            "Ultimate Chimera I",
-            "Daedalus Stick",
-            "Griffin Feather"
-        ],
-        "buy-during": [
-            "Ultimate Chimera I",
-            "Daedalus Stick",
-            "Griffin Feather",
-            "Enchanted Ancient Claw"
-        ],
-        "sell-during": [
-            "Epic Griffin Upgrade Stone",
-            "Legendary Griffin Upgrade Stone",
-            "Mythic Griffin Upgrade Stone"
-        ],
-        "watch-during": [],
-        "buy-after": {
-            "Griffin Feather": 2,
-            "Ultimate Chimera I": 2
-        },
-        "notes": []
+        "notes": [],
+        "perks": {
+            "Mythological Ritual": {
+                "buy-before": [
+                    "Epic Griffin Upgrade Stone",
+                    "Legendary Griffin Upgrade Stone",
+                    "Mythic Griffin Upgrade Stone"
+                ],
+                "sell-before": [
+                    "Ultimate Chimera I",
+                    "Daedalus Stick",
+                    "Griffin Feather"
+                ],
+                "buy-during": [
+                    "Ultimate Chimera I",
+                    "Daedalus Stick",
+                    "Griffin Feather",
+                    "Enchanted Ancient Claw"
+                ],
+                "sell-during": [
+                    "Epic Griffin Upgrade Stone",
+                    "Legendary Griffin Upgrade Stone",
+                    "Mythic Griffin Upgrade Stone"
+                ],
+                "buy-after": {
+                    "Griffin Feather": 2,
+                    "Ultimate Chimera I": 2
+                },
+                "notes": []
+            }
+        }
     },
     "Diaz": {
-        "buy-before": [],
-        "sell-before": [
-            "Enchanted Ice",
-            "Enchanted Packed Ice"
-        ],
-        "buy-during": [
-            "Enchanted Ice",
-            "Enchanted Packed Ice"
-        ],
-        "sell-during": [],
-        "watch-during": [
-            "Stock of Stonks"
-        ],
-        "buy-after": {},
-        "notes": [
-            "Items affected by the higher NPC buy limits, and their enchanted versions: sell before / buy during",
-            "Stock of Stonks reacts to his perks, watch it closely"
-        ]
+        "notes": [],
+        "perks": {
+            "Shopping Spree": {
+                "sell-before": [
+                    "Enchanted Ice",
+                    "Enchanted Packed Ice"
+                ],
+                "buy-during": [
+                    "Enchanted Ice",
+                    "Enchanted Packed Ice"
+                ],
+                "notes": [
+                    "Items affected by the higher NPC buy limits, and their enchanted versions: sell before / buy during"
+                ]
+            },
+            "Stock Exchange": {
+                "watch-during": [
+                    "Stock of Stonks"
+                ],
+                "notes": [
+                    "Stock of Stonks reacts to his perks, watch it closely"
+                ]
+            }
+        }
     },
     "Finnegan": {
-        "buy-before": [],
-        "sell-before": [
-            "Jacob's Ticket"
-        ],
-        "buy-during": [],
-        "sell-during": [],
-        "watch-during": [],
-        "buy-after": {},
-        "notes": [
-            "Jacob's Tickets: sell before, boosted contests flood them",
-            "Enchanted crops: sell before / buy during, extra fortune increases supply"
-        ]
+        "notes": [],
+        "perks": {
+            "GOATed": {
+                "sell-before": [
+                    "Jacob's Ticket"
+                ],
+                "buy-during": [
+                    "Jacob's Ticket"
+                ],
+                "notes": [
+                    "Jacob's Tickets: sell before, boosted contests flood them"
+                ]
+            },
+            "Blooming Business": {
+                "sell-before": [
+                    "Fine Flour"
+                ],
+                "buy-during": [
+                    "Fine Flour"
+                ],
+                "notes": []
+            },
+            "Pest Eradicator": {
+                "sell-before": [
+                    "Wriggling Larva",
+                    "Vermin Vaporizer Chip",
+                    "Mantid Claw",
+                    "Plant Matter",
+                    "Compost"
+                ],
+                "buy-during": [
+                    "Wriggling Larva",
+                    "Vermin Vaporizer Chip",
+                    "Mantid Claw",
+                    "Plant Matter",
+                    "Compost"
+                ],
+                "notes": [
+                    "Enchanted crops: sell before / buy during, extra fortune increases supply"
+                ]
+            }
+        }
     },
     "Foxy": {
-        "buy-before": [],
-        "sell-before": [
-            "Purple Candy",
-            "Green Candy",
-            "White Gift",
-            "Red Gift"
-        ],
-        "buy-during": [
-            "Purple Candy",
-            "Green Candy",
-            "White Gift",
-            "Red Gift"
-        ],
-        "sell-during": [],
-        "watch-during": [],
-        "buy-after": {},
-        "notes": [
-            "Items tied to the extra event (shark drops for Fishing Festival, gemstones for Mining Fiesta, Spooky or Winter items otherwise): sell before / buy during"
-        ]
+        "notes": [],
+        "perks": {
+            "Sweet Benevolence": {
+                "sell-before": [
+                    "Purple Candy",
+                    "Green Candy",
+                    "White Gift",
+                    "Red Gift"
+                ],
+                "buy-during": [
+                    "Purple Candy",
+                    "Green Candy",
+                    "White Gift",
+                    "Red Gift"
+                ],
+                "notes": []
+            },
+            "Extra Event": {
+                "notes": [
+                    "Items tied to the extra event (shark drops for Fishing Festival, gemstones for Mining Fiesta, Spooky items otherwise): sell before / buy during"
+                ]
+            }
+        }
     },
     "Marina": {
-        "buy-before": [],
-        "sell-before": [
-            "Enchanted Ink Sac",
-            "Great White Shark Tooth",
-            "Nurse Shark Tooth",
-            "Blue Shark Tooth",
-            "Tiger Shark Tooth"
-        ],
-        "buy-during": [
-            "Enchanted Ink Sac",
-            "Great White Shark Tooth",
-            "Nurse Shark Tooth",
-            "Blue Shark Tooth",
-            "Tiger Shark Tooth"
-        ],
-        "sell-during": [],
-        "watch-during": [],
-        "buy-after": {
-            "Great White Shark Tooth": 2
-        },
-        "notes": [
-            "Sea creature drops in general: sell before / buy during"
-        ]
+        "notes": [],
+        "perks": {
+            "Fishing Festival": {
+                "sell-before": [
+                    "Enchanted Ink Sac",
+                    "Great White Shark Tooth",
+                    "Nurse Shark Tooth",
+                    "Blue Shark Tooth",
+                    "Tiger Shark Tooth"
+                ],
+                "buy-during": [
+                    "Enchanted Ink Sac",
+                    "Great White Shark Tooth",
+                    "Nurse Shark Tooth",
+                    "Blue Shark Tooth",
+                    "Tiger Shark Tooth"
+                ],
+                "buy-after": {
+                    "Great White Shark Tooth": 2
+                },
+                "notes": [
+                    "Sea creature drops in general: sell before / buy during"
+                ]
+            }
+        }
     },
     "Paul": {
-        "buy-before": [
-            "Kismet Feather"
-        ],
-        "sell-before": [
-            "Recombobulator 3000",
-            "Fuming Potato Book",
-            "Hot Potato Book",
-            "Wither Essence",
-            "Undead Essence"
-        ],
-        "buy-during": [
-            "Recombobulator 3000",
-            "Fuming Potato Book",
-            "Hot Potato Book",
-            "Wither Essence",
-            "Undead Essence"
-        ],
-        "sell-during": [
-            "Kismet Feather"
-        ],
-        "watch-during": [],
-        "buy-after": {},
-        "notes": [
-            "Kismet Feathers: more runs mean more rerolls"
-        ]
+        "notes": [],
+        "perks": {
+            "Marauder": {
+                "buy-before": [
+                    "Kismet Feather"
+                ],
+                "sell-before": [
+                    "Recombobulator 3000",
+                    "Fuming Potato Book",
+                    "Hot Potato Book",
+                    "Wither Essence",
+                    "Undead Essence"
+                ],
+                "buy-during": [
+                    "Recombobulator 3000",
+                    "Fuming Potato Book",
+                    "Hot Potato Book",
+                    "Wither Essence",
+                    "Undead Essence"
+                ],
+                "sell-during": [
+                    "Kismet Feather"
+                ],
+                "notes": [
+                    "Kismet Feathers: more runs mean more rerolls"
+                ]
+            },
+            "EZPZ": {
+                "sell-before": [
+                    "Recombobulator 3000",
+                    "Fuming Potato Book",
+                    "Hot Potato Book",
+                    "Wither Essence",
+                    "Undead Essence"
+                ],
+                "buy-during": [
+                    "Recombobulator 3000",
+                    "Fuming Potato Book",
+                    "Hot Potato Book",
+                    "Wither Essence",
+                    "Undead Essence"
+                ],
+                "notes": []
+            }
+        }
     },
     "Derpy": {
-        "buy-before": [
-            "Hypergolic Gabagool"
-        ],
-        "sell-before": [
-            "Hyper Catalyst",
-            "Enchanted Quartz Block"
-        ],
-        "buy-during": [
-            "Enchanted Quartz Block"
-        ],
-        "sell-during": [],
-        "watch-during": [],
-        "buy-after": {
-            "Enchanted Quartz Block": 1
-        },
-        "notes": [
-            "Hyper Catalysts and other minion speed items: sell before, boosted minions cut demand",
-            "Quartz Blocks and other minion outputs: sell before / buy during",
-            "Bazaar tax is 4x: be careful with expensive flips"
-        ]
+        "notes": [],
+        "perks": {
+            "TURBO MINIONS": {
+                "buy-before": [
+                    "Hypergolic Gabagool"
+                ],
+                "sell-before": [
+                    "Hyper Catalyst",
+                    "Enchanted Quartz Block"
+                ],
+                "buy-during": [
+                    "Enchanted Quartz Block"
+                ],
+                "buy-after": {
+                    "Enchanted Quartz Block": 1
+                },
+                "notes": [
+                    "Hyper Catalysts and other minion speed items: sell before, boosted minions cut demand",
+                    "Quartz Blocks and other minion outputs: sell before / buy during"
+                ]
+            },
+            "QUAD TAXES": {
+                "notes": [
+                    "Bazaar tax is 4x: be careful with expensive flips"
+                ]
+            }
+        }
     },
     "Jerry": {
-        "buy-before": [],
-        "sell-before": [],
-        "buy-during": [],
-        "sell-during": [],
-        "watch-during": [],
-        "buy-after": {},
         "notes": [
             "His perks rotate: use the list of whichever mayor he is mimicking"
-        ]
+        ],
+        "perks": {}
     }
 }

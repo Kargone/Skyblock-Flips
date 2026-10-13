@@ -5,7 +5,7 @@ forging time changes (like uprgarding quick forge) doesn't change the time left
 
 Issues:
 
-
+adjust coles perks
 
 testing:
 beastmaster crest checking on price if no rarity, for setting action status to sold vs actually selling

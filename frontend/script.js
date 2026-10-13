@@ -34,6 +34,7 @@ class TraderDashboard {
         this.lowestBinPrices = {};
         this.openBuyOrders = new Set();
         this.openSellOrders = new Set();
+        this.openInvestments = new Set();
         this.activeTab = 'bazaar-orders';
         this.updateInterval = 500;
         this.bazaarUpdateInterval = 60000; // 1 minute
@@ -654,6 +655,8 @@ class TraderDashboard {
 
         tbody.innerHTML = investmentEntries.map(([name, inv]) => {
             const type = investmentType;
+            const investmentKey = `${investmentType}:${name}`;
+            const isOpen = this.openInvestments.has(investmentKey);
             const totalAmount = inv['sub-orders'].reduce((sum, sub) => sum + sub['partial-amount'], 0);
             const highestPrice = inv['sub-orders'].length > 0 ?
                 Math.max(...inv['sub-orders'].map(o => o["price-bought"] || o["price-crafted"])) : 0;
@@ -675,9 +678,55 @@ class TraderDashboard {
             const dateBought = earliestSubOrder ? new Date(earliestSubOrder['time-bought']).toLocaleDateString() : 'N/A';
             const escapedName = this.escapeHtml(name);
 
+            // Each lot priced at what it was bought or crafted for, most expensive first,
+            // with its profit at the current sell price after tax.
+            const subOrderRows = [...inv['sub-orders']]
+                .sort((a, b) => (b["price-bought"] || b["price-crafted"] || 0) - (a["price-bought"] || a["price-crafted"] || 0))
+                .map(subOrder => {
+                    const pricePaid = subOrder["price-bought"] || subOrder["price-crafted"] || 0;
+                    const subOrderMargin = currentSellPrice * (1 - getBazaarTaxRate()) - pricePaid;
+                    const subOrderProfit = subOrderMargin * subOrder['partial-amount'] || 0;
+                    return `
+                        <tr>
+                            <td>${this.formatAmount(subOrder['partial-amount'])}</td>
+                            <td>${this.formatCoin(pricePaid)}</td>
+                            <td class="${subOrderMargin >= 0 ? 'profit-positive' : 'profit-negative'}">${currentSellPrice ? this.formatCoin(subOrderMargin) : 'N/A'}</td>
+                            <td class="${subOrderProfit >= 0 ? 'profit-positive' : 'profit-negative'}">${currentSellPrice ? this.formatCoin(subOrderProfit) : 'N/A'}</td>
+                            <td>${this.formatTimestamp(subOrder['time-bought'])}</td>
+                        </tr>
+                    `;
+                }).join('');
+
+            const detailsRow = !isOpen ? '' : `
+                <tr class="sell-order-details-row">
+                    <td colspan="9">
+                        <div class="sell-order-details">
+                            <h4>Sub-orders</h4>
+                            <table class="sub-orders-table">
+                                <thead>
+                                    <tr>
+                                        <th>Amount</th>
+                                        <th>Price Paid</th>
+                                        <th>Margin</th>
+                                        <th>Profit</th>
+                                        <th>Time Bought</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    ${subOrderRows || '<tr><td colspan="5" class="empty">No sub-orders</td></tr>'}
+                                </tbody>
+                            </table>
+                        </div>
+                    </td>
+                </tr>
+            `;
+
             return `
                 <tr class="${rowClass}">
-                    <td>${escapedName}</td>
+                    <td>
+                        <button class="expand-button investment-toggle" data-investment-key="${this.escapeHtml(investmentKey)}" aria-expanded="${isOpen}">${isOpen ? '▾' : '▸'}</button>
+                        ${escapedName}
+                    </td>
                     <td>${type}</td>
                     <td>${totalAmount}</td>
                     <td>${this.formatCoin(highestPrice)}</td>
@@ -697,8 +746,21 @@ class TraderDashboard {
                         </button>
                     </td>
                 </tr>
+                ${detailsRow}
             `;
         }).join('');
+
+        tbody.querySelectorAll('.investment-toggle').forEach(button => {
+            button.addEventListener('click', () => {
+                const investmentKey = button.getAttribute('data-investment-key');
+                if (this.openInvestments.has(investmentKey)) {
+                    this.openInvestments.delete(investmentKey);
+                } else {
+                    this.openInvestments.add(investmentKey);
+                }
+                this.updateInvestments();
+            });
+        });
     }
 
     updateAuctions() {
@@ -1124,7 +1186,9 @@ class TraderDashboard {
             <h2>Mayor Information</h2>
             <div class="mayor-info">
                 <p>Current Mayor: ${this.mayorData?.mayor?.name || 'N/A'}</p>
+                <p>Current Minister: ${this.formatMinister(this.mayorData?.mayor?.minister)}</p>
                 <p>Next Mayor: ${this.mayorData?.election?.leader || 'N/A'}</p>
+                <p>Next Minister: ${this.formatMinister(this.mayorData?.election?.['runner-up'])}</p>
                 <p>Election Ends: ${targetElectionDate}</p>
                 <p>Next Spooky Festival: ${targetSpookyFestivalDate}</p>
                 <p>Daily NPC Reset Time: 7:00 PM CDT</p>
@@ -1160,6 +1224,13 @@ class TraderDashboard {
 
     getSellOrderKey(order, index) {
         return `${order['item-name'] || 'unknown'}-${order['sell-order-place-time'] || index}`;
+    }
+
+    // "Cole (Mining Fiesta)"; works for both the minister and the election runner-up.
+    formatMinister(minister) {
+        if (!minister?.name) return 'N/A';
+        const name = this.escapeHtml(minister.name);
+        return minister.perk ? `${name} (${this.escapeHtml(minister.perk)})` : name;
     }
 
     getSellOrderSoldAmount(order) {
