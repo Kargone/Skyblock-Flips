@@ -35,22 +35,30 @@
                 "sell-before": [
                     "Fine Jasper Gemstone",
                     "Flawless Jasper Gemstone",
-                    "Mithril",
-                    "Titanium",
-                    "Glacite",
-                    "Umber",
-                    "Tungsten",
+                    "Enchanted Mithril",
+                    "Refined Mithril",
+                    "Enchanted Titanium",
+                    "Refined Titanium",
+                    "Enchanted Glacite",
+                    "Enchanted Umber",
+                    "Refined Umber",
+                    "Enchanted Tungsten",
+                    "Refined Tungsten",
                     "Refined Mineral",
                     "Glossy Gemstone"
                 ],
                 "buy-during": [
                     "Fine Jasper Gemstone",
                     "Flawless Jasper Gemstone",
-                    "Mithril",
-                    "Titanium",
-                    "Glacite",
-                    "Umber",
-                    "Tungsten",
+                    "Enchanted Mithril",
+                    "Refined Mithril",
+                    "Enchanted Titanium",
+                    "Refined Titanium",
+                    "Enchanted Glacite",
+                    "Enchanted Umber",
+                    "Refined Umber",
+                    "Enchanted Tungsten",
+                    "Refined Tungsten",
                     "Refined Mineral",
                     "Glossy Gemstone"
                 ],
@@ -67,11 +75,6 @@
         "notes": [],
         "perks": {
             "Mythological Ritual": {
-                "buy-before": [
-                    "Epic Griffin Upgrade Stone",
-                    "Legendary Griffin Upgrade Stone",
-                    "Mythic Griffin Upgrade Stone"
-                ],
                 "sell-before": [
                     "Ultimate Chimera I",
                     "Daedalus Stick",
@@ -82,11 +85,6 @@
                     "Daedalus Stick",
                     "Griffin Feather",
                     "Enchanted Ancient Claw"
-                ],
-                "sell-during": [
-                    "Epic Griffin Upgrade Stone",
-                    "Legendary Griffin Upgrade Stone",
-                    "Mythic Griffin Upgrade Stone"
                 ],
                 "buy-after": {
                     "Griffin Feather": 2,
@@ -101,11 +99,9 @@
         "perks": {
             "Shopping Spree": {
                 "sell-before": [
-                    "Enchanted Ice",
                     "Enchanted Packed Ice"
                 ],
                 "buy-during": [
-                    "Enchanted Ice",
                     "Enchanted Packed Ice"
                 ],
                 "notes": [
@@ -113,9 +109,12 @@
                 ]
             },
             "Stock Exchange": {
-                "watch-during": [
+                "buy-during": [
                     "Stock of Stonks"
                 ],
+                "buy-after": {
+                    "Stock of Stonks": 1
+                },
                 "notes": [
                     "Stock of Stonks reacts to his perks, watch it closely"
                 ]
@@ -129,12 +128,6 @@
                 "sell-before": [
                     "Jacob's Ticket"
                 ],
-<<<<<<< HEAD
-                "buy-during": [
-                    "Jacob's Ticket"
-                ],
-=======
->>>>>>> f19ca78153ab57d52628296950da735ca710b908
                 "notes": [
                     "Jacob's Tickets: sell before, boosted contests flood them"
                 ]
@@ -231,16 +224,12 @@
                 "sell-before": [
                     "Recombobulator 3000",
                     "Fuming Potato Book",
-                    "Hot Potato Book",
-                    "Wither Essence",
-                    "Undead Essence"
+                    "Wither Essence"
                 ],
                 "buy-during": [
                     "Recombobulator 3000",
                     "Fuming Potato Book",
-                    "Hot Potato Book",
-                    "Wither Essence",
-                    "Undead Essence"
+                    "Wither Essence"
                 ],
                 "sell-during": [
                     "Kismet Feather"
@@ -253,16 +242,12 @@
                 "sell-before": [
                     "Recombobulator 3000",
                     "Fuming Potato Book",
-                    "Hot Potato Book",
-                    "Wither Essence",
-                    "Undead Essence"
+                    "Wither Essence"
                 ],
                 "buy-during": [
                     "Recombobulator 3000",
                     "Fuming Potato Book",
-                    "Hot Potato Book",
-                    "Wither Essence",
-                    "Undead Essence"
+                    "Wither Essence"
                 ],
                 "notes": []
             }
