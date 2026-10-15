@@ -17,6 +17,16 @@
       ],
       "minister": "Cole",
       "minister-perk": "Mining Fiesta"
+    },
+    {
+      "mayor": "Diaz",
+      "elected-year": 519,
+      "perks": [
+        "Stock Exchange",
+        "Volume Trading"
+      ],
+      "minister": "Finnegan",
+      "minister-perk": "Blooming Business"
     }
   ]
 }
