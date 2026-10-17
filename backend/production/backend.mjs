@@ -712,7 +712,8 @@ class ProcesTrade {
             this.message.includes('You are overbidding too much!') ||
             this.message.includes('Allowd unit price: ') ||
             this.message.includes('You don\'t have enough inventory space to fit all of those items!') ||
-            this.message.includes('[Bazaar] You don\'t have the space required to claim that!')
+            this.message.includes('[Bazaar] You don\'t have the space required to claim that!') ||
+            this.message.includes('[Bazaar] You have goods to claim on this order!')
         ) {
             result = 'Nontrade message';
             return "Nontrade message: " + this.message;
@@ -1281,7 +1282,7 @@ class ProcesTrade {
                 if (trader_data[invesmentType][name]["sub-orders"].length <= 1) {
                     amount -= investmentSubOrder["partial-amount"];
 
-                    if (amount > 0) throw new Error('ERROR: Sell order setup requires more products then found in investments');
+                    if (amount > 0) throw new Error(`ERROR: Sell order setup requires more products then found in investments. amt: ${amount + investmentSubOrder["partial-amount"]} price: ${price} name: ${name} investment amount: ${investmentSubOrder["partial-amount"]}`);
 
                     // add the new sub sell order
                     const bazaarFeesPerUnit = resellPrice * getBazaarTaxRate();

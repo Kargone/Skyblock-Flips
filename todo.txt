@@ -5,9 +5,10 @@ forging time changes (like uprgarding quick forge) doesn't change the time left
 
 Issues:
 
-adjust coles perks
+
 
 testing:
+past trade logs still being updated on some of the error'd trades
 make run trade but with item name and slice indeces
 pruning trades
 Fixed the supercraft function to not remove materials if the craft isn't valid

@@ -997,7 +997,7 @@
       "type": "short-term-investment",
       "sub-orders": [
         {
-          "partial-amount": 2207,
+          "partial-amount": 2033,
           "price-bought": 11156,
           "time-bought": 1791948076653
         }
@@ -3679,7 +3679,7 @@
       "crafting-materials": "none"
     },
     "Unstable Dragon Fragment": {
-      "current-amount": 2207,
+      "current-amount": 2033,
       "buy-order-stats": {
         "total-buy-orders-created": 7,
         "total-buy-amount-claimed": 22578,

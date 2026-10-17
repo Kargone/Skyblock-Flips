@@ -75,10 +75,18 @@ let server = http.createServer(function (request, response) {
     }
     // Trade message submissions via POST
     else if (request.method === 'POST') {
-        request.on('data', function(data) {
-            // console.log('Data: ' + data, typeof data);
-
-            data = JSON.parse(data.toString());
+        // Over the network a body can arrive in several pieces, so it is parsed once
+        // the whole thing is in. Parsing the first piece alone threw and lost the trade.
+        const chunks = [];
+        request.on('data', chunk => chunks.push(chunk));
+        request.on('end', function() {
+            let data;
+            try {
+                data = JSON.parse(Buffer.concat(chunks).toString());
+            } catch (error) {
+                console.error('Could not parse a POSTed trade message, it was not processed:', error.message);
+                return;
+            }
 
             if (!Array.isArray(data)) {
                 main.submitTrade(JSON.stringify(data));
