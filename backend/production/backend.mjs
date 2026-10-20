@@ -2,6 +2,7 @@ import { EventEmitter } from 'events';
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { fetchHypixel, hypixelPaused } from './hypixel-api.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -2729,7 +2730,8 @@ function formatFetchError(e) {
 
 async function updateBazaarData() {
     try {
-        const response = await fetch("https://api.hypixel.net/v2/skyblock/bazaar");
+        const response = await fetchHypixel("https://api.hypixel.net/v2/skyblock/bazaar");
+        if (!response) return; // paused after a 403
         if (!response.ok) {
             console.error(`Bazaar fetch failed: ${response.status} ${response.statusText}`);
             return;
@@ -2755,45 +2757,46 @@ async function updateBazaarData() {
 updateBazaarData();
 
 const auctionUpdateSeconds = 300;
+// How many auction pages are requested at once. Asking for every page together
+// is the kind of burst Hypixel's Cloudflare front end answers with a 403.
+const AUCTION_PAGE_CONCURRENCY = 4;
 setInterval(updateAuctionData, auctionUpdateSeconds * 1000);
 updateAuctionData();
 
+// One page of auctions, or null when it failed or requests are paused.
+async function fetchAuctionPage(page) {
+    const response = await fetchHypixel(`https://api.hypixel.net/v2/skyblock/auctions?page=${page}`);
+    if (!response) return null;
+    if (!response.ok) {
+        console.error(`Auction fetch (page ${page}) failed: ${response.status} ${response.statusText}`);
+        return null;
+    }
+    return response.json();
+}
+
 async function updateAuctionData() {
     try {
-        const response = await fetch("https://api.hypixel.net/v2/skyblock/auctions");
-        if (!response.ok) {
-            console.error(`Auction fetch failed: ${response.status} ${response.statusText}`);
-            return;
-        }
-        const data = await response.json();
-        marketData.lastUpdated.auctions = await data.lastUpdated;
+        // Page 0 carries lastUpdated and totalPages, so it doubles as the overview.
+        const firstPage = await fetchAuctionPage(0);
+        if (!firstPage) return;
 
-        const firstPageResponse = await fetch('https://api.hypixel.net/v2/skyblock/auctions?page=0');
-        if (!firstPageResponse.ok) {
-            console.error(`Auction fetch (page 0) failed: ${firstPageResponse.status} ${firstPageResponse.statusText}`);
-            return;
-        }
-
-        const firstPage = await firstPageResponse.json();
         const totalPages = firstPage.totalPages || 1;
         const allAuctions = [...(firstPage.auctions || [])];
 
-        const pageRequests = [];
-        for (let page = 1; page < totalPages; page += 1) {
-            pageRequests.push(fetch(`https://api.hypixel.net/v2/skyblock/auctions?page=${page}`).then(response => {
-                if (response.ok) return response.json();
-                console.error(`Auction fetch (page ${page}) failed: ${response.status} ${response.statusText}`);
-                return null;
-            }));
-        }
-
-        const remainingPages = await Promise.all(pageRequests);
-        for (const page of remainingPages) {
-            if (page?.auctions) {
-                allAuctions.push(...page.auctions);
+        // A few workers each take the next page until none are left.
+        let nextPage = 1;
+        const worker = async () => {
+            while (nextPage < totalPages && !hypixelPaused()) {
+                const page = await fetchAuctionPage(nextPage++);
+                if (page?.auctions) allAuctions.push(...page.auctions);
             }
-        }
+        };
+        await Promise.all(Array.from({ length: AUCTION_PAGE_CONCURRENCY }, worker));
 
+        // A 403 part way through leaves the scan incomplete; keep the last full one.
+        if (hypixelPaused()) return;
+
+        marketData.lastUpdated.auctions = firstPage.lastUpdated;
         auction_data = allAuctions;
         marketData.lowestBinPrices = buildLowestBinPrices(allAuctions);
     } catch (error) {

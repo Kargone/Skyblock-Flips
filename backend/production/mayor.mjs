@@ -28,6 +28,7 @@
 
 import fs from 'node:fs';
 import path from 'node:path';
+import { fetchHypixel } from './hypixel-api.mjs';
 import { fileURLToPath } from 'node:url';
 
 import product_list from './product-list.json' with { type: "json" };
@@ -127,7 +128,8 @@ function readHistory() {
 
 async function updateElection() {
     try {
-        const response = await fetch('https://api.hypixel.net/v2/resources/skyblock/election');
+        const response = await fetchHypixel('https://api.hypixel.net/v2/resources/skyblock/election');
+        if (!response) return; // paused after a 403
         if (!response.ok) {
             console.error(`Election fetch failed: ${response.status} ${response.statusText}`);
             return;
