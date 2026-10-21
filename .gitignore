@@ -1,1 +1,5 @@
 backend/production/bazaar-trend-data.json
+backend/production/trader-data.json
+backend/production/trader-data.json.backup.json
+backend/production/mayor-history.json
+backend/Testing/pastTradesLogs.json
