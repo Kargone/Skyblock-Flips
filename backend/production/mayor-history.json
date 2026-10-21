@@ -27,6 +27,15 @@
       ],
       "minister": "Finnegan",
       "minister-perk": "Blooming Business"
+    },
+    {
+      "mayor": "Jerry",
+      "elected-year": 520,
+      "perks": [
+        "Perkpocalypse",
+        "Statspocalypse",
+        "Jerrypocalypse"
+      ]
     }
   ]
 }
