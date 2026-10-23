@@ -18,7 +18,7 @@
                     "Tarantula Silk"
                 ],
                 "buy-after": {
-                    "Golden Tooth": 1,
+                    "Golden Tooth": 2,
                     "Revenant Viscera": 1,
                     "Tarantula Silk": 1
                 },
@@ -63,7 +63,7 @@
                     "Glossy Gemstone"
                 ],
                 "buy-after": {
-                    "Glossy Gemstone": 1
+                    "Glossy Gemstone": 2
                 },
                 "notes": [
                     "Gemstones in general, especially Fine and Flawless: sell before / buy during"
@@ -87,7 +87,7 @@
                     "Enchanted Ancient Claw"
                 ],
                 "buy-after": {
-                    "Griffin Feather": 2,
+                    "Griffin Feather": 3,
                     "Ultimate Chimera I": 2
                 },
                 "notes": []
@@ -109,7 +109,7 @@
                 ]
             },
             "Stock Exchange": {
-                "buy-during": [
+                "sell-during": [
                     "Stock of Stonks"
                 ],
                 "buy-after": {
@@ -139,6 +139,9 @@
                 "buy-during": [
                     "Fine Flour"
                 ],
+                "buy-after": {
+                    "Fine Flour": 1
+                },
                 "notes": []
             },
             "Pest Eradicator": {
@@ -178,6 +181,9 @@
                     "White Gift",
                     "Red Gift"
                 ],
+                "buy-after": {
+                    "Red Gift": 1
+                },
                 "notes": []
             },
             "Extra Event": {
@@ -206,7 +212,7 @@
                     "Tiger Shark Tooth"
                 ],
                 "buy-after": {
-                    "Great White Shark Tooth": 2
+                    "Great White Shark Tooth": 3
                 },
                 "notes": [
                     "Sea creature drops in general: sell before / buy during"
@@ -249,6 +255,9 @@
                     "Fuming Potato Book",
                     "Wither Essence"
                 ],
+                "buy-after": {
+                    "Recombobulator 3000": 1
+                },
                 "notes": []
             }
         }
@@ -286,6 +295,24 @@
         "notes": [
             "His perks rotate: use the list of whichever mayor he is mimicking"
         ],
-        "perks": {}
+        "perks": {
+            "Perkpocalypse": {
+                "sell-before": [
+                    "Great White Shark Tooth",
+                    "Griffin Feather",
+                    "Golden Tooth"
+                ],
+                "buy-during": [
+                    "Great White Shark Tooth",
+                    "Griffin Feather",
+                    "Golden Tooth"
+                ],
+                "buy-after": {
+                    "Great White Shark Tooth": 1,
+                    "Griffin Feather": 1,
+                    "Golden Tooth": 1
+                }
+            }
+        }
     }
 }
