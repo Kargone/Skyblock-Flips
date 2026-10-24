@@ -119,7 +119,7 @@ from pathlib import Path
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 from allocator import DAILY_ORDER_WORTH_CAP, build_all_candidates, solve_sells_first
-from api_client import get_market_data, get_mayor_data, get_product_list, get_trader_data
+from api_client import get_market_data, get_mayor_data, get_product_list, get_purse_from_hypixel, get_trader_data
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger("main")
@@ -474,10 +474,30 @@ def get_bazaar_fee():
     return BASE_BAZAAR_TAX * multiplier
 
 
-def get_configured_purse():
-    """Current coin purse. No API source is wired up yet (see api_client's
-    get_purse_from_hypixel), so read it from the FLIP_PURSE env var for now.
-    Until it's set, purse is 0 and the allocator recommends sells only."""
+SECRETS_PATH = Path(__file__).parent / "secrets.json"
+PURSE_TTL_SECONDS = 120
+_purse_cache = {"value": None, "at": 0.0}
+
+
+def load_secrets():
+    """Hypixel credentials from the gitignored secrets.json (see
+    secrets.example.json). Never commit secrets.json. Matching env vars override
+    the file, so the tower can use either."""
+    data = {}
+    try:
+        data = json.loads(SECRETS_PATH.read_text(encoding="utf-8"))
+    except FileNotFoundError:
+        pass
+    except (OSError, json.JSONDecodeError):
+        log_once("bad-secrets", logging.ERROR, "couldn't read secrets.json; falling back to env/FLIP_PURSE", exc_info=True)
+    return {
+        "hypixel_api_key": os.environ.get("HYPIXEL_API_KEY") or data.get("hypixel_api_key"),
+        "profile_id": os.environ.get("HYPIXEL_PROFILE_ID") or data.get("profile_id"),
+        "player_uuid": os.environ.get("HYPIXEL_PLAYER_UUID") or data.get("player_uuid"),
+    }
+
+
+def _manual_purse():
     raw = os.environ.get("FLIP_PURSE")
     if not raw:
         return 0
@@ -486,6 +506,29 @@ def get_configured_purse():
     except ValueError:
         log_once("bad-purse-env", logging.ERROR, "FLIP_PURSE is not a number: %r; treating purse as 0", raw)
         return 0
+
+
+def get_configured_purse():
+    """Current coin purse. Prefers the live Hypixel profile endpoint when all
+    three credentials are configured (cached PURSE_TTL_SECONDS so the profile
+    API isn't hit every poll), reusing the last-known value on a transient
+    failure. Falls back to the FLIP_PURSE env var, then 0 (sells-only)."""
+    creds = load_secrets()
+    if creds["hypixel_api_key"] and creds["profile_id"] and creds["player_uuid"]:
+        now = time.time()
+        if _purse_cache["value"] is not None and now - _purse_cache["at"] < PURSE_TTL_SECONDS:
+            return _purse_cache["value"]
+        try:
+            purse = get_purse_from_hypixel(creds["hypixel_api_key"], creds["profile_id"], creds["player_uuid"])
+            clear_anomaly("fetch-purse-failed")
+            if purse is not None:
+                _purse_cache.update(value=float(purse), at=now)
+                return _purse_cache["value"]
+        except Exception:
+            log_once("fetch-purse-failed", logging.WARNING, "couldn't fetch purse from Hypixel; using last-known/fallback", exc_info=True)
+        if _purse_cache["value"] is not None:
+            return _purse_cache["value"]
+    return _manual_purse()
 
 
 def build_recommendation(bazaar_data, all_product_information, short_term_investments,
