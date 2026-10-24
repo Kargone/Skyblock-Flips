@@ -68,6 +68,26 @@ let server = http.createServer(function (request, response) {
         return;
     }
 
+    // API endpoint for the flip-optimizer's ranked advisory order list, written
+    // by ../flip-optimizer/main.py each poll as recommendation.json. The mod
+    // reads this to know what to place. If the optimizer isn't running yet there
+    // is no file, so respond with an empty, clearly-flagged list rather than a
+    // 404 the mod would have to special-case.
+    if (request.url === '/api/recommendation' && request.method === 'GET') {
+        response.writeHead(200, { "Content-Type": "application/json" });
+        try {
+            const recPath = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'flip-optimizer', 'recommendation.json');
+            response.end(fs.readFileSync(recPath, 'utf8'));
+        } catch (error) {
+            // ENOENT is expected before the optimizer's first write; only log the rest.
+            if (error.code !== 'ENOENT') {
+                console.error('Error reading recommendation:', error);
+            }
+            response.end(JSON.stringify({ available: false, generated_at: null, orders: [] }));
+        }
+        return;
+    }
+
     // General GET requests
     if (request.method === 'GET') {
         response.writeHead(200, { "Content-Type": "text/plain" });

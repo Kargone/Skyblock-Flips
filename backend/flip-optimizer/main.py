@@ -1,4 +1,9 @@
 class FindMaxProfit:
+    # DEPRECATED - superseded by allocator.py, which is the live ranking engine
+    # wired into the poll loop below. This class scored every product
+    # independently with no shared-constraint accounting and carries the old
+    # pre-fix profit/weight math (compounded weights, (sell-buy)*(1-fee) tax).
+    # Kept only for reference; it is no longer instantiated or called.
     def __init__(self, available_slots_in_bazaar, current_coins_amount, inventory, all_product_information, bazaar_data):
         self.current_coins_amount = current_coins_amount
         self.inventory = inventory
@@ -105,10 +110,16 @@ class FindMaxProfit:
 
 
 
+import json
 import logging
+import os
 import time
+from datetime import datetime, timedelta, timezone
+from pathlib import Path
+from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
-from api_client import get_last_trade_time, get_market_data, get_product_list, get_trader_data
+from allocator import DAILY_ORDER_WORTH_CAP, build_all_candidates, solve_sells_first
+from api_client import get_market_data, get_mayor_data, get_product_list, get_trader_data
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger("main")
@@ -131,7 +142,6 @@ def clear_anomaly(key):
 
 
 POLL_INTERVAL_SECONDS = 30
-NEW_TRADE_GAP_RESET_MINUTES = 30
 HOURS_PER_WEEK = 7 * 24
 
 # The smallest amount a bazaar order price can be beaten by.
@@ -140,6 +150,37 @@ BAZAAR_PRICE_INCREMENT = 0.1
 # TODO: Set this to your actual bazaar slot count (14-28 depending on upgrades).
 # Not currently tracked anywhere in trader-data.json.
 TOTAL_BAZAAR_SLOTS = 28
+
+# Flip cadence used to size how much of an order is expected to fill per session.
+# TODO (todo.md): make this user-settable; "~8h, sometimes 12".
+TIME_BETWEEN_TRADES_HOURS = 8
+
+# The 15B bazaar order-worth cap and the 500M NPC limit both reset at 7 PM in
+# America/Chicago (the code's documented "7 PM CDT"; the zone handles CST/CDT).
+DAILY_RESET_HOUR = 19
+
+
+def _daily_reset_tz():
+    """America/Chicago, so the 7 PM reset tracks the CST/CDT switch. zoneinfo
+    needs the tzdata package on Windows (it's in requirements.txt); if it's
+    somehow missing, fall back to a fixed CDT offset rather than crashing - the
+    reset can then be an hour off during CST, which only shifts the cap window."""
+    try:
+        return ZoneInfo("America/Chicago")
+    except ZoneInfoNotFoundError:
+        log_once("tzdata-missing", logging.WARNING,
+                 "tzdata not installed; using a fixed UTC-5 (CDT) offset for the daily reset. `pip install tzdata`")
+        return timezone(timedelta(hours=-5))
+
+# Base bazaar tax; the live rate is this x the mayor tax-multiplier (x4 Derpy).
+BASE_BAZAAR_TAX = 0.01
+
+# backend.mjs appends one "placed" event per order here (order_amount, order_price,
+# place_time); summing those since the last reset reconstructs the 15B cap used.
+TRADE_LOG_PATH = Path(__file__).parent.parent / "Testing" / "trade-outcomes.jsonl"
+
+# Where the ranked advisory order list is written each poll for the mod to read.
+RECOMMENDATION_PATH = Path(__file__).parent / "recommendation.json"
 
 
 def build_inventory(trader_data):
@@ -315,35 +356,142 @@ def build_bazaar_data_and_product_info(bazaar_products, volume_stats, product_li
             "bought_volume_7_day_weight": stats.get("buyVolume7DayWeight", 1),
             "bought_volume_24_hour_weight": stats.get("buyVolume24HourWeight", 1),
             "new_listings_per_hour_buying_weight": stats.get("newBuyListingsWeight", 1),
+            # Max inventory stack size for this item (used by the allocator's
+            # 35-slots x stack-size hold cap). product-list.json doesn't carry
+            # this yet, so it's usually None -> allocator falls back to 64.
+            "max_stack_size": product_meta.get("max-stack-size"),
         }
 
     return bazaar_data, all_product_information
 
 
+def most_recent_daily_reset_ms(now=None):
+    """Epoch-ms of the most recent DAILY_RESET_HOUR in America/Chicago."""
+    now = now or datetime.now(_daily_reset_tz())
+    reset = now.replace(hour=DAILY_RESET_HOUR, minute=0, second=0, microsecond=0)
+    if now < reset:
+        reset -= timedelta(days=1)
+    return int(reset.timestamp() * 1000)
+
+
+_cap_cache = {}
+
+
+def compute_daily_cap_used(reset_ms, path=TRADE_LOG_PATH):
+    """Coin-worth of every order placed since the last reset, from the trade log.
+    Both buy and sell 'placed' events count (they share the one 15B/24h pool).
+    Cached on (file mtime, size, reset window) so the growing JSONL is only
+    re-read when it actually changed - cheap enough for the old server tower."""
+    try:
+        stat = path.stat()
+    except OSError:
+        log_once("trade-log-missing", logging.WARNING, "no trade log at %s; treating daily cap as unused", path)
+        return 0
+    clear_anomaly("trade-log-missing")
+
+    key = (stat.st_mtime_ns, stat.st_size, reset_ms)
+    if _cap_cache.get("key") == key:
+        return _cap_cache["value"]
+
+    used = 0
+    try:
+        with path.open(encoding="utf-8") as f:
+            for line in f:
+                line = line.strip()
+                if not line:
+                    continue
+                try:
+                    event = json.loads(line)
+                except json.JSONDecodeError:
+                    continue
+                if event.get("event") != "placed":
+                    continue
+                if (event.get("place_time") or 0) < reset_ms:
+                    continue
+                used += (event.get("order_amount") or 0) * (event.get("order_price") or 0)
+    except OSError:
+        return _cap_cache.get("value", 0)
+
+    _cap_cache["key"] = key
+    _cap_cache["value"] = used
+    return used
+
+
+def get_bazaar_fee():
+    """Live bazaar tax: base 1% x the current mayor tax-multiplier (x4 Derpy)."""
+    try:
+        multiplier = get_mayor_data().get("tax-multiplier") or 1
+        clear_anomaly("fetch-mayor-data-failed")
+    except Exception:
+        log_once(
+            "fetch-mayor-data-failed", logging.WARNING,
+            "couldn't fetch mayor-data for the tax rate; using base %.0f%%", BASE_BAZAAR_TAX * 100, exc_info=True
+        )
+        return BASE_BAZAAR_TAX
+    return BASE_BAZAAR_TAX * multiplier
+
+
+def get_configured_purse():
+    """Current coin purse. No API source is wired up yet (see api_client's
+    get_purse_from_hypixel), so read it from the FLIP_PURSE env var for now.
+    Until it's set, purse is 0 and the allocator recommends sells only."""
+    raw = os.environ.get("FLIP_PURSE")
+    if not raw:
+        return 0
+    try:
+        return float(raw)
+    except ValueError:
+        log_once("bad-purse-env", logging.ERROR, "FLIP_PURSE is not a number: %r; treating purse as 0", raw)
+        return 0
+
+
+def build_recommendation(bazaar_data, all_product_information, short_term_investments,
+                         bazaar_fee, purse, available_slots, time_between_trades_hours):
+    reset_ms = most_recent_daily_reset_ms()
+    cap_used = compute_daily_cap_used(reset_ms)
+    cap_remaining = max(0, DAILY_ORDER_WORTH_CAP - cap_used)
+
+    candidates = build_all_candidates(
+        bazaar_data, all_product_information, short_term_investments,
+        bazaar_fee, purse, time_between_trades_hours,
+    )
+    chosen = solve_sells_first(candidates, available_slots, purse, cap_remaining)
+    chosen.sort(key=lambda c: c.profit, reverse=True)
+
+    return {
+        "available": True,
+        "generated_at": int(time.time() * 1000),
+        "bazaar_fee": bazaar_fee,
+        "purse": purse,
+        "available_slots": available_slots,
+        "daily_cap_used": cap_used,
+        "daily_cap_remaining": cap_remaining,
+        "total_expected_profit": sum(c.profit for c in chosen),
+        "orders": [
+            {
+                "action": "sell" if c.side == "sell_inventory" else "buy",
+                "product_name": c.product_name,
+                "quantity": c.quantity,
+                "order_price": c.order_worth / c.quantity if c.quantity else 0,
+                "expected_profit": c.profit,
+                "order_worth": c.order_worth,
+                "coin_cost": c.coin_cost,
+            }
+            for c in chosen
+        ],
+    }
+
+
+def write_recommendation(recommendation):
+    tmp_path = RECOMMENDATION_PATH.with_suffix(".tmp")
+    tmp_path.write_text(json.dumps(recommendation, indent=2), encoding="utf-8")
+    os.replace(tmp_path, RECOMMENDATION_PATH)
+
+
 if __name__ == "__main__":
     product_list = get_product_list()
 
-    trader_data = get_trader_data()
-    market_data = get_market_data()
-
-    inventory = build_inventory(trader_data)
-    available_slots_in_bazaar = count_available_bazaar_slots(trader_data, TOTAL_BAZAAR_SLOTS)
-    bazaar_data, all_product_information = build_bazaar_data_and_product_info(
-        market_data.get("bazaarProducts", {}), market_data.get("volumeStats", {}), product_list
-    )
-
-    # TODO: No API source yet for the current coin purse (needs the Hypixel
-    # SkyBlock profile endpoint + an API key, which isn't wired up anywhere yet).
-    # Update this manually for now.
-    current_coins_amount = 0
-
-    app = FindMaxProfit(available_slots_in_bazaar, current_coins_amount, inventory, all_product_information, bazaar_data)
-
-    last_trade_time_seen = get_last_trade_time()
-
     while True:
-        time.sleep(POLL_INTERVAL_SECONDS)
-
         try:
             trader_data = get_trader_data()
             market_data = get_market_data()
@@ -352,42 +500,37 @@ if __name__ == "__main__":
                 "fetch-trader-market-data-failed", logging.ERROR,
                 "failed to fetch data from the server this poll; will retry next interval", exc_info=True
             )
+            time.sleep(POLL_INTERVAL_SECONDS)
             continue
         clear_anomaly("fetch-trader-market-data-failed")
 
-        inventory = build_inventory(trader_data)
-        available_slots_in_bazaar = count_available_bazaar_slots(trader_data, TOTAL_BAZAAR_SLOTS)
+        # build_inventory still runs for its anomaly logging; the allocator reads
+        # held quantities from short-term-investments directly (cost basis lives there).
+        build_inventory(trader_data)
+        available_slots = count_available_bazaar_slots(trader_data, TOTAL_BAZAAR_SLOTS)
         bazaar_data, all_product_information = build_bazaar_data_and_product_info(
             market_data.get("bazaarProducts", {}), market_data.get("volumeStats", {}), product_list
         )
-        app.available_slots_in_bazaar = available_slots_in_bazaar
-        app.inventory = inventory
-        app.all_product_information = all_product_information
-        app.bazaar_data = bazaar_data
 
-        # If no trade happened for 30+ minutes and one just came in, start a fresh session.
-        try:
-            last_trade_time = get_last_trade_time()
-            clear_anomaly("fetch-last-trade-time-failed")
-        except Exception:
-            log_once(
-                "fetch-last-trade-time-failed", logging.ERROR,
-                "failed to fetch last trade time this poll; skipping the gap check for now", exc_info=True
-            )
-            last_trade_time = last_trade_time_seen
+        recommendation = build_recommendation(
+            bazaar_data,
+            all_product_information,
+            trader_data.get("short-term-investments", {}),
+            get_bazaar_fee(),
+            get_configured_purse(),
+            available_slots,
+            TIME_BETWEEN_TRADES_HOURS,
+        )
+        write_recommendation(recommendation)
+        log.info(
+            "recommended %d orders, total expected profit %s (cap remaining %s, %d slots free)",
+            len(recommendation["orders"]),
+            f"{recommendation['total_expected_profit']:,.0f}",
+            f"{recommendation['daily_cap_remaining']:,.0f}",
+            available_slots,
+        )
 
-        if last_trade_time_seen is not None and last_trade_time is not None and last_trade_time != last_trade_time_seen:
-            gap_minutes = (last_trade_time - last_trade_time_seen) / 1000 / 60
-            if gap_minutes >= NEW_TRADE_GAP_RESET_MINUTES:
-                app.reset_for_new_session(current_coins_amount, inventory, all_product_information, bazaar_data)
-        last_trade_time_seen = last_trade_time
-
-        # Only rank products that actually made it into bazaar_data/all_product_information -
-        # build_bazaar_data_and_product_info already filters product_list down to the
-        # subset with real bazaar presence (skipping AH-only accessories, items missing
-        # from the live bazaar, etc).
-        # TODO: Send this back to the api
-        MAX_PROFIT_TABLE = app.find_max_profit_for_slot(list(bazaar_data.keys()))
+        time.sleep(POLL_INTERVAL_SECONDS)
 
     # TODO: Make sure there is no product name confusion between all the datasets using api vs normalized
 

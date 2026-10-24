@@ -7,8 +7,9 @@ builds a set of candidate orders - selling off existing inventory vs buying
 fresh and flipping it, each sized to fit within one bazaar slot - and solves
 for the subset that maximizes TOTAL expected profit (not margin) subject to
 every real constraint: 28 total slots, the current coin purse, the 15B/24h
-order-worth cap (resets 7:00 PM CDT, same clock as the NPC 500M limit), the
-72,180 per-slot size cap, and an approximate per-item inventory-holding cap.
+order-worth cap (resets 7:00 PM America/Chicago; both buy and sell order worth
+count toward it), the 71,680 per-slot size cap, and the per-item
+inventory-holding cap (35 inventory slots x the item's max stack size).
 
 This supersedes main.py's FindMaxProfit.find_max_profit_for_slot for
 allocation purposes - that function scored every product independently with
@@ -36,20 +37,26 @@ import pulp
 
 # ---- Constants describing real Hypixel Bazaar constraints ----
 TOTAL_SLOTS = 28
-MAX_ORDER_SIZE = 72_180
+MAX_ORDER_SIZE = 71_680  # 1,120 stacks x 64 - the real per-order item cap
 DAILY_ORDER_WORTH_CAP = 15_000_000_000
 
 # Below this, a candidate isn't worth a slot at all - matches the user's own
 # manual filter ("if it's more than 3k or so, I'll place an order").
 MIN_PROFIT_PER_ORDER = 3_000
 
-# Approximation of the 35-slots x ~64-stack inventory cap, applied per item
-# rather than as a true shared pool across everything currently held (the
-# user notes this is rarely the actual binding constraint day to day; it's a
-# safety ceiling, not something to optimize toward). Refine into a real
-# shared-pool constraint once per-item stack sizes are tracked somewhere
-# queryable - right now product-list.json doesn't carry that.
-APPROX_MAX_HOLD_PER_ITEM = 35 * 64
+# How much of a single item you can physically hold to (re)sell: 35 inventory
+# slots x that item's max stack size. This is the ceiling on the amount you can
+# relist after a batch cancel, so it bounds how much it's worth buying/holding.
+# Stack size is usually 64 but varies by product (16, 1, ...), so it's read
+# per-product from info["max_stack_size"] when available; DEFAULT_MAX_STACK_SIZE
+# is the fallback until product-list.json carries real stack sizes.
+INVENTORY_SLOTS_FOR_SELLING = 35
+DEFAULT_MAX_STACK_SIZE = 64
+
+
+def max_hold_per_item(info):
+    stack_size = info.get("max_stack_size") or DEFAULT_MAX_STACK_SIZE
+    return INVENTORY_SLOTS_FOR_SELLING * stack_size
 
 # A second slot on the same product/side is only worth it if there's
 # comfortably more demand than the first slot can hold - otherwise you're
@@ -142,7 +149,7 @@ def build_sell_inventory_candidates(product_name, info, prices, bazaar_fee, held
 
 
 def build_buy_candidates(product_name, info, prices, bazaar_fee, purse_remaining, held_qty, time_between_trades_hours):
-    room_left = APPROX_MAX_HOLD_PER_ITEM - held_qty
+    room_left = max_hold_per_item(info) - held_qty
     if room_left <= 0 or prices["buy_price"] <= 0:
         return []
 
@@ -164,6 +171,9 @@ def build_buy_candidates(product_name, info, prices, bazaar_fee, purse_remaining
 
 
 def solve(candidates, available_slots, coins_available, daily_cap_remaining):
+    if not candidates or available_slots <= 0:
+        return []
+
     problem = pulp.LpProblem("bazaar_allocation", pulp.LpMaximize)
     x = {i: pulp.LpVariable(f"take_{i}", cat="Binary") for i in range(len(candidates))}
 
@@ -184,6 +194,31 @@ def solve(candidates, available_slots, coins_available, daily_cap_remaining):
     problem.solve(pulp.PULP_CBC_CMD(msg=False))
 
     return [candidates[i] for i in range(len(candidates)) if x[i].value() == 1]
+
+
+def solve_sells_first(candidates, available_slots, coins_available, daily_cap_remaining):
+    """Lexicographic 'sells first, then buys' policy (the chosen objective):
+    first lock in every worthwhile inventory sell we can, then spend whatever
+    slots / coins / daily cap are left on buy-to-flip candidates.
+
+    Inventory sells are realized this cycle; buy-flips only pay off next cycle
+    and carry fill risk on both legs, so they never displace a profitable sell.
+    Both order sides draw from the same 15B daily cap, so phase 2 sees only what
+    phase 1 left behind. Sells cost 0 coins, so the purse is untouched by phase 1."""
+    sells = [c for c in candidates if c.side == "sell_inventory"]
+    buys = [c for c in candidates if c.side == "buy"]
+
+    chosen_sells = solve(sells, available_slots, coins_available, daily_cap_remaining)
+    slots_used = len(chosen_sells)
+    cap_used = sum(c.order_worth for c in chosen_sells)
+
+    chosen_buys = solve(
+        buys,
+        available_slots - slots_used,
+        coins_available,
+        daily_cap_remaining - cap_used,
+    )
+    return chosen_sells + chosen_buys
 
 
 def build_all_candidates(bazaar_data, all_product_information, short_term_investments, bazaar_fee, purse_remaining, time_between_trades_hours):
@@ -228,8 +263,8 @@ if __name__ == "__main__":
     # TODO: no persistent tracking yet of how much of the 15B/24h cap has
     # been used since the last 7PM CDT reset. Assume nothing used yet.
     daily_cap_remaining = DAILY_ORDER_WORTH_CAP
-    # TODO: pull the live Derpy-adjusted rate once that's wired up
-    # (mentioned as in-progress); 1% is the non-Derpy baseline.
+    # Live rate comes from /api/mayor-data's tax-multiplier in the main.py loop
+    # (x4 under Derpy); 1% is the non-Derpy baseline for this standalone harness.
     bazaar_fee = 0.01
 
     candidates = build_all_candidates(
@@ -238,7 +273,7 @@ if __name__ == "__main__":
     )
     print(f"generated {len(candidates)} candidates")
 
-    chosen = solve(candidates, TOTAL_SLOTS, current_coins_amount, daily_cap_remaining)
+    chosen = solve_sells_first(candidates, TOTAL_SLOTS, current_coins_amount, daily_cap_remaining)
     chosen.sort(key=lambda c: c.profit, reverse=True)
 
     total_profit = sum(c.profit for c in chosen)
