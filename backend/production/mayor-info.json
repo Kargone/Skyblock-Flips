@@ -15,12 +15,14 @@
                     "Golden Tooth",
                     "Null Sphere",
                     "Revenant Viscera",
-                    "Tarantula Silk"
+                    "Tarantula Silk",
+                    "Red Claw Egg"
                 ],
                 "buy-after": {
                     "Golden Tooth": 2,
                     "Revenant Viscera": 1,
-                    "Tarantula Silk": 1
+                    "Tarantula Silk": 1,
+                    "Red Claw Egg": 1
                 },
                 "notes": [
                     "Rare slayer drops are 20% more common: supply rises"

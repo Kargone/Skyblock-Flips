@@ -2,6 +2,8 @@ Forseen problem:
 if a sell order has already been claimed, not fully, then is reported as filled in chat. the sell order amounts wont match up (not important)
 NPC buyback doesnt remove the profit (not a big issue for what its used for)
 forging time changes (like uprgarding quick forge) doesn't change the time left
+with the mod, there are issues of misscoloring the background of the items
+
 
 Issues:
 
@@ -11,4 +13,3 @@ testing:
 backing off on status 403
 fetching a few pages at a time
 past trade logs still being updated on some of the error'd trades
-Fixed the supercraft function to not remove materials if the craft isn't valid
