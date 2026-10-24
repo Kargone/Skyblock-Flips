@@ -23,6 +23,16 @@ Fixes applied, per order_id:
 
 Cleaned events carry a "flags" list when anything about them was changed, so
 the model side can choose to exclude or down-weight them.
+
+Fill-model censoring: every resolved event also gets a "censored" bool. A
+"filled" order is fully observed (censored False); a "cancelled" or synthetic
+"unknown" resolve only tells us how much had filled before observation stopped,
+i.e. a right-censored lower bound (censored True) - train on these as censored
+fills, NOT as "did not fill". The normal batch-cancel/relist cycle cancels on
+the ~5.5-9h flip cadence (verified against the log), so a cancel far sooner than
+that is a manual change-of-mind or a listed-before-stock mistake whose early
+cancel time is informative, not a market signal; those get a
+"likely_manual_cancel" flag so training can drop them.
 """
 
 import argparse
@@ -40,6 +50,12 @@ TRADER_DATA_PATH = BACKEND_DIR / "production" / "trader-data.json"
 # Orders are relisted well within this window under the normal batch
 # cancel/relist cycle, so anything quiet for longer has lost its resolve event.
 STALE_AFTER_HOURS = 48
+
+# Strategic relist cancels land on the ~5.5-9h flip cadence (empirically, 90% of
+# cancels are >5.5h). A cancel sooner than this is a manual mistake (changed
+# mind, listed before the stock was in inventory) - flagged, not trusted as a
+# fill signal. Well below the strategic cluster, so it isolates the mistake tail.
+MANUAL_CANCEL_MAX_MINUTES = 60
 
 
 def event_time(e):
@@ -79,7 +95,7 @@ def load_live_order_ids(path):
     return live
 
 
-def clean(events, live_ids, now_ms, stale_after_ms):
+def clean(events, live_ids, now_ms, stale_after_ms, manual_cancel_max_ms):
     by_order = defaultdict(lambda: {"placed": None, "progress": [], "resolved": []})
     for e in events:
         o = by_order[e["order_id"]]
@@ -149,6 +165,14 @@ def clean(events, live_ids, now_ms, stale_after_ms):
             else:
                 report["still_open"].append(order_id)
 
+        # Right-censoring for the fill model (see module docstring): filled =
+        # fully observed; cancelled / synthetic-unknown = censored lower bound.
+        if resolve:
+            resolve["censored"] = resolve.get("outcome") != "filled"
+            if resolve.get("outcome") == "cancelled" and (resolve.get("time_to_resolve_ms") or 0) < manual_cancel_max_ms:
+                order_flags.append("likely_manual_cancel")
+                report["likely_manual_cancels"].append(order_id)
+
         if order_flags and resolve:
             resolve["flags"] = order_flags
         out.append(placed)
@@ -171,12 +195,17 @@ def clean(events, live_ids, now_ms, stale_after_ms):
 def main():
     parser = argparse.ArgumentParser(description=__doc__.split("\n\n")[0])
     parser.add_argument("--stale-hours", type=float, default=STALE_AFTER_HOURS)
+    parser.add_argument("--manual-cancel-minutes", type=float, default=MANUAL_CANCEL_MAX_MINUTES)
     args = parser.parse_args()
 
     events, bad_lines = load_events(RAW_PATH)
     live_ids = load_live_order_ids(TRADER_DATA_PATH)
     now_ms = int(time.time() * 1000)
-    out, report, null_counts = clean(events, live_ids, now_ms, args.stale_hours * 3600 * 1000)
+    out, report, null_counts = clean(
+        events, live_ids, now_ms,
+        args.stale_hours * 3600 * 1000,
+        args.manual_cancel_minutes * 60 * 1000,
+    )
 
     tmp = CLEAN_PATH.with_suffix(".tmp")
     with tmp.open("w", encoding="utf-8") as f:
