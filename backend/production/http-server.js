@@ -1,4 +1,4 @@
-import Main, { marketData, getVolumeStats, getTraderData } from './backend.mjs';
+import Main, { marketData, getVolumeStats, getTraderData, getBinLadders } from './backend.mjs';
 import { getMayorData } from './mayor.mjs';
 import http from 'node:http';
 import fs from 'node:fs';
@@ -34,6 +34,7 @@ let server = http.createServer(function (request, response) {
         response.end(JSON.stringify({
             bazaarProducts: marketData.bazaarProducts || {},
             lowestBinPrices: marketData.lowestBinPrices || {},
+            binLadders: getBinLadders(),
             lastUpdated: marketData.lastUpdated || null,
             volumeStats: getVolumeStats()
         }));

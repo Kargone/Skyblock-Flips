@@ -2799,9 +2799,47 @@ async function updateAuctionData() {
         marketData.lastUpdated.auctions = firstPage.lastUpdated;
         auction_data = allAuctions;
         marketData.lowestBinPrices = buildLowestBinPrices(allAuctions);
+        binPriceLists = buildBinPriceLists(allAuctions);
     } catch (error) {
         console.error('Auction fetch failed:', formatFetchError(error));
     }
+}
+
+// Every BIN price per normalised name, cheapest first, so the mod can tell where
+// a listing sits among the others for the same item.
+let binPriceLists = {};
+
+// The most prices sent per item; a listing past this is shown as off the ladder.
+const BIN_LADDER_LENGTH = 100;
+
+function buildBinPriceLists(auctions) {
+    const lists = {};
+    for (const auction of auctions) {
+        if (!auction.bin || !auction.item_name) continue;
+        if (auction.item_lore.includes('§k')) continue;
+        const normalizedName = normalizeName(auction.item_name, auction.item_name === 'Beastmaster Crest' ? auction.tier : null);
+        const price = auction.starting_bid || 0;
+        if (!normalizedName || !price) continue;
+        (lists[normalizedName] ??= []).push(price);
+    }
+    for (const prices of Object.values(lists)) prices.sort((a, b) => a - b);
+    return lists;
+}
+
+// The BIN price ladders of the items the trader has up for auction, keyed the same
+// way as lowestBinPrices. Only these are sent; the full set is far too big.
+export function getBinLadders() {
+    const ladders = {};
+    for (const auction of trader_data["auction-house-overview"]?.["auctions"] ?? []) {
+        if (auction["sold"]) continue;
+        const name = auction["item-name"] || '';
+        const baseName = name.replace(/ - .+$/, '');
+        const tier = baseName === 'Beastmaster Crest' ? name.match(/ - (.+)$/)?.[1] : null;
+        const key = normalizeName(baseName, tier);
+        const prices = binPriceLists[key];
+        if (prices && !ladders[key]) ladders[key] = prices.slice(0, BIN_LADDER_LENGTH);
+    }
+    return ladders;
 }
 
 function buildLowestBinPrices(auctions) {
