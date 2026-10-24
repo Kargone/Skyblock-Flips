@@ -147,8 +147,8 @@ HOURS_PER_WEEK = 7 * 24
 # The smallest amount a bazaar order price can be beaten by.
 BAZAAR_PRICE_INCREMENT = 0.1
 
-# TODO: Set this to your actual bazaar slot count (14-28 depending on upgrades).
-# Not currently tracked anywhere in trader-data.json.
+# Bazaar slot count, intentionally fixed at the user's permanent max of 28 (the
+# upgradeable range is 14-28); not tracked in trader-data.json.
 TOTAL_BAZAAR_SLOTS = 28
 
 # Flip cadence used to size how much of an order is expected to fill per session.
@@ -374,14 +374,55 @@ def most_recent_daily_reset_ms(now=None):
     return int(reset.timestamp() * 1000)
 
 
+def _sum_placed_worth_since(path, reset_ms, block_size=1 << 20):
+    """Sum order_amount*order_price of 'placed' events with place_time >= reset_ms,
+    reading the log from the end backward and stopping as soon as a placed event
+    older than the reset is reached. 'placed' events are appended in place_time
+    order, so this is O(recent activity): the never-pruned trade log can grow
+    indefinitely without slowing the per-poll cap read (keeping the full log is
+    deliberate - it's the fill model's ground truth, so it is not pruned)."""
+    used = 0
+    with path.open("rb") as f:
+        f.seek(0, os.SEEK_END)
+        pos = f.tell()
+        head = b""  # partial leftmost line, completed by the next (earlier) block
+        while pos > 0:
+            size = min(block_size, pos)
+            pos -= size
+            f.seek(pos)
+            parts = (f.read(size) + head).split(b"\n")
+            head = parts[0]
+            for raw in reversed(parts[1:]):
+                raw = raw.strip()
+                if not raw:
+                    continue
+                try:
+                    event = json.loads(raw)
+                except json.JSONDecodeError:
+                    continue
+                if event.get("event") != "placed":
+                    continue
+                if (event.get("place_time") or 0) < reset_ms:
+                    return used  # everything earlier is older than the reset too
+                used += (event.get("order_amount") or 0) * (event.get("order_price") or 0)
+        raw = head.strip()
+        if raw:
+            try:
+                event = json.loads(raw)
+                if event.get("event") == "placed" and (event.get("place_time") or 0) >= reset_ms:
+                    used += (event.get("order_amount") or 0) * (event.get("order_price") or 0)
+            except json.JSONDecodeError:
+                pass
+    return used
+
+
 _cap_cache = {}
 
 
 def compute_daily_cap_used(reset_ms, path=TRADE_LOG_PATH):
     """Coin-worth of every order placed since the last reset, from the trade log.
     Both buy and sell 'placed' events count (they share the one 15B/24h pool).
-    Cached on (file mtime, size, reset window) so the growing JSONL is only
-    re-read when it actually changed - cheap enough for the old server tower."""
+    Cached on (file mtime, size, reset window) so repeated polls don't re-scan."""
     try:
         stat = path.stat()
     except OSError:
@@ -393,22 +434,8 @@ def compute_daily_cap_used(reset_ms, path=TRADE_LOG_PATH):
     if _cap_cache.get("key") == key:
         return _cap_cache["value"]
 
-    used = 0
     try:
-        with path.open(encoding="utf-8") as f:
-            for line in f:
-                line = line.strip()
-                if not line:
-                    continue
-                try:
-                    event = json.loads(line)
-                except json.JSONDecodeError:
-                    continue
-                if event.get("event") != "placed":
-                    continue
-                if (event.get("place_time") or 0) < reset_ms:
-                    continue
-                used += (event.get("order_amount") or 0) * (event.get("order_price") or 0)
+        used = _sum_placed_worth_since(path, reset_ms)
     except OSError:
         return _cap_cache.get("value", 0)
 
@@ -417,17 +444,33 @@ def compute_daily_cap_used(reset_ms, path=TRADE_LOG_PATH):
     return used
 
 
+_last_tax_multiplier = None
+
+
 def get_bazaar_fee():
-    """Live bazaar tax: base 1% x the current mayor tax-multiplier (x4 Derpy)."""
+    """Live bazaar tax: base 1% x the current mayor tax-multiplier (x4 Derpy).
+    On a fetch failure, reuse the last-known multiplier rather than defaulting to
+    1x - defaulting to 1x during a Derpy term (4x) would understate the fee and
+    could make a losing flip look profitable."""
+    global _last_tax_multiplier
     try:
         multiplier = get_mayor_data().get("tax-multiplier") or 1
         clear_anomaly("fetch-mayor-data-failed")
+        _last_tax_multiplier = multiplier
     except Exception:
-        log_once(
-            "fetch-mayor-data-failed", logging.WARNING,
-            "couldn't fetch mayor-data for the tax rate; using base %.0f%%", BASE_BAZAAR_TAX * 100, exc_info=True
-        )
-        return BASE_BAZAAR_TAX
+        if _last_tax_multiplier is not None:
+            log_once(
+                "fetch-mayor-data-failed", logging.WARNING,
+                "couldn't fetch mayor-data; reusing last-known tax multiplier x%s", _last_tax_multiplier, exc_info=True
+            )
+            multiplier = _last_tax_multiplier
+        else:
+            log_once(
+                "fetch-mayor-data-failed", logging.WARNING,
+                "couldn't fetch mayor-data and have no cached multiplier; using base %.0f%% (optimistic under Derpy)",
+                BASE_BAZAAR_TAX * 100, exc_info=True
+            )
+            return BASE_BAZAAR_TAX
     return BASE_BAZAAR_TAX * multiplier
 
 
@@ -447,6 +490,17 @@ def get_configured_purse():
 
 def build_recommendation(bazaar_data, all_product_information, short_term_investments,
                          bazaar_fee, purse, available_slots, time_between_trades_hours):
+    # Guard: inventory we hold but can't price this poll won't be offered for
+    # sale by the allocator (it only ranks products in bazaar_data). Surface it
+    # so stock never goes silently unsold - e.g. a held item missing from the
+    # product-list/bazaar join, or one with no live order book right now.
+    for name in short_term_investments:
+        if name in bazaar_data:
+            clear_anomaly((name, "held-but-unpriced"))
+        else:
+            log_once((name, "held-but-unpriced"), logging.WARNING,
+                     "holding '%s' but it has no bazaar price this poll; it won't be offered for sale", name)
+
     reset_ms = most_recent_daily_reset_ms()
     cap_used = compute_daily_cap_used(reset_ms)
     cap_remaining = max(0, DAILY_ORDER_WORTH_CAP - cap_used)

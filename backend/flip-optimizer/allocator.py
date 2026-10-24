@@ -65,6 +65,13 @@ def max_hold_per_item(info):
 SECOND_SLOT_MIN_REMAINING_QTY = MAX_ORDER_SIZE * 0.5
 MAX_SLOTS_PER_PRODUCT_SIDE = 2
 
+# Interim safety until the trained fill model replaces the volume heuristic:
+# the estimate is optimistic (empirically ~80% of real orders don't fully fill),
+# and a buy-flip risks coins on a leg that may not fill, so shrink the expected
+# buy fill. 1.0 = no haircut. Applied to buys only - listing held stock risks no
+# coins, so there's no reason to under-list it.
+EXPECTED_FILL_HAIRCUT = 0.5
+
 
 @dataclass
 class Candidate:
@@ -101,9 +108,9 @@ def damped_weight(weight_1, weight_2, weight_3):
     return product ** (1 / 3)
 
 
-def estimate_fillable_qty(past_quantity_per_hour, weight_1, weight_2, weight_3, time_between_trades_hours, cap_qty):
+def estimate_fillable_qty(past_quantity_per_hour, weight_1, weight_2, weight_3, time_between_trades_hours, cap_qty, haircut=1.0):
     weight = damped_weight(weight_1, weight_2, weight_3)
-    return min(past_quantity_per_hour * time_between_trades_hours * weight, cap_qty)
+    return min(past_quantity_per_hour * time_between_trades_hours * weight * haircut, cap_qty)
 
 
 def _slot_candidates(product_name, side, expected_fillable, profit_per_unit, order_price, coin_cost_per_unit):
@@ -164,7 +171,7 @@ def build_buy_candidates(product_name, info, prices, bazaar_fee, purse_remaining
     expected_fillable = estimate_fillable_qty(
         info["past_quantity_bought_per_hour"],
         info["bought_volume_7_day_weight"], info["bought_volume_24_hour_weight"], info["new_listings_per_hour_buying_weight"],
-        time_between_trades_hours, cap_qty=min(room_left, affordable_qty),
+        time_between_trades_hours, cap_qty=min(room_left, affordable_qty), haircut=EXPECTED_FILL_HAIRCUT,
     )
 
     return _slot_candidates(product_name, "buy", expected_fillable, profit_per_unit, prices["buy_price"], coin_cost_per_unit=prices["buy_price"])
