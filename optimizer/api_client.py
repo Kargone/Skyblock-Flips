@@ -41,12 +41,19 @@ HYPIXEL_API_BASE = "https://api.hypixel.net/v2"
 
 
 def get_purse_from_hypixel(api_key, profile_id, player_uuid):
+    # Key goes in the API-Key header (the v2-documented method), not the query
+    # string, so it never lands in a URL, log line, or exception message.
     response = requests.get(
         f"{HYPIXEL_API_BASE}/skyblock/profile",
-        params={"key": api_key, "profile": profile_id},
+        params={"profile": profile_id},
+        headers={"API-Key": api_key},
         timeout=10,
     )
     response.raise_for_status()
     data = response.json()
-    member = data["profile"]["members"][player_uuid]
+    members = (data.get("profile") or {}).get("members") or {}
+    # Hypixel keys members by UNDASHED uuid; accept a dashed one too.
+    member = members.get(player_uuid) or members.get(player_uuid.replace("-", ""))
+    if member is None:
+        return None
     return member.get("currencies", {}).get("coin_purse")
