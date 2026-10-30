@@ -254,7 +254,11 @@ def build_bazaar_data_and_product_info(bazaar_products, volume_stats, product_li
 
         product = bazaar_products.get(api_name)
         if product is None:
-            log_once((product_name, "missing-bazaar-data"), logging.ERROR, "no bazaar data found for '%s' (api-name '%s')", product_name, api_name)
+            # Crafting/forge/accessory items carry an api-name but usually aren't on
+            # the bazaar, so a missing entry is expected - only flag it for items we
+            # actually track as bazaar flips (has-weights), where it's a real problem.
+            if product_meta.get("has-weights"):
+                log_once((product_name, "missing-bazaar-data"), logging.ERROR, "no bazaar data found for '%s' (api-name '%s')", product_name, api_name)
             continue
         clear_anomaly((product_name, "missing-bazaar-data"))
 
