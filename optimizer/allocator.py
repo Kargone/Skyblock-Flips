@@ -14,11 +14,11 @@ inventory-holding cap (35 inventory slots x the item's max stack size).
 This supersedes main.py's FindMaxProfit.find_max_profit_for_slot for
 allocation purposes - that function scored every product independently with
 no shared-constraint accounting at all (its own TODO said as much). The
-per-product heuristic numbers it computes (the EMA-vs-current weights) are
-still the demand signal used here, just fed into estimate_fillable_qty below
-instead. That heuristic is a placeholder for whatever the labeled-order-data
-model eventually produces - same output shape, so nothing else here should
-need to change when it's swapped in.
+expected fill of each candidate now comes from the trained fill model
+(fill_model.py / fill_model.json, fit by fit_fill_model.py on the logged
+order outcomes): a (side, 7-day-volume) -> units/minute table applied over the
+~8h cancel horizon. The old EMA-vs-current weight heuristic (estimate_fillable_qty)
+remains only as the fallback used when the model file is unavailable.
 
 NOT wired up yet, deliberately: (1) current coin purse - no API source for
 it exists (main.py has the same gap); (2) how much of the 15B/24h cap has
@@ -34,6 +34,8 @@ import math
 from dataclasses import dataclass
 
 import pulp
+
+import fill_model
 
 # ---- Constants describing real Hypixel Bazaar constraints ----
 TOTAL_SLOTS = 28
@@ -65,11 +67,11 @@ def max_hold_per_item(info):
 SECOND_SLOT_MIN_REMAINING_QTY = MAX_ORDER_SIZE * 0.5
 MAX_SLOTS_PER_PRODUCT_SIDE = 2
 
-# Interim safety until the trained fill model replaces the volume heuristic:
-# the estimate is optimistic (empirically ~80% of real orders don't fully fill),
-# and a buy-flip risks coins on a leg that may not fill, so shrink the expected
-# buy fill. 1.0 = no haircut. Applied to buys only - listing held stock risks no
-# coins, so there's no reason to under-list it.
+# Fallback-only now: the trained fill model (fill_model.py / fill_model.json)
+# is the live estimate of how much of an order fills. This haircut is used only
+# when that model file is unavailable, to keep the old optimistic volume
+# heuristic from over-committing coins on buy-flips (empirically ~80% of real
+# orders don't fully fill). 1.0 = no haircut; applied to buys only.
 EXPECTED_FILL_HAIRCUT = 0.5
 
 
@@ -146,11 +148,17 @@ def build_sell_inventory_candidates(product_name, info, prices, bazaar_fee, held
     if profit_per_unit <= 0:
         return []  # selling this stock now would realize a loss - hold it instead, not a bug to "fix"
 
-    expected_fillable = estimate_fillable_qty(
-        info["past_quantity_sold_per_hour"],
-        info["sell_volume_7_day_weight"], info["sell_volume_24_hour_weight"], info["new_listings_per_hour_selling_weight"],
-        time_between_trades_hours, cap_qty=held_qty,
-    )
+    if fill_model.available():
+        expected_fillable = fill_model.expected_fill(
+            "sell", info["sell_volume_7_day"], cap_qty=held_qty,
+            horizon_hours=time_between_trades_hours,
+        )
+    else:
+        expected_fillable = estimate_fillable_qty(
+            info["past_quantity_sold_per_hour"],
+            info["sell_volume_7_day_weight"], info["sell_volume_24_hour_weight"], info["new_listings_per_hour_selling_weight"],
+            time_between_trades_hours, cap_qty=held_qty,
+        )
 
     return _slot_candidates(product_name, "sell_inventory", expected_fillable, profit_per_unit, prices["sell_price"], coin_cost_per_unit=0)
 
@@ -168,11 +176,18 @@ def build_buy_candidates(product_name, info, prices, bazaar_fee, purse_remaining
         return []
 
     affordable_qty = purse_remaining // prices["buy_price"]
-    expected_fillable = estimate_fillable_qty(
-        info["past_quantity_bought_per_hour"],
-        info["bought_volume_7_day_weight"], info["bought_volume_24_hour_weight"], info["new_listings_per_hour_buying_weight"],
-        time_between_trades_hours, cap_qty=min(room_left, affordable_qty), haircut=EXPECTED_FILL_HAIRCUT,
-    )
+    cap_qty = min(room_left, affordable_qty)
+    if fill_model.available():
+        expected_fillable = fill_model.expected_fill(
+            "buy", info["bought_volume_7_day"], cap_qty=cap_qty,
+            horizon_hours=time_between_trades_hours,
+        )
+    else:
+        expected_fillable = estimate_fillable_qty(
+            info["past_quantity_bought_per_hour"],
+            info["bought_volume_7_day_weight"], info["bought_volume_24_hour_weight"], info["new_listings_per_hour_buying_weight"],
+            time_between_trades_hours, cap_qty=cap_qty, haircut=EXPECTED_FILL_HAIRCUT,
+        )
 
     return _slot_candidates(product_name, "buy", expected_fillable, profit_per_unit, prices["buy_price"], coin_cost_per_unit=prices["buy_price"])
 
