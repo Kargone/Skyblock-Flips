@@ -1,6 +1,12 @@
-backend/production/bazaar-trend-data.json
-backend/production/trader-data.json
-backend/production/trader-data.json.backup.json
-backend/production/mayor-history.json
-backend/Testing/pastTradesLogs.json
-backend/flip-optimizer/secrets.json
+# Python bytecode caches
+__pycache__/
+*.pyc
+
+# Hypixel API credentials — never commit (see optimizer/secrets.example.json)
+optimizer/secrets.json
+
+# Live & generated trading data. The server writes these continuously, so they
+# are kept OUT of git entirely to avoid pull/merge conflicts. Move them between
+# the laptop and the server with the root push_debug_data.bat / pull_debug_data.bat
+# scripts instead.
+data/

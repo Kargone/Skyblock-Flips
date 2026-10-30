@@ -8,13 +8,23 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const itemRecipesPath = 'C:\\Users\\karso\\NewCodingProjects\\NotEnoughUpdates-REPO\\items';
-const newAccesoriesFilePath = 'C:\\Users\\karso\\NewCodingProjects\\Skyblock-Flips\\backend\\Testing\\accessory-items.json';
-const newCraftingRecipesFilePath = 'C:\\Users\\karso\\NewCodingProjects\\Skyblock-Flips\\backend\\Testing\\accessory-crafting-recipes.json';
-const productListFilePath = 'C:\\Users\\karso\\NewCodingProjects\\Skyblock-Flips\\backend\\production\\product-list.json';
+const newForgeItemsPath = 'C:\\Users\\karso\\NewCodingProjects\\Skyblock-Flips\\tools\\forge-items.json';
+const newCraftingRecipesFilePath = 'C:\\Users\\karso\\NewCodingProjects\\Skyblock-Flips\\tools\\forge-crafting-recipes.json';
+const productListFilePath = 'C:\\Users\\karso\\NewCodingProjects\\Skyblock-Flips\\server\\product-list.json';
 const ITEMS_API_URL = 'https://api.hypixel.net/v2/resources/skyblock/items';
 
+function findDatas(itemNameLowerCase, itemsData) {
+    for (const entry of itemsData) {
+        if (entry.name.toLowerCase() === itemNameLowerCase) {
+            return [entry.name, entry.id]
+        }
+    }
+
+    return [0, 0]
+}
+
 async function main() {
-    const accessoryItemsData = JSON.parse(fs.readFileSync(newAccesoriesFilePath, 'utf8'));
+    const forgesItemsList = JSON.parse(fs.readFileSync(newForgeItemsPath, 'utf8'));
     const productListData = JSON.parse(fs.readFileSync(productListFilePath, 'utf8'));
 
     const responseItems = await fetch(ITEMS_API_URL);
@@ -31,8 +41,12 @@ async function main() {
 
     let craftingRecipesMap = {};
 
-    for (const itemId of Object.keys(accessoryItemsData)) {
-        const itemName = accessoryItemsData[itemId];
+    for (const itemNameLowerCase of forgesItemsList) {
+        const [itemName, itemId] = findDatas(itemNameLowerCase, itemsData);
+        // const itemId = findId(itemNameLowerCase);
+        if (itemName === 0) {console.log("No data: ", itemNameLowerCase); continue;}
+
+
         const itemPath = path.join(itemRecipesPath, `${itemId}.json`);
         if (fs.existsSync(itemPath)) {
             const itemData = JSON.parse(fs.readFileSync(itemPath, 'utf8'));
@@ -40,8 +54,8 @@ async function main() {
             // parse the crafting data in a different way to match the product-list format
             const craftingMaterials = {};
 
-            if (itemData.recipe) {
-                for (const [key, value] of Object.entries(itemData.recipe)) {
+            if (itemData.recipes[0]?.inputs) {
+                for (const [key, value] of Object.entries(itemData.recipes[0].inputs)) {
                     const [craftingMaterialItemId, amount] = value.split(':');
                     if (craftingMaterialItemId == "") continue; 
 
@@ -51,7 +65,6 @@ async function main() {
 
                     if (craftingMaterialItemName == "Razor-sharp Shark Tooth Necklace") {
                         console.error("wrong name", craftingMaterialItemName, craftingMaterialItemId, itemId, itemName);
-                        const hi = 56;
                     }
 
                     // handle the case that the crafting material is an auction product instead of a bazaar item, in which case the craftingMaterialItemId will be determined 
@@ -88,7 +101,6 @@ async function main() {
 
                     if (craftingMaterialItemName == "Razor-sharp Shark Tooth Necklace") {
                         console.error("wrong name", craftingMaterialItemName, craftingMaterialItemId, itemId, itemName);
-                        const hi = 56;
                     }
 
                     // add to the current amount of craftingMaterialItemId in craftingMaterials, or set it to the amount if it doesn't exist yet
@@ -101,7 +113,8 @@ async function main() {
 
                 craftingRecipesMap[itemName] = {
                     "api-name": itemId,
-                    "type": "auction-product",
+                    "seconds-to-craft": 0,
+                    "type": "forge-product",
                     "has-weights": false,
                     "crafting-materials": craftingMaterials
                 };

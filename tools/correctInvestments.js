@@ -30,7 +30,7 @@ const CORRECTIONS = {
 };
 
 const SERVER_URL = 'http://localhost:8000';
-const traderDataPath = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'production', 'trader-data.json');
+const traderDataPath = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'data', 'trader-data.json');
 const backupPath = traderDataPath.replace(/\.json$/, '.before-correction.json');
 const INVESTMENT_TYPES = ["short-term-investments", "long-term-investments"];
 

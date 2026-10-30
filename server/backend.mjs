@@ -151,7 +151,7 @@ const IGNORE_INSTA_SELL = [
 const ALLOW_INSTA_SELL_BUY = [];
 
 // Load trader_data manually so we can modify and write it back
-const traderDataPath = path.join(__dirname, 'trader-data.json');
+const traderDataPath = path.join(__dirname, '..', 'data', 'trader-data.json');
 let trader_data;
 
 try {
@@ -226,7 +226,7 @@ export function saveTraderData() {
 // that predicts how much of an order will actually fill. Kept as JSONL (one JSON
 // object per line) rather than a single growing JSON array so appending never
 // requires reading/rewriting the whole file.
-const tradeLogPath = path.join(__dirname, '..', 'Testing', 'trade-outcomes.jsonl');
+const tradeLogPath = path.join(__dirname, '..', 'data', 'trade-outcomes.jsonl');
 
 function appendTradeLog(record) {
     fs.appendFile(tradeLogPath, JSON.stringify(record) + '\n', function (err) {
@@ -2587,7 +2587,7 @@ const bazaarEma = new Map(); // productId -> { sellVolume7d, buyVolume7d, sellVo
 // bazaarHistory is persisted alongside it since it's cheap to include and lets the
 // 1h/6h/24h rates (sumOverWindow) stay populated across a restart too, instead of
 // returning null for the first ~24h while it re-accumulates.
-const bazaarTrendDataPath = path.join(__dirname, 'bazaar-trend-data.json');
+const bazaarTrendDataPath = path.join(__dirname, '..', 'data', 'bazaar-trend-data.json');
 const BAZAAR_TREND_SAVE_INTERVAL_MS = 5 * 60 * 1000; // this data doesn't need to be real-time on disk
 
 function loadBazaarTrendData() {

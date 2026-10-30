@@ -12,8 +12,8 @@ import { fileURLToPath } from 'node:url';
 const KEEP = 1000;
 const SERVER_URL = 'http://localhost:8000';
 const testingDir = path.dirname(fileURLToPath(import.meta.url));
-const logsPath = path.join(testingDir, 'pastTradesLogs.json');
-const backupPath = path.join(testingDir, 'pastTradesLogs.backup.json');
+const logsPath = path.join(testingDir, '..', 'data', 'pastTradesLogs.json');
+const backupPath = path.join(testingDir, '..', 'data', 'pastTradesLogs.backup.json');
 
 async function serverIsRunning() {
     try {

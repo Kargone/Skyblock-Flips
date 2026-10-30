@@ -15,10 +15,11 @@ git fetch --prune origin || goto :fail
 
 :: Write files to disk only (does NOT stage them)
 git restore --source=origin/%BRANCH_NAME% --worktree -- ^
-    backend/production/trader-data.json ^
-    backend/production/trader-data.json.backup.json ^
-    backend/production/mayor-history.json ^
-    backend/Testing/pastTradesLogs.json || goto :fail
+    data/trader-data.json ^
+    data/trader-data.json.backup.json ^
+    data/mayor-history.json ^
+    data/pastTradesLogs.json ^
+    data/trade-outcomes.jsonl || goto :fail
 
 echo.
 echo Files copied. Deleting remote branch...

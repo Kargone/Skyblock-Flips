@@ -55,8 +55,8 @@ HORIZONS_HOURS = [8, 12]
 # (losing at most a few minutes of accumulated ticks on a crash).
 CHECKPOINT_INTERVAL_SECONDS = 5 * 60
 
-OUTPUT_PATH = Path(__file__).parent / "labeled-order-data.jsonl"
-CHECKPOINT_PATH = Path(__file__).parent / "labeled-order-data.checkpoint.json"
+OUTPUT_PATH = Path(__file__).parent.parent / "data" / "labeled-order-data.jsonl"
+CHECKPOINT_PATH = Path(__file__).parent.parent / "data" / "labeled-order-data.checkpoint.json"
 
 
 def round_price(price):

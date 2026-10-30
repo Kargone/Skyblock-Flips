@@ -8,7 +8,7 @@ const __filename = fileURLToPath(import.meta.url);
 // go back one directory and then go to the product-list.json file
 const __dirname = path.dirname(__filename);
 
-const productListPath = path.join(__dirname, '..', 'production', 'product-list.json');
+const productListPath = path.join(__dirname, '..', 'server', 'product-list.json');
 const bazaarApiNameMapPath = path.join(__dirname, 'bazaar-api-name-map.json');
 
 const bazaarApiNameMap = await JSON.parse(fs.readFileSync(bazaarApiNameMapPath, 'utf8'));

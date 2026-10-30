@@ -9,7 +9,7 @@ const __dirname = path.dirname(__filename);
 const api_to_display_name_map = JSON.parse(fs.readFileSync(path.join(__dirname, 'api-to-display-name-map.json'), 'utf8'));
 
 //get the current product-list.json file
-const product_list = JSON.parse(fs.readFileSync(path.join(__dirname, 'product-list.json'), 'utf8'));
+const product_list = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'server', 'product-list.json'), 'utf8'));
 
 // appened the new display names to the product_list
 for (const apiName of Object.keys(api_to_display_name_map)) {
@@ -28,5 +28,5 @@ for (const apiName of Object.keys(api_to_display_name_map)) {
 }
 
 // save the updated product-list.json file
-fs.writeFileSync(path.join(__dirname, 'product-list.json'), JSON.stringify(product_list, null, 2));
+fs.writeFileSync(path.join(__dirname, '..', 'server', 'product-list.json'), JSON.stringify(product_list, null, 2));
 console.log('Successfully updated product-list.json with display names');

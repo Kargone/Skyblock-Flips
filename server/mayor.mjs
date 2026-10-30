@@ -36,8 +36,8 @@ import { marketData, setDerpyTaxMultiplier } from './backend.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const mayorInfoPath = path.join(__dirname, 'mayor-info.json');
-const historyPath = path.join(__dirname, 'mayor-history.json');
-const priceHistoryPath = path.join(__dirname, 'mayor-price-history.json');
+const historyPath = path.join(__dirname, '..', 'data', 'mayor-history.json');
+const priceHistoryPath = path.join(__dirname, '..', 'data', 'mayor-price-history.json');
 
 // SkyBlock calendar, with the constants the dashboard's updateCalendar used.
 const SB_EPOCH_MS = 1560275700000; // June 11, 2019, 17:55:00 UTC

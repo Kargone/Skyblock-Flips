@@ -10,7 +10,7 @@ let pastTradesLogs = [];
 let traderData = {};
 
 try {
-    const fileContent = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'pastTradesLogs.json'), 'utf8');
+    const fileContent = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'data', 'pastTradesLogs.json'), 'utf8');
     pastTradesLogs = JSON.parse(fileContent);
 } catch (error) {
     console.error('Error occurred while processing past trade logs.', error);

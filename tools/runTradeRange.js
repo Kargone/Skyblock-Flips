@@ -14,7 +14,7 @@ import readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 
 const SERVER_URL = 'http://localhost:8000';
-const logsPath = path.join(path.dirname(fileURLToPath(import.meta.url)), 'pastTradesLogs.json');
+const logsPath = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'data', 'pastTradesLogs.json');
 
 async function main() {
     const rl = readline.createInterface({ input, output });

@@ -116,15 +116,15 @@ class TraderDashboard {
     async fetchTraderData() {
         return this.fetchFirstAvailable([
             `${API_BASE}/api/trader-data`,
-            '../backend/production/trader-data.json'
+            '../data/trader-data.json'
         ]);
     }
 
     async fetchProductList() {
         return this.fetchFirstAvailable([
             `${API_BASE}/api/product-list`,
-            '../backend/production/product-list.json',
-            './backend/production/product-list.json'
+            '../server/product-list.json',
+            './server/product-list.json'
         ]);
     }
 

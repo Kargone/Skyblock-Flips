@@ -8,9 +8,9 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const itemRecipesPath = 'C:\\Users\\karso\\NewCodingProjects\\NotEnoughUpdates-REPO\\items';
-const newAccesoriesFilePath = 'C:\\Users\\karso\\NewCodingProjects\\Skyblock-Flips\\backend\\Testing\\accessory-items.json';
-const newCraftingRecipesFilePath = 'C:\\Users\\karso\\NewCodingProjects\\Skyblock-Flips\\backend\\Testing\\accessory-crafting-recipes.json';
-const productListFilePath = 'C:\\Users\\karso\\NewCodingProjects\\Skyblock-Flips\\backend\\production\\product-list.json';
+const newAccesoriesFilePath = 'C:\\Users\\karso\\NewCodingProjects\\Skyblock-Flips\\tools\\accessory-items.json';
+const newCraftingRecipesFilePath = 'C:\\Users\\karso\\NewCodingProjects\\Skyblock-Flips\\tools\\accessory-crafting-recipes.json';
+const productListFilePath = 'C:\\Users\\karso\\NewCodingProjects\\Skyblock-Flips\\server\\product-list.json';
 const ITEMS_API_URL = 'https://api.hypixel.net/v2/resources/skyblock/items';
 
 async function main() {

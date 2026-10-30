@@ -41,11 +41,11 @@ import time
 from collections import defaultdict
 from pathlib import Path
 
-BACKEND_DIR = Path(__file__).parent.parent
-RAW_PATH = BACKEND_DIR / "Testing" / "trade-outcomes.jsonl"
-CLEAN_PATH = BACKEND_DIR / "Testing" / "trade-outcomes.clean.jsonl"
-REPORT_PATH = BACKEND_DIR / "Testing" / "trade-outcomes.clean-report.json"
-TRADER_DATA_PATH = BACKEND_DIR / "production" / "trader-data.json"
+DATA_DIR = Path(__file__).parent.parent / "data"
+RAW_PATH = DATA_DIR / "trade-outcomes.jsonl"
+CLEAN_PATH = DATA_DIR / "trade-outcomes.clean.jsonl"
+REPORT_PATH = DATA_DIR / "trade-outcomes.clean-report.json"
+TRADER_DATA_PATH = DATA_DIR / "trader-data.json"
 
 # Orders are relisted well within this window under the normal batch
 # cancel/relist cycle, so anything quiet for longer has lost its resolve event.

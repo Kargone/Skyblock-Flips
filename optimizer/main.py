@@ -177,10 +177,10 @@ BASE_BAZAAR_TAX = 0.01
 
 # backend.mjs appends one "placed" event per order here (order_amount, order_price,
 # place_time); summing those since the last reset reconstructs the 15B cap used.
-TRADE_LOG_PATH = Path(__file__).parent.parent / "Testing" / "trade-outcomes.jsonl"
+TRADE_LOG_PATH = Path(__file__).parent.parent / "data" / "trade-outcomes.jsonl"
 
 # Where the ranked advisory order list is written each poll for the mod to read.
-RECOMMENDATION_PATH = Path(__file__).parent / "recommendation.json"
+RECOMMENDATION_PATH = Path(__file__).parent.parent / "data" / "recommendation.json"
 
 
 def build_inventory(trader_data):
