@@ -239,6 +239,11 @@ def build_bazaar_data_and_product_info(bazaar_products, volume_stats, product_li
     all_product_information = {}
 
     for product_name, product_meta in product_list.items():
+        # Auction-house items can carry an api-name but aren't on the bazaar, so a
+        # missing bazaar entry for them is expected, not an error. Skip them quietly -
+        # this models bazaar flips only (and stops the per-poll "no bazaar data" spam).
+        if product_meta.get("type") == "auction-product":
+            continue
         api_name = product_meta.get("api-name")
         if not api_name:
             if product_meta.get("has-weights"):
