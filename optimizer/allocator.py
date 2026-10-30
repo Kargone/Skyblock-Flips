@@ -79,10 +79,11 @@ EXPECTED_FILL_HAIRCUT = 0.5
 class Candidate:
     product_name: str
     side: str  # "sell_inventory" or "buy"
-    quantity: int
-    profit: float       # total expected profit if this candidate is taken
-    order_worth: float  # counts toward the 15B/24h cap
-    coin_cost: float    # 0 for sell_inventory candidates
+    quantity: int        # units to LIST/place: the full holding for a sell, ~expected fill for a buy
+    expected_fill: float # units expected to actually fill in the window - profit is based on this
+    profit: float       # total expected profit if this candidate is taken (profit_per_unit x expected_fill)
+    order_worth: float  # order_price x quantity (the full listing) - counts toward the 15B/24h cap
+    coin_cost: float    # buy_price x quantity for buys (coins reserved on placement); 0 for sells
     slot_index: int      # 0 for the first slot taken on this product/side, 1 for the second
 
 
@@ -115,25 +116,38 @@ def estimate_fillable_qty(past_quantity_per_hour, weight_1, weight_2, weight_3, 
     return min(past_quantity_per_hour * time_between_trades_hours * weight * haircut, cap_qty)
 
 
-def _slot_candidates(product_name, side, expected_fillable, profit_per_unit, order_price, coin_cost_per_unit):
+def _slot_candidates(product_name, side, list_budget, fill_estimate, profit_per_unit, order_price, coin_cost_per_unit):
+    """Split a product/side into up to MAX_SLOTS_PER_PRODUCT_SIDE bazaar orders.
+
+    list_budget is how much to actually LIST (the full holding for a sell; the
+    affordable/fittable amount for a buy). fill_estimate is how much of that is
+    expected to fill in the window. Profit is on the fill; order_worth and
+    coin_cost are on the full listing, because placing the order consumes the
+    15B/24h cap (and, for buys, reserves coins) on the whole amount regardless
+    of how much ends up filling.
+    """
     candidates = []
-    remaining = expected_fillable
+    remaining_list = list_budget
+    remaining_fill = fill_estimate
     for slot_index in range(MAX_SLOTS_PER_PRODUCT_SIDE):
-        if slot_index > 0 and remaining < SECOND_SLOT_MIN_REMAINING_QTY:
+        if slot_index > 0 and remaining_list < SECOND_SLOT_MIN_REMAINING_QTY:
             break
-        qty = math.floor(min(MAX_ORDER_SIZE, remaining))
-        if qty <= 0:
+        list_qty = math.floor(min(MAX_ORDER_SIZE, remaining_list))
+        if list_qty <= 0:
             break
 
-        profit = profit_per_unit * qty
+        slot_fill = min(remaining_fill, list_qty)
+        profit = profit_per_unit * slot_fill
         if profit < MIN_PROFIT_PER_ORDER:
             break  # later slots only get smaller/less certain, not worth continuing
 
         candidates.append(Candidate(
-            product_name=product_name, side=side, quantity=qty, profit=profit,
-            order_worth=order_price * qty, coin_cost=coin_cost_per_unit * qty, slot_index=slot_index,
+            product_name=product_name, side=side, quantity=list_qty, expected_fill=slot_fill,
+            profit=profit, order_worth=order_price * list_qty,
+            coin_cost=coin_cost_per_unit * list_qty, slot_index=slot_index,
         ))
-        remaining -= qty
+        remaining_list -= list_qty
+        remaining_fill -= slot_fill
     return candidates
 
 
@@ -160,7 +174,10 @@ def build_sell_inventory_candidates(product_name, info, prices, bazaar_fee, held
             time_between_trades_hours, cap_qty=held_qty,
         )
 
-    return _slot_candidates(product_name, "sell_inventory", expected_fillable, profit_per_unit, prices["sell_price"], coin_cost_per_unit=0)
+    # List the whole holding (you want it all sold); only ~expected_fillable of
+    # it sells in the window, which is what the profit is scored on.
+    return _slot_candidates(product_name, "sell_inventory", list_budget=held_qty, fill_estimate=expected_fillable,
+                            profit_per_unit=profit_per_unit, order_price=prices["sell_price"], coin_cost_per_unit=0)
 
 
 def build_buy_candidates(product_name, info, prices, bazaar_fee, purse_remaining, held_qty, time_between_trades_hours):
@@ -189,7 +206,10 @@ def build_buy_candidates(product_name, info, prices, bazaar_fee, purse_remaining
             time_between_trades_hours, cap_qty=cap_qty, haircut=EXPECTED_FILL_HAIRCUT,
         )
 
-    return _slot_candidates(product_name, "buy", expected_fillable, profit_per_unit, prices["buy_price"], coin_cost_per_unit=prices["buy_price"])
+    # Size a buy to what we expect to fill - no point reserving coins on a buy
+    # order's unfilled tail - so the listing and the fill estimate are the same.
+    return _slot_candidates(product_name, "buy", list_budget=expected_fillable, fill_estimate=expected_fillable,
+                            profit_per_unit=profit_per_unit, order_price=prices["buy_price"], coin_cost_per_unit=prices["buy_price"])
 
 
 def solve(candidates, available_slots, coins_available, daily_cap_remaining):
@@ -301,4 +321,4 @@ if __name__ == "__main__":
     total_profit = sum(c.profit for c in chosen)
     print(f"chose {len(chosen)}/{TOTAL_SLOTS} slots, total expected profit: {total_profit:,.0f}")
     for c in chosen:
-        print(f"  [{c.side:14s}] {c.product_name:35s} qty={c.quantity:>7d}  profit={c.profit:>12,.0f}  worth={c.order_worth:>14,.0f}")
+        print(f"  [{c.side:14s}] {c.product_name:35s} list={c.quantity:>7d} fill~{c.expected_fill:>7,.0f}  profit={c.profit:>12,.0f}  worth={c.order_worth:>14,.0f}")

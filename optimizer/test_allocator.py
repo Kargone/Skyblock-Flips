@@ -1,0 +1,213 @@
+"""
+Regression tests for the allocator + fill model. Run from anywhere:
+
+    python optimizer/test_allocator.py
+    (or)  python -m unittest optimizer/test_allocator.py
+
+Covers the fill-model lookup/cap/hot-reload, the asymmetric order sizing
+(sells list the full holding; buys size to expected fill; profit, cap worth and
+coin cost billed correctly), the ILP constraints, the sells-first policy, and
+that the committed fill_model.json is well-formed.
+"""
+
+import json
+import os
+import sys
+import tempfile
+import time
+import unittest
+from pathlib import Path
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+
+import fill_model
+import allocator as A
+
+KNOWN_MODEL = {
+    "version": 1,
+    "horizon_hours": 8,
+    "volume_edges": [100, 200, 300, 400],
+    "rates_per_min": {"sell": [0.1, 0.2, 0.3, 0.4, 0.5], "buy": [1.0, 1.0, 1.0, 1.0, 1.0]},
+    "fallback_rate_per_min": {"sell": 0.3, "buy": 1.0},
+}
+
+
+def make_info(sell_vol=250, buy_vol=250):
+    return {
+        "sell_volume_7_day": sell_vol, "bought_volume_7_day": buy_vol, "max_stack_size": 64,
+        # fallback-path fields (unused while a model is available):
+        "past_quantity_sold_per_hour": 0, "past_quantity_bought_per_hour": 0,
+        "sell_volume_7_day_weight": 1, "sell_volume_24_hour_weight": 1, "new_listings_per_hour_selling_weight": 1,
+        "bought_volume_7_day_weight": 1, "bought_volume_24_hour_weight": 1, "new_listings_per_hour_buying_weight": 1,
+    }
+
+
+class FillModelTests(unittest.TestCase):
+    def setUp(self):
+        self._orig_path = fill_model._MODEL_PATH
+        self._tmp = Path(tempfile.mkdtemp()) / "fill_model.json"
+        self._tmp.write_text(json.dumps(KNOWN_MODEL), encoding="utf-8")
+        fill_model._MODEL_PATH = self._tmp
+        fill_model._model = None
+        fill_model._model_mtime = None
+
+    def tearDown(self):
+        fill_model._MODEL_PATH = self._orig_path
+        fill_model._model = None
+        fill_model._model_mtime = None
+
+    def test_available(self):
+        self.assertTrue(fill_model.available())
+
+    def test_bucket_and_rate(self):
+        # vol 250 -> bucket 2 (<=300) -> sell rate 0.3; 0.3 * 8h * 60 = 144
+        self.assertAlmostEqual(fill_model.expected_fill("sell", 250, cap_qty=10**9), 144.0, places=6)
+        # vol 50 -> bucket 0 -> 0.1 * 480 = 48
+        self.assertAlmostEqual(fill_model.expected_fill("sell", 50, cap_qty=10**9), 48.0, places=6)
+        # vol 500 -> top bucket 4 -> 0.5 * 480 = 240
+        self.assertAlmostEqual(fill_model.expected_fill("sell", 500, cap_qty=10**9), 240.0, places=6)
+
+    def test_cap_respected(self):
+        self.assertEqual(fill_model.expected_fill("sell", 500, cap_qty=10), 10)
+
+    def test_horizon_override(self):
+        self.assertAlmostEqual(fill_model.expected_fill("sell", 50, cap_qty=10**9, horizon_hours=4), 24.0, places=6)
+
+    def test_unknown_side(self):
+        self.assertIsNone(fill_model.rate_per_min("bogus", 100))
+        self.assertEqual(fill_model.expected_fill("bogus", 100, cap_qty=10**9), 0.0)
+
+    def test_missing_model_unavailable(self):
+        fill_model._MODEL_PATH = Path(tempfile.mkdtemp()) / "nope.json"
+        fill_model._model = None
+        fill_model._model_mtime = None
+        self.assertFalse(fill_model.available())
+        self.assertEqual(fill_model.expected_fill("sell", 250, cap_qty=10**9), 0.0)
+
+    def test_hot_reload_on_mtime_change(self):
+        self.assertAlmostEqual(fill_model.expected_fill("buy", 50, cap_qty=10**9), 480.0, places=6)  # rate 1.0
+        changed = dict(KNOWN_MODEL)
+        changed["rates_per_min"] = {"sell": [0.1] * 5, "buy": [2.0] * 5}
+        self._tmp.write_text(json.dumps(changed), encoding="utf-8")
+        os.utime(self._tmp, (time.time() + 10, time.time() + 10))  # bump mtime
+        self.assertAlmostEqual(fill_model.expected_fill("buy", 50, cap_qty=10**9), 960.0, places=6)  # rate 2.0
+
+
+class SizingTests(unittest.TestCase):
+    """Allocator sizing with a controlled fill estimate."""
+
+    def setUp(self):
+        self._orig = (fill_model.available, fill_model.expected_fill)
+        fill_model.available = lambda: True
+
+    def tearDown(self):
+        fill_model.available, fill_model.expected_fill = self._orig
+
+    def _set_fill(self, value):
+        fill_model.expected_fill = lambda side, vol, cap_qty, horizon_hours=None: min(cap_qty, value)
+
+    def test_sell_lists_full_holding(self):
+        self._set_fill(1000)
+        prices = {"sell_price": 100.0, "buy_price": 120.0}
+        cands = A.build_sell_inventory_candidates("P", make_info(), prices, 0.01,
+                                                  held_qty=5000, historical_cost=50.0, time_between_trades_hours=8)
+        self.assertEqual(len(cands), 1)
+        c = cands[0]
+        self.assertEqual(c.quantity, 5000)            # lists the whole holding
+        self.assertEqual(c.expected_fill, 1000)       # but only ~1000 fills
+        ppu = 100.0 * 0.99 - 50.0                       # 49
+        self.assertAlmostEqual(c.profit, ppu * 1000)   # profit on the fill, not the listing
+        self.assertAlmostEqual(c.order_worth, 100.0 * 5000)  # cap billed on the full listing
+        self.assertEqual(c.coin_cost, 0)
+
+    def test_buy_sizes_to_fill(self):
+        self._set_fill(1500)
+        prices = {"sell_price": 100.0, "buy_price": 40.0}
+        cands = A.build_buy_candidates("P", make_info(), prices, 0.01,
+                                       purse_remaining=10**12, held_qty=0, time_between_trades_hours=8)
+        self.assertEqual(len(cands), 1)
+        c = cands[0]
+        self.assertEqual(c.quantity, 1500)            # sized to expected fill
+        self.assertEqual(c.expected_fill, 1500)
+        self.assertAlmostEqual(c.order_worth, 40.0 * 1500)
+        self.assertAlmostEqual(c.coin_cost, 40.0 * 1500)  # coins reserved on what's listed
+
+    def test_min_profit_is_on_fill_not_listing(self):
+        # Lists 5000 but only 10 fill -> profit 49*10=490 < 3000 -> rejected.
+        self._set_fill(10)
+        prices = {"sell_price": 100.0, "buy_price": 120.0}
+        cands = A.build_sell_inventory_candidates("P", make_info(), prices, 0.01,
+                                                  held_qty=5000, historical_cost=50.0, time_between_trades_hours=8)
+        self.assertEqual(cands, [])
+
+    def test_sell_at_loss_no_candidate(self):
+        self._set_fill(1000)
+        prices = {"sell_price": 100.0, "buy_price": 120.0}
+        cands = A.build_sell_inventory_candidates("P", make_info(), prices, 0.01,
+                                                  held_qty=5000, historical_cost=200.0, time_between_trades_hours=8)
+        self.assertEqual(cands, [])
+
+    def test_held_zero_no_sell(self):
+        self._set_fill(1000)
+        prices = {"sell_price": 100.0, "buy_price": 120.0}
+        cands = A.build_sell_inventory_candidates("P", make_info(), prices, 0.01,
+                                                  held_qty=0, historical_cost=50.0, time_between_trades_hours=8)
+        self.assertEqual(cands, [])
+
+    def test_buy_no_margin_no_candidate(self):
+        self._set_fill(1500)
+        prices = {"sell_price": 100.0, "buy_price": 100.0}  # sell*(1-fee) - buy < 0
+        cands = A.build_buy_candidates("P", make_info(), prices, 0.01,
+                                       purse_remaining=10**12, held_qty=0, time_between_trades_hours=8)
+        self.assertEqual(cands, [])
+
+
+class SolveTests(unittest.TestCase):
+    def _c(self, name, side, profit, order_worth, coin_cost, qty=100):
+        return A.Candidate(product_name=name, side=side, quantity=qty, expected_fill=qty,
+                           profit=profit, order_worth=order_worth, coin_cost=coin_cost, slot_index=0)
+
+    def test_coins_constraint_picks_higher_profit(self):
+        c1 = self._c("A", "buy", profit=10000, order_worth=1000, coin_cost=1000)
+        c2 = self._c("B", "buy", profit=8000, order_worth=1000, coin_cost=1000)
+        chosen = A.solve([c1, c2], available_slots=5, coins_available=1000, daily_cap_remaining=10**12)
+        self.assertEqual([c.product_name for c in chosen], ["A"])
+
+    def test_daily_cap_constraint(self):
+        c1 = self._c("A", "buy", profit=10000, order_worth=1000, coin_cost=0)
+        c2 = self._c("B", "buy", profit=8000, order_worth=1000, coin_cost=0)
+        chosen = A.solve([c1, c2], available_slots=5, coins_available=10**12, daily_cap_remaining=1000)
+        self.assertEqual(len(chosen), 1)
+
+    def test_slot_constraint(self):
+        cs = [self._c(n, "buy", profit=1000 + i, order_worth=1, coin_cost=0) for i, n in enumerate("ABCD")]
+        chosen = A.solve(cs, available_slots=2, coins_available=10**12, daily_cap_remaining=10**12)
+        self.assertEqual(len(chosen), 2)
+
+    def test_empty_or_no_slots(self):
+        self.assertEqual(A.solve([], 5, 10**9, 10**9), [])
+        c1 = self._c("A", "buy", 1000, 1, 0)
+        self.assertEqual(A.solve([c1], 0, 10**9, 10**9), [])
+
+    def test_sells_first_policy(self):
+        # Buy has higher profit, but with one slot the sell is locked in first.
+        sell = self._c("S", "sell_inventory", profit=5000, order_worth=1000, coin_cost=0)
+        buy = self._c("B", "buy", profit=9000, order_worth=1000, coin_cost=500)
+        chosen = A.solve_sells_first([sell, buy], available_slots=1, coins_available=10**9, daily_cap_remaining=10**9)
+        self.assertEqual([c.product_name for c in chosen], ["S"])
+
+
+class CommittedModelTests(unittest.TestCase):
+    def test_committed_model_well_formed(self):
+        path = Path(fill_model.__file__).parent / "fill_model.json"
+        self.assertTrue(path.exists(), "committed fill_model.json is missing")
+        m = json.loads(path.read_text(encoding="utf-8"))
+        self.assertIn("horizon_hours", m)
+        self.assertEqual(len(m["volume_edges"]), 4)
+        for side in ("sell", "buy"):
+            self.assertEqual(len(m["rates_per_min"][side]), 5)
+            self.assertTrue(all(r >= 0 for r in m["rates_per_min"][side]))
+
+
+if __name__ == "__main__":
+    unittest.main(verbosity=2)

@@ -569,6 +569,7 @@ def build_recommendation(bazaar_data, all_product_information, short_term_invest
                 "action": "sell" if c.side == "sell_inventory" else "buy",
                 "product_name": c.product_name,
                 "quantity": c.quantity,
+                "expected_fill": round(c.expected_fill),
                 "order_price": c.order_worth / c.quantity if c.quantity else 0,
                 "expected_profit": c.profit,
                 "order_worth": c.order_worth,

@@ -9,22 +9,30 @@ False and the allocator falls back to its previous estimate.
 """
 
 import json
+import os
 import pathlib
 
 _MODEL_PATH = pathlib.Path(__file__).parent / "fill_model.json"
 _model = None
-_loaded = False
+_model_mtime = None
 
 
 def _load():
-    global _model, _loaded
-    if _loaded:
-        return _model
-    _loaded = True
+    """Load (and hot-reload) fill_model.json. Re-reads whenever the file's mtime
+    changes, so a retrain or a `git pull` of a new model is picked up by a
+    running optimizer without a restart; otherwise returns the cached model."""
+    global _model, _model_mtime
     try:
-        _model = json.loads(_MODEL_PATH.read_text(encoding="utf-8"))
-    except (OSError, ValueError):
-        _model = None
+        mtime = os.path.getmtime(_MODEL_PATH)
+    except OSError:
+        _model, _model_mtime = None, None
+        return None
+    if _model is None or mtime != _model_mtime:
+        try:
+            _model = json.loads(_MODEL_PATH.read_text(encoding="utf-8"))
+            _model_mtime = mtime
+        except (OSError, ValueError):
+            _model, _model_mtime = None, None
     return _model
 
 

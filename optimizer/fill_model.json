@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "fitted_at": "2026-10-30T03:46:45+00:00",
+  "fitted_at": "2026-10-30T04:24:22+00:00",
   "source": "trade-outcomes.clean.jsonl",
   "n_orders": 2572,
   "horizon_hours": 8,
