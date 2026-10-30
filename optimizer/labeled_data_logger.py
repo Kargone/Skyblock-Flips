@@ -55,6 +55,12 @@ HORIZONS_HOURS = [8, 12]
 # (losing at most a few minutes of accumulated ticks on a crash).
 CHECKPOINT_INTERVAL_SECONDS = 5 * 60
 
+# On restart, a pending row overdue by more than this can't be validly resolved:
+# its horizon elapsed while the logger was down, so no order-book polls accumulated
+# its realized volume and its "end" prices would be from long after the horizon.
+# Such rows are dropped at startup (on a clean restart nothing is overdue).
+STALE_PENDING_GRACE_MS = 60 * 60 * 1000
+
 OUTPUT_PATH = Path(__file__).parent.parent / "data" / "labeled-order-data.jsonl"
 CHECKPOINT_PATH = Path(__file__).parent.parent / "data" / "labeled-order-data.checkpoint.json"
 
@@ -165,6 +171,15 @@ def finalize_row(row, prices, quick_status):
 def run():
     product_list = get_product_list()
     pending, last_order_book, last_snapshot_time = load_checkpoint()
+
+    # Discard rows whose horizon elapsed while the logger was down (see
+    # STALE_PENDING_GRACE_MS) - resolving them now would poison the training set.
+    startup_ms = int(time.time() * 1000)
+    fresh_pending = [row for row in pending if row["resolve_time"] > startup_ms - STALE_PENDING_GRACE_MS]
+    if len(fresh_pending) != len(pending):
+        log.warning("dropping %d stale pending rows overdue after a logging gap", len(pending) - len(fresh_pending))
+    pending = fresh_pending
+
     last_checkpoint_time = 0
     log.info("starting with %d pending rows, %d tracked order books", len(pending), len(last_order_book))
 

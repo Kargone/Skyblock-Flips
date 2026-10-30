@@ -2544,6 +2544,33 @@ function recordBazaarHistorySnapshot(products, now) {
     }
 }
 
+// --- Price history for exit-price forecasting (issue #3) ---------------------
+// bazaar-trend-data.json tracks volume only. This logs insta buy/sell prices so
+// a model can later learn how a product's price drifts over the ~8h a buy-flip
+// is held. Written to its own append-only JSONL (never into the trend file, which
+// is already huge) and sampled coarsely - an 8h drift needs nothing finer than
+// 15 min. This is the resilient backup to optimizer/labeled_data_logger.py: it
+// runs on the always-on bazaar poll, so price history keeps accruing even if that
+// separate logger dies. One line per sample:
+//   {"t": <ms>, "p": {<productId>: [buyPrice, sellPrice], ...}}
+const priceHistoryPath = path.join(__dirname, '..', 'data', 'price-history.jsonl');
+const PRICE_HISTORY_SAMPLE_INTERVAL_MS = 15 * 60 * 1000;
+let lastPriceSampleTime = 0;
+
+function recordPriceSnapshot(products, now) {
+    const prices = {};
+    for (const [productId, product] of Object.entries(products)) {
+        const quickStatus = product.quick_status;
+        if (!quickStatus) continue;
+        const buy = quickStatus.buyPrice, sell = quickStatus.sellPrice;
+        if (!buy || !sell || buy <= 0 || sell <= 0) continue;
+        prices[productId] = [Math.round(buy * 10) / 10, Math.round(sell * 10) / 10];
+    }
+    fs.appendFile(priceHistoryPath, JSON.stringify({ t: now, p: prices }) + '\n', (err) => {
+        if (err) console.error('Error appending to price history:', err);
+    });
+}
+
 // Sums a per-tick field (e.g. sellVolumeTick) across the trailing `hoursAgo` window.
 // Returns null if the retained history doesn't yet cover close to that long - e.g.
 // right after a restart, with only a few minutes of ticks recorded, summing that
@@ -2746,6 +2773,11 @@ async function updateBazaarData() {
             recordBazaarHistorySnapshot(bazaar_data, now);
             lastHistorySampleTime = now;
             recordBazaarEmaSnapshot(bazaar_data, getVolumeStats());
+        }
+
+        if (now - lastPriceSampleTime >= PRICE_HISTORY_SAMPLE_INTERVAL_MS) {
+            recordPriceSnapshot(bazaar_data, now);
+            lastPriceSampleTime = now;
         }
 
         new UpdateOrderFillAmounts().updateOrders();
