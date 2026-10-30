@@ -258,14 +258,19 @@ def run():
         if now_ms - last_snapshot_time >= SNAPSHOT_INTERVAL_SECONDS * 1000:
             new_rows = 0
             for product_name, info in all_product_information.items():
+                # Skip auction-house items - this models bazaar flips only.
+                if product_list.get(product_name, {}).get("type") == "auction-product":
+                    continue
                 prices = bazaar_data.get(product_name)
                 quick_status = current_quick_status.get(product_name)
                 if prices is None or quick_status is None:
                     continue
-                # Skip products with no valid order-book price right now (no active
-                # bids/asks) - build_bazaar_data_and_product_info already logged why,
-                # and a 0 price isn't a real tradeable state worth a training row.
+                # Skip anything with a 0/absent price (no active bids/asks): a 0 coin
+                # price isn't a real tradeable state worth a training row. Checks both
+                # the order-book prices and the instant buy/sell prices.
                 if prices["buy_price"] <= 0 or prices["sell_price"] <= 0:
+                    continue
+                if not quick_status.get("buyPrice") or not quick_status.get("sellPrice"):
                     continue
                 pending.extend(take_snapshot(now_ms, product_name, info, prices, quick_status))
                 new_rows += len(HORIZONS_HOURS)
