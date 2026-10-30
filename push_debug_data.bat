@@ -16,6 +16,10 @@ git add -f data/trader-data.json ^
            data/pastTradesLogs.json ^
            data/trade-outcomes.jsonl || goto :fail
 
+:: labeled-order-data is optional - the logger may not have produced it yet, so
+:: a missing file here must not abort the push of the files above.
+git add -f data/labeled-order-data.jsonl data/labeled-order-data.checkpoint.json 2>nul
+
 for /f %%T in ('git write-tree') do set TREE=%%T
 for /f %%C in ('git commit-tree %TREE% -p HEAD -m "Exporting server JSON data for debugging (%BRANCH_DATE%)"') do set COMMIT=%%C
 set GIT_INDEX_FILE=

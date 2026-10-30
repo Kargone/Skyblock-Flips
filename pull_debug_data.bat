@@ -21,12 +21,18 @@ git restore --source=origin/%BRANCH_NAME% --worktree -- ^
     data/pastTradesLogs.json ^
     data/trade-outcomes.jsonl || goto :fail
 
+:: labeled-order-data is optional (the logger may not be producing output);
+:: pull it if present, but do not fail the whole sync when it is absent.
+git restore --source=origin/%BRANCH_NAME% --worktree -- ^
+    data/labeled-order-data.jsonl ^
+    data/labeled-order-data.checkpoint.json 2>nul
+
 echo.
 echo Files copied. Deleting remote branch...
 git push origin --delete %BRANCH_NAME%
 
 echo.
-echo Done! All 4 files updated and temporary branch deleted.
+echo Done! Data files updated and temporary branch deleted.
 pause
 exit /b 0
 
