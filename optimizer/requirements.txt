@@ -1,3 +1,8 @@
-requests
-pulp
+# Pinned deliberately. PuLP 4.x moved its solver core to a Rust extension
+# (_rustcore) whose DLL Windows blocks on the tower, and it deprecates the
+# PULP_CBC_CMD / LpVariable API this code uses. 3.3.2 is pure-Python with the
+# bundled CBC solver and is the known-good version the allocator is built against.
+# (numpy is NOT required - the fitter and fill model are pure stdlib.)
+pulp==3.3.2
+requests==2.34.2
 tzdata
