@@ -257,6 +257,7 @@ def run():
         # Take a fresh snapshot for every product on the coarser snapshot cadence.
         if now_ms - last_snapshot_time >= SNAPSHOT_INTERVAL_SECONDS * 1000:
             new_rows = 0
+            snapshotted = 0
             for product_name, info in all_product_information.items():
                 # Skip auction-house items - this models bazaar flips only.
                 if product_list.get(product_name, {}).get("type") == "auction-product":
@@ -273,9 +274,11 @@ def run():
                 if not quick_status.get("buyPrice") or not quick_status.get("sellPrice"):
                     continue
                 pending.extend(take_snapshot(now_ms, product_name, info, prices, quick_status))
+                snapshotted += 1
                 new_rows += len(HORIZONS_HOURS)
             last_snapshot_time = now_ms
-            log.info("took snapshots for %d products (%d pending rows)", len(all_product_information), new_rows)
+            log.info("took snapshots for %d of %d products (skipped auction-house + zero-price); %d pending rows added",
+                     snapshotted, len(all_product_information), new_rows)
 
         if now_ms - last_checkpoint_time >= CHECKPOINT_INTERVAL_SECONDS * 1000:
             save_checkpoint(pending, last_order_book, last_snapshot_time)
