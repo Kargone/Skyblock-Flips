@@ -8,20 +8,30 @@
                     "Golden Tooth",
                     "Null Sphere",
                     "Revenant Viscera",
-                    "Tarantula Silk"
+                    "Tarantula Silk",
+                    "Null Ovoid",
+                    "Molten Powder",
+                    "Gabagool Dostillate",
+                    "Soulflow"
                 ],
                 "buy-during": [
                     "Hamster Wheel",
                     "Golden Tooth",
-                    "Null Sphere",
+                    "Null Ovoid",
                     "Revenant Viscera",
                     "Tarantula Silk",
+                    "Null Ovoid",
+                    "Molten Powder",
+                    "Gabagool Dostillate",
+                    "Soulflow",
                     "Red Claw Egg"
                 ],
                 "buy-after": {
                     "Golden Tooth": 2,
                     "Revenant Viscera": 1,
                     "Tarantula Silk": 1,
+                    "Null Ovoid": 1,
+                    "Molten Powder": 1,
                     "Red Claw Egg": 1
                 },
                 "notes": [
@@ -80,7 +90,8 @@
                 "sell-before": [
                     "Ultimate Chimera I",
                     "Daedalus Stick",
-                    "Griffin Feather"
+                    "Griffin Feather",
+                    "Enchanted Ancient Claw"
                 ],
                 "buy-during": [
                     "Ultimate Chimera I",
@@ -90,6 +101,7 @@
                 ],
                 "buy-after": {
                     "Griffin Feather": 3,
+                    "Enchanted Ancient Claw": 1,
                     "Ultimate Chimera I": 2
                 },
                 "notes": []
