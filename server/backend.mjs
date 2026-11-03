@@ -714,7 +714,9 @@ class ProcesTrade {
             this.message.includes('Allowd unit price: ') ||
             this.message.includes('You don\'t have enough inventory space to fit all of those items!') ||
             this.message.includes('[Bazaar] You don\'t have the space required to claim that!') ||
-            this.message.includes('[Bazaar] You have goods to claim on this order!')
+            this.message.includes('[Bazaar] You have goods to claim on this order!') ||
+            this.message.includes('[Bazaar] No items could be matched to buyers!') ||
+            this.message.includes('[Bazaar] Couldn\'t find any buyers for')
         ) {
             result = 'Nontrade message';
             return "Nontrade message: " + this.message;
