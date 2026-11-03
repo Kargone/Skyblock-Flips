@@ -150,6 +150,36 @@ const IGNORE_INSTA_SELL = [
 
 const ALLOW_INSTA_SELL_BUY = [];
 
+const DUMMY_TRADE_MESSAGES = [
+    'Claiming order...',
+    'Putting goods in escrow...',
+    'Submitting sell offer...',
+    'Cancelling order...',
+    'Executing instant sell...',
+    'Submitting buy order...',
+    'You cancelled the trade!',
+    'Executing instant buy...',
+    'BIN Auction started for',
+    'You canceled your auction for',
+    'You don\'t have anything to sell!',
+    'You claimed ',
+    'Cancelled parkour!',
+    '[Bazaar] Somehow, there was nothing to claim!',
+    '[Bazaar] You reached the daily limit of coins you may create orders for on the Bazaar!',
+    '[NPC] Jacob',
+    '[Bazaar] You reached your maximum of 28 Bazaar orders!',
+    "Couldn't parse that price!",
+    'is lower than the old price of',
+    'Escrow refunded',
+    'You are overbidding too much!',
+    'Allowd unit price: ',
+    'You don\'t have enough inventory space to fit all of those items!',
+    '[Bazaar] You don\'t have the space required to claim that!',
+    '[Bazaar] You have goods to claim on this order!',
+    '[Bazaar] No items could be matched to buyers!',
+    '[Bazaar] Couldn\'t find'
+];
+
 // Load trader_data manually so we can modify and write it back
 const traderDataPath = path.join(__dirname, '..', 'data', 'trader-data.json');
 let trader_data;
@@ -689,35 +719,7 @@ class ProcesTrade {
             const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
             const nameString = this.message.slice(nameStringStart, nameStringEnd);
             result = this.itemRemoved(nameString, amount, detectedRarity);
-        } else if (
-            this.message.includes('Claiming order...') ||
-            this.message.includes('Putting goods in escrow...') ||
-            this.message.includes('Submitting sell offer...') ||
-            this.message.includes('Cancelling order...') ||
-            this.message.includes('Executing instant sell...') ||
-            this.message.includes('Submitting buy order...') ||
-            this.message.includes('You cancelled the trade!') ||
-            this.message.includes('Executing instant buy...') ||
-            this.message.includes('BIN Auction started for') ||
-            this.message.includes('You canceled your auction for') ||
-            this.message.includes('You don\'t have anything to sell!') ||
-            this.message.includes('You claimed ') ||
-            this.message.includes('Cancelled parkour!') ||
-            this.message.includes('[Bazaar] Somehow, there was nothing to claim!') ||
-            this.message.includes('[Bazaar] You reached the daily limit of coins you may create orders for on the Bazaar!') ||
-            this.message.includes('[NPC] Jacob') ||
-            this.message.includes('[Bazaar] You reached your maximum of 28 Bazaar orders!') ||
-            this.message.includes("Couldn't parse that price!") ||
-            this.message.includes('is lower than the old price of') ||
-            this.message.includes('Escrow refunded') ||
-            this.message.includes('You are overbidding too much!') ||
-            this.message.includes('Allowd unit price: ') ||
-            this.message.includes('You don\'t have enough inventory space to fit all of those items!') ||
-            this.message.includes('[Bazaar] You don\'t have the space required to claim that!') ||
-            this.message.includes('[Bazaar] You have goods to claim on this order!') ||
-            this.message.includes('[Bazaar] No items could be matched to buyers!') ||
-            this.message.includes('[Bazaar] Couldn\'t find any buyers for')
-        ) {
+        } else if (DUMMY_TRADE_MESSAGES.some(dummyMessage => this.message.includes(dummyMessage))) {
             result = 'Nontrade message';
             return "Nontrade message: " + this.message;
         } else {
