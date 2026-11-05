@@ -18,6 +18,7 @@ git restore --source=origin/%BRANCH_NAME% --worktree -- ^
     data/trader-data.json ^
     data/trader-data.json.backup.json ^
     data/mayor-history.json ^
+    data/mayor-price-history.json ^
     data/pastTradesLogs.json ^
     data/trade-outcomes.jsonl || goto :fail
 
