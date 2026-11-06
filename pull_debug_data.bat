@@ -22,11 +22,9 @@ git restore --source=origin/%BRANCH_NAME% --worktree -- ^
     data/pastTradesLogs.json ^
     data/trade-outcomes.jsonl || goto :fail
 
-:: labeled-order-data is optional (the logger may not be producing output);
-:: pull it if present, but do not fail the whole sync when it is absent.
-git restore --source=origin/%BRANCH_NAME% --worktree -- ^
-    data/labeled-order-data.jsonl ^
-    data/labeled-order-data.checkpoint.json 2>nul
+:: NOTE: labeled-order-data.jsonl is deliberately NOT synced here - it grows too
+:: large for GitHub (408 / sideband disconnect; files >100MB are rejected).
+:: Transfer it out of band (Google Drive) like the bazaar-trend-data file.
 
 echo.
 echo Files copied. Deleting remote branch...

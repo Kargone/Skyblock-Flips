@@ -17,9 +17,10 @@ git add -f data/trader-data.json ^
            data/pastTradesLogs.json ^
            data/trade-outcomes.jsonl || goto :fail
 
-:: labeled-order-data is optional - the logger may not have produced it yet, so
-:: a missing file here must not abort the push of the files above.
-git add -f data/labeled-order-data.jsonl data/labeled-order-data.checkpoint.json 2>nul
+:: NOTE: labeled-order-data.jsonl is deliberately NOT synced here - it grows too
+:: large for a GitHub HTTPS push (408 / sideband disconnect; GitHub also hard-
+:: rejects files >100MB). Transfer it out of band (Google Drive) like the
+:: bazaar-trend-data file.
 
 for /f %%T in ('git write-tree') do set TREE=%%T
 for /f %%C in ('git commit-tree %TREE% -p HEAD -m "Exporting server JSON data for debugging (%BRANCH_DATE%)"') do set COMMIT=%%C
