@@ -10,3 +10,4 @@ optimizer/secrets.json
 # the laptop and the server with the root push_debug_data.bat / pull_debug_data.bat
 # scripts instead.
 data/
+data.zip
