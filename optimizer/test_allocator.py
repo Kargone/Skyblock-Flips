@@ -20,6 +20,7 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+import exit_drift
 import fill_model
 import allocator as A
 
@@ -97,14 +98,18 @@ class SizingTests(unittest.TestCase):
     """Allocator sizing with a controlled fill estimate."""
 
     def setUp(self):
-        self._orig = (fill_model.available, fill_model.expected_fill)
+        self._orig = (fill_model.available, fill_model.expected_fill, exit_drift.multiplier)
         fill_model.available = lambda: True
+        exit_drift.multiplier = lambda default=1.0: 1.0  # no exit drift unless a test sets it
 
     def tearDown(self):
-        fill_model.available, fill_model.expected_fill = self._orig
+        fill_model.available, fill_model.expected_fill, exit_drift.multiplier = self._orig
 
     def _set_fill(self, value):
         fill_model.expected_fill = lambda side, vol, cap_qty, horizon_hours=None: min(cap_qty, value)
+
+    def _set_drift(self, m):
+        exit_drift.multiplier = lambda default=1.0: m
 
     def test_sell_lists_full_holding(self):
         self._set_fill(1000)
@@ -160,6 +165,68 @@ class SizingTests(unittest.TestCase):
         cands = A.build_buy_candidates("P", make_info(), prices, 0.01,
                                        purse_remaining=10**12, held_qty=0, time_between_trades_hours=8)
         self.assertEqual(cands, [])
+
+    def test_exit_drift_reduces_buy_profit(self):
+        self._set_fill(1000)
+        self._set_drift(0.9)
+        prices = {"sell_price": 100.0, "buy_price": 40.0}
+        cands = A.build_buy_candidates("P", make_info(), prices, 0.0,
+                                       purse_remaining=10**12, held_qty=0, time_between_trades_hours=8)
+        # exit = 100*0.9 = 90; profit_per_unit = 90 - 40 = 50 (fee 0)
+        self.assertEqual(len(cands), 1)
+        self.assertAlmostEqual(cands[0].profit, 50.0 * 1000)
+
+    def test_exit_drift_can_make_thin_buy_unprofitable(self):
+        self._set_fill(1000)
+        prices = {"sell_price": 100.0, "buy_price": 95.0}
+        self._set_drift(1.0)   # 100*0.99 - 95 = 4 > 0 -> candidate exists
+        self.assertEqual(len(A.build_buy_candidates("P", make_info(), prices, 0.01,
+                         purse_remaining=10**12, held_qty=0, time_between_trades_hours=8)), 1)
+        self._set_drift(0.9)   # 100*0.9*0.99 - 95 = -5.9 < 0 -> rejected
+        self.assertEqual(A.build_buy_candidates("P", make_info(), prices, 0.01,
+                         purse_remaining=10**12, held_qty=0, time_between_trades_hours=8), [])
+
+
+class ExitDriftTests(unittest.TestCase):
+    def setUp(self):
+        self._orig_path = exit_drift._PATH
+        self._tmp = Path(tempfile.mkdtemp()) / "exit_drift.json"
+        exit_drift._PATH = self._tmp
+        exit_drift._model = None
+        exit_drift._mtime = None
+
+    def tearDown(self):
+        exit_drift._PATH = self._orig_path
+        exit_drift._model = None
+        exit_drift._mtime = None
+
+    def test_multiplier(self):
+        self._tmp.write_text(json.dumps({"drift_multiplier": 0.99}), encoding="utf-8")
+        self.assertAlmostEqual(exit_drift.multiplier(), 0.99)
+
+    def test_missing_defaults_to_one(self):
+        exit_drift._PATH = Path(tempfile.mkdtemp()) / "nope.json"
+        exit_drift._model = None
+        exit_drift._mtime = None
+        self.assertEqual(exit_drift.multiplier(), 1.0)
+
+    def test_bad_value_defaults_to_one(self):
+        self._tmp.write_text(json.dumps({"drift_multiplier": 0}), encoding="utf-8")
+        self.assertEqual(exit_drift.multiplier(), 1.0)
+
+    def test_hot_reload(self):
+        self._tmp.write_text(json.dumps({"drift_multiplier": 0.99}), encoding="utf-8")
+        self.assertAlmostEqual(exit_drift.multiplier(), 0.99)
+        self._tmp.write_text(json.dumps({"drift_multiplier": 0.95}), encoding="utf-8")
+        os.utime(self._tmp, (time.time() + 10, time.time() + 10))
+        self.assertAlmostEqual(exit_drift.multiplier(), 0.95)
+
+    def test_committed_exit_drift_well_formed(self):
+        path = Path(exit_drift.__file__).parent / "exit_drift.json"
+        self.assertTrue(path.exists(), "committed exit_drift.json is missing")
+        m = json.loads(path.read_text(encoding="utf-8"))
+        self.assertGreater(m["drift_multiplier"], 0)
+        self.assertLessEqual(m["drift_multiplier"], 1.5)
 
 
 class SolveTests(unittest.TestCase):

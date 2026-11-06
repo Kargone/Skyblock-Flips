@@ -35,6 +35,7 @@ from dataclasses import dataclass
 
 import pulp
 
+import exit_drift
 import fill_model
 
 # ---- Constants describing real Hypixel Bazaar constraints ----
@@ -185,10 +186,12 @@ def build_buy_candidates(product_name, info, prices, bazaar_fee, purse_remaining
     if room_left <= 0 or prices["buy_price"] <= 0:
         return []
 
-    # Projected exit price uses today's sell price - no price-change
-    # forecasting yet. That's exactly what the labeled-data-logger pipeline
-    # is for; this is the placeholder it will eventually replace.
-    profit_per_unit = prices["sell_price"] * (1 - bazaar_fee) - prices["buy_price"]
+    # Projected exit price = today's sell price scaled by the fitted exit-drift
+    # multiplier (exit_drift.json, from fit_exit_drift.py): a buy-flip is sold ~8h
+    # later and that order-sell price drifts down ~1% over the hold, so today's
+    # price overstates the margin. Multiplier is 1.0 (no change) if unfitted.
+    exit_sell_price = prices["sell_price"] * exit_drift.multiplier()
+    profit_per_unit = exit_sell_price * (1 - bazaar_fee) - prices["buy_price"]
     if profit_per_unit <= 0:
         return []
 

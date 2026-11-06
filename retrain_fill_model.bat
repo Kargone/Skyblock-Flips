@@ -16,7 +16,12 @@ echo === refitting fill model ===
 python fit_fill_model.py || goto :fail
 
 echo.
-echo Done. Review the table above, then commit optimizer\fill_model.json and push.
+echo === refitting exit-price drift ===
+python fit_exit_drift.py || goto :fail
+
+echo.
+echo Done. Review the output above, then commit optimizer\fill_model.json and
+echo optimizer\exit_drift.json and push.
 pause
 exit /b 0
 

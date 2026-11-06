@@ -1,0 +1,8 @@
+{
+  "version": 1,
+  "fitted_at": "2026-11-06T05:39:39+00:00",
+  "horizon_hours": 8,
+  "n": 275491,
+  "trim": 0.05,
+  "drift_multiplier": 0.9907
+}
