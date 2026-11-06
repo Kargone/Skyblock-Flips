@@ -64,6 +64,15 @@ STALE_PENDING_GRACE_MS = 60 * 60 * 1000
 OUTPUT_PATH = Path(__file__).parent.parent / "data" / "labeled-order-data.jsonl"
 CHECKPOINT_PATH = Path(__file__).parent.parent / "data" / "labeled-order-data.checkpoint.json"
 
+# The output is append-only and grows ~500MB/week across the whole catalog, so
+# cap the live file and keep only the most recent archives (the rest is pruned).
+# Rotated files are named labeled-order-data.<timestamp>.jsonl and each stays
+# under GitHub's 100MB limit; the model fitter reads the active file plus all
+# archives. Transfer archives off the tower (Drive) before they age out to keep
+# older training data.
+MAX_OUTPUT_BYTES = 90 * 1024 * 1024   # rotate once the active file passes ~90 MB
+MAX_ROTATED_FILES = 12                 # keep ~12 archives (~1 GB / ~2 weeks), then prune oldest
+
 
 def round_price(price):
     return round(price * 10) / 10
@@ -112,9 +121,36 @@ def save_checkpoint(pending, last_order_book, last_snapshot_time):
     os.replace(tmp_path, CHECKPOINT_PATH)
 
 
+def _rotate_output_if_needed():
+    """Roll the output once it passes MAX_OUTPUT_BYTES and prune the oldest
+    archives beyond MAX_ROTATED_FILES, so the training log stays bounded on disk."""
+    try:
+        size = OUTPUT_PATH.stat().st_size
+    except OSError:
+        return
+    if size < MAX_OUTPUT_BYTES:
+        return
+    archive = OUTPUT_PATH.with_name(f"{OUTPUT_PATH.stem}.{time.strftime('%Y%m%d-%H%M%S')}{OUTPUT_PATH.suffix}")
+    try:
+        os.replace(OUTPUT_PATH, archive)
+    except OSError:
+        log.warning("couldn't rotate output file", exc_info=True)
+        return
+    log.info("rotated %s -> %s (%.0f MB)", OUTPUT_PATH.name, archive.name, size / 1e6)
+    # Pattern matches the timestamped archives but not the active file or the checkpoint.
+    archives = sorted(OUTPUT_PATH.parent.glob(f"{OUTPUT_PATH.stem}.*{OUTPUT_PATH.suffix}"))
+    for old in archives[:max(0, len(archives) - MAX_ROTATED_FILES)]:
+        try:
+            old.unlink()
+            log.info("pruned old archive %s", old.name)
+        except OSError:
+            log.warning("couldn't prune %s", old.name, exc_info=True)
+
+
 def append_rows(rows):
     if not rows:
         return
+    _rotate_output_if_needed()
     with OUTPUT_PATH.open("a", encoding="utf-8") as f:
         for row in rows:
             f.write(json.dumps(row) + "\n")
