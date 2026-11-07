@@ -33,7 +33,7 @@ KNOWN_MODEL = {
 }
 
 
-def make_info(sell_vol=250, buy_vol=250):
+def make_info(sell_vol=50_000, buy_vol=50_000):  # default above the buy-flip liquidity floor
     return {
         "sell_volume_7_day": sell_vol, "bought_volume_7_day": buy_vol, "max_stack_size": 64,
         # fallback-path fields (unused while a model is available):
@@ -127,15 +127,15 @@ class SizingTests(unittest.TestCase):
 
     def test_buy_sizes_to_fill(self):
         self._set_fill(1500)
-        prices = {"sell_price": 100.0, "buy_price": 40.0}
+        prices = {"sell_price": 100.0, "buy_price": 60.0}   # ratio 1.67, within the spread cap
         cands = A.build_buy_candidates("P", make_info(), prices, 0.01,
                                        purse_remaining=10**12, held_qty=0, time_between_trades_hours=8)
         self.assertEqual(len(cands), 1)
         c = cands[0]
         self.assertEqual(c.quantity, 1500)            # sized to expected fill
         self.assertEqual(c.expected_fill, 1500)
-        self.assertAlmostEqual(c.order_worth, 40.0 * 1500)
-        self.assertAlmostEqual(c.coin_cost, 40.0 * 1500)  # coins reserved on what's listed
+        self.assertAlmostEqual(c.order_worth, 60.0 * 1500)
+        self.assertAlmostEqual(c.coin_cost, 60.0 * 1500)  # coins reserved on what's listed
 
     def test_min_profit_is_on_fill_not_listing(self):
         # Lists 5000 but only 10 fill -> profit 49*10=490 < 3000 -> rejected.
@@ -169,12 +169,12 @@ class SizingTests(unittest.TestCase):
     def test_exit_drift_reduces_buy_profit(self):
         self._set_fill(1000)
         self._set_drift(0.9)
-        prices = {"sell_price": 100.0, "buy_price": 40.0}
+        prices = {"sell_price": 100.0, "buy_price": 55.0}   # ratio 1.82, within the spread cap
         cands = A.build_buy_candidates("P", make_info(), prices, 0.0,
                                        purse_remaining=10**12, held_qty=0, time_between_trades_hours=8)
-        # exit = 100*0.9 = 90; profit_per_unit = 90 - 40 = 50 (fee 0)
+        # exit = 100*0.9 = 90; profit_per_unit = 90 - 55 = 35 (fee 0)
         self.assertEqual(len(cands), 1)
-        self.assertAlmostEqual(cands[0].profit, 50.0 * 1000)
+        self.assertAlmostEqual(cands[0].profit, 35.0 * 1000)
 
     def test_exit_drift_can_make_thin_buy_unprofitable(self):
         self._set_fill(1000)
@@ -185,6 +185,33 @@ class SizingTests(unittest.TestCase):
         self._set_drift(0.9)   # 100*0.9*0.99 - 95 = -5.9 < 0 -> rejected
         self.assertEqual(A.build_buy_candidates("P", make_info(), prices, 0.01,
                          purse_remaining=10**12, held_qty=0, time_between_trades_hours=8), [])
+
+    def test_buy_rejected_wide_spread(self):
+        self._set_fill(1000)
+        prices = {"sell_price": 300.0, "buy_price": 100.0}  # ratio 3.0 > 2.0 cap -> fake/thin
+        self.assertEqual(A.build_buy_candidates("P", make_info(), prices, 0.0,
+                         purse_remaining=10**12, held_qty=0, time_between_trades_hours=8), [])
+
+    def test_buy_rejected_thin_buy_side(self):
+        self._set_fill(1000)
+        prices = {"sell_price": 100.0, "buy_price": 70.0}
+        info = make_info(sell_vol=50_000, buy_vol=1_000)    # can't acquire it
+        self.assertEqual(A.build_buy_candidates("P", info, prices, 0.0,
+                         purse_remaining=10**12, held_qty=0, time_between_trades_hours=8), [])
+
+    def test_buy_rejected_thin_sell_side(self):
+        self._set_fill(1000)
+        prices = {"sell_price": 100.0, "buy_price": 70.0}
+        info = make_info(sell_vol=1_000, buy_vol=50_000)    # can't offload it (no sell-side demand)
+        self.assertEqual(A.build_buy_candidates("P", info, prices, 0.0,
+                         purse_remaining=10**12, held_qty=0, time_between_trades_hours=8), [])
+
+    def test_buy_kept_when_liquid_and_sane_spread(self):
+        self._set_fill(1000)
+        prices = {"sell_price": 100.0, "buy_price": 70.0}   # ratio 1.43, both vols 50k
+        cands = A.build_buy_candidates("P", make_info(), prices, 0.0,
+                                       purse_remaining=10**12, held_qty=0, time_between_trades_hours=8)
+        self.assertEqual(len(cands), 1)
 
 
 class ExitDriftTests(unittest.TestCase):
@@ -262,6 +289,14 @@ class SolveTests(unittest.TestCase):
         buy = self._c("B", "buy", profit=9000, order_worth=1000, coin_cost=500)
         chosen = A.solve_sells_first([sell, buy], available_slots=1, coins_available=10**9, daily_cap_remaining=10**9)
         self.assertEqual([c.product_name for c in chosen], ["S"])
+
+    def test_blended_picks_highest_profit_across_sides(self):
+        # The live policy: with one slot, blended solve() takes the higher-profit
+        # buy over the sell (opposite of sells-first above).
+        sell = self._c("S", "sell_inventory", profit=5000, order_worth=1000, coin_cost=0)
+        buy = self._c("B", "buy", profit=9000, order_worth=1000, coin_cost=500)
+        chosen = A.solve([sell, buy], available_slots=1, coins_available=10**9, daily_cap_remaining=10**9)
+        self.assertEqual([c.product_name for c in chosen], ["B"])
 
 
 class CommittedModelTests(unittest.TestCase):

@@ -118,7 +118,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
-from allocator import DAILY_ORDER_WORTH_CAP, build_all_candidates, solve_sells_first
+from allocator import DAILY_ORDER_WORTH_CAP, build_all_candidates, solve
 from api_client import get_market_data, get_mayor_data, get_product_list, get_purse_from_hypixel, get_trader_data
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -561,7 +561,12 @@ def build_recommendation(bazaar_data, all_product_information, short_term_invest
         bazaar_data, all_product_information, short_term_investments,
         bazaar_fee, purse, time_between_trades_hours,
     )
-    chosen = solve_sells_first(candidates, available_slots, purse, cap_remaining)
+    # Blended top-profit allocation: pick the highest total expected profit across
+    # BOTH sides under the slot/coin/cap constraints. Buys are risk-adjusted (fill
+    # model + exit-drift) and liquidity-filtered (build_buy_candidates), so they
+    # compete fairly with sells and deploy idle purse instead of being starved of
+    # slots. (allocator.solve_sells_first remains as the lexicographic alternative.)
+    chosen = solve(candidates, available_slots, purse, cap_remaining)
     chosen.sort(key=lambda c: c.profit, reverse=True)
 
     return {

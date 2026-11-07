@@ -75,6 +75,17 @@ MAX_SLOTS_PER_PRODUCT_SIDE = 2
 # orders don't fully fill). 1.0 = no haircut; applied to buys only.
 EXPECTED_FILL_HAIRCUT = 0.5
 
+# A buy-flip is only real if the order book has two-sided depth: you can acquire
+# it now AND offload it in ~8h. Thin/broken books show up as an implausible spread
+# (a floor buy price against a huge sell price) and little or no volume on either
+# side - buying them loses coins on stock that never sells. The volume floor sits
+# below the 5th percentile of the user's real flips (~40k buy / ~22k sell 7d
+# volume), so it keeps their proven universe while cutting the fake-arbitrage
+# books (whose sell-side volume is in the tens). These guard the buy side only;
+# sells are listing stock already held, which carries no such risk.
+MAX_BUY_FLIP_SPREAD = 2.0        # reject if sell_price > 2x buy_price
+MIN_FLIP_VOLUME_7D = 20_000      # both bought_volume_7_day and sell_volume_7_day must exceed this
+
 
 @dataclass
 class Candidate:
@@ -186,6 +197,15 @@ def build_buy_candidates(product_name, info, prices, bazaar_fee, purse_remaining
     if room_left <= 0 or prices["buy_price"] <= 0:
         return []
 
+    # Two-sided liquidity + spread sanity: skip thin/broken books where the flip
+    # isn't real (can't actually acquire or offload). See MAX_BUY_FLIP_SPREAD /
+    # MIN_FLIP_VOLUME_7D. This is what keeps the allocator from dumping coins into
+    # floor-priced, no-demand items when buys compete for slots.
+    if prices["sell_price"] > MAX_BUY_FLIP_SPREAD * prices["buy_price"]:
+        return []
+    if info["bought_volume_7_day"] < MIN_FLIP_VOLUME_7D or info["sell_volume_7_day"] < MIN_FLIP_VOLUME_7D:
+        return []
+
     # Projected exit price = today's sell price scaled by the fitted exit-drift
     # multiplier (exit_drift.json, from fit_exit_drift.py): a buy-flip is sold ~8h
     # later and that order-sell price drifts down ~1% over the hold, so today's
@@ -242,9 +262,11 @@ def solve(candidates, available_slots, coins_available, daily_cap_remaining):
 
 
 def solve_sells_first(candidates, available_slots, coins_available, daily_cap_remaining):
-    """Lexicographic 'sells first, then buys' policy (the chosen objective):
-    first lock in every worthwhile inventory sell we can, then spend whatever
-    slots / coins / daily cap are left on buy-to-flip candidates.
+    """Lexicographic 'sells first, then buys' policy. NOT the live default - main.py
+    uses the blended solve() (top total expected profit across both sides) now that
+    buys are risk-adjusted and liquidity-filtered. Kept as an alternative: first lock
+    in every worthwhile inventory sell we can, then spend whatever slots / coins /
+    daily cap are left on buy-to-flip candidates.
 
     Inventory sells are realized this cycle; buy-flips only pay off next cycle
     and carry fill risk on both legs, so they never displace a profitable sell.
