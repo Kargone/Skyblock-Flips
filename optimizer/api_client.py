@@ -51,9 +51,14 @@ def get_purse_from_hypixel(api_key, profile_id, player_uuid):
     )
     response.raise_for_status()
     data = response.json()
-    members = (data.get("profile") or {}).get("members") or {}
+    profile = data.get("profile") or {}
+    members = profile.get("members") or {}
     # Hypixel keys members by UNDASHED uuid; accept a dashed one too.
     member = members.get(player_uuid) or members.get(player_uuid.replace("-", ""))
     if member is None:
         return None
-    return member.get("currencies", {}).get("coin_purse")
+    # Spending power = coin purse + the (co-op) bank balance, which lives at the
+    # profile level and may be absent on profiles with banking disabled.
+    purse = member.get("currencies", {}).get("coin_purse") or 0
+    bank = (profile.get("banking") or {}).get("balance") or 0
+    return purse + bank
