@@ -541,8 +541,16 @@ def get_configured_purse():
     return _manual_purse()
 
 
-def build_recommendation(bazaar_data, all_product_information, short_term_investments,
+def build_recommendation(bazaar_data, all_product_information, trader_data,
                          bazaar_fee, purse, available_slots, time_between_trades_hours):
+    short_term_investments = trader_data.get("short-term-investments", {})
+    # Products with a live (unclaimed) order in-game, so we don't re-recommend
+    # something already placed. Keyed by display name (matches product names).
+    open_buy_products = {o.get("item-name") for o in trader_data.get("buy-order-overview", {}).get("buy-orders", [])
+                         if not o.get("has-been-claimed")}
+    open_sell_products = {o.get("item-name") for o in trader_data.get("sell-order-overview", {}).get("sell-orders", [])
+                          if not o.get("has-been-claimed")}
+
     # Guard: inventory we hold but can't price this poll won't be offered for
     # sale by the allocator (it only ranks products in bazaar_data). Surface it
     # so stock never goes silently unsold - e.g. a held item missing from the
@@ -561,6 +569,7 @@ def build_recommendation(bazaar_data, all_product_information, short_term_invest
     candidates = build_all_candidates(
         bazaar_data, all_product_information, short_term_investments,
         bazaar_fee, purse, time_between_trades_hours,
+        open_buy_products=open_buy_products, open_sell_products=open_sell_products,
     )
     # Blended top-profit allocation: pick the highest total expected profit across
     # BOTH sides under the slot/coin/cap constraints. Buys are risk-adjusted (fill
@@ -628,7 +637,7 @@ if __name__ == "__main__":
         recommendation = build_recommendation(
             bazaar_data,
             all_product_information,
-            trader_data.get("short-term-investments", {}),
+            trader_data,
             get_bazaar_fee(),
             get_configured_purse(),
             available_slots,

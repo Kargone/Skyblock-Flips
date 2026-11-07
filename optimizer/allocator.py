@@ -308,7 +308,12 @@ def solve_sells_first(candidates, available_slots, coins_available, daily_cap_re
     return chosen_sells + chosen_buys
 
 
-def build_all_candidates(bazaar_data, all_product_information, short_term_investments, bazaar_fee, purse_remaining, time_between_trades_hours):
+def build_all_candidates(bazaar_data, all_product_information, short_term_investments, bazaar_fee,
+                         purse_remaining, time_between_trades_hours,
+                         open_buy_products=frozenset(), open_sell_products=frozenset()):
+    """open_buy_products / open_sell_products are product names that already have a
+    live (unclaimed) order in-game on that side; they're skipped so the optimizer
+    doesn't re-recommend an order you've already placed."""
     candidates = []
     for product_name, info in all_product_information.items():
         prices = bazaar_data.get(product_name)
@@ -323,12 +328,14 @@ def build_all_candidates(bazaar_data, all_product_information, short_term_invest
             held_qty = sum(o["partial-amount"] for o in sub_orders)
             historical_cost = weighted_avg_cost(sub_orders)
 
-        candidates += build_sell_inventory_candidates(
-            product_name, info, prices, bazaar_fee, held_qty, historical_cost, time_between_trades_hours
-        )
-        candidates += build_buy_candidates(
-            product_name, info, prices, bazaar_fee, purse_remaining, held_qty, time_between_trades_hours
-        )
+        if product_name not in open_sell_products:
+            candidates += build_sell_inventory_candidates(
+                product_name, info, prices, bazaar_fee, held_qty, historical_cost, time_between_trades_hours
+            )
+        if product_name not in open_buy_products:
+            candidates += build_buy_candidates(
+                product_name, info, prices, bazaar_fee, purse_remaining, held_qty, time_between_trades_hours
+            )
     return candidates
 
 
