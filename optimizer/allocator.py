@@ -61,6 +61,17 @@ def max_hold_per_item(info):
     stack_size = info.get("max_stack_size") or DEFAULT_MAX_STACK_SIZE
     return INVENTORY_SLOTS_FOR_SELLING * stack_size
 
+
+# Unstackable (stack-size-1) items cap at 256 per buy order, vs MAX_ORDER_SIZE for
+# stackables. (Hold is already handled by max_hold_per_item: 35 x stack size, so
+# 35 for unstackable.) The 16-stack case is ignored for now - treated as 64.
+UNSTACKABLE_BUY_ORDER_SIZE = 256
+
+
+def max_buy_order_size(info):
+    stack_size = info.get("max_stack_size") or DEFAULT_MAX_STACK_SIZE
+    return UNSTACKABLE_BUY_ORDER_SIZE if stack_size == 1 else MAX_ORDER_SIZE
+
 # A second slot on the same product/side is only worth it if there's
 # comfortably more demand than the first slot can hold - otherwise you're
 # likely left with an awkward remainder that burns a slot on a relist next
@@ -85,6 +96,12 @@ EXPECTED_FILL_HAIRCUT = 0.5
 # sells are listing stock already held, which carries no such risk.
 MAX_BUY_FLIP_SPREAD = 2.0        # reject if sell_price > 2x buy_price
 MIN_FLIP_VOLUME_7D = 20_000      # both bought_volume_7_day and sell_volume_7_day must exceed this
+
+# Buy a buffer beyond the expected fill so a faster-than-expected fill captures the
+# extra, capped by what's affordable/holdable. Profit is still ranked on the
+# expected fill, not the buffered amount, so this doesn't inflate rankings - it
+# just lists a bit more. 1.0 = no overshoot.
+BUY_OVERSHOOT_FACTOR = 1.5
 
 
 @dataclass
@@ -128,7 +145,7 @@ def estimate_fillable_qty(past_quantity_per_hour, weight_1, weight_2, weight_3, 
     return min(past_quantity_per_hour * time_between_trades_hours * weight * haircut, cap_qty)
 
 
-def _slot_candidates(product_name, side, list_budget, fill_estimate, profit_per_unit, order_price, coin_cost_per_unit):
+def _slot_candidates(product_name, side, list_budget, fill_estimate, profit_per_unit, order_price, coin_cost_per_unit, max_order_size=MAX_ORDER_SIZE):
     """Split a product/side into up to MAX_SLOTS_PER_PRODUCT_SIDE bazaar orders.
 
     list_budget is how much to actually LIST (the full holding for a sell; the
@@ -144,7 +161,7 @@ def _slot_candidates(product_name, side, list_budget, fill_estimate, profit_per_
     for slot_index in range(MAX_SLOTS_PER_PRODUCT_SIDE):
         if slot_index > 0 and remaining_list < SECOND_SLOT_MIN_REMAINING_QTY:
             break
-        list_qty = math.floor(min(MAX_ORDER_SIZE, remaining_list))
+        list_qty = math.floor(min(max_order_size, remaining_list))
         if list_qty <= 0:
             break
 
@@ -229,10 +246,13 @@ def build_buy_candidates(product_name, info, prices, bazaar_fee, purse_remaining
             time_between_trades_hours, cap_qty=cap_qty, haircut=EXPECTED_FILL_HAIRCUT,
         )
 
-    # Size a buy to what we expect to fill - no point reserving coins on a buy
-    # order's unfilled tail - so the listing and the fill estimate are the same.
-    return _slot_candidates(product_name, "buy", list_budget=expected_fillable, fill_estimate=expected_fillable,
-                            profit_per_unit=profit_per_unit, order_price=prices["buy_price"], coin_cost_per_unit=prices["buy_price"])
+    # List a buffer beyond the expected fill (capped by affordable/holdable) so a
+    # faster-than-expected fill captures the extra; profit stays ranked on the
+    # expected fill. Unstackable items also cap at 256 per buy order.
+    list_budget = min(cap_qty, math.floor(expected_fillable * BUY_OVERSHOOT_FACTOR))
+    return _slot_candidates(product_name, "buy", list_budget=list_budget, fill_estimate=expected_fillable,
+                            profit_per_unit=profit_per_unit, order_price=prices["buy_price"],
+                            coin_cost_per_unit=prices["buy_price"], max_order_size=max_buy_order_size(info))
 
 
 def solve(candidates, available_slots, coins_available, daily_cap_remaining):

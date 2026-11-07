@@ -22,6 +22,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 import exit_drift
 import fill_model
+import stack_sizes
 import allocator as A
 
 KNOWN_MODEL = {
@@ -33,9 +34,9 @@ KNOWN_MODEL = {
 }
 
 
-def make_info(sell_vol=50_000, buy_vol=50_000):  # default above the buy-flip liquidity floor
+def make_info(sell_vol=50_000, buy_vol=50_000, stack=64):  # default above the buy-flip liquidity floor
     return {
-        "sell_volume_7_day": sell_vol, "bought_volume_7_day": buy_vol, "max_stack_size": 64,
+        "sell_volume_7_day": sell_vol, "bought_volume_7_day": buy_vol, "max_stack_size": stack,
         # fallback-path fields (unused while a model is available):
         "past_quantity_sold_per_hour": 0, "past_quantity_bought_per_hour": 0,
         "sell_volume_7_day_weight": 1, "sell_volume_24_hour_weight": 1, "new_listings_per_hour_selling_weight": 1,
@@ -125,17 +126,19 @@ class SizingTests(unittest.TestCase):
         self.assertAlmostEqual(c.order_worth, 100.0 * 5000)  # cap billed on the full listing
         self.assertEqual(c.coin_cost, 0)
 
-    def test_buy_sizes_to_fill(self):
-        self._set_fill(1500)
+    def test_buy_overshoots_expected_fill(self):
+        self._set_fill(1000)
         prices = {"sell_price": 100.0, "buy_price": 60.0}   # ratio 1.67, within the spread cap
         cands = A.build_buy_candidates("P", make_info(), prices, 0.01,
                                        purse_remaining=10**12, held_qty=0, time_between_trades_hours=8)
         self.assertEqual(len(cands), 1)
         c = cands[0]
-        self.assertEqual(c.quantity, 1500)            # sized to expected fill
-        self.assertEqual(c.expected_fill, 1500)
-        self.assertAlmostEqual(c.order_worth, 60.0 * 1500)
-        self.assertAlmostEqual(c.coin_cost, 60.0 * 1500)  # coins reserved on what's listed
+        self.assertEqual(c.quantity, 1500)            # listed = 1.5x the expected fill (overshoot)
+        self.assertEqual(c.expected_fill, 1000)       # profit still on the expected fill
+        ppu = 100.0 * 0.99 - 60.0
+        self.assertAlmostEqual(c.profit, ppu * 1000)
+        self.assertAlmostEqual(c.order_worth, 60.0 * 1500)   # cap/coins billed on the listing
+        self.assertAlmostEqual(c.coin_cost, 60.0 * 1500)
 
     def test_min_profit_is_on_fill_not_listing(self):
         # Lists 5000 but only 10 fill -> profit 49*10=490 < 3000 -> rejected.
@@ -297,6 +300,44 @@ class SolveTests(unittest.TestCase):
         buy = self._c("B", "buy", profit=9000, order_worth=1000, coin_cost=500)
         chosen = A.solve([sell, buy], available_slots=1, coins_available=10**9, daily_cap_remaining=10**9)
         self.assertEqual([c.product_name for c in chosen], ["B"])
+
+
+class StackSizeTests(unittest.TestCase):
+    def setUp(self):
+        self._orig = (fill_model.available, fill_model.expected_fill, exit_drift.multiplier)
+        fill_model.available = lambda: True
+        exit_drift.multiplier = lambda default=1.0: 1.0
+
+    def tearDown(self):
+        fill_model.available, fill_model.expected_fill, exit_drift.multiplier = self._orig
+
+    def test_hold_cap_by_stack(self):
+        self.assertEqual(A.max_hold_per_item({"max_stack_size": 1}), 35)
+        self.assertEqual(A.max_hold_per_item({"max_stack_size": 64}), 2240)
+
+    def test_buy_order_cap_by_stack(self):
+        self.assertEqual(A.max_buy_order_size({"max_stack_size": 1}), 256)
+        self.assertEqual(A.max_buy_order_size({"max_stack_size": 64}), A.MAX_ORDER_SIZE)
+
+    def test_unstackable_buy_limited_to_hold(self):
+        # room = 35 (35 slots x stack 1) bounds the buy regardless of fill/overshoot
+        fill_model.expected_fill = lambda side, vol, cap_qty, horizon_hours=None: min(cap_qty, 10**6)
+        prices = {"sell_price": 1000.0, "buy_price": 600.0}   # ratio 1.67; 35 units x 400 ppu clears MIN_PROFIT
+        cands = A.build_buy_candidates("P", make_info(stack=1), prices, 0.0,
+                                       purse_remaining=10**12, held_qty=0, time_between_trades_hours=8)
+        self.assertEqual(len(cands), 1)
+        self.assertEqual(cands[0].quantity, 35)
+
+
+class StackSizeModuleTests(unittest.TestCase):
+    def test_enchantment_is_unstackable(self):
+        self.assertEqual(stack_sizes.stack_size("ENCHANTMENT_SHARPNESS_7"), 1)
+
+    def test_unknown_defaults_stackable(self):
+        self.assertEqual(stack_sizes.stack_size("SOME_UNKNOWN_PRODUCT_XYZ"), 64)
+
+    def test_none_defaults_stackable(self):
+        self.assertEqual(stack_sizes.stack_size(None), 64)
 
 
 class CommittedModelTests(unittest.TestCase):

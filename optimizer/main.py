@@ -118,6 +118,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
+import stack_sizes
 from allocator import DAILY_ORDER_WORTH_CAP, build_all_candidates, solve
 from api_client import get_market_data, get_mayor_data, get_product_list, get_purse_from_hypixel, get_trader_data
 
@@ -368,7 +369,7 @@ def build_bazaar_data_and_product_info(bazaar_products, volume_stats, product_li
             # Max inventory stack size for this item (used by the allocator's
             # 35-slots x stack-size hold cap). product-list.json doesn't carry
             # this yet, so it's usually None -> allocator falls back to 64.
-            "max_stack_size": product_meta.get("max-stack-size"),
+            "max_stack_size": stack_sizes.stack_size(api_name),
         }
 
     return bazaar_data, all_product_information
