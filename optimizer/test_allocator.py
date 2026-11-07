@@ -24,6 +24,7 @@ import exit_drift
 import fill_model
 import stack_sizes
 import allocator as A
+import main as M
 
 KNOWN_MODEL = {
     "version": 2,
@@ -343,6 +344,53 @@ class StackSizeModuleTests(unittest.TestCase):
 
     def test_none_defaults_stackable(self):
         self.assertEqual(stack_sizes.stack_size(None), 64)
+
+
+class MenuTests(unittest.TestCase):
+    """build_recommendation output: >=10 ranked orders, both sides, sell rule."""
+
+    def setUp(self):
+        self._orig = (fill_model.available, fill_model.expected_fill,
+                      exit_drift.multiplier, M.compute_daily_cap_used)
+        fill_model.available = lambda: True
+        fill_model.expected_fill = lambda side, vol, cap_qty, horizon_hours=None: min(cap_qty, 500)
+        exit_drift.multiplier = lambda default=1.0: 1.0
+        M.compute_daily_cap_used = lambda reset_ms, path=None: 0
+
+    def tearDown(self):
+        (fill_model.available, fill_model.expected_fill,
+         exit_drift.multiplier, M.compute_daily_cap_used) = self._orig
+
+    def _world(self, n=15):
+        bazaar, info = {}, {}
+        for i in range(n):
+            name = f"P{i}"
+            bazaar[name] = {"buy_price": 100.0, "sell_price": 140.0}  # ratio 1.4
+            info[name] = make_info()
+        return bazaar, info
+
+    def _trader(self, held):
+        return {"short-term-investments": {"P0": {"sub-orders": [{"partial-amount": held, "price-bought": 50.0}]}}}
+
+    def test_menu_has_min_orders_both_sides_and_plan(self):
+        bazaar, info = self._world(15)
+        rec = M.build_recommendation(bazaar, info, self._trader(50_000), 0.0, 10**12, 5, 8)
+        o = rec["orders"]
+        self.assertGreaterEqual(len(o), 10)
+        self.assertTrue(any(x["action"] == "buy" for x in o))
+        self.assertTrue(any(x["action"] == "sell" for x in o))   # qualifying sell surfaced
+        self.assertTrue(any(x["in_plan"] for x in o))
+
+    def test_small_sell_excluded(self):
+        bazaar, info = self._world(15)
+        rec = M.build_recommendation(bazaar, info, self._trader(100), 0.0, 10**12, 5, 8)  # 140*100 < 2M
+        self.assertFalse(any(x["action"] == "sell" for x in rec["orders"]))
+
+    def test_assumes_at_least_one_slot(self):
+        bazaar, info = self._world(15)
+        rec = M.build_recommendation(bazaar, info, self._trader(50_000), 0.0, 10**12, 0, 8)  # 0 free slots
+        self.assertGreaterEqual(len(rec["orders"]), 10)
+        self.assertTrue(any(x["in_plan"] for x in rec["orders"]))   # still picks >=1
 
 
 class CommittedModelTests(unittest.TestCase):
