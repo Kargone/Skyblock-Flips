@@ -26,10 +26,12 @@ import stack_sizes
 import allocator as A
 
 KNOWN_MODEL = {
-    "version": 1,
+    "version": 2,
     "horizon_hours": 8,
-    "volume_edges": [100, 200, 300, 400],
-    "rates_per_min": {"sell": [0.1, 0.2, 0.3, 0.4, 0.5], "buy": [1.0, 1.0, 1.0, 1.0, 1.0]},
+    "breakpoints": {
+        "sell": [[100, 0.1], [200, 0.2], [300, 0.3], [400, 0.4], [500, 0.5]],
+        "buy": [[100, 1.0], [200, 1.0], [300, 1.0], [400, 1.0], [500, 1.0]],
+    },
     "fallback_rate_per_min": {"sell": 0.3, "buy": 1.0},
 }
 
@@ -61,13 +63,16 @@ class FillModelTests(unittest.TestCase):
     def test_available(self):
         self.assertTrue(fill_model.available())
 
-    def test_bucket_and_rate(self):
-        # vol 250 -> bucket 2 (<=300) -> sell rate 0.3; 0.3 * 8h * 60 = 144
-        self.assertAlmostEqual(fill_model.expected_fill("sell", 250, cap_qty=10**9), 144.0, places=6)
-        # vol 50 -> bucket 0 -> 0.1 * 480 = 48
+    def test_interpolates_by_volume(self):
+        # vol 250 interpolates between (200,0.2) and (300,0.3) -> 0.25; 0.25*480 = 120
+        self.assertAlmostEqual(fill_model.expected_fill("sell", 250, cap_qty=10**9), 120.0, places=6)
+        # vol 50 below first breakpoint -> flat 0.1 -> 48
         self.assertAlmostEqual(fill_model.expected_fill("sell", 50, cap_qty=10**9), 48.0, places=6)
-        # vol 500 -> top bucket 4 -> 0.5 * 480 = 240
+        # vol 500 at/above last breakpoint -> 0.5 -> 240
         self.assertAlmostEqual(fill_model.expected_fill("sell", 500, cap_qty=10**9), 240.0, places=6)
+        # distinct volumes give distinct fills (no bucket snapping)
+        self.assertNotEqual(fill_model.expected_fill("sell", 210, cap_qty=10**9),
+                            fill_model.expected_fill("sell", 290, cap_qty=10**9))
 
     def test_cap_respected(self):
         self.assertEqual(fill_model.expected_fill("sell", 500, cap_qty=10), 10)
@@ -89,7 +94,7 @@ class FillModelTests(unittest.TestCase):
     def test_hot_reload_on_mtime_change(self):
         self.assertAlmostEqual(fill_model.expected_fill("buy", 50, cap_qty=10**9), 480.0, places=6)  # rate 1.0
         changed = dict(KNOWN_MODEL)
-        changed["rates_per_min"] = {"sell": [0.1] * 5, "buy": [2.0] * 5}
+        changed["breakpoints"] = {"sell": [[100, 0.1], [500, 0.1]], "buy": [[100, 2.0], [500, 2.0]]}
         self._tmp.write_text(json.dumps(changed), encoding="utf-8")
         os.utime(self._tmp, (time.time() + 10, time.time() + 10))  # bump mtime
         self.assertAlmostEqual(fill_model.expected_fill("buy", 50, cap_qty=10**9), 960.0, places=6)  # rate 2.0
@@ -346,10 +351,11 @@ class CommittedModelTests(unittest.TestCase):
         self.assertTrue(path.exists(), "committed fill_model.json is missing")
         m = json.loads(path.read_text(encoding="utf-8"))
         self.assertIn("horizon_hours", m)
-        self.assertEqual(len(m["volume_edges"]), 4)
         for side in ("sell", "buy"):
-            self.assertEqual(len(m["rates_per_min"][side]), 5)
-            self.assertTrue(all(r >= 0 for r in m["rates_per_min"][side]))
+            bps = m["breakpoints"][side]
+            self.assertGreaterEqual(len(bps), 2)                    # need >=2 points to interpolate
+            self.assertEqual(bps, sorted(bps))                      # volumes strictly increasing
+            self.assertTrue(all(v > 0 and r >= 0 for v, r in bps))
 
 
 if __name__ == "__main__":

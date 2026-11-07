@@ -46,25 +46,32 @@ def horizon_hours(default=8):
     return m.get("horizon_hours", default) if m else default
 
 
-def _bucket(volume, edges):
-    for i, edge in enumerate(edges):
-        if volume <= edge:
-            return i
-    return len(edges)
+def _interpolate(volume, breakpoints):
+    """Linear interpolation of rate over [volume, rate] breakpoints; flat beyond
+    the ends. breakpoints are sorted by volume (strictly increasing)."""
+    if volume <= breakpoints[0][0]:
+        return breakpoints[0][1]
+    if volume >= breakpoints[-1][0]:
+        return breakpoints[-1][1]
+    for i in range(1, len(breakpoints)):
+        v0, r0 = breakpoints[i - 1]
+        v1, r1 = breakpoints[i]
+        if volume <= v1:
+            return r0 + (r1 - r0) * (volume - v0) / (v1 - v0) if v1 != v0 else r1
+    return breakpoints[-1][1]
 
 
 def rate_per_min(side, volume_7_day):
-    """Fitted fill throughput (units/minute) for this side + volume regime,
-    or None if the model isn't loaded / the side is unknown."""
+    """Fitted fill throughput (units/minute) for this side at this product's own
+    7-day volume, interpolated between breakpoints. None if the model isn't
+    loaded / the side is unknown."""
     m = _load()
     if not m:
         return None
-    rates = m["rates_per_min"].get(side)
-    if rates is None:
+    bps = (m.get("breakpoints") or {}).get(side)
+    if not bps:
         return None
-    b = _bucket(volume_7_day or 0, m["volume_edges"])
-    rate = rates[b]
-    # A thin bucket is stored as 0 only if its fallback was also 0; guard anyway.
+    rate = _interpolate(volume_7_day or 0, bps)
     if rate <= 0:
         rate = m.get("fallback_rate_per_min", {}).get(side, 0.0)
     return rate
