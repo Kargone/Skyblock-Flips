@@ -40,7 +40,11 @@ def get_mayor_data():
 HYPIXEL_API_BASE = "https://api.hypixel.net/v2"
 
 
-def get_purse_from_hypixel(api_key, profile_id, player_uuid):
+def get_purse_breakdown(api_key, profile_id, player_uuid):
+    """Returns {"purse", "bank", "combined", "banking_present", "member_found"}.
+    banking_present is False when the profile has no 'banking' object at all,
+    which is what you see when bank API access is turned off in-game - the bank
+    balance then reads as 0 and no code change can recover it."""
     # Key goes in the API-Key header (the v2-documented method), not the query
     # string, so it never lands in a URL, log line, or exception message.
     response = requests.get(
@@ -56,9 +60,19 @@ def get_purse_from_hypixel(api_key, profile_id, player_uuid):
     # Hypixel keys members by UNDASHED uuid; accept a dashed one too.
     member = members.get(player_uuid) or members.get(player_uuid.replace("-", ""))
     if member is None:
-        return None
+        return {"purse": 0, "bank": 0, "combined": 0, "banking_present": False, "member_found": False}
     # Spending power = coin purse + the (co-op) bank balance, which lives at the
     # profile level and may be absent on profiles with banking disabled.
     purse = member.get("currencies", {}).get("coin_purse") or 0
-    bank = (profile.get("banking") or {}).get("balance") or 0
-    return purse + bank
+    banking = profile.get("banking")
+    bank = (banking or {}).get("balance") or 0
+    return {
+        "purse": purse, "bank": bank, "combined": purse + bank,
+        "banking_present": banking is not None, "member_found": True,
+    }
+
+
+def get_purse_from_hypixel(api_key, profile_id, player_uuid):
+    """Combined spending power (purse + bank), or None if the member wasn't found."""
+    b = get_purse_breakdown(api_key, profile_id, player_uuid)
+    return b["combined"] if b["member_found"] else None
