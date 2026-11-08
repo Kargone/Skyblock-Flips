@@ -118,6 +118,7 @@ from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
+import blacklist
 import stack_sizes
 from allocator import DAILY_ORDER_WORTH_CAP, build_all_candidates, solve
 from api_client import get_market_data, get_mayor_data, get_product_list, get_purse_from_hypixel, get_trader_data
@@ -246,6 +247,10 @@ def build_bazaar_data_and_product_info(bazaar_products, volume_stats, product_li
         if product_meta.get("type") == "auction-product":
             continue
         api_name = product_meta.get("api-name")
+        # Manual blacklist (blacklist.json): never flip these, either side. Drop
+        # the product entirely so no buy/sell candidate is ever built for it.
+        if blacklist.is_blacklisted(product_name, api_name):
+            continue
         if not api_name:
             if product_meta.get("has-weights"):
                 log_once((product_name, "missing-api-name"), logging.ERROR, "'%s' has no api-name in product-list.json; skipping", product_name)

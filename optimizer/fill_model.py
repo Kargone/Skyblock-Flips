@@ -47,10 +47,19 @@ def horizon_hours(default=8):
 
 
 def _interpolate(volume, breakpoints):
-    """Linear interpolation of rate over [volume, rate] breakpoints; flat beyond
-    the ends. breakpoints are sorted by volume (strictly increasing)."""
-    if volume <= breakpoints[0][0]:
-        return breakpoints[0][1]
+    """Linear interpolation of rate over [volume, rate] breakpoints.
+
+    Below the lowest breakpoint the line is extended down to the origin (0, 0):
+    a product with less volume genuinely fills slower, and anchoring at zero
+    keeps the rate continuous across the whole low-volume band instead of
+    snapping every product under the first breakpoint to one identical rate
+    (which is what made the allocator keep listing the same amount). Above the
+    highest breakpoint the rate stays flat - extrapolating fills UP past the
+    observed range would over-size orders. breakpoints are sorted by volume
+    (strictly increasing)."""
+    v0, r0 = breakpoints[0]
+    if volume <= v0:
+        return r0 * volume / v0 if v0 > 0 else r0
     if volume >= breakpoints[-1][0]:
         return breakpoints[-1][1]
     for i in range(1, len(breakpoints)):

@@ -20,6 +20,7 @@ from pathlib import Path
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
+import blacklist
 import exit_drift
 import fill_model
 import stack_sizes
@@ -67,19 +68,37 @@ class FillModelTests(unittest.TestCase):
     def test_interpolates_by_volume(self):
         # vol 250 interpolates between (200,0.2) and (300,0.3) -> 0.25; 0.25*480 = 120
         self.assertAlmostEqual(fill_model.expected_fill("sell", 250, cap_qty=10**9), 120.0, places=6)
-        # vol 50 below first breakpoint -> flat 0.1 -> 48
-        self.assertAlmostEqual(fill_model.expected_fill("sell", 50, cap_qty=10**9), 48.0, places=6)
+        # vol 50 below first breakpoint (100,0.1) -> scales from origin: 0.1*50/100=0.05 -> 24
+        self.assertAlmostEqual(fill_model.expected_fill("sell", 50, cap_qty=10**9), 24.0, places=6)
         # vol 500 at/above last breakpoint -> 0.5 -> 240
         self.assertAlmostEqual(fill_model.expected_fill("sell", 500, cap_qty=10**9), 240.0, places=6)
         # distinct volumes give distinct fills (no bucket snapping)
         self.assertNotEqual(fill_model.expected_fill("sell", 210, cap_qty=10**9),
                             fill_model.expected_fill("sell", 290, cap_qty=10**9))
 
+    def test_low_volume_band_is_continuous_not_flat(self):
+        # Below the first breakpoint the rate must scale with volume (anchored at
+        # the origin), NOT snap every product to one value - that snapping was what
+        # made the allocator keep listing the same amount for many products.
+        f10 = fill_model.expected_fill("sell", 10, cap_qty=10**9)
+        f50 = fill_model.expected_fill("sell", 50, cap_qty=10**9)
+        f90 = fill_model.expected_fill("sell", 90, cap_qty=10**9)
+        self.assertLess(f10, f50)
+        self.assertLess(f50, f90)
+        self.assertAlmostEqual(f50 / f10, 5.0, places=6)      # linear in volume
+        self.assertAlmostEqual(f10, 0.1 * 10 / 100 * 480, places=6)  # 4.8
+
+    def test_high_volume_stays_flat_above_top_breakpoint(self):
+        # Above the last breakpoint rate stays flat (no upward extrapolation).
+        self.assertEqual(fill_model.expected_fill("sell", 600, cap_qty=10**9),
+                         fill_model.expected_fill("sell", 5000, cap_qty=10**9))
+
     def test_cap_respected(self):
         self.assertEqual(fill_model.expected_fill("sell", 500, cap_qty=10), 10)
 
     def test_horizon_override(self):
-        self.assertAlmostEqual(fill_model.expected_fill("sell", 50, cap_qty=10**9, horizon_hours=4), 24.0, places=6)
+        # vol 50 -> rate 0.05 (origin-anchored); 0.05*4*60 = 12
+        self.assertAlmostEqual(fill_model.expected_fill("sell", 50, cap_qty=10**9, horizon_hours=4), 12.0, places=6)
 
     def test_unknown_side(self):
         self.assertIsNone(fill_model.rate_per_min("bogus", 100))
@@ -93,12 +112,14 @@ class FillModelTests(unittest.TestCase):
         self.assertEqual(fill_model.expected_fill("sell", 250, cap_qty=10**9), 0.0)
 
     def test_hot_reload_on_mtime_change(self):
-        self.assertAlmostEqual(fill_model.expected_fill("buy", 50, cap_qty=10**9), 480.0, places=6)  # rate 1.0
+        # vol 50 below bp (100,1.0) -> origin-anchored rate 0.5 -> 240
+        self.assertAlmostEqual(fill_model.expected_fill("buy", 50, cap_qty=10**9), 240.0, places=6)
         changed = dict(KNOWN_MODEL)
         changed["breakpoints"] = {"sell": [[100, 0.1], [500, 0.1]], "buy": [[100, 2.0], [500, 2.0]]}
         self._tmp.write_text(json.dumps(changed), encoding="utf-8")
         os.utime(self._tmp, (time.time() + 10, time.time() + 10))  # bump mtime
-        self.assertAlmostEqual(fill_model.expected_fill("buy", 50, cap_qty=10**9), 960.0, places=6)  # rate 2.0
+        # vol 50 below bp (100,2.0) -> origin-anchored rate 1.0 -> 480
+        self.assertAlmostEqual(fill_model.expected_fill("buy", 50, cap_qty=10**9), 480.0, places=6)
 
 
 class SizingTests(unittest.TestCase):
@@ -391,6 +412,66 @@ class MenuTests(unittest.TestCase):
         rec = M.build_recommendation(bazaar, info, self._trader(50_000), 0.0, 10**12, 0, 8)  # 0 free slots
         self.assertGreaterEqual(len(rec["orders"]), 10)
         self.assertTrue(any(x["in_plan"] for x in rec["orders"]))   # still picks >=1
+
+
+class BlacklistTests(unittest.TestCase):
+    def setUp(self):
+        self._orig_path = blacklist._PATH
+        self._tmp = Path(tempfile.mkdtemp()) / "blacklist.json"
+        self._tmp.write_text(json.dumps({"blacklist": ["Stock of Stonks", "FOO_BAR"]}), encoding="utf-8")
+        blacklist._PATH = self._tmp
+        blacklist._set = None
+        blacklist._mtime = None
+
+    def tearDown(self):
+        blacklist._PATH = self._orig_path
+        blacklist._set = None
+        blacklist._mtime = None
+
+    def test_matches_display_name_case_insensitive(self):
+        self.assertTrue(blacklist.is_blacklisted("stock of stonks"))
+        self.assertTrue(blacklist.is_blacklisted("Stock of Stonks", "STOCK_OF_STONKS"))
+
+    def test_matches_api_name(self):
+        self.assertTrue(blacklist.is_blacklisted("Whatever Display", "FOO_BAR"))
+
+    def test_not_blacklisted(self):
+        self.assertFalse(blacklist.is_blacklisted("Enchanted Diamond", "ENCHANTED_DIAMOND"))
+        self.assertFalse(blacklist.is_blacklisted(None))
+
+    def test_missing_file_blacklists_nothing(self):
+        blacklist._PATH = Path(tempfile.mkdtemp()) / "nope.json"
+        blacklist._set = None
+        blacklist._mtime = None
+        self.assertFalse(blacklist.is_blacklisted("Stock of Stonks"))
+
+    def test_committed_blacklist_has_stonks(self):
+        blacklist._PATH = self._orig_path
+        blacklist._set = None
+        blacklist._mtime = None
+        self.assertTrue(blacklist.is_blacklisted("Stock of Stonks"))
+        self.assertTrue(blacklist.is_blacklisted("x", "STOCK_OF_STONKS"))
+
+
+class BlacklistIntegrationTests(unittest.TestCase):
+    """A blacklisted product is dropped from build_bazaar_data_and_product_info
+    entirely, so no candidate (buy or sell) can ever be built for it."""
+
+    def test_blacklisted_product_dropped(self):
+        product_list = {
+            "Stock of Stonks": {"api-name": "STOCK_OF_STONKS", "type": "short-term-investment", "has-weights": True},
+            "Enchanted Flint": {"api-name": "ENCHANTED_FLINT", "type": "bazaar-product", "has-weights": True},
+        }
+        bazaar_products = {
+            "STOCK_OF_STONKS": {"sell_summary": [{"pricePerUnit": 100}], "buy_summary": [{"pricePerUnit": 110}],
+                                "quick_status": {"sellMovingWeek": 1, "buyMovingWeek": 1}},
+            "ENCHANTED_FLINT": {"sell_summary": [{"pricePerUnit": 100}], "buy_summary": [{"pricePerUnit": 110}],
+                                "quick_status": {"sellMovingWeek": 1, "buyMovingWeek": 1}},
+        }
+        bazaar_data, info = M.build_bazaar_data_and_product_info(bazaar_products, {}, product_list)
+        self.assertNotIn("Stock of Stonks", bazaar_data)
+        self.assertNotIn("Stock of Stonks", info)
+        self.assertIn("Enchanted Flint", bazaar_data)     # others unaffected
 
 
 class CommittedModelTests(unittest.TestCase):
