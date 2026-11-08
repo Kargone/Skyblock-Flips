@@ -375,6 +375,9 @@ def build_bazaar_data_and_product_info(bazaar_products, volume_stats, product_li
             # 35-slots x stack-size hold cap). product-list.json doesn't carry
             # this yet, so it's usually None -> allocator falls back to 64.
             "max_stack_size": stack_sizes.stack_size(api_name),
+            # Carried so the allocator can look up this product's price-history
+            # baseline (relisting-trap / ask-spike guard), which is keyed by api-name.
+            "api_name": api_name,
         }
 
     return bazaar_data, all_product_information

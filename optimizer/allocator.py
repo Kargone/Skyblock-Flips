@@ -37,6 +37,7 @@ import pulp
 
 import exit_drift
 import fill_model
+import price_history
 
 # ---- Constants describing real Hypixel Bazaar constraints ----
 TOTAL_SLOTS = 28
@@ -102,6 +103,15 @@ MIN_FLIP_VOLUME_7D = 20_000      # both bought_volume_7_day and sell_volume_7_da
 # expected fill, not the buffered amount, so this doesn't inflate rankings - it
 # just lists a bit more. 1.0 = no overshoot.
 BUY_OVERSHOOT_FACTOR = 1.5
+
+# Relisting-trap guard: skip a buy-flip when the product's current exit (ask) price
+# has spiked more than this far above its recent baseline (median ask over the last
+# ~2 days, from price_history.py). A run-up like that pulls in sellers who relist
+# under it and drag the price back down, so the flip's projected sell price won't
+# hold - e.g. Polished Pumpkin at 290k vs its usual ~255k is ~1.14x. Set to None to
+# disable the filter entirely. Only applies when there's enough price history for
+# the product; otherwise no filtering (degrades safely).
+BUY_EXIT_SPIKE_RATIO = 1.08
 
 
 @dataclass
@@ -222,6 +232,14 @@ def build_buy_candidates(product_name, info, prices, bazaar_fee, purse_remaining
         return []
     if info["bought_volume_7_day"] < MIN_FLIP_VOLUME_7D or info["sell_volume_7_day"] < MIN_FLIP_VOLUME_7D:
         return []
+
+    # Relisting-trap guard: if the current exit (ask) price is spiked well above its
+    # recent baseline, the run-up will likely revert as sellers relist under it, so
+    # don't buy into it. No-op when the filter is disabled or we lack history.
+    if BUY_EXIT_SPIKE_RATIO is not None:
+        baseline = price_history.baseline_ask(info.get("api_name"))
+        if baseline and prices["sell_price"] > BUY_EXIT_SPIKE_RATIO * baseline:
+            return []
 
     # Projected exit price = today's sell price scaled by the fitted exit-drift
     # multiplier (exit_drift.json, from fit_exit_drift.py): a buy-flip is sold ~8h

@@ -23,6 +23,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 import blacklist
 import exit_drift
 import fill_model
+import price_history
 import stack_sizes
 import allocator as A
 import main as M
@@ -126,12 +127,15 @@ class SizingTests(unittest.TestCase):
     """Allocator sizing with a controlled fill estimate."""
 
     def setUp(self):
-        self._orig = (fill_model.available, fill_model.expected_fill, exit_drift.multiplier)
+        self._orig = (fill_model.available, fill_model.expected_fill,
+                      exit_drift.multiplier, price_history.baseline_ask)
         fill_model.available = lambda: True
         exit_drift.multiplier = lambda default=1.0: 1.0  # no exit drift unless a test sets it
+        price_history.baseline_ask = lambda api_name: None  # no spike filter unless a test sets it
 
     def tearDown(self):
-        fill_model.available, fill_model.expected_fill, exit_drift.multiplier = self._orig
+        (fill_model.available, fill_model.expected_fill,
+         exit_drift.multiplier, price_history.baseline_ask) = self._orig
 
     def _set_fill(self, value):
         fill_model.expected_fill = lambda side, vol, cap_qty, horizon_hours=None: min(cap_qty, value)
@@ -242,6 +246,33 @@ class SizingTests(unittest.TestCase):
         cands = A.build_buy_candidates("P", make_info(), prices, 0.0,
                                        purse_remaining=10**12, held_qty=0, time_between_trades_hours=8)
         self.assertEqual(len(cands), 1)
+
+    def test_buy_rejected_when_exit_price_spiked(self):
+        # Current exit (ask) 100 vs baseline 85 -> 1.18x > 1.08 cap -> relisting trap, skip.
+        self._set_fill(1000)
+        price_history.baseline_ask = lambda api_name: 85.0
+        prices = {"sell_price": 100.0, "buy_price": 70.0}
+        info = make_info(); info["api_name"] = "SOME_ITEM"
+        self.assertEqual(A.build_buy_candidates("P", info, prices, 0.0,
+                         purse_remaining=10**12, held_qty=0, time_between_trades_hours=8), [])
+
+    def test_buy_kept_when_exit_price_near_baseline(self):
+        # Current exit 100 vs baseline 98 -> 1.02x < 1.08 cap -> fine.
+        self._set_fill(1000)
+        price_history.baseline_ask = lambda api_name: 98.0
+        prices = {"sell_price": 100.0, "buy_price": 70.0}
+        info = make_info(); info["api_name"] = "SOME_ITEM"
+        self.assertEqual(len(A.build_buy_candidates("P", info, prices, 0.0,
+                         purse_remaining=10**12, held_qty=0, time_between_trades_hours=8)), 1)
+
+    def test_spike_filter_noop_without_history(self):
+        # No baseline for the product -> no spike filtering even on a big run-up.
+        self._set_fill(1000)
+        price_history.baseline_ask = lambda api_name: None
+        prices = {"sell_price": 100.0, "buy_price": 70.0}
+        info = make_info(); info["api_name"] = "SOME_ITEM"
+        self.assertEqual(len(A.build_buy_candidates("P", info, prices, 0.0,
+                         purse_remaining=10**12, held_qty=0, time_between_trades_hours=8)), 1)
 
 
 class ExitDriftTests(unittest.TestCase):
@@ -492,6 +523,41 @@ class BlacklistIntegrationTests(unittest.TestCase):
         self.assertNotIn("Stock of Stonks", bazaar_data)
         self.assertNotIn("Stock of Stonks", info)
         self.assertIn("Enchanted Flint", bazaar_data)     # others unaffected
+
+
+class PriceHistoryTests(unittest.TestCase):
+    def setUp(self):
+        self._orig_path = price_history._PATH
+        self._tmp = Path(tempfile.mkdtemp()) / "price-history.jsonl"
+        price_history._PATH = self._tmp
+        price_history._baselines = None
+        price_history._sig = None
+
+    def tearDown(self):
+        price_history._PATH = self._orig_path
+        price_history._baselines = None
+        price_history._sig = None
+
+    def _write(self, rows):
+        self._tmp.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
+
+    def test_baseline_is_median_ignoring_spike(self):
+        # 30 samples at ask 100, then one spike to 300: median stays ~100.
+        rows = [{"t": i, "p": {"FOO": [100.0, 90.0]}} for i in range(30)]
+        rows.append({"t": 99, "p": {"FOO": [300.0, 90.0]}})
+        self._write(rows)
+        self.assertAlmostEqual(price_history.baseline_ask("FOO"), 100.0)
+
+    def test_too_little_history_returns_none(self):
+        self._write([{"t": i, "p": {"FOO": [100.0, 90.0]}} for i in range(5)])  # < MIN_SAMPLES
+        self.assertIsNone(price_history.baseline_ask("FOO"))
+
+    def test_missing_file_and_unknown_product(self):
+        price_history._PATH = Path(tempfile.mkdtemp()) / "nope.jsonl"
+        price_history._baselines = None
+        price_history._sig = None
+        self.assertIsNone(price_history.baseline_ask("FOO"))
+        self.assertIsNone(price_history.baseline_ask(None))
 
 
 class CommittedModelTests(unittest.TestCase):
