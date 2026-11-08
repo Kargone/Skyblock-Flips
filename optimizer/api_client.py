@@ -76,3 +76,33 @@ def get_purse_from_hypixel(api_key, profile_id, player_uuid):
     """Combined spending power (purse + bank), or None if the member wasn't found."""
     b = get_purse_breakdown(api_key, profile_id, player_uuid)
     return b["combined"] if b["member_found"] else None
+
+
+def list_profiles(api_key, player_uuid):
+    """Every SkyBlock profile for this player with its purse + bank, so the right
+    profile_id can be identified. Uses the plural /skyblock/profiles endpoint
+    (keyed by player uuid). Returns a list of dicts sorted selected-first."""
+    response = requests.get(
+        f"{HYPIXEL_API_BASE}/skyblock/profiles",
+        params={"uuid": player_uuid.replace("-", "")},
+        headers={"API-Key": api_key},
+        timeout=10,
+    )
+    response.raise_for_status()
+    profiles = response.json().get("profiles") or []
+    out = []
+    for p in profiles:
+        members = p.get("members") or {}
+        member = members.get(player_uuid) or members.get(player_uuid.replace("-", "")) or {}
+        purse = member.get("currencies", {}).get("coin_purse") or 0
+        banking = p.get("banking")
+        bank = (banking or {}).get("balance") or 0
+        out.append({
+            "profile_id": p.get("profile_id"),
+            "cute_name": p.get("cute_name"),
+            "selected": bool(p.get("selected")),
+            "purse": purse, "bank": bank, "combined": purse + bank,
+            "banking_present": banking is not None,
+        })
+    out.sort(key=lambda d: not d["selected"])  # selected profile first
+    return out
