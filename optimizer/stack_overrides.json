@@ -1,0 +1,6 @@
+{
+  "_comment": "Manual max-stack-size corrections, api-name -> stack size (1, 16, or 64). Hypixel's items resource only flags fully-unstackable items and never reports the 16-stack tier, and it misses some unstackables entirely (e.g. SUMMONING_EYE). List those here. Precedence: this file > unstackable_items.json > default 64. Hot-reloaded on save.",
+  "stack_sizes": {
+    "SUMMONING_EYE": 1
+  }
+}

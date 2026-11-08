@@ -366,6 +366,26 @@ class StackSizeModuleTests(unittest.TestCase):
     def test_none_defaults_stackable(self):
         self.assertEqual(stack_sizes.stack_size(None), 64)
 
+    def test_override_takes_precedence(self):
+        orig_path, orig_map, orig_mtime = (
+            stack_sizes._OVERRIDE_PATH, stack_sizes._overrides, stack_sizes._override_mtime)
+        tmp = Path(tempfile.mkdtemp()) / "stack_overrides.json"
+        tmp.write_text(json.dumps({"stack_sizes": {"SOME_UNKNOWN_PRODUCT_XYZ": 16, "ENCHANTMENT_SHARPNESS_7": 64}}),
+                       encoding="utf-8")
+        stack_sizes._OVERRIDE_PATH = tmp
+        stack_sizes._overrides = None
+        stack_sizes._override_mtime = None
+        try:
+            self.assertEqual(stack_sizes.stack_size("SOME_UNKNOWN_PRODUCT_XYZ"), 16)   # 64 -> 16
+            self.assertEqual(stack_sizes.stack_size("ENCHANTMENT_SHARPNESS_7"), 64)    # overrides the enchant rule
+        finally:
+            stack_sizes._OVERRIDE_PATH = orig_path
+            stack_sizes._overrides = orig_map
+            stack_sizes._override_mtime = orig_mtime
+
+    def test_committed_summoning_eye_override(self):
+        self.assertEqual(stack_sizes.stack_size("SUMMONING_EYE"), 1)
+
 
 class MenuTests(unittest.TestCase):
     """build_recommendation output: >=10 ranked orders, both sides, sell rule."""
