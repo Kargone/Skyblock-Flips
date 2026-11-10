@@ -94,6 +94,8 @@ class Candidate:
     npc_floor: bool = False  # NPC-backed item (thinner margin ok, ask-side sanity skipped)
     bucket: int = 0          # the max_buy bucket (7000/4000/2000/1000/500)
     disqualify: tuple = ()   # reasons it was demoted, for display/debug
+    buy_price: float = 0.0   # the bid you place the buy order at (per unit, what you pay)
+    sell_price: float = 0.0  # the ask it is expected to sell at later (per unit, before drift and tax)
 
 
 def build_buy_candidates(product_name, info, prices, bazaar_fee, time_between_trades_hours):
@@ -145,6 +147,7 @@ def build_buy_candidates(product_name, info, prices, bazaar_fee, time_between_tr
         product_name=product_name, quantity=qty, expected_fill=expected_fill,
         profit=margin * expected_fill, order_worth=bid * qty, coin_cost=bid * qty,
         qualified=not reasons, margin=margin, npc_floor=npc_floor, bucket=mb, disqualify=tuple(reasons),
+        buy_price=bid, sell_price=ask,
     )]
 
 
