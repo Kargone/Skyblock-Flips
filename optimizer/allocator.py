@@ -37,7 +37,6 @@ import price_history
 import whitelist
 
 # ---- Constants describing real Hypixel Bazaar constraints ----
-TOTAL_SLOTS = 28
 MAX_ORDER_SIZE = 71_680  # 1,120 stacks x 64 - the real per-order item cap
 DAILY_ORDER_WORTH_CAP = 15_000_000_000
 
