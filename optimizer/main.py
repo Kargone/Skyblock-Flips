@@ -143,7 +143,11 @@ def clear_anomaly(key):
     _active_anomalies.discard(key)
 
 
-POLL_INTERVAL_SECONDS = 15
+# Fast beat: recompute the recommendation off fresh inventory/orders this often.
+RECOMPUTE_INTERVAL_SECONDS = 5
+# Slow beat: refresh the heavier bazaar/market data (and mayor tax) this often.
+# Hypixel's bazaar only updates ~once a minute, so 30s is near its useful floor.
+BAZAAR_REFRESH_SECONDS = 30
 HOURS_PER_WEEK = 7 * 24
 
 # The smallest amount a bazaar order price can be beaten by.
@@ -672,32 +676,60 @@ def write_recommendation(recommendation):
 if __name__ == "__main__":
     product_list = get_product_list()
 
+    # Two decoupled beats so the recommendation reacts to inventory fast without
+    # re-pulling (and re-parsing) the whole bazaar payload every tick:
+    #   - RECOMPUTE: fetch trader-data (inventory/orders change the instant an
+    #     order fills) and recompute every RECOMPUTE_INTERVAL_SECONDS.
+    #   - BAZAAR: refresh the heavier, slowly-changing market data (Hypixel's
+    #     bazaar only updates ~1/min) every BAZAAR_REFRESH_SECONDS, reusing the
+    #     cached parse in between. The mayor tax rarely changes, so it rides the
+    #     bazaar beat too; the purse self-caches (PURSE_TTL_SECONDS).
+    bazaar_data = all_product_information = None
+    bazaar_fee = BASE_BAZAAR_TAX
+    last_bazaar_refresh = 0.0
+
     while True:
+        now = time.monotonic()
+
+        if bazaar_data is None or now - last_bazaar_refresh >= BAZAAR_REFRESH_SECONDS:
+            try:
+                market_data = get_market_data()
+                bazaar_data, all_product_information = build_bazaar_data_and_product_info(
+                    market_data.get("bazaarProducts", {}), market_data.get("volumeStats", {}), product_list
+                )
+                bazaar_fee = get_bazaar_fee()
+                last_bazaar_refresh = now
+                clear_anomaly("fetch-market-data-failed")
+            except Exception:
+                log_once(
+                    "fetch-market-data-failed", logging.ERROR,
+                    "failed to refresh bazaar/market data; will retry (reusing last bazaar data if any)", exc_info=True
+                )
+                if bazaar_data is None:
+                    time.sleep(RECOMPUTE_INTERVAL_SECONDS)
+                    continue  # nothing to recommend against yet
+
         try:
             trader_data = get_trader_data()
-            market_data = get_market_data()
         except Exception:
             log_once(
-                "fetch-trader-market-data-failed", logging.ERROR,
-                "failed to fetch data from the server this poll; will retry next interval", exc_info=True
+                "fetch-trader-data-failed", logging.ERROR,
+                "failed to fetch trader data this tick; will retry next interval", exc_info=True
             )
-            time.sleep(POLL_INTERVAL_SECONDS)
+            time.sleep(RECOMPUTE_INTERVAL_SECONDS)
             continue
-        clear_anomaly("fetch-trader-market-data-failed")
+        clear_anomaly("fetch-trader-data-failed")
 
         # build_inventory still runs for its anomaly logging; the allocator reads
         # held quantities from short-term-investments directly (cost basis lives there).
         build_inventory(trader_data)
         available_slots = count_available_bazaar_slots(trader_data, TOTAL_BAZAAR_SLOTS)
-        bazaar_data, all_product_information = build_bazaar_data_and_product_info(
-            market_data.get("bazaarProducts", {}), market_data.get("volumeStats", {}), product_list
-        )
 
         recommendation = build_recommendation(
             bazaar_data,
             all_product_information,
             trader_data,
-            get_bazaar_fee(),
+            bazaar_fee,
             get_configured_purse(),
             available_slots,
             TIME_BETWEEN_TRADES_HOURS,
@@ -711,7 +743,7 @@ if __name__ == "__main__":
             available_slots,
         )
 
-        time.sleep(POLL_INTERVAL_SECONDS)
+        time.sleep(RECOMPUTE_INTERVAL_SECONDS)
 
     # TODO: Make sure there is no product name confusion between all the datasets using api vs normalized
 
