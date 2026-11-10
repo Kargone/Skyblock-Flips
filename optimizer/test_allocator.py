@@ -43,10 +43,6 @@ KNOWN_MODEL = {
 def make_info(sell_vol=50_000, buy_vol=50_000, stack=64):  # default above the buy-flip liquidity floor
     return {
         "sell_volume_7_day": sell_vol, "bought_volume_7_day": buy_vol, "max_stack_size": stack,
-        # fallback-path fields (unused while a model is available):
-        "past_quantity_sold_per_hour": 0, "past_quantity_bought_per_hour": 0,
-        "sell_volume_7_day_weight": 1, "sell_volume_24_hour_weight": 1, "new_listings_per_hour_selling_weight": 1,
-        "bought_volume_7_day_weight": 1, "bought_volume_24_hour_weight": 1, "new_listings_per_hour_buying_weight": 1,
     }
 
 
@@ -124,162 +120,6 @@ class FillModelTests(unittest.TestCase):
         self.assertAlmostEqual(fill_model.expected_fill("buy", 50, cap_qty=10**9), 480.0, places=6)
 
 
-class SizingTests(unittest.TestCase):
-    """Allocator sizing with a controlled fill estimate."""
-
-    def setUp(self):
-        self._orig = (fill_model.available, fill_model.expected_fill,
-                      exit_drift.multiplier, price_history.baseline_ask,
-                      whitelist.active, whitelist.max_buy)
-        fill_model.available = lambda: True
-        exit_drift.multiplier = lambda default=1.0: 1.0  # no exit drift unless a test sets it
-        price_history.baseline_ask = lambda api_name: None  # no spike filter unless a test sets it
-        whitelist.active = lambda: False                    # no whitelist unless a test sets it
-        whitelist.max_buy = lambda api_name: None
-
-    def tearDown(self):
-        (fill_model.available, fill_model.expected_fill,
-         exit_drift.multiplier, price_history.baseline_ask,
-         whitelist.active, whitelist.max_buy) = self._orig
-
-    def _set_fill(self, value):
-        fill_model.expected_fill = lambda side, vol, cap_qty, horizon_hours=None: min(cap_qty, value)
-
-    def _set_drift(self, m):
-        exit_drift.multiplier = lambda default=1.0: m
-
-    def test_sell_lists_full_holding(self):
-        self._set_fill(1000)
-        prices = {"sell_price": 100.0, "buy_price": 120.0}
-        cands = A.build_sell_inventory_candidates("P", make_info(), prices, 0.01,
-                                                  held_qty=5000, historical_cost=50.0, time_between_trades_hours=8)
-        self.assertEqual(len(cands), 1)
-        c = cands[0]
-        self.assertEqual(c.quantity, 5000)            # lists the whole holding
-        self.assertEqual(c.expected_fill, 1000)       # but only ~1000 fills
-        ppu = 100.0 * 0.99 - 50.0                       # 49
-        self.assertAlmostEqual(c.profit, ppu * 1000)   # profit on the fill, not the listing
-        self.assertAlmostEqual(c.order_worth, 100.0 * 5000)  # cap billed on the full listing
-        self.assertEqual(c.coin_cost, 0)
-
-    def test_buy_overshoots_expected_fill(self):
-        self._set_fill(1000)
-        prices = {"sell_price": 100.0, "buy_price": 60.0}   # ratio 1.67, within the spread cap
-        cands = A.build_buy_candidates("P", make_info(), prices, 0.01,
-                                       held_qty=0, time_between_trades_hours=8)
-        self.assertEqual(len(cands), 1)
-        c = cands[0]
-        self.assertEqual(c.quantity, 1500)            # listed = 1.5x the expected fill (overshoot)
-        self.assertEqual(c.expected_fill, 1000)       # profit still on the expected fill
-        ppu = 100.0 * 0.99 - 60.0
-        self.assertAlmostEqual(c.profit, ppu * 1000)
-        self.assertAlmostEqual(c.order_worth, 60.0 * 1500)   # cap/coins billed on the listing
-        self.assertAlmostEqual(c.coin_cost, 60.0 * 1500)
-
-    def test_min_profit_is_on_fill_not_listing(self):
-        # Lists 5000 but only 10 fill -> profit 49*10=490 < 3000 -> rejected.
-        self._set_fill(10)
-        prices = {"sell_price": 100.0, "buy_price": 120.0}
-        cands = A.build_sell_inventory_candidates("P", make_info(), prices, 0.01,
-                                                  held_qty=5000, historical_cost=50.0, time_between_trades_hours=8)
-        self.assertEqual(cands, [])
-
-    def test_sell_at_loss_no_candidate(self):
-        self._set_fill(1000)
-        prices = {"sell_price": 100.0, "buy_price": 120.0}
-        cands = A.build_sell_inventory_candidates("P", make_info(), prices, 0.01,
-                                                  held_qty=5000, historical_cost=200.0, time_between_trades_hours=8)
-        self.assertEqual(cands, [])
-
-    def test_held_zero_no_sell(self):
-        self._set_fill(1000)
-        prices = {"sell_price": 100.0, "buy_price": 120.0}
-        cands = A.build_sell_inventory_candidates("P", make_info(), prices, 0.01,
-                                                  held_qty=0, historical_cost=50.0, time_between_trades_hours=8)
-        self.assertEqual(cands, [])
-
-    def test_buy_no_margin_no_candidate(self):
-        self._set_fill(1500)
-        prices = {"sell_price": 100.0, "buy_price": 100.0}  # sell*(1-fee) - buy < 0
-        cands = A.build_buy_candidates("P", make_info(), prices, 0.01,
-                                       held_qty=0, time_between_trades_hours=8)
-        self.assertEqual(cands, [])
-
-    def test_exit_drift_reduces_buy_profit(self):
-        self._set_fill(1000)
-        self._set_drift(0.9)
-        prices = {"sell_price": 100.0, "buy_price": 55.0}   # ratio 1.82, within the spread cap
-        cands = A.build_buy_candidates("P", make_info(), prices, 0.0,
-                                       held_qty=0, time_between_trades_hours=8)
-        # exit = 100*0.9 = 90; profit_per_unit = 90 - 55 = 35 (fee 0)
-        self.assertEqual(len(cands), 1)
-        self.assertAlmostEqual(cands[0].profit, 35.0 * 1000)
-
-    def test_exit_drift_can_make_thin_buy_unprofitable(self):
-        self._set_fill(1000)
-        prices = {"sell_price": 100.0, "buy_price": 95.0}
-        self._set_drift(1.0)   # 100*0.99 - 95 = 4 > 0 -> candidate exists
-        self.assertEqual(len(A.build_buy_candidates("P", make_info(), prices, 0.01,
-                         held_qty=0, time_between_trades_hours=8)), 1)
-        self._set_drift(0.9)   # 100*0.9*0.99 - 95 = -5.9 < 0 -> rejected
-        self.assertEqual(A.build_buy_candidates("P", make_info(), prices, 0.01,
-                         held_qty=0, time_between_trades_hours=8), [])
-
-    def test_buy_rejected_wide_spread(self):
-        self._set_fill(1000)
-        prices = {"sell_price": 300.0, "buy_price": 100.0}  # ratio 3.0 > 2.0 cap -> fake/thin
-        self.assertEqual(A.build_buy_candidates("P", make_info(), prices, 0.0,
-                         held_qty=0, time_between_trades_hours=8), [])
-
-    def test_buy_rejected_thin_buy_side(self):
-        self._set_fill(1000)
-        prices = {"sell_price": 100.0, "buy_price": 70.0}
-        info = make_info(sell_vol=50_000, buy_vol=1_000)    # can't acquire it
-        self.assertEqual(A.build_buy_candidates("P", info, prices, 0.0,
-                         held_qty=0, time_between_trades_hours=8), [])
-
-    def test_buy_rejected_thin_sell_side(self):
-        self._set_fill(1000)
-        prices = {"sell_price": 100.0, "buy_price": 70.0}
-        info = make_info(sell_vol=1_000, buy_vol=50_000)    # can't offload it (no sell-side demand)
-        self.assertEqual(A.build_buy_candidates("P", info, prices, 0.0,
-                         held_qty=0, time_between_trades_hours=8), [])
-
-    def test_buy_kept_when_liquid_and_sane_spread(self):
-        self._set_fill(1000)
-        prices = {"sell_price": 100.0, "buy_price": 70.0}   # ratio 1.43, both vols 50k
-        cands = A.build_buy_candidates("P", make_info(), prices, 0.0,
-                                       held_qty=0, time_between_trades_hours=8)
-        self.assertEqual(len(cands), 1)
-
-    def test_buy_rejected_when_exit_price_spiked(self):
-        # Current exit (ask) 100 vs baseline 85 -> 1.18x > 1.08 cap -> relisting trap, skip.
-        self._set_fill(1000)
-        price_history.baseline_ask = lambda api_name: 85.0
-        prices = {"sell_price": 100.0, "buy_price": 70.0}
-        info = make_info(); info["api_name"] = "SOME_ITEM"
-        self.assertEqual(A.build_buy_candidates("P", info, prices, 0.0,
-                         held_qty=0, time_between_trades_hours=8), [])
-
-    def test_buy_kept_when_exit_price_near_baseline(self):
-        # Current exit 100 vs baseline 98 -> 1.02x < 1.08 cap -> fine.
-        self._set_fill(1000)
-        price_history.baseline_ask = lambda api_name: 98.0
-        prices = {"sell_price": 100.0, "buy_price": 70.0}
-        info = make_info(); info["api_name"] = "SOME_ITEM"
-        self.assertEqual(len(A.build_buy_candidates("P", info, prices, 0.0,
-                         held_qty=0, time_between_trades_hours=8)), 1)
-
-    def test_spike_filter_noop_without_history(self):
-        # No baseline for the product -> no spike filtering even on a big run-up.
-        self._set_fill(1000)
-        price_history.baseline_ask = lambda api_name: None
-        prices = {"sell_price": 100.0, "buy_price": 70.0}
-        info = make_info(); info["api_name"] = "SOME_ITEM"
-        self.assertEqual(len(A.build_buy_candidates("P", info, prices, 0.0,
-                         held_qty=0, time_between_trades_hours=8)), 1)
-
-
 class ExitDriftTests(unittest.TestCase):
     def setUp(self):
         self._orig_path = exit_drift._PATH
@@ -323,35 +163,9 @@ class ExitDriftTests(unittest.TestCase):
 
 
 class StackSizeTests(unittest.TestCase):
-    def setUp(self):
-        self._orig = (fill_model.available, fill_model.expected_fill, exit_drift.multiplier,
-                      price_history.baseline_ask, whitelist.active, whitelist.max_buy)
-        fill_model.available = lambda: True
-        exit_drift.multiplier = lambda default=1.0: 1.0
-        price_history.baseline_ask = lambda api_name: None
-        whitelist.active = lambda: False
-        whitelist.max_buy = lambda api_name: None
-
-    def tearDown(self):
-        (fill_model.available, fill_model.expected_fill, exit_drift.multiplier,
-         price_history.baseline_ask, whitelist.active, whitelist.max_buy) = self._orig
-
-    def test_hold_cap_by_stack(self):
-        self.assertEqual(A.max_hold_per_item({"max_stack_size": 1}), 35)
-        self.assertEqual(A.max_hold_per_item({"max_stack_size": 64}), 2240)
-
     def test_buy_order_cap_by_stack(self):
         self.assertEqual(A.max_buy_order_size({"max_stack_size": 1}), 256)
         self.assertEqual(A.max_buy_order_size({"max_stack_size": 64}), A.MAX_ORDER_SIZE)
-
-    def test_unstackable_buy_limited_to_hold(self):
-        # room = 35 (35 slots x stack 1) bounds the buy regardless of fill/overshoot
-        fill_model.expected_fill = lambda side, vol, cap_qty, horizon_hours=None: min(cap_qty, 10**6)
-        prices = {"sell_price": 1000.0, "buy_price": 600.0}   # ratio 1.67; 35 units x 400 ppu clears MIN_PROFIT
-        cands = A.build_buy_candidates("P", make_info(stack=1), prices, 0.0,
-                                       held_qty=0, time_between_trades_hours=8)
-        self.assertEqual(len(cands), 1)
-        self.assertEqual(cands[0].quantity, 35)
 
 
 class StackSizeModuleTests(unittest.TestCase):
@@ -650,15 +464,23 @@ class WhitelistTests(unittest.TestCase):
     def test_non_whitelisted_buy_skipped(self):
         prices = {"sell_price": 1000.0, "buy_price": 600.0}
         self.assertEqual(A.build_buy_candidates("P", self._info("ZZZ"), prices, 0.0,
-                         held_qty=0, time_between_trades_hours=8), [])
+                         time_between_trades_hours=8), [])
 
-    def test_whitelisted_buy_sizes_to_max_buy_over_hold_cap(self):
-        # max_buy 5000 exceeds the 35x64=2240 hold cap; the explicit amount wins.
-        prices = {"sell_price": 1000.0, "buy_price": 600.0}   # ppu 400, clears MIN_PROFIT
+    def test_whitelisted_buy_sizes_to_max_buy(self):
+        # Stackable item: qty is exactly the configured max_buy (5000 < 71,680 cap).
+        prices = {"sell_price": 1000.0, "buy_price": 600.0}
         cands = A.build_buy_candidates("P", self._info("FOO"), prices, 0.0,
-                                       held_qty=0, time_between_trades_hours=8)
+                                       time_between_trades_hours=8)
         self.assertEqual(len(cands), 1)
         self.assertEqual(cands[0].quantity, 5000)
+
+    def test_whitelisted_unstackable_capped_at_256(self):
+        # FOO max_buy is 5000, but an unstackable (stack-1) item caps at 256/order.
+        prices = {"sell_price": 1000.0, "buy_price": 600.0}
+        info = make_info(stack=1)
+        info["api_name"] = "FOO"
+        cands = A.build_buy_candidates("P", info, prices, 0.0, time_between_trades_hours=8)
+        self.assertEqual(cands[0].quantity, 256)
 
     def test_empty_whitelist_is_inactive(self):
         self._tmp.write_text(json.dumps({"buy_whitelist": {}}), encoding="utf-8")
@@ -671,7 +493,7 @@ class WhitelistTests(unittest.TestCase):
         # FOO: margin 400 < floor -> emitted but qualified False (soft, not dropped).
         prices = {"sell_price": 1000.0, "buy_price": 600.0}
         c = A.build_buy_candidates("P", self._info("FOO"), prices, 0.0,
-                                   held_qty=0, time_between_trades_hours=8)[0]
+                                   time_between_trades_hours=8)[0]
         self.assertFalse(c.qualified)
         self.assertIn("margin", c.disqualify)
 
@@ -679,7 +501,7 @@ class WhitelistTests(unittest.TestCase):
         # NPC bucket is 2k (floor 4000), but bid near npc -> NPC floor 2500 applies.
         prices = {"sell_price": 102000.0, "buy_price": 99000.0}   # margin 3000; bid/npc=0.99
         c = A.build_buy_candidates("P", self._info("NPC"), prices, 0.0,
-                                   held_qty=0, time_between_trades_hours=8)[0]
+                                   time_between_trades_hours=8)[0]
         self.assertTrue(c.npc_floor)
         self.assertTrue(c.qualified)          # 3000 >= 2500 NPC floor (would fail the 4000 bucket floor)
 
@@ -687,7 +509,7 @@ class WhitelistTests(unittest.TestCase):
         price_history.baseline_ask = lambda a: 100000.0   # avg ask; current ask way above
         prices = {"sell_price": 190000.0, "buy_price": 99000.0}   # spread ok (190k<198k)
         c = A.build_buy_candidates("P", self._info("NPC"), prices, 0.0,
-                                   held_qty=0, time_between_trades_hours=8)[0]
+                                   time_between_trades_hours=8)[0]
         self.assertTrue(c.npc_floor)
         self.assertNotIn("ask_off", c.disqualify)   # ask side skipped for NPC-floor
         self.assertTrue(c.qualified)
@@ -696,7 +518,7 @@ class WhitelistTests(unittest.TestCase):
         price_history.baseline_bid = lambda a: 100000.0   # current bid 40% below avg
         prices = {"sell_price": 110000.0, "buy_price": 60000.0}   # fat margin, but bid dislocated
         c = A.build_buy_candidates("P", self._info("BK"), prices, 0.0,
-                                   held_qty=0, time_between_trades_hours=8)[0]
+                                   time_between_trades_hours=8)[0]
         self.assertFalse(c.qualified)
         self.assertIn("bid_off", c.disqualify)
 

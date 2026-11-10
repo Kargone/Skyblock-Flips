@@ -519,36 +519,23 @@ INVENTORY_CAP_SMALL_BUCKET = 500
 
 def build_recommendation(bazaar_data, all_product_information, trader_data,
                          bazaar_fee, available_slots, time_between_trades_hours):
-    short_term_investments = trader_data.get("short-term-investments", {})
     # Products with a live (unclaimed) order in-game, so we don't re-recommend
-    # something already placed. Keyed by display name (matches product names).
+    # something already placed (or already being worked on the sell side). Keyed
+    # by display name (matches product names).
     open_buy_products = {o.get("item-name") for o in trader_data.get("buy-order-overview", {}).get("buy-orders", [])
                          if not o.get("has-been-claimed")}
     open_sell_products = {o.get("item-name") for o in trader_data.get("sell-order-overview", {}).get("sell-orders", [])
                           if not o.get("has-been-claimed")}
 
-    # Guard: inventory we hold but can't price this poll won't be offered for
-    # sale by the allocator (it only ranks products in bazaar_data). Surface it
-    # so stock never goes silently unsold - e.g. a held item missing from the
-    # product-list/bazaar join, or one with no live order book right now.
-    for name in short_term_investments:
-        if name in bazaar_data:
-            clear_anomaly((name, "held-but-unpriced"))
-        else:
-            log_once((name, "held-but-unpriced"), logging.WARNING,
-                     "holding '%s' but it has no bazaar price this poll; it won't be offered for sale", name)
-
     reset_ms = most_recent_daily_reset_ms()
     cap_used = compute_daily_cap_used(reset_ms)
     cap_remaining = max(0, DAILY_ORDER_WORTH_CAP - cap_used)
 
-    candidates = build_all_candidates(
-        bazaar_data, all_product_information, short_term_investments,
+    buys = build_all_candidates(
+        bazaar_data, all_product_information,
         bazaar_fee, time_between_trades_hours,
         open_buy_products=open_buy_products, open_sell_products=open_sell_products,
     )
-    # Buys-only: the optimizer focuses on buy orders (the user manages sells).
-    buys = [c for c in candidates if c.side == "buy"]
 
     # Inventory-glut skip: don't recommend buying more of something we're already
     # sitting on a lot of. Cap is 1500 held units normally, tightened to 500 for
@@ -662,8 +649,7 @@ if __name__ == "__main__":
             continue
         clear_anomaly("fetch-trader-data-failed")
 
-        # build_inventory still runs for its anomaly logging; the allocator reads
-        # held quantities from short-term-investments directly (cost basis lives there).
+        # build_inventory runs for its anomaly logging (negative/over-max amounts).
         build_inventory(trader_data)
         available_slots = count_available_bazaar_slots(trader_data, TOTAL_BAZAAR_SLOTS)
 
