@@ -322,49 +322,6 @@ class ExitDriftTests(unittest.TestCase):
         self.assertLessEqual(m["drift_multiplier"], 1.5)
 
 
-class SolveTests(unittest.TestCase):
-    def _c(self, name, side, profit, order_worth, coin_cost, qty=100):
-        return A.Candidate(product_name=name, side=side, quantity=qty, expected_fill=qty,
-                           profit=profit, order_worth=order_worth, coin_cost=coin_cost, slot_index=0)
-
-    def test_coins_constraint_picks_higher_profit(self):
-        c1 = self._c("A", "buy", profit=10000, order_worth=1000, coin_cost=1000)
-        c2 = self._c("B", "buy", profit=8000, order_worth=1000, coin_cost=1000)
-        chosen = A.solve([c1, c2], available_slots=5, coins_available=1000, daily_cap_remaining=10**12)
-        self.assertEqual([c.product_name for c in chosen], ["A"])
-
-    def test_daily_cap_constraint(self):
-        c1 = self._c("A", "buy", profit=10000, order_worth=1000, coin_cost=0)
-        c2 = self._c("B", "buy", profit=8000, order_worth=1000, coin_cost=0)
-        chosen = A.solve([c1, c2], available_slots=5, coins_available=10**12, daily_cap_remaining=1000)
-        self.assertEqual(len(chosen), 1)
-
-    def test_slot_constraint(self):
-        cs = [self._c(n, "buy", profit=1000 + i, order_worth=1, coin_cost=0) for i, n in enumerate("ABCD")]
-        chosen = A.solve(cs, available_slots=2, coins_available=10**12, daily_cap_remaining=10**12)
-        self.assertEqual(len(chosen), 2)
-
-    def test_empty_or_no_slots(self):
-        self.assertEqual(A.solve([], 5, 10**9, 10**9), [])
-        c1 = self._c("A", "buy", 1000, 1, 0)
-        self.assertEqual(A.solve([c1], 0, 10**9, 10**9), [])
-
-    def test_sells_first_policy(self):
-        # Buy has higher profit, but with one slot the sell is locked in first.
-        sell = self._c("S", "sell_inventory", profit=5000, order_worth=1000, coin_cost=0)
-        buy = self._c("B", "buy", profit=9000, order_worth=1000, coin_cost=500)
-        chosen = A.solve_sells_first([sell, buy], available_slots=1, coins_available=10**9, daily_cap_remaining=10**9)
-        self.assertEqual([c.product_name for c in chosen], ["S"])
-
-    def test_blended_picks_highest_profit_across_sides(self):
-        # The live policy: with one slot, blended solve() takes the higher-profit
-        # buy over the sell (opposite of sells-first above).
-        sell = self._c("S", "sell_inventory", profit=5000, order_worth=1000, coin_cost=0)
-        buy = self._c("B", "buy", profit=9000, order_worth=1000, coin_cost=500)
-        chosen = A.solve([sell, buy], available_slots=1, coins_available=10**9, daily_cap_remaining=10**9)
-        self.assertEqual([c.product_name for c in chosen], ["B"])
-
-
 class StackSizeTests(unittest.TestCase):
     def setUp(self):
         self._orig = (fill_model.available, fill_model.expected_fill, exit_drift.multiplier,

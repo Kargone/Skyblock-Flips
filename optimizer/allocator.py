@@ -1,39 +1,35 @@
 """
-Stage 2: constrained allocator.
+Stage 2: candidate builder for the buys-only whitelist policy.
 
 Takes the per-product price/feature state Stage 1 already computes
-(main.py's build_bazaar_data_and_product_info) plus current trader state,
-builds a set of candidate orders - selling off existing inventory vs buying
-fresh and flipping it, each sized to fit within one bazaar slot - and solves
-for the subset that maximizes TOTAL expected profit (not margin) subject to
-every real constraint: 28 total slots, the current coin purse, the 15B/24h
-order-worth cap (resets 7:00 PM America/Chicago; both buy and sell order worth
-count toward it), the 71,680 per-slot size cap, and the per-item
-inventory-holding cap (35 inventory slots x the item's max stack size).
+(main.py's build_bazaar_data_and_product_info) plus current trader state and
+builds the candidate orders main.py ranks. The live policy is buys-only over a
+hand-curated whitelist: build_buy_candidates emits one soft-ranked buy per
+whitelisted product (_build_whitelisted_buy), and main.build_recommendation
+groups and sorts them into display buckets - there is no longer an ILP that
+picks a profit-maximizing subset. The real constraints (the current coin purse,
+the 15B/24h order-worth cap resetting 7:00 PM America/Chicago, the 71,680
+per-slot size cap, the per-item inventory-holding cap of 35 slots x max stack
+size) are applied as per-candidate sizing bounds rather than a joint solve.
 
-This supersedes main.py's FindMaxProfit.find_max_profit_for_slot for
-allocation purposes - that function scored every product independently with
-no shared-constraint accounting at all (its own TODO said as much). The
-expected fill of each candidate now comes from the trained fill model
+A legacy fallback (slot-split, liquidity-filtered buys and inventory sells)
+still runs when the whitelist is inactive, e.g. if whitelist.json fails to load.
+The expected fill of each candidate comes from the trained fill model
 (fill_model.py / fill_model.json, fit by fit_fill_model.py on the logged
 order outcomes): a (side, 7-day-volume) -> units/minute table applied over the
 ~8h cancel horizon. The old EMA-vs-current weight heuristic (estimate_fillable_qty)
 remains only as the fallback used when the model file is unavailable.
 
-NOT wired up yet, deliberately: (1) current coin purse - no API source for
-it exists (main.py has the same gap); (2) how much of the 15B/24h cap has
-already been used today - needs a persistent counter updated wherever real
-orders get placed, which doesn't exist yet since main.py never actually
-calls anything like update_constraints; (3) the NPC sell channel as an
-alternative to a bazaar sell order - no NPC price data is tracked anywhere
-yet. All three are passed in as plain arguments for now so this module can
-be validated and iterated on independently of that plumbing.
+The purse (main.py's get_configured_purse, from the Hypixel API via secrets.json)
+and the 15B/24h cap already used today (main.py's compute_daily_cap_used, derived
+from logged `placed` events) are now supplied by the caller. Still out of scope:
+the NPC sell channel as an alternative exit to a bazaar sell order - NPC prices
+feed the buy-side NPC-floor check (npc_sell_price in whitelist.json) but there is
+no NPC sell-order candidate.
 """
 
 import math
 from dataclasses import dataclass
-
-import pulp
 
 import exit_drift
 import fill_model
@@ -366,59 +362,6 @@ def build_buy_candidates(product_name, info, prices, bazaar_fee, purse_remaining
                             coin_cost_per_unit=prices["buy_price"], max_order_size=max_buy_order_size(info))
 
 
-def solve(candidates, available_slots, coins_available, daily_cap_remaining):
-    if not candidates or available_slots <= 0:
-        return []
-
-    problem = pulp.LpProblem("bazaar_allocation", pulp.LpMaximize)
-    x = {i: pulp.LpVariable(f"take_{i}", cat="Binary") for i in range(len(candidates))}
-
-    problem += pulp.lpSum(candidates[i].profit * x[i] for i in range(len(candidates)))
-
-    problem += pulp.lpSum(x[i] for i in range(len(candidates))) <= available_slots
-    problem += pulp.lpSum(candidates[i].coin_cost * x[i] for i in range(len(candidates))) <= coins_available
-    problem += pulp.lpSum(candidates[i].order_worth * x[i] for i in range(len(candidates))) <= daily_cap_remaining
-
-    # Can't take a product's 2nd slot on a side without also taking its 1st.
-    by_product_side = {}
-    for i, c in enumerate(candidates):
-        by_product_side.setdefault((c.product_name, c.side), {})[c.slot_index] = i
-    for slots in by_product_side.values():
-        if 0 in slots and 1 in slots:
-            problem += x[slots[1]] <= x[slots[0]]
-
-    problem.solve(pulp.PULP_CBC_CMD(msg=False))
-
-    return [candidates[i] for i in range(len(candidates)) if x[i].value() == 1]
-
-
-def solve_sells_first(candidates, available_slots, coins_available, daily_cap_remaining):
-    """Lexicographic 'sells first, then buys' policy. NOT the live default - main.py
-    uses the blended solve() (top total expected profit across both sides) now that
-    buys are risk-adjusted and liquidity-filtered. Kept as an alternative: first lock
-    in every worthwhile inventory sell we can, then spend whatever slots / coins /
-    daily cap are left on buy-to-flip candidates.
-
-    Inventory sells are realized this cycle; buy-flips only pay off next cycle
-    and carry fill risk on both legs, so they never displace a profitable sell.
-    Both order sides draw from the same 15B daily cap, so phase 2 sees only what
-    phase 1 left behind. Sells cost 0 coins, so the purse is untouched by phase 1."""
-    sells = [c for c in candidates if c.side == "sell_inventory"]
-    buys = [c for c in candidates if c.side == "buy"]
-
-    chosen_sells = solve(sells, available_slots, coins_available, daily_cap_remaining)
-    slots_used = len(chosen_sells)
-    cap_used = sum(c.order_worth for c in chosen_sells)
-
-    chosen_buys = solve(
-        buys,
-        available_slots - slots_used,
-        coins_available,
-        daily_cap_remaining - cap_used,
-    )
-    return chosen_sells + chosen_buys
-
-
 def build_all_candidates(bazaar_data, all_product_information, short_term_investments, bazaar_fee,
                          purse_remaining, time_between_trades_hours,
                          open_buy_products=frozenset(), open_sell_products=frozenset()):
@@ -448,40 +391,3 @@ def build_all_candidates(bazaar_data, all_product_information, short_term_invest
                 product_name, info, prices, bazaar_fee, purse_remaining, held_qty, time_between_trades_hours
             )
     return candidates
-
-
-if __name__ == "__main__":
-    from api_client import get_market_data, get_product_list, get_trader_data
-    from main import build_bazaar_data_and_product_info
-
-    product_list = get_product_list()
-    trader_data = get_trader_data()
-    market_data = get_market_data()
-
-    bazaar_data, all_product_information = build_bazaar_data_and_product_info(
-        market_data.get("bazaarProducts", {}), market_data.get("volumeStats", {}), product_list
-    )
-
-    # TODO: same gap as main.py - no API source yet for the current coin
-    # purse. Update manually for now.
-    current_coins_amount = 0
-    # TODO: no persistent tracking yet of how much of the 15B/24h cap has
-    # been used since the last 7PM CDT reset. Assume nothing used yet.
-    daily_cap_remaining = DAILY_ORDER_WORTH_CAP
-    # Live rate comes from /api/mayor-data's tax-multiplier in the main.py loop
-    # (x4 under Derpy); 1% is the non-Derpy baseline for this standalone harness.
-    bazaar_fee = 0.01
-
-    candidates = build_all_candidates(
-        bazaar_data, all_product_information, trader_data.get("short-term-investments", {}),
-        bazaar_fee, current_coins_amount, time_between_trades_hours=8,
-    )
-    print(f"generated {len(candidates)} candidates")
-
-    chosen = solve_sells_first(candidates, TOTAL_SLOTS, current_coins_amount, daily_cap_remaining)
-    chosen.sort(key=lambda c: c.profit, reverse=True)
-
-    total_profit = sum(c.profit for c in chosen)
-    print(f"chose {len(chosen)}/{TOTAL_SLOTS} slots, total expected profit: {total_profit:,.0f}")
-    for c in chosen:
-        print(f"  [{c.side:14s}] {c.product_name:35s} list={c.quantity:>7d} fill~{c.expected_fill:>7,.0f}  profit={c.profit:>12,.0f}  worth={c.order_worth:>14,.0f}")

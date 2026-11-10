@@ -675,9 +675,9 @@ if __name__ == "__main__":
         )
         write_recommendation(recommendation)
         log.info(
-            "recommended %d orders, total expected profit %s (cap remaining %s, %d slots free)",
+            "recommended %d buy orders (%d qualified), cap remaining %s, %d slots free",
             len(recommendation["orders"]),
-            f"{recommendation['total_expected_profit']:,.0f}",
+            recommendation["n_qualified"],
             f"{recommendation['daily_cap_remaining']:,.0f}",
             available_slots,
         )
