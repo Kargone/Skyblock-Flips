@@ -13,7 +13,7 @@ import os
 import pathlib
 
 _PATH = pathlib.Path(__file__).parent / "whitelist.json"
-_map = None          # api_name -> max_buy (int)
+_map = None          # api_name -> {"max_buy": int, "npc_sell_price": int|None}
 _mtime = None
 
 
@@ -32,7 +32,8 @@ def _load():
             for api_name, entry in raw.items():
                 mb = (entry or {}).get("max_buy")
                 if mb and int(mb) > 0:
-                    m[api_name] = int(mb)
+                    npc = (entry or {}).get("npc_sell_price")
+                    m[api_name] = {"max_buy": int(mb), "npc_sell_price": int(npc) if npc else None}
             _map = m
             _mtime = mtime
         except (OSError, ValueError, TypeError):
@@ -56,4 +57,11 @@ def allows(api_name):
 
 def max_buy(api_name):
     """The configured buy quantity for this product, or None if not whitelisted."""
-    return _load().get(api_name)
+    entry = _load().get(api_name)
+    return entry["max_buy"] if entry else None
+
+
+def npc_sell_price(api_name):
+    """The product's NPC sell price (for NPC-floor detection), or None."""
+    entry = _load().get(api_name)
+    return entry["npc_sell_price"] if entry else None

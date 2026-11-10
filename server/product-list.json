@@ -1635,7 +1635,7 @@
     "has-weights": true
   },
   "Enchanted Hay Bale": {
-    "api-name": "ENCHANTED_HAY_BLOCK",
+    "api-name": "ENCHANTED_HAY_BALE",
     "type": "short-term-investment",
     "has-weights": true
   },
@@ -7860,7 +7860,7 @@
     "has-weights": true
   },
   "Nether Star": {
-    "api-name": "NETHER_STAR",
+    "api-name": "CORRUPTED_NETHER_STAR",
     "type": "short-term-investment",
     "has-weights": true
   },

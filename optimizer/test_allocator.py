@@ -431,52 +431,78 @@ class StackSizeModuleTests(unittest.TestCase):
 class MenuTests(unittest.TestCase):
     """build_recommendation output: buys-only ranked menu of >=10 orders, in_plan flags."""
 
+    # Products across buckets. price = (bid, ask); margin = ask - bid (fee 0 in tests).
+    WORLD = {
+        "A7A": (7000, 6000, 10000),   # bucket 7k, margin 4000 -> qualified
+        "A7B": (7000, 6000,  9000),   # bucket 7k, margin 3000 -> qualified (lower)
+        "A4":  (4000, 50000, 54000),  # bucket 4k, margin 4000 -> qualified
+        "A2":  (2000, 150000, 156000),# bucket 2k, margin 6000 -> qualified
+        "A1":  (1000, 300000, 312000),# bucket 1k, margin 12000 -> qualified
+        "LOW": (7000, 6000,  6500),   # bucket 7k, margin 500 < 2500 -> DISCARDED
+    }
+
     def setUp(self):
         self._orig = (fill_model.available, fill_model.expected_fill, exit_drift.multiplier,
-                      price_history.baseline_ask, whitelist.active, whitelist.max_buy,
-                      M.compute_daily_cap_used)
+                      price_history.baseline_ask, price_history.baseline_bid,
+                      M.compute_daily_cap_used, whitelist._PATH, whitelist._map, whitelist._mtime)
         fill_model.available = lambda: True
         fill_model.expected_fill = lambda side, vol, cap_qty, horizon_hours=None: min(cap_qty, 500)
         exit_drift.multiplier = lambda default=1.0: 1.0
-        price_history.baseline_ask = lambda api_name: None
-        whitelist.active = lambda: False          # exercise the menu without the whitelist gate
-        whitelist.max_buy = lambda api_name: None
+        price_history.baseline_ask = lambda api_name: None   # no book-sanity demotion in tests
+        price_history.baseline_bid = lambda api_name: None
         M.compute_daily_cap_used = lambda reset_ms, path=None: 0
+        tmp = Path(tempfile.mkdtemp()) / "whitelist.json"
+        tmp.write_text(json.dumps({"buy_whitelist": {k: {"max_buy": v[0]} for k, v in self.WORLD.items()}}),
+                       encoding="utf-8")
+        whitelist._PATH = tmp
+        whitelist._map = None
+        whitelist._mtime = None
 
     def tearDown(self):
         (fill_model.available, fill_model.expected_fill, exit_drift.multiplier,
-         price_history.baseline_ask, whitelist.active, whitelist.max_buy,
-         M.compute_daily_cap_used) = self._orig
+         price_history.baseline_ask, price_history.baseline_bid,
+         M.compute_daily_cap_used, whitelist._PATH, whitelist._map, whitelist._mtime) = self._orig
 
-    def _world(self, n=15):
+    def _world(self):
         bazaar, info = {}, {}
-        for i in range(n):
-            name = f"P{i}"
-            bazaar[name] = {"buy_price": 100.0, "sell_price": 140.0}  # ratio 1.4
-            info[name] = make_info()
+        for api, (mb, bid, ask) in self.WORLD.items():
+            bazaar[api] = {"buy_price": float(bid), "sell_price": float(ask)}
+            i = make_info(); i["api_name"] = api
+            info[api] = i
         return bazaar, info
 
-    def _trader(self, held):
-        return {"short-term-investments": {"P0": {"sub-orders": [{"partial-amount": held, "price-bought": 50.0}]}}}
+    def _rec(self, slots=5):
+        bazaar, info = self._world()
+        return M.build_recommendation(bazaar, info, {"short-term-investments": {}}, 0.0, 10**12, slots, 8)
 
-    def test_menu_is_buys_only_with_plan(self):
-        bazaar, info = self._world(15)
-        rec = M.build_recommendation(bazaar, info, self._trader(50_000), 0.0, 10**12, 5, 8)
-        o = rec["orders"]
-        self.assertGreaterEqual(len(o), 10)
-        self.assertTrue(all(x["action"] == "buy" for x in o))   # buys only
-        self.assertTrue(any(x["in_plan"] for x in o))
+    def test_buys_only_with_bucket_fields(self):
+        o = self._rec()["orders"]
+        self.assertEqual(len(o), len(self.WORLD))               # every whitelisted product emitted
+        self.assertTrue(all(x["action"] == "buy" for x in o))
+        self.assertFalse(any("in_plan" in x for x in o))        # ILP/in_plan removed
+        self.assertTrue(all({"bucket", "qualified", "margin", "display_bucket"} <= x.keys() for x in o))
 
-    def test_no_sells_even_with_holdings(self):
-        bazaar, info = self._world(15)
-        rec = M.build_recommendation(bazaar, info, self._trader(50_000), 0.0, 10**12, 5, 8)
-        self.assertFalse(any(x["action"] == "sell" for x in rec["orders"]))
+    def test_discarded_product_kept_but_after_qualified(self):
+        o = self._rec()["orders"]
+        names = [x["product_name"] for x in o]
+        self.assertIn("LOW", names)                             # not deleted
+        low = next(x for x in o if x["product_name"] == "LOW")
+        self.assertFalse(low["qualified"])
+        self.assertIn("margin", low["disqualify"])
+        # within the 7k bucket, LOW (discarded) ranks behind the qualified 7k ones
+        seven = [x for x in o if x["display_bucket"] == "7k"]
+        self.assertEqual(seven[-1]["product_name"], "LOW")
+        self.assertTrue(all(x["qualified"] for x in seven[:-1]))
 
-    def test_assumes_at_least_one_slot(self):
-        bazaar, info = self._world(15)
-        rec = M.build_recommendation(bazaar, info, self._trader(50_000), 0.0, 10**12, 0, 8)  # 0 free slots
-        self.assertGreaterEqual(len(rec["orders"]), 10)
-        self.assertTrue(any(x["in_plan"] for x in rec["orders"]))   # still picks >=1
+    def test_bucket_ordering_and_margin_rank(self):
+        o = self._rec()["orders"]
+        # display buckets appear in order 7k, 4k, 2k, 1k+500
+        seen = [x["display_bucket"] for x in o]
+        order = [b for b in ["7k", "4k", "2k", "1k+500"] if b in seen]
+        self.assertEqual([b for b in seen if b in order], sorted(seen, key=lambda b: order.index(b)))
+        # qualified 7k ranked by margin desc: A7A(4000) before A7B(3000)
+        seven_q = [x["product_name"] for x in o if x["display_bucket"] == "7k" and x["qualified"]]
+        self.assertEqual(seven_q, ["A7A", "A7B"])
 
 
 class BlacklistTests(unittest.TestCase):
@@ -556,11 +582,12 @@ class PriceHistoryTests(unittest.TestCase):
         self._tmp.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
 
     def test_baseline_is_median_ignoring_spike(self):
-        # 30 samples at ask 100, then one spike to 300: median stays ~100.
+        # 30 samples at ask 100 / bid 90, then one ask spike to 300: medians hold.
         rows = [{"t": i, "p": {"FOO": [100.0, 90.0]}} for i in range(30)]
         rows.append({"t": 99, "p": {"FOO": [300.0, 90.0]}})
         self._write(rows)
         self.assertAlmostEqual(price_history.baseline_ask("FOO"), 100.0)
+        self.assertAlmostEqual(price_history.baseline_bid("FOO"), 90.0)   # bid = [1]
 
     def test_too_little_history_returns_none(self):
         self._write([{"t": i, "p": {"FOO": [100.0, 90.0]}} for i in range(5)])  # < MIN_SAMPLES
@@ -579,22 +606,25 @@ class WhitelistTests(unittest.TestCase):
 
     def setUp(self):
         self._stub = (fill_model.available, fill_model.expected_fill, exit_drift.multiplier,
-                      price_history.baseline_ask)
+                      price_history.baseline_ask, price_history.baseline_bid)
         fill_model.available = lambda: True
         fill_model.expected_fill = lambda side, vol, cap_qty, horizon_hours=None: min(cap_qty, 10**6)
         exit_drift.multiplier = lambda default=1.0: 1.0
         price_history.baseline_ask = lambda api_name: None
+        price_history.baseline_bid = lambda api_name: None
         self._orig_path, self._orig_map, self._orig_mtime = (whitelist._PATH, whitelist._map, whitelist._mtime)
         self._tmp = Path(tempfile.mkdtemp()) / "whitelist.json"
-        self._tmp.write_text(json.dumps({"buy_whitelist": {"FOO": {"max_buy": 5000}, "BAR": {"max_buy": 400}}}),
-                             encoding="utf-8")
+        self._tmp.write_text(json.dumps({"buy_whitelist": {
+            "FOO": {"max_buy": 5000}, "BAR": {"max_buy": 400},
+            "NPC": {"max_buy": 2000, "npc_sell_price": 100000}, "BK": {"max_buy": 4000}}}),
+            encoding="utf-8")
         whitelist._PATH = self._tmp
         whitelist._map = None
         whitelist._mtime = None
 
     def tearDown(self):
         (fill_model.available, fill_model.expected_fill, exit_drift.multiplier,
-         price_history.baseline_ask) = self._stub
+         price_history.baseline_ask, price_history.baseline_bid) = self._stub
         whitelist._PATH, whitelist._map, whitelist._mtime = self._orig_path, self._orig_map, self._orig_mtime
 
     def _info(self, api_name):
@@ -633,12 +663,46 @@ class WhitelistTests(unittest.TestCase):
         self.assertFalse(whitelist.active())
         self.assertTrue(whitelist.allows("ANYTHING"))   # no restriction when empty
 
+    def test_every_whitelisted_product_is_emitted_with_flag(self):
+        # FOO: margin 400 < floor -> emitted but qualified False (soft, not dropped).
+        prices = {"sell_price": 1000.0, "buy_price": 600.0}
+        c = A.build_buy_candidates("P", self._info("FOO"), prices, 0.0,
+                                   purse_remaining=10**12, held_qty=0, time_between_trades_hours=8)[0]
+        self.assertFalse(c.qualified)
+        self.assertIn("margin", c.disqualify)
+
+    def test_npc_floor_relaxes_margin(self):
+        # NPC bucket is 2k (floor 4000), but bid near npc -> NPC floor 2500 applies.
+        prices = {"sell_price": 102000.0, "buy_price": 99000.0}   # margin 3000; bid/npc=0.99
+        c = A.build_buy_candidates("P", self._info("NPC"), prices, 0.0,
+                                   purse_remaining=10**12, held_qty=0, time_between_trades_hours=8)[0]
+        self.assertTrue(c.npc_floor)
+        self.assertTrue(c.qualified)          # 3000 >= 2500 NPC floor (would fail the 4000 bucket floor)
+
+    def test_npc_floor_skips_ask_sanity(self):
+        price_history.baseline_ask = lambda a: 100000.0   # avg ask; current ask way above
+        prices = {"sell_price": 190000.0, "buy_price": 99000.0}   # spread ok (190k<198k)
+        c = A.build_buy_candidates("P", self._info("NPC"), prices, 0.0,
+                                   purse_remaining=10**12, held_qty=0, time_between_trades_hours=8)[0]
+        self.assertTrue(c.npc_floor)
+        self.assertNotIn("ask_off", c.disqualify)   # ask side skipped for NPC-floor
+        self.assertTrue(c.qualified)
+
+    def test_book_sanity_demotes_on_bid_off(self):
+        price_history.baseline_bid = lambda a: 100000.0   # current bid 40% below avg
+        prices = {"sell_price": 110000.0, "buy_price": 60000.0}   # fat margin, but bid dislocated
+        c = A.build_buy_candidates("P", self._info("BK"), prices, 0.0,
+                                   purse_remaining=10**12, held_qty=0, time_between_trades_hours=8)[0]
+        self.assertFalse(c.qualified)
+        self.assertIn("bid_off", c.disqualify)
+
     def test_committed_whitelist_well_formed(self):
         whitelist._PATH, whitelist._map, whitelist._mtime = self._orig_path, None, None
         self.assertTrue(whitelist.active())
         self.assertEqual(whitelist.max_buy("WHALE_BAIT"), 7000)
         self.assertEqual(whitelist.max_buy("POLISHED_PUMPKIN"), 2000)   # hand override
         self.assertIsNone(whitelist.max_buy("SUMMONING_EYE"))           # dropped during triage
+        self.assertEqual(whitelist.npc_sell_price("POLISHED_PUMPKIN"), 256000)   # npc data present
 
 
 class CommittedModelTests(unittest.TestCase):

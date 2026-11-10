@@ -46,18 +46,26 @@ def _load():
     if _baselines is not None and _sig == sig:
         return _baselines
 
-    # Collect the insta-buy series per product from the trailing RECENT_SAMPLES lines.
+    # Collect the insta-buy (ask, [0]) and insta-sell (bid, [1]) series per product
+    # from the trailing RECENT_SAMPLES lines.
     recent = _tail_lines(_PATH, RECENT_SAMPLES)
-    series = {}
+    asks, bids = {}, {}
     for raw in recent:
         try:
             p = json.loads(raw).get("p") or {}
         except ValueError:
             continue
         for name, pair in p.items():
-            if pair and pair[0] and pair[0] > 0:
-                series.setdefault(name, []).append(pair[0])
-    _baselines = {name: median(vals) for name, vals in series.items() if len(vals) >= MIN_SAMPLES}
+            if not pair:
+                continue
+            if pair[0] and pair[0] > 0:
+                asks.setdefault(name, []).append(pair[0])
+            if len(pair) > 1 and pair[1] and pair[1] > 0:
+                bids.setdefault(name, []).append(pair[1])
+    _baselines = {
+        "ask": {n: median(v) for n, v in asks.items() if len(v) >= MIN_SAMPLES},
+        "bid": {n: median(v) for n, v in bids.items() if len(v) >= MIN_SAMPLES},
+    }
     _sig = sig
     return _baselines
 
@@ -79,7 +87,8 @@ def _tail_lines(path, n, block_size=1 << 20):
 
 
 def available():
-    return bool(_load())
+    b = _load()
+    return bool(b.get("ask") or b.get("bid"))
 
 
 def baseline_ask(api_name):
@@ -87,4 +96,12 @@ def baseline_ask(api_name):
     too little history."""
     if not api_name:
         return None
-    return _load().get(api_name)
+    return _load().get("ask", {}).get(api_name)
+
+
+def baseline_bid(api_name):
+    """Median recent insta-sell (bid) price for this product, or None if unknown /
+    too little history."""
+    if not api_name:
+        return None
+    return _load().get("bid", {}).get(api_name)

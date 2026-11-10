@@ -120,7 +120,7 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import blacklist
 import stack_sizes
-from allocator import DAILY_ORDER_WORTH_CAP, build_all_candidates, solve
+from allocator import DAILY_ORDER_WORTH_CAP, build_all_candidates
 from api_client import get_market_data, get_mayor_data, get_product_list, get_purse_from_hypixel, get_trader_data
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -549,9 +549,12 @@ def get_configured_purse():
     return _manual_purse()
 
 
-# The advisory is buys-only (the user manages sells); it returns a ranked menu of
-# at least MENU_MIN_ORDERS buy options to pick/discard from, not just the slot pick.
-MENU_MIN_ORDERS = 10
+# The advisory is buys-only (the user manages sells). Every whitelisted buy is
+# ranked within its order-size bucket: qualifying ones (pass margin + book-sanity)
+# first by margin, then the demoted/discarded ones. The mod shows the top 5 per
+# display bucket. 1k and 500 share a display bucket.
+DISPLAY_BUCKET = {7000: "7k", 4000: "4k", 2000: "2k", 1000: "1k+500", 500: "1k+500"}
+DISPLAY_BUCKET_ORDER = ["7k", "4k", "2k", "1k+500"]
 
 
 def build_recommendation(bazaar_data, all_product_information, trader_data,
@@ -584,31 +587,22 @@ def build_recommendation(bazaar_data, all_product_information, trader_data,
         bazaar_fee, purse, time_between_trades_hours,
         open_buy_products=open_buy_products, open_sell_products=open_sell_products,
     )
-    # Buys-only: the optimizer focuses on buy orders (the user manages sells
-    # separately); the whitelist restricts which products are bought and how much.
-    menu_candidates = [c for c in candidates if c.side == "buy"]
+    # Buys-only: the optimizer focuses on buy orders (the user manages sells).
+    buys = [c for c in candidates if c.side == "buy"]
 
-    # Top-profit pick over the slots actually free (assume >=1 so we always surface
-    # something). These are the "place now" picks, flagged in_plan.
-    chosen = solve(menu_candidates, max(available_slots, 1), purse, cap_remaining)
-    in_plan = {id(c) for c in chosen}
+    # Rank: group by display bucket (7k, 4k, 2k, 1k+500), and within each bucket put
+    # the qualifying products first (best margin first), then the demoted/discarded
+    # ones (also by margin, but they sort behind every qualified one). The mod shows
+    # the top 5 per bucket, so failing products fall off the visible list naturally
+    # without being thrown away.
+    def _rank_key(c):
+        display = DISPLAY_BUCKET.get(c.bucket, "1k+500")
+        return (DISPLAY_BUCKET_ORDER.index(display) if display in DISPLAY_BUCKET_ORDER else 99,
+                0 if c.qualified else 1,
+                -c.margin)
+    buys.sort(key=_rank_key)
 
-    # Ranked menu (>= MENU_MIN_ORDERS) of buy options to pick/discard from.
-    menu, seen = [], set()
-
-    def _add(c):
-        if id(c) not in seen:
-            seen.add(id(c))
-            menu.append(c)
-
-    for c in chosen:
-        _add(c)
-    for c in sorted(menu_candidates, key=lambda c: c.profit, reverse=True):
-        if len(menu) >= MENU_MIN_ORDERS:
-            break
-        _add(c)
-    menu.sort(key=lambda c: c.profit, reverse=True)
-
+    n_qualified = sum(1 for c in buys if c.qualified)
     return {
         "available": True,
         "generated_at": int(time.time() * 1000),
@@ -617,20 +611,25 @@ def build_recommendation(bazaar_data, all_product_information, trader_data,
         "available_slots": available_slots,
         "daily_cap_used": cap_used,
         "daily_cap_remaining": cap_remaining,
-        "total_expected_profit": sum(c.profit for c in chosen),  # the plan (in_plan picks)
+        "n_qualified": n_qualified,
         "orders": [
             {
-                "action": "sell" if c.side == "sell_inventory" else "buy",
+                "action": "buy",
                 "product_name": c.product_name,
                 "quantity": c.quantity,
                 "expected_fill": round(c.expected_fill),
                 "order_price": c.order_worth / c.quantity if c.quantity else 0,
-                "expected_profit": c.profit,
+                "margin": round(c.margin),
+                "expected_profit": round(c.profit),
                 "order_worth": c.order_worth,
                 "coin_cost": c.coin_cost,
-                "in_plan": id(c) in in_plan,  # True = fits the free slots now; others are extra options
+                "bucket": c.bucket,
+                "display_bucket": DISPLAY_BUCKET.get(c.bucket, "1k+500"),
+                "qualified": c.qualified,
+                "npc_floor": c.npc_floor,
+                "disqualify": list(c.disqualify),
             }
-            for c in menu
+            for c in buys
         ],
     }
 

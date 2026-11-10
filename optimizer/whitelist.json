@@ -1,5 +1,5 @@
 {
- "_comment": "Buys-only whitelist. The optimizer ONLY places buy orders for products listed here (keyed by api-name); everything else is skipped on the buy side. max_buy is the quantity to buy for that product (a hard order-size cap, bounded by affordability and the daily cap). buy_price/sell_price/volumes are a snapshot captured when the list was built, for reference only - they are NOT read at runtime and go stale. override=true marks a max_buy set by hand off the price-tier formula. Hot-reloaded on save.",
+ "_comment": "Buys-only whitelist. The optimizer ONLY places buy orders for products listed here (keyed by api-name); everything else is skipped on the buy side. max_buy is the quantity to buy for that product (a hard order-size cap, bounded by affordability and the daily cap). buy_price/sell_price/volumes are a snapshot captured when the list was built, for reference only - they are NOT read at runtime and go stale. override=true marks a max_buy set by hand off the price-tier formula. npc_sell_price (when present) drives NPC-floor handling: a product whose current bid sits ~0.8-1.15x npc gets the farming/NPC-floor policy. Hot-reloaded on save.",
  "formula": {
   "<25k": 7000,
   "25k-100k": 4000,
@@ -14,7 +14,8 @@
    "sell_price": 9033,
    "buy_vol_7d": 96206,
    "sell_vol_7d": 218470,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 500
   },
   "FINE_OPAL_GEM": {
    "name": "Fine Opal Gemstone",
@@ -23,7 +24,8 @@
    "buy_vol_7d": 38347,
    "sell_vol_7d": 87866,
    "max_buy": 4000,
-   "override": true
+   "override": true,
+   "npc_sell_price": 19200
   },
   "LONELILY": {
    "name": "Lonelily",
@@ -39,7 +41,8 @@
    "sell_price": 5291,
    "buy_vol_7d": 821297,
    "sell_vol_7d": 362281,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 25
   },
   "GOBLIN_EGG_GREEN": {
    "name": "Green Goblin Egg",
@@ -47,7 +50,8 @@
    "sell_price": 5955,
    "buy_vol_7d": 444736,
    "sell_vol_7d": 436378,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 1000
   },
   "FINE_FLOUR": {
    "name": "Fine Flour",
@@ -55,7 +59,8 @@
    "sell_price": 8747,
    "buy_vol_7d": 224833,
    "sell_vol_7d": 191949,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 500
   },
   "SHARD_STRONGARM": {
    "name": "SHARD_STRONGARM",
@@ -71,7 +76,8 @@
    "sell_price": 5418,
    "buy_vol_7d": 385058,
    "sell_vol_7d": 2433219,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 1600
   },
   "EXPORTABLE_CARROTS": {
    "name": "Exportable Carrots",
@@ -79,7 +85,8 @@
    "sell_price": 6308,
    "buy_vol_7d": 188713,
    "sell_vol_7d": 247699,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 20
   },
   "AGARIMOO_TONGUE": {
    "name": "Agarimoo Tongue",
@@ -87,7 +94,8 @@
    "sell_price": 5994,
    "buy_vol_7d": 240488,
    "sell_vol_7d": 612170,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 5000
   },
   "GREEN_GIFT": {
    "name": "Green Gift",
@@ -103,7 +111,8 @@
    "sell_price": 6282,
    "buy_vol_7d": 832760,
    "sell_vol_7d": 1017465,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 2880
   },
   "SHARD_MINER_ZOMBIE": {
    "name": "SHARD_MINER_ZOMBIE",
@@ -119,7 +128,8 @@
    "sell_price": 6452,
    "buy_vol_7d": 1775286,
    "sell_vol_7d": 1407005,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 640
   },
   "SOULFLOW": {
    "name": "Soulflow",
@@ -127,7 +137,8 @@
    "sell_price": 26160,
    "buy_vol_7d": 1078176,
    "sell_vol_7d": 811388,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 1
   },
   "WHALE_BAIT": {
    "name": "Whale Bait",
@@ -135,7 +146,8 @@
    "sell_price": 6898,
    "buy_vol_7d": 4899081,
    "sell_vol_7d": 1926767,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 44
   },
   "YOUNG_FRAGMENT": {
    "name": "Young Dragon Fragment",
@@ -143,7 +155,8 @@
    "sell_price": 7434,
    "buy_vol_7d": 304130,
    "sell_vol_7d": 753690,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 2500
   },
   "OLD_FRAGMENT": {
    "name": "Old Dragon Fragment",
@@ -151,7 +164,8 @@
    "sell_price": 8459,
    "buy_vol_7d": 73386,
    "sell_vol_7d": 114158,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 2500
   },
   "ENCHANTED_RUBY_VEILSHROOM": {
    "name": "Enchanted Ruby Veilshroom",
@@ -159,7 +173,8 @@
    "sell_price": 7452,
    "buy_vol_7d": 54822,
    "sell_vol_7d": 213947,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 800
   },
   "PROTECTOR_FRAGMENT": {
    "name": "Protector Dragon Fragment",
@@ -167,7 +182,8 @@
    "sell_price": 8647,
    "buy_vol_7d": 62834,
    "sell_vol_7d": 106326,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 2500
   },
   "UNSTABLE_FRAGMENT": {
    "name": "Unstable Dragon Fragment",
@@ -175,7 +191,8 @@
    "sell_price": 8027,
    "buy_vol_7d": 228351,
    "sell_vol_7d": 643957,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 2500
   },
   "ENCHANTED_EYE_OF_ENDER": {
    "name": "Enchanted Eye of Ender",
@@ -183,7 +200,8 @@
    "sell_price": 8625,
    "buy_vol_7d": 490059,
    "sell_vol_7d": 551188,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 3520
   },
   "ORB_OF_ENERGY": {
    "name": "Orb of Energy",
@@ -191,7 +209,8 @@
    "sell_price": 8995,
    "buy_vol_7d": 243912,
    "sell_vol_7d": 415288,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 200
   },
   "WARTY": {
    "name": "Warty",
@@ -199,7 +218,8 @@
    "sell_price": 10698,
    "buy_vol_7d": 101325,
    "sell_vol_7d": 91128,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 500
   },
   "KUUDRA_TEETH": {
    "name": "Kuudra Teeth",
@@ -207,7 +227,8 @@
    "sell_price": 8098,
    "buy_vol_7d": 261269,
    "sell_vol_7d": 277319,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 500
   },
   "HOLY_FRAGMENT": {
    "name": "Holy Dragon Fragment",
@@ -215,7 +236,8 @@
    "sell_price": 9011,
    "buy_vol_7d": 180119,
    "sell_vol_7d": 839226,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 2500
   },
   "SHARD_MANTIS_SHRIMP": {
    "name": "SHARD_MANTIS_SHRIMP",
@@ -231,7 +253,8 @@
    "sell_price": 12012,
    "buy_vol_7d": 144880,
    "sell_vol_7d": 143182,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 500
   },
   "WALNUT": {
    "name": "Walnut",
@@ -239,7 +262,8 @@
    "sell_price": 19998,
    "buy_vol_7d": 37950,
    "sell_vol_7d": 43050,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 10000
   },
   "HOTSPOT_BAIT": {
    "name": "Hotspot Bait",
@@ -247,7 +271,8 @@
    "sell_price": 12995,
    "buy_vol_7d": 510093,
    "sell_vol_7d": 180847,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 5000
   },
   "ENCHANTED_DANDELION": {
    "name": "Enchanted Dandelion",
@@ -255,7 +280,8 @@
    "sell_price": 11529,
    "buy_vol_7d": 182330,
    "sell_vol_7d": 154726,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 160
   },
   "SHARD_FLAMING_SPIDER": {
    "name": "SHARD_FLAMING_SPIDER",
@@ -271,7 +297,8 @@
    "sell_price": 11297,
    "buy_vol_7d": 191954,
    "sell_vol_7d": 244736,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 10000
   },
   "ENCHANTED_TUNGSTEN": {
    "name": "Enchanted Tungsten",
@@ -279,7 +306,8 @@
    "sell_price": 12148,
    "buy_vol_7d": 577894,
    "sell_vol_7d": 4695166,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 1600
   },
   "SILVER_FANG": {
    "name": "Silver Fang",
@@ -287,7 +315,8 @@
    "sell_price": 14518,
    "buy_vol_7d": 374043,
    "sell_vol_7d": 75528,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 2000
   },
   "LOCUST_LARVA": {
    "name": "Locust Larva",
@@ -303,7 +332,8 @@
    "sell_price": 13939,
    "buy_vol_7d": 205878,
    "sell_vol_7d": 270826,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 12800
   },
   "SHARD_SPECIAL_ZEALOT": {
    "name": "SHARD_SPECIAL_ZEALOT",
@@ -319,7 +349,8 @@
    "sell_price": 16749,
    "buy_vol_7d": 72039,
    "sell_vol_7d": 280178,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 1200
   },
   "BUSTED_BELT_BUCKLE": {
    "name": "Busted Belt Buckle",
@@ -327,7 +358,8 @@
    "sell_price": 23452,
    "buy_vol_7d": 56379,
    "sell_vol_7d": 75862,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 10000
   },
   "KADA_LEAD": {
    "name": "Kada Lead",
@@ -335,7 +367,8 @@
    "sell_price": 19541,
    "buy_vol_7d": 190536,
    "sell_vol_7d": 178943,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 50
   },
   "CHORUS_FRUIT": {
    "name": "Chorus Fruit",
@@ -351,7 +384,8 @@
    "sell_price": 17788,
    "buy_vol_7d": 61684,
    "sell_vol_7d": 39318,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 1
   },
   "SHARD_BLUEBIRD": {
    "name": "SHARD_BLUEBIRD",
@@ -367,7 +401,8 @@
    "sell_price": 17440,
    "buy_vol_7d": 689398,
    "sell_vol_7d": 1405142,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 15000
   },
   "PLANT_MATTER": {
    "name": "Plant Matter",
@@ -375,7 +410,8 @@
    "sell_price": 21006,
    "buy_vol_7d": 654578,
    "sell_vol_7d": 546016,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 100
   },
   "ENCHANTED_TITANIUM": {
    "name": "Enchanted Titanium",
@@ -383,7 +419,8 @@
    "sell_price": 18104,
    "buy_vol_7d": 1287883,
    "sell_vol_7d": 1414741,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 3200
   },
   "SHARD_GROVE": {
    "name": "SHARD_GROVE",
@@ -399,7 +436,8 @@
    "sell_price": 17836,
    "buy_vol_7d": 479437,
    "sell_vol_7d": 1277563,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 5000
   },
   "JACOBS_TICKET": {
    "name": "Jacob's Ticket",
@@ -407,7 +445,8 @@
    "sell_price": 18848,
    "buy_vol_7d": 1213209,
    "sell_vol_7d": 1193911,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 10000
   },
   "ABSOLUTE_ENDER_PEARL": {
    "name": "Absolute Ender Pearl",
@@ -415,7 +454,8 @@
    "sell_price": 19499,
    "buy_vol_7d": 272874,
    "sell_vol_7d": 470480,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 11200
   },
   "HAMSTER_WHEEL": {
    "name": "Hamster Wheel",
@@ -423,7 +463,8 @@
    "sell_price": 20098,
    "buy_vol_7d": 126998,
    "sell_vol_7d": 302074,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 20000
   },
   "ETHEREAL_VINE": {
    "name": "Ethereal Vine",
@@ -431,7 +472,8 @@
    "sell_price": 20210,
    "buy_vol_7d": 171111,
    "sell_vol_7d": 524604,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 20000
   },
   "RED_GIFT": {
    "name": "Red Gift",
@@ -449,7 +491,8 @@
    "buy_vol_7d": 261593,
    "sell_vol_7d": 493339,
    "max_buy": 4000,
-   "override": true
+   "override": true,
+   "npc_sell_price": 19200
   },
   "CRUDE_GABAGOOL_DISTILLATE": {
    "name": "Gabagool Distillate",
@@ -457,7 +500,8 @@
    "sell_price": 23514,
    "buy_vol_7d": 430942,
    "sell_vol_7d": 760715,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 5000
   },
   "HEMOGLASS": {
    "name": "Hemoglass",
@@ -465,7 +509,8 @@
    "sell_price": 25992,
    "buy_vol_7d": 127640,
    "sell_vol_7d": 379546,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 16000
   },
   "WISE_FRAGMENT": {
    "name": "Wise Dragon Fragment",
@@ -473,7 +518,8 @@
    "sell_price": 36806,
    "buy_vol_7d": 95626,
    "sell_vol_7d": 114997,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 2500
   },
   "FOUL_FLESH": {
    "name": "Foul Flesh",
@@ -481,7 +527,8 @@
    "sell_price": 25996,
    "buy_vol_7d": 113716,
    "sell_vol_7d": 263874,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 25000
   },
   "SHARD_CHUCKWALLA": {
    "name": "SHARD_CHUCKWALLA",
@@ -497,7 +544,8 @@
    "sell_price": 27591,
    "buy_vol_7d": 77079,
    "sell_vol_7d": 180466,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 25000
   },
   "ENCHANTED_COAL_BLOCK": {
    "name": "Enchanted Coal Block",
@@ -505,7 +553,8 @@
    "sell_price": 26477,
    "buy_vol_7d": 84410,
    "sell_vol_7d": 182660,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 25600
   },
   "SHARD_FLUFFLING": {
    "name": "SHARD_FLUFFLING",
@@ -521,7 +570,8 @@
    "sell_price": 25880,
    "buy_vol_7d": 240482,
    "sell_vol_7d": 806763,
-   "max_buy": 7000
+   "max_buy": 7000,
+   "npc_sell_price": 25600
   },
   "STRONG_FRAGMENT": {
    "name": "Strong Dragon Fragment",
@@ -529,7 +579,8 @@
    "sell_price": 26524,
    "buy_vol_7d": 84646,
    "sell_vol_7d": 104253,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 2500
   },
   "RUSTY_COIN": {
    "name": "Rusty Coin",
@@ -537,7 +588,8 @@
    "sell_price": 29897,
    "buy_vol_7d": 394001,
    "sell_vol_7d": 382757,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 1000
   },
   "FINE_AMETHYST_GEM": {
    "name": "Fine Amethyst Gemstone",
@@ -545,7 +597,8 @@
    "sell_price": 29513,
    "buy_vol_7d": 319112,
    "sell_vol_7d": 411152,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 19200
   },
   "FINE_JADE_GEM": {
    "name": "Fine Jade Gemstone",
@@ -553,7 +606,8 @@
    "sell_price": 27549,
    "buy_vol_7d": 518896,
    "sell_vol_7d": 873683,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 19200
   },
   "MAGIC_JELLYBEAN": {
    "name": "Magic Jellybean",
@@ -569,7 +623,8 @@
    "sell_price": 28297,
    "buy_vol_7d": 410184,
    "sell_vol_7d": 911680,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 19200
   },
   "FINE_AMBER_GEM": {
    "name": "Fine Amber Gemstone",
@@ -577,7 +632,8 @@
    "sell_price": 30081,
    "buy_vol_7d": 427197,
    "sell_vol_7d": 1039569,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 19200
   },
   "SHARD_SNOOZLE": {
    "name": "SHARD_SNOOZLE",
@@ -617,7 +673,8 @@
    "sell_price": 30640,
    "buy_vol_7d": 263323,
    "sell_vol_7d": 1041157,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 19200
   },
   "SHARD_SHELLWISE": {
    "name": "SHARD_SHELLWISE",
@@ -641,7 +698,8 @@
    "sell_price": 37026,
    "buy_vol_7d": 142379,
    "sell_vol_7d": 679723,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 25600
   },
   "FINE_CITRINE_GEM": {
    "name": "Fine Citrine Gemstone",
@@ -649,7 +707,8 @@
    "sell_price": 38667,
    "buy_vol_7d": 273400,
    "sell_vol_7d": 698408,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 25600
   },
   "FINE_ONYX_GEM": {
    "name": "Fine Onyx Gemstone",
@@ -657,7 +716,8 @@
    "sell_price": 36704,
    "buy_vol_7d": 126184,
    "sell_vol_7d": 725538,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 25600
   },
   "ENCHANTED_ANCIENT_CLAW": {
    "name": "Enchanted Ancient Claw",
@@ -665,7 +725,8 @@
    "sell_price": 34449,
    "buy_vol_7d": 107944,
    "sell_vol_7d": 98064,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 32000
   },
   "FINE_PERIDOT_GEM": {
    "name": "Fine Peridot Gemstone",
@@ -673,7 +734,8 @@
    "sell_price": 37135,
    "buy_vol_7d": 405505,
    "sell_vol_7d": 1138376,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 25600
   },
   "SHARD_TROGLOBYTE": {
    "name": "SHARD_TROGLOBYTE",
@@ -713,7 +775,8 @@
    "sell_price": 47667,
    "buy_vol_7d": 422258,
    "sell_vol_7d": 175389,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 128
   },
   "WORM_MEMBRANE": {
    "name": "Worm Membrane",
@@ -721,7 +784,8 @@
    "sell_price": 47470,
    "buy_vol_7d": 840180,
    "sell_vol_7d": 1352546,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 15000
   },
   "THUNDER_SHARDS": {
    "name": "Thunder Fragment",
@@ -729,7 +793,8 @@
    "sell_price": 52329,
    "buy_vol_7d": 27833,
    "sell_vol_7d": 43579,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 50000
   },
   "SUPERIOR_FRAGMENT": {
    "name": "Superior Dragon Fragment",
@@ -737,7 +802,8 @@
    "sell_price": 69342,
    "buy_vol_7d": 60493,
    "sell_vol_7d": 91719,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 5000
   },
   "SHARD_FLY": {
    "name": "SHARD_FLY",
@@ -753,7 +819,8 @@
    "sell_price": 53306,
    "buy_vol_7d": 213860,
    "sell_vol_7d": 397854,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 25600
   },
   "ENCHANTED_IRON_BLOCK": {
    "name": "Enchanted Iron Block",
@@ -761,7 +828,8 @@
    "sell_price": 54000,
    "buy_vol_7d": 152474,
    "sell_vol_7d": 188085,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 51200
   },
   "ENCHANTED_SEA_LUMIES": {
    "name": "Enchanted Sea Lumies",
@@ -769,7 +837,8 @@
    "sell_price": 60568,
    "buy_vol_7d": 197684,
    "sell_vol_7d": 116571,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 480
   },
   "INFERNO_FUEL_BLOCK": {
    "name": "Inferno Fuel Block",
@@ -785,7 +854,8 @@
    "sell_price": 68945,
    "buy_vol_7d": 619364,
    "sell_vol_7d": 695795,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 1
   },
   "GLACITE_JEWEL": {
    "name": "Glacite Jewel",
@@ -793,7 +863,8 @@
    "sell_price": 74597,
    "buy_vol_7d": 242125,
    "sell_vol_7d": 318040,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 2000
   },
   "GOLDEN_TOOTH": {
    "name": "Golden Tooth",
@@ -801,7 +872,8 @@
    "sell_price": 97934,
    "buy_vol_7d": 262828,
    "sell_vol_7d": 76472,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 128
   },
   "SQUASH": {
    "name": "Squash",
@@ -809,7 +881,8 @@
    "sell_price": 75434,
    "buy_vol_7d": 91676,
    "sell_vol_7d": 265751,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 75000
   },
   "ENCHANTED_GLOWSTONE": {
    "name": "Enchanted Glowstone",
@@ -817,7 +890,8 @@
    "sell_price": 98752,
    "buy_vol_7d": 446533,
    "sell_vol_7d": 285295,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 51200
   },
   "ENCHANTED_COOKIE": {
    "name": "Enchanted Cookie",
@@ -825,7 +899,8 @@
    "sell_price": 76403,
    "buy_vol_7d": 243140,
    "sell_vol_7d": 229443,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 76800
   },
   "BOX_OF_SEEDS": {
    "name": "Box of Seeds",
@@ -833,7 +908,8 @@
    "sell_price": 78000,
    "buy_vol_7d": 274792,
    "sell_vol_7d": 453785,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 76800
   },
   "AMALGAMATED_CRIMSONITE_NEW": {
    "name": "Amalgamated Crimsonite",
@@ -849,7 +925,8 @@
    "sell_price": 76936,
    "buy_vol_7d": 433442,
    "sell_vol_7d": 810985,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 76800
   },
   "ENCHANTED_GOLD_BLOCK": {
    "name": "Enchanted Gold Block",
@@ -857,7 +934,8 @@
    "sell_price": 77784,
    "buy_vol_7d": 567896,
    "sell_vol_7d": 471682,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 76800
   },
   "ENCHANTED_GOLDEN_CARROT": {
    "name": "Enchanted Golden Carrot",
@@ -865,7 +943,8 @@
    "sell_price": 77943,
    "buy_vol_7d": 491730,
    "sell_vol_7d": 540256,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 76800
   },
   "GLACIAL_FRAGMENT": {
    "name": "Glacial Fragment",
@@ -873,7 +952,8 @@
    "sell_price": 91998,
    "buy_vol_7d": 28673,
    "sell_vol_7d": 39361,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 200
   },
   "ENCHANTED_WET_SPONGE": {
    "name": "Enchanted Wet Sponge",
@@ -881,7 +961,8 @@
    "sell_price": 80200,
    "buy_vol_7d": 20232,
    "sell_vol_7d": 106782,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 80000
   },
   "ENCHANTED_FERMENTED_SPIDER_EYE": {
    "name": "Enchanted Fermented Spider Eye",
@@ -889,7 +970,8 @@
    "sell_price": 87999,
    "buy_vol_7d": 106933,
    "sell_vol_7d": 21465,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 31000
   },
   "TREASURITE": {
    "name": "Treasurite",
@@ -897,7 +979,8 @@
    "sell_price": 94998,
    "buy_vol_7d": 168053,
    "sell_vol_7d": 223361,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 5000
   },
   "FLEXBONE": {
    "name": "Flexbone",
@@ -913,7 +996,8 @@
    "sell_price": 113865,
    "buy_vol_7d": 26658,
    "sell_vol_7d": 31963,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 10000
   },
   "NULL_OVOID": {
    "name": "Null Ovoid",
@@ -929,7 +1013,8 @@
    "sell_price": 101971,
    "buy_vol_7d": 63012,
    "sell_vol_7d": 386006,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 100000
   },
   "REFINED_MINERAL": {
    "name": "Refined Mineral",
@@ -937,7 +1022,8 @@
    "sell_price": 102906,
    "buy_vol_7d": 167863,
    "sell_vol_7d": 591398,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 100000
   },
   "COMPACTED_SUNFLOWER": {
    "name": "Compacted Sunflower",
@@ -945,7 +1031,8 @@
    "sell_price": 102716,
    "buy_vol_7d": 226768,
    "sell_vol_7d": 349403,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 102400
   },
   "MUTANT_NETHER_STALK": {
    "name": "Mutant Nether Wart",
@@ -953,7 +1040,8 @@
    "sell_price": 103004,
    "buy_vol_7d": 340573,
    "sell_vol_7d": 324999,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 102400
   },
   "COMPACTED_WILD_ROSE": {
    "name": "Compacted Wild Rose",
@@ -961,7 +1049,8 @@
    "sell_price": 102992,
    "buy_vol_7d": 269208,
    "sell_vol_7d": 416202,
-   "max_buy": 4000
+   "max_buy": 4000,
+   "npc_sell_price": 102400
   },
   "COMPACTED_MOONFLOWER": {
    "name": "Compacted Moonflower",
@@ -970,7 +1059,8 @@
    "buy_vol_7d": 218511,
    "sell_vol_7d": 365378,
    "max_buy": 4000,
-   "override": true
+   "override": true,
+   "npc_sell_price": 102400
   },
   "ENCHANTED_CACTUS": {
    "name": "Enchanted Cactus",
@@ -979,7 +1069,8 @@
    "buy_vol_7d": 170773,
    "sell_vol_7d": 285431,
    "max_buy": 4000,
-   "override": true
+   "override": true,
+   "npc_sell_price": 102400
   },
   "ENCHANTED_SUGAR_CANE": {
    "name": "Enchanted Sugar Cane",
@@ -988,7 +1079,8 @@
    "buy_vol_7d": 449190,
    "sell_vol_7d": 444605,
    "max_buy": 4000,
-   "override": true
+   "override": true,
+   "npc_sell_price": 102400
   },
   "ENCHANTED_QUARTZ_BLOCK": {
    "name": "Enchanted Quartz Block",
@@ -997,7 +1089,8 @@
    "buy_vol_7d": 128116,
    "sell_vol_7d": 396647,
    "max_buy": 4000,
-   "override": true
+   "override": true,
+   "npc_sell_price": 102400
   },
   "FRIED_FEATHER": {
    "name": "Fried Feather",
@@ -1005,7 +1098,8 @@
    "sell_price": 130297,
    "buy_vol_7d": 101078,
    "sell_vol_7d": 85229,
-   "max_buy": 2000
+   "max_buy": 2000,
+   "npc_sell_price": 1000
   },
   "ENCHANTED_SLIME_BLOCK": {
    "name": "Enchanted Slime Block",
@@ -1013,7 +1107,8 @@
    "sell_price": 126000,
    "buy_vol_7d": 317021,
    "sell_vol_7d": 1100805,
-   "max_buy": 2000
+   "max_buy": 2000,
+   "npc_sell_price": 128000
   },
   "CHILI_PEPPER": {
    "name": "Chili Pepper",
@@ -1021,7 +1116,8 @@
    "sell_price": 132097,
    "buy_vol_7d": 368562,
    "sell_vol_7d": 359014,
-   "max_buy": 2000
+   "max_buy": 2000,
+   "npc_sell_price": 5000
   },
   "SUSPICIOUS_SCRAP": {
    "name": "Suspicious Scrap",
@@ -1037,7 +1133,8 @@
    "sell_price": 153419,
    "buy_vol_7d": 232506,
    "sell_vol_7d": 536745,
-   "max_buy": 2000
+   "max_buy": 2000,
+   "npc_sell_price": 153600
   },
   "SHARD_KRAKEN": {
    "name": "SHARD_KRAKEN",
@@ -1053,7 +1150,8 @@
    "sell_price": 163084,
    "buy_vol_7d": 456462,
    "sell_vol_7d": 174939,
-   "max_buy": 2000
+   "max_buy": 2000,
+   "npc_sell_price": 5000
   },
   "SORROW": {
    "name": "Sorrow",
@@ -1061,7 +1159,8 @@
    "sell_price": 197143,
    "buy_vol_7d": 65317,
    "sell_vol_7d": 58579,
-   "max_buy": 2000
+   "max_buy": 2000,
+   "npc_sell_price": 50000
   },
   "TARANTULA_SILK": {
    "name": "Tarantula Silk",
@@ -1070,7 +1169,8 @@
    "buy_vol_7d": 408382,
    "sell_vol_7d": 150749,
    "max_buy": 1000,
-   "override": true
+   "override": true,
+   "npc_sell_price": 128
   },
   "HYPER_CATALYST": {
    "name": "Hyper Catalyst",
@@ -1078,7 +1178,8 @@
    "sell_price": 236080,
    "buy_vol_7d": 65207,
    "sell_vol_7d": 29661,
-   "max_buy": 2000
+   "max_buy": 2000,
+   "npc_sell_price": 500
   },
   "BLUE_ICE_HUNK": {
    "name": "Hunk of Blue Ice",
@@ -1086,7 +1187,8 @@
    "sell_price": 248408,
    "buy_vol_7d": 45989,
    "sell_vol_7d": 83385,
-   "max_buy": 1000
+   "max_buy": 1000,
+   "npc_sell_price": 25000
   },
   "ENCHANTED_BLAZE_ROD": {
    "name": "Enchanted Blaze Rod",
@@ -1094,7 +1196,8 @@
    "sell_price": 286115,
    "buy_vol_7d": 51835,
    "sell_vol_7d": 61265,
-   "max_buy": 1000
+   "max_buy": 1000,
+   "npc_sell_price": 230400
   },
   "FERMENTO": {
    "name": "Fermento",
@@ -1103,7 +1206,8 @@
    "buy_vol_7d": 65862,
    "sell_vol_7d": 153943,
    "max_buy": 2000,
-   "override": true
+   "override": true,
+   "npc_sell_price": 250000
   },
   "ENCHANTED_HUGE_MUSHROOM_2": {
    "name": "Enchanted Red Mushroom Block",
@@ -1112,7 +1216,8 @@
    "buy_vol_7d": 85364,
    "sell_vol_7d": 185508,
    "max_buy": 2000,
-   "override": true
+   "override": true,
+   "npc_sell_price": 256000
   },
   "ENCHANTED_HUGE_MUSHROOM_1": {
    "name": "Enchanted Brown Mushroom Block",
@@ -1121,7 +1226,8 @@
    "buy_vol_7d": 105554,
    "sell_vol_7d": 167838,
    "max_buy": 2000,
-   "override": true
+   "override": true,
+   "npc_sell_price": 256000
   },
   "POLISHED_PUMPKIN": {
    "name": "Polished Pumpkin",
@@ -1130,7 +1236,8 @@
    "buy_vol_7d": 133939,
    "sell_vol_7d": 272100,
    "max_buy": 2000,
-   "override": true
+   "override": true,
+   "npc_sell_price": 256000
   },
   "JUNGLE_KEY": {
    "name": "Jungle Key",
@@ -1146,7 +1253,8 @@
    "sell_price": 291324,
    "buy_vol_7d": 33118,
    "sell_vol_7d": 82557,
-   "max_buy": 1000
+   "max_buy": 1000,
+   "npc_sell_price": 275000
   },
   "HEAVY_PEARL": {
    "name": "Heavy Pearl",
@@ -1162,7 +1270,8 @@
    "sell_price": 305735,
    "buy_vol_7d": 53003,
    "sell_vol_7d": 31209,
-   "max_buy": 1000
+   "max_buy": 1000,
+   "npc_sell_price": 204800
   },
   "PLASMA": {
    "name": "Plasma",
@@ -1170,7 +1279,8 @@
    "sell_price": 298502,
    "buy_vol_7d": 62020,
    "sell_vol_7d": 53390,
-   "max_buy": 1000
+   "max_buy": 1000,
+   "npc_sell_price": 20000
   },
   "MOLTEN_POWDER": {
    "name": "Molten Powder",
@@ -1194,7 +1304,8 @@
    "sell_price": 539997,
    "buy_vol_7d": 72696,
    "sell_vol_7d": 32016,
-   "max_buy": 500
+   "max_buy": 500,
+   "npc_sell_price": 512000
   },
   "REFINED_TITANIUM": {
    "name": "Refined Titanium",
@@ -1202,7 +1313,8 @@
    "sell_price": 779746,
    "buy_vol_7d": 92136,
    "sell_vol_7d": 49506,
-   "max_buy": 500
+   "max_buy": 500,
+   "npc_sell_price": 51200
   },
   "KISMET_FEATHER": {
    "name": "Kismet Feather",

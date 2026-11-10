@@ -105,14 +105,34 @@ MIN_FLIP_VOLUME_7D = 20_000      # both bought_volume_7_day and sell_volume_7_da
 # just lists a bit more. 1.0 = no overshoot.
 BUY_OVERSHOOT_FACTOR = 1.5
 
-# Relisting-trap guard: skip a buy-flip when the product's current exit (ask) price
-# has spiked more than this far above its recent baseline (median ask over the last
-# ~2 days, from price_history.py). A run-up like that pulls in sellers who relist
-# under it and drag the price back down, so the flip's projected sell price won't
-# hold - e.g. Polished Pumpkin at 290k vs its usual ~255k is ~1.14x. Set to None to
-# disable the filter entirely. Only applies when there's enough price history for
-# the product; otherwise no filtering (degrades safely).
+# Relisting-trap guard used ONLY on the legacy no-whitelist fallback path: skip a
+# buy-flip when the current exit (ask) price has spiked above its recent baseline.
+# The live whitelist path uses the softer, two-sided BOOK_SANITY_TOLERANCE instead.
 BUY_EXIT_SPIKE_RATIO = 1.08
+
+# --- Buys-only whitelist policy (soft-ranked) -------------------------------
+# These thresholds are SOFT: a product that fails is demoted to the tail of its
+# bucket (so the user still sees it), never deleted. Calibrated against the user's
+# real placements in the trade log.
+#
+# Per-unit margin a buy should clear to rank as "qualified", keyed by the bucket
+# (its max_buy). Smaller orders (pricier items) demand a fatter per-unit margin.
+MARGIN_FLOOR_BY_BUCKET = {7000: 2500, 4000: 2500, 2000: 4000, 1000: 8000, 500: 8000}
+# NPC-floor items (bid near their NPC sell value) have a near-guaranteed exit, so a
+# thinner margin is fine and the ask-side book check is skipped (the user only
+# watches the sell/bid side there).
+NPC_FLOOR_MARGIN = 2500
+# "NPC-floor" = current bid within this band of the item's npc_sell_price.
+NPC_FLOOR_BAND = (0.80, 1.15)
+# Book-sanity: demote when the current bid or ask is more than this far from its
+# 7-day average (dislocated book -> the order likely won't fill as priced).
+BOOK_SANITY_TOLERANCE = 0.30
+
+
+def margin_floor(bucket, npc_floor):
+    if npc_floor:
+        return NPC_FLOOR_MARGIN
+    return MARGIN_FLOOR_BY_BUCKET.get(bucket, MARGIN_FLOOR_BY_BUCKET[7000])
 
 
 @dataclass
@@ -125,6 +145,11 @@ class Candidate:
     order_worth: float  # order_price x quantity (the full listing) - counts toward the 15B/24h cap
     coin_cost: float    # buy_price x quantity for buys (coins reserved on placement); 0 for sells
     slot_index: int      # 0 for the first slot taken on this product/side, 1 for the second
+    qualified: bool = True   # whitelist policy: True = passes margin + book-sanity; False = demote to tail
+    margin: float = 0.0      # per-unit expected margin (coins) after tax + exit drift
+    npc_floor: bool = False  # NPC-backed item (thinner margin ok, ask-side sanity skipped)
+    bucket: int = 0          # the max_buy bucket (7000/4000/2000/1000/500)
+    disqualify: tuple = ()   # reasons it was demoted, for display/debug
 
 
 def weighted_avg_cost(sub_orders):
@@ -220,14 +245,64 @@ def build_sell_inventory_candidates(product_name, info, prices, bazaar_fee, held
                             profit_per_unit=profit_per_unit, order_price=prices["sell_price"], coin_cost_per_unit=0)
 
 
+def _build_whitelisted_buy(api_name, product_name, info, prices, bazaar_fee, purse_remaining, time_between_trades_hours):
+    """One soft-ranked buy candidate per whitelisted product. Every whitelisted,
+    priced, affordable product is emitted - quality constraints only set the
+    `qualified` flag (so the menu can demote failures to the tail), they never drop
+    it. In our price mapping: prices["buy_price"] is the BID (where you place the
+    buy / what you pay), prices["sell_price"] is the ASK (where you later sell)."""
+    if not whitelist.allows(api_name):
+        return []                                   # hard: not on the whitelist
+    bid, ask = prices["buy_price"], prices["sell_price"]
+    if bid <= 0 or ask <= 0:
+        return []                                   # hard: no usable price
+    affordable = purse_remaining // bid
+    if affordable <= 0:
+        return []                                   # can't afford a single unit
+    mb = whitelist.max_buy(api_name)
+    qty = int(min(mb, affordable))
+
+    # Projected per-unit margin (after exit drift + tax).
+    exit_price = ask * exit_drift.multiplier()
+    margin = exit_price * (1 - bazaar_fee) - bid
+
+    # NPC-floor: current bid sits near the item's NPC sell value -> backstopped exit.
+    npc = whitelist.npc_sell_price(api_name)
+    npc_floor = bool(npc and NPC_FLOOR_BAND[0] <= bid / npc <= NPC_FLOOR_BAND[1])
+
+    # Soft quality checks -> reasons for demotion (not deletion).
+    reasons = []
+    if margin < margin_floor(mb, npc_floor):
+        reasons.append("margin")
+    avg_bid = price_history.baseline_bid(api_name)
+    avg_ask = price_history.baseline_ask(api_name)
+    if avg_bid and abs(bid / avg_bid - 1) > BOOK_SANITY_TOLERANCE:
+        reasons.append("bid_off")
+    if not npc_floor and avg_ask and abs(ask / avg_ask - 1) > BOOK_SANITY_TOLERANCE:
+        reasons.append("ask_off")       # NPC-floor items skip the ask-side check
+    if ask > MAX_BUY_FLIP_SPREAD * bid:
+        reasons.append("spread")
+    if info["bought_volume_7_day"] < MIN_FLIP_VOLUME_7D or info["sell_volume_7_day"] < MIN_FLIP_VOLUME_7D:
+        reasons.append("thin")
+
+    expected_fill = (fill_model.expected_fill("buy", info["bought_volume_7_day"], cap_qty=qty,
+                     horizon_hours=time_between_trades_hours) if fill_model.available() else qty)
+
+    return [Candidate(
+        product_name=product_name, side="buy", quantity=qty, expected_fill=expected_fill,
+        profit=margin * expected_fill, order_worth=bid * qty, coin_cost=bid * qty, slot_index=0,
+        qualified=not reasons, margin=margin, npc_floor=npc_floor, bucket=mb, disqualify=tuple(reasons),
+    )]
+
+
 def build_buy_candidates(product_name, info, prices, bazaar_fee, purse_remaining, held_qty, time_between_trades_hours):
     api_name = info.get("api_name")
-    # Buys-only whitelist: when active, only its products are bought at all. The
-    # whitelist also sets the quantity to buy (max_buy), which replaces the fill-
-    # model sizing below for whitelisted products.
-    if whitelist.active() and not whitelist.allows(api_name):
-        return []
+    # Live policy: buys-only whitelist, soft-ranked single candidate per product.
+    if whitelist.active():
+        return _build_whitelisted_buy(api_name, product_name, info, prices, bazaar_fee,
+                                      purse_remaining, time_between_trades_hours)
 
+    # ---- Fallback (no whitelist active): legacy hard-filtered, slot-split buys ----
     if prices["buy_price"] <= 0:
         return []
     room_left = max_hold_per_item(info) - held_qty
