@@ -1,115 +1,3 @@
-class FindMaxProfit:
-    # DEPRECATED - superseded by allocator.py, which is the live ranking engine
-    # wired into the poll loop below. This class scored every product
-    # independently with no shared-constraint accounting and carries the old
-    # pre-fix profit/weight math (compounded weights, (sell-buy)*(1-fee) tax).
-    # Kept only for reference; it is no longer instantiated or called.
-    def __init__(self, available_slots_in_bazaar, current_coins_amount, inventory, all_product_information, bazaar_data):
-        self.current_coins_amount = current_coins_amount
-        self.inventory = inventory
-        self.all_product_information = all_product_information
-        self.bazaar_data = bazaar_data
-
-        self.bazaar_daily_limit_used = 0
-        self.BAZAAR_DAILY_LIMIT = 15_000_000_000
-        self.TRADES_PER_DAY = 3
-        self.TIME_BETWEEN_TRADES = 8 # Hours
-        self.MAX_TRADE_LIMIT_COINS_PER_SESSION = self.BAZAAR_DAILY_LIMIT // self.TRADES_PER_DAY
-
-        self.npc_sell_limit_used = 0
-        self.NPC_SELL_LIMIT = 500_000_000
-
-        self.SLOTS_TOTAL = 28 # between 14 and 28 based on upgrades
-        self.available_slots_in_bazaar = available_slots_in_bazaar
-
-
-    def find_max_profit_for_slot(self, product_list):
-        # look through every product on bz and rank them given constraints in self
-        # TODO: Slot optimization and daily limit optimization
-
-        max_profit_table = {}
-        for product_name in product_list:
-            max_profit_table[product_name] = self.find_expected_profit_per_slot(product_name)
-
-        return max_profit_table
-
-    def find_expected_profit_per_slot(self, product_name):
-        expected_quantity_sold_per_item = self.find_expected_quantity_sold_per_slot(product_name)
-        expected_profit_per_item = self.find_expected_profit_per_item(product_name)
-        return expected_profit_per_item * expected_quantity_sold_per_item
-
-    def find_expected_quantity_sold_per_slot(self, product_name):
-        product_info = self.all_product_information[product_name]
-        past_quantity_sold_per_hour = product_info["past_quantity_sold_per_hour"]
-
-        # Each weight compares a current stat (7-day volume, 24-hour volume, new
-        # listings/hour) against an EMA of its own recent past, computed server-side
-        # in backend.mjs. >1 means running hotter than usual, <1 means cooler.
-        weight_1 = product_info["sell_volume_7_day_weight"]
-        weight_2 = product_info["sell_volume_24_hour_weight"]
-        weight_3 = product_info["new_listings_per_hour_selling_weight"]
-
-        # TODO: Slots not taken into account
-        expected_bought_amount = self.find_expected_bought_amount(product_name)
-        # A product you've never traded before won't have an inventory entry yet -
-        # that just means you're holding 0 of it, not an error.
-        current_held_amount = self.inventory.get(product_name, {}).get("current-amount", 0) + expected_bought_amount
-
-        return min(past_quantity_sold_per_hour * self.TIME_BETWEEN_TRADES, current_held_amount) * weight_1 * weight_2 * weight_3
-
-    def find_expected_bought_amount(self, product_name):
-        product_info = self.all_product_information[product_name]
-        past_quantity_bought_per_hour = product_info["past_quantity_bought_per_hour"]
-
-        weight_1 = product_info["bought_volume_7_day_weight"]
-        weight_2 = product_info["bought_volume_24_hour_weight"]
-        weight_3 = product_info["new_listings_per_hour_buying_weight"]
-
-        # TODO: Optimize this
-        buy_order_quantity = 2000
-
-        return min(past_quantity_bought_per_hour * self.TIME_BETWEEN_TRADES, buy_order_quantity) * weight_1 * weight_2 * weight_3
-
-    def find_expected_profit_per_item(self, product_name):
-        # determine if the order would go over the npc sell limit better. not if it's already reached, but if it would be reached if the order is sold
-        npc_sell_limit_reached = self.npc_sell_limit_used >= self.NPC_SELL_LIMIT
-
-        # TODO: Make this changeable
-        bazaar_fee = 0.01 # between 1 and 6 (if derpy)
-
-        # TODO: Fix this
-        current_product_sell_price = self.bazaar_data[product_name]["sell_price"]
-        current_product_buy_price = self.bazaar_data[product_name]["buy_price"]
-
-        expected_change_sell_price = 0 # for now
-        expected_change_buy_price = 0 # for now
-
-        # doesn't do anything for now
-        future_sell_price = current_product_sell_price + expected_change_sell_price
-        future_buy_price = current_product_sell_price + expected_change_buy_price
-
-        return (current_product_sell_price - current_product_buy_price) * (1 - bazaar_fee) if npc_sell_limit_reached else (current_product_sell_price - current_product_buy_price)
-
-    def update_constraints(self, order_worth):
-        if order_worth > self.current_coins_amount:
-            print("ERROR: You dont have enough coins for that order")
-        else:
-            self.available_slots_in_bazaar -= 1
-            self.bazaar_daily_limit_used += order_worth
-            self.current_coins_amount -= order_worth
-
-    def reset_for_new_session(self, coins_amount, inventory, all_product_information, bazaar_data):
-        self.current_coins_amount = coins_amount
-        self.bazaar_daily_limit_used = 0
-        self.inventory = inventory
-        self.all_product_information = all_product_information
-        self.bazaar_data = bazaar_data
-
-    def reset_npc_limit(self):
-        self.npc_sell_limit_used = 0
-
-
-
 import json
 import logging
 import os
@@ -120,6 +8,7 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 
 import blacklist
 import stack_sizes
+import whitelist
 from allocator import DAILY_ORDER_WORTH_CAP, build_all_candidates
 from api_client import get_market_data, get_mayor_data, get_product_list, get_trader_data
 
@@ -240,7 +129,7 @@ def count_available_bazaar_slots(trader_data, total_slots):
     return max(0, total_slots - used_slots)
 
 
-def build_bazaar_data_and_product_info(bazaar_products, volume_stats, product_list):
+def build_bazaar_data_and_product_info(bazaar_products, volume_stats, product_list, log_non_whitelisted=True):
     bazaar_data = {}
     all_product_information = {}
 
@@ -269,13 +158,25 @@ def build_bazaar_data_and_product_info(bazaar_products, volume_stats, product_li
             continue
         clear_anomaly((product_name, "missing-api-name"))
 
+        # The advisory is buys-only over the whitelist, so once a whitelist is
+        # active only whitelisted products matter here - stay quiet about
+        # data-quality issues on everything else (the mod-facing optimizer passes
+        # log_non_whitelisted=False; the labeled-data logger wants the full picture
+        # and leaves it True). q_log is just log_once gated on that; clear_anomaly
+        # stays unconditional so a product going quiet can't strand a stale anomaly.
+        log_quality = log_non_whitelisted or whitelist.allows(api_name)
+
+        def q_log(key, level, message, *args, **kwargs):
+            if log_quality:
+                log_once(key, level, message, *args, **kwargs)
+
         product = bazaar_products.get(api_name)
         if product is None:
             # Crafting/forge/accessory items carry an api-name but usually aren't on
             # the bazaar, so a missing entry is expected - only flag it for items we
             # actually track as bazaar flips (has-weights), where it's a real problem.
             if product_meta.get("has-weights"):
-                log_once((product_name, "missing-bazaar-data"), logging.ERROR, "no bazaar data found for '%s' (api-name '%s')", product_name, api_name)
+                q_log((product_name, "missing-bazaar-data"), logging.ERROR, "no bazaar data found for '%s' (api-name '%s')", product_name, api_name)
             continue
         clear_anomaly((product_name, "missing-bazaar-data"))
 
@@ -294,11 +195,11 @@ def build_bazaar_data_and_product_info(bazaar_products, volume_stats, product_li
         buy_summary = product.get("buy_summary", [])
 
         if not sell_summary:
-            log_once((product_name, "no-bids"), logging.WARNING, "'%s' has no active buy orders (bids); can't derive a sell order price", product_name)
+            q_log((product_name, "no-bids"), logging.WARNING, "'%s' has no active buy orders (bids); can't derive a sell order price", product_name)
         else:
             clear_anomaly((product_name, "no-bids"))
         if not buy_summary:
-            log_once((product_name, "no-asks"), logging.WARNING, "'%s' has no active sell orders (asks); can't derive a buy order price", product_name)
+            q_log((product_name, "no-asks"), logging.WARNING, "'%s' has no active sell orders (asks); can't derive a buy order price", product_name)
         else:
             clear_anomaly((product_name, "no-asks"))
 
@@ -309,15 +210,15 @@ def build_bazaar_data_and_product_info(bazaar_products, volume_stats, product_li
         buy_price = best_bid + BAZAAR_PRICE_INCREMENT if best_bid is not None else 0
 
         if sell_price <= 0:
-            log_once((product_name, "non-positive-sell-price"), logging.ERROR, "'%s' has a non-positive sell order price: %s", product_name, sell_price)
+            q_log((product_name, "non-positive-sell-price"), logging.ERROR, "'%s' has a non-positive sell order price: %s", product_name, sell_price)
         else:
             clear_anomaly((product_name, "non-positive-sell-price"))
         if buy_price <= 0:
-            log_once((product_name, "non-positive-buy-price"), logging.ERROR, "'%s' has a non-positive buy order price: %s", product_name, buy_price)
+            q_log((product_name, "non-positive-buy-price"), logging.ERROR, "'%s' has a non-positive buy order price: %s", product_name, buy_price)
         else:
             clear_anomaly((product_name, "non-positive-buy-price"))
         if best_ask is not None and best_bid is not None and buy_price >= sell_price:
-            log_once(
+            q_log(
                 (product_name, "crossed-spread"), logging.ERROR,
                 "'%s' buy order price (%s) is not below its sell order price (%s); spread looks wrong",
                 product_name, buy_price, sell_price
@@ -332,7 +233,7 @@ def build_bazaar_data_and_product_info(bazaar_products, volume_stats, product_li
 
         quick_status = product.get("quick_status")
         if quick_status is None:
-            log_once((product_name, "missing-quick-status"), logging.ERROR, "'%s' is missing quick_status", product_name)
+            q_log((product_name, "missing-quick-status"), logging.ERROR, "'%s' is missing quick_status", product_name)
             quick_status = {}
         else:
             clear_anomaly((product_name, "missing-quick-status"))
@@ -340,11 +241,11 @@ def build_bazaar_data_and_product_info(bazaar_products, volume_stats, product_li
         sell_moving_week = quick_status.get("sellMovingWeek", 0)
         buy_moving_week = quick_status.get("buyMovingWeek", 0)
         if sell_moving_week < 0:
-            log_once((product_name, "negative-sell-moving-week"), logging.ERROR, "'%s' has a negative sellMovingWeek: %s", product_name, sell_moving_week)
+            q_log((product_name, "negative-sell-moving-week"), logging.ERROR, "'%s' has a negative sellMovingWeek: %s", product_name, sell_moving_week)
         else:
             clear_anomaly((product_name, "negative-sell-moving-week"))
         if buy_moving_week < 0:
-            log_once((product_name, "negative-buy-moving-week"), logging.ERROR, "'%s' has a negative buyMovingWeek: %s", product_name, buy_moving_week)
+            q_log((product_name, "negative-buy-moving-week"), logging.ERROR, "'%s' has a negative buyMovingWeek: %s", product_name, buy_moving_week)
         else:
             clear_anomaly((product_name, "negative-buy-moving-week"))
 
@@ -354,7 +255,7 @@ def build_bazaar_data_and_product_info(bazaar_products, volume_stats, product_li
         # until real rates are available.
         stats = volume_stats.get(api_name)
         if stats is None:
-            log_once((product_name, "no-volume-stats"), logging.INFO, "no volumeStats yet for '%s'; falling back to weekly-average estimate", product_name)
+            q_log((product_name, "no-volume-stats"), logging.INFO, "no volumeStats yet for '%s'; falling back to weekly-average estimate", product_name)
             stats = {}
         else:
             clear_anomaly((product_name, "no-volume-stats"))
@@ -618,6 +519,10 @@ if __name__ == "__main__":
     bazaar_data = all_product_information = None
     bazaar_fee = BASE_BAZAAR_TAX
     last_bazaar_refresh = 0.0
+    # Recompute runs every few seconds; only log the heartbeat when the summary
+    # actually changes (new order/qualified counts, cap, or free slots) so an idle
+    # market doesn't fill the console with identical lines.
+    last_summary = None
 
     while True:
         now = time.monotonic()
@@ -626,7 +531,8 @@ if __name__ == "__main__":
             try:
                 market_data = get_market_data()
                 bazaar_data, all_product_information = build_bazaar_data_and_product_info(
-                    market_data.get("bazaarProducts", {}), market_data.get("volumeStats", {}), product_list
+                    market_data.get("bazaarProducts", {}), market_data.get("volumeStats", {}), product_list,
+                    log_non_whitelisted=False,  # advisory only cares about whitelisted products; stay quiet on the rest
                 )
                 bazaar_fee = get_bazaar_fee()
                 last_bazaar_refresh = now
@@ -664,13 +570,18 @@ if __name__ == "__main__":
             TIME_BETWEEN_TRADES_HOURS,
         )
         write_recommendation(recommendation)
-        log.info(
-            "recommended %d buy orders (%d qualified), cap remaining %s, %d slots free",
+        summary = (
             len(recommendation["orders"]),
             recommendation["n_qualified"],
-            f"{recommendation['daily_cap_remaining']:,.0f}",
+            recommendation["daily_cap_remaining"],
             available_slots,
         )
+        if summary != last_summary:
+            log.info(
+                "recommended %d buy orders (%d qualified), cap remaining %s, %d slots free",
+                summary[0], summary[1], f"{summary[2]:,.0f}", summary[3],
+            )
+            last_summary = summary
 
         time.sleep(RECOMPUTE_INTERVAL_SECONDS)
 
