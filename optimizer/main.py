@@ -246,6 +246,13 @@ def build_bazaar_data_and_product_info(bazaar_products, volume_stats, product_li
         # this models bazaar flips only (and stops the per-poll "no bazaar data" spam).
         if product_meta.get("type") == "auction-product":
             continue
+        # Forge recipe entries ("Refined Titanium (forge)", etc.) are a separate
+        # product-list row that reuses the underlying item's api-name (REFINED_TITANIUM).
+        # Since whitelist/blacklist match on api-name, a whitelisted item would be
+        # bought twice - once under its clean name and once under the "(forge)" name.
+        # Drop the forge-display row; the clean bazaar row (if any) still trades.
+        if "(forge)" in product_name.lower() or product_meta.get("type") == "forge-product":
+            continue
         api_name = product_meta.get("api-name")
         # Manual blacklist (blacklist.json): never flip these, either side. Drop
         # the product entirely so no buy/sell candidate is ever built for it.
@@ -556,6 +563,12 @@ def get_configured_purse():
 DISPLAY_BUCKET = {7000: "7k", 4000: "4k", 2000: "2k", 1000: "1k+500", 500: "1k+500"}
 DISPLAY_BUCKET_ORDER = ["7k", "4k", "2k", "1k+500"]
 
+# Inventory-glut skip: stop recommending a buy once we already hold this many
+# units of the product. Tighter for the small-order (1k/500) bucket - those are
+# pricier items where a 500 position already ties up a lot of coins.
+INVENTORY_CAP_DEFAULT = 1500
+INVENTORY_CAP_SMALL_BUCKET = 500
+
 
 def build_recommendation(bazaar_data, all_product_information, trader_data,
                          bazaar_fee, purse, available_slots, time_between_trades_hours):
@@ -589,6 +602,22 @@ def build_recommendation(bazaar_data, all_product_information, trader_data,
     )
     # Buys-only: the optimizer focuses on buy orders (the user manages sells).
     buys = [c for c in candidates if c.side == "buy"]
+
+    # Inventory-glut skip: don't recommend buying more of something we're already
+    # sitting on a lot of. Cap is 1500 held units normally, tightened to 500 for
+    # the small-order (1k/500) bucket - those are pricier items where 500 is already
+    # a big position. Held amount is the real inventory count (all-products'
+    # current-amount), keyed by display name like the candidates.
+    inventory = trader_data.get("all-products") or {}
+
+    def _inventory_cap(bucket):
+        return INVENTORY_CAP_SMALL_BUCKET if bucket in (1000, 500) else INVENTORY_CAP_DEFAULT
+
+    def _held(product_name):
+        entry = inventory.get(product_name) or {}
+        return entry.get("current-amount") or 0
+
+    buys = [c for c in buys if _held(c.product_name) <= _inventory_cap(c.bucket)]
 
     # Rank: group by display bucket (7k, 4k, 2k, 1k+500), and within each bucket put
     # the qualifying products first (best margin first), then the demoted/discarded

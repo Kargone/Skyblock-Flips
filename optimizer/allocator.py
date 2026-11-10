@@ -386,7 +386,11 @@ def build_all_candidates(bazaar_data, all_product_information, short_term_invest
             candidates += build_sell_inventory_candidates(
                 product_name, info, prices, bazaar_fee, held_qty, historical_cost, time_between_trades_hours
             )
-        if product_name not in open_buy_products:
+        # Skip buying a product that already has a live order on EITHER side: an
+        # open buy order means we've already placed this buy, and an open sell
+        # order means we're already working that product (manually selling it) -
+        # the user doesn't want it re-recommended as a buy in that case.
+        if product_name not in open_buy_products and product_name not in open_sell_products:
             candidates += build_buy_candidates(
                 product_name, info, prices, bazaar_fee, purse_remaining, held_qty, time_between_trades_hours
             )

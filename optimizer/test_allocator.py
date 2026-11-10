@@ -461,6 +461,43 @@ class MenuTests(unittest.TestCase):
         seven_q = [x["product_name"] for x in o if x["display_bucket"] == "7k" and x["qualified"]]
         self.assertEqual(seven_q, ["A7A", "A7B"])
 
+    def _rec_trader(self, trader_data, slots=5):
+        bazaar, info = self._world()
+        return M.build_recommendation(bazaar, info, trader_data, 0.0, 10**12, slots, 8)
+
+    def test_open_sell_order_skips_buy(self):
+        # A live (unclaimed) sell order on A4 means we're already working that
+        # product manually -> it must not be re-recommended as a buy.
+        trader = {"short-term-investments": {},
+                  "sell-order-overview": {"sell-orders": [{"item-name": "A4", "has-been-claimed": False}]}}
+        names = [x["product_name"] for x in self._rec_trader(trader)["orders"]]
+        self.assertNotIn("A4", names)
+        self.assertIn("A2", names)                              # others unaffected
+
+    def test_claimed_sell_order_does_not_skip(self):
+        # A claimed sell order is finished, not a live position -> no skip.
+        trader = {"short-term-investments": {},
+                  "sell-order-overview": {"sell-orders": [{"item-name": "A4", "has-been-claimed": True}]}}
+        names = [x["product_name"] for x in self._rec_trader(trader)["orders"]]
+        self.assertIn("A4", names)
+
+    def test_inventory_glut_skips_default_bucket(self):
+        # Holding > 1500 of a non-small-bucket product (A7A is 7k bucket) -> skipped.
+        trader = {"short-term-investments": {}, "all-products": {"A7A": {"current-amount": 1501}}}
+        names = [x["product_name"] for x in self._rec_trader(trader)["orders"]]
+        self.assertNotIn("A7A", names)
+        self.assertIn("A7B", names)
+        # exactly at the cap is still allowed
+        trader["all-products"]["A7A"]["current-amount"] = 1500
+        self.assertIn("A7A", [x["product_name"] for x in self._rec_trader(trader)["orders"]])
+
+    def test_inventory_glut_tighter_for_small_bucket(self):
+        # A1 is the 1k bucket -> cap is 500, not 1500. 600 held -> skipped; 500 -> kept.
+        trader = {"short-term-investments": {}, "all-products": {"A1": {"current-amount": 600}}}
+        self.assertNotIn("A1", [x["product_name"] for x in self._rec_trader(trader)["orders"]])
+        trader["all-products"]["A1"]["current-amount"] = 500
+        self.assertIn("A1", [x["product_name"] for x in self._rec_trader(trader)["orders"]])
+
 
 class BlacklistTests(unittest.TestCase):
     def setUp(self):
@@ -520,6 +557,22 @@ class BlacklistIntegrationTests(unittest.TestCase):
         self.assertNotIn("Stock of Stonks", bazaar_data)
         self.assertNotIn("Stock of Stonks", info)
         self.assertIn("Enchanted Flint", bazaar_data)     # others unaffected
+
+    def test_forge_display_row_dropped_clean_row_kept(self):
+        # A "(forge)" row reuses the item's api-name; it must be dropped so a
+        # whitelisted item isn't bought twice, while the clean row still trades.
+        product_list = {
+            "Refined Titanium": {"api-name": "REFINED_TITANIUM", "type": "bazaar-product", "has-weights": True},
+            "Refined Titanium (forge)": {"api-name": "REFINED_TITANIUM", "type": "forge-product"},
+            "Mithril Plate (forge)": {"api-name": "MITHRIL_PLATE", "type": "forge-product"},
+        }
+        bp = {"sell_summary": [{"pricePerUnit": 100}], "buy_summary": [{"pricePerUnit": 110}],
+              "quick_status": {"sellMovingWeek": 1, "buyMovingWeek": 1}}
+        bazaar_products = {"REFINED_TITANIUM": bp, "MITHRIL_PLATE": bp}
+        bazaar_data, info = M.build_bazaar_data_and_product_info(bazaar_products, {}, product_list)
+        self.assertIn("Refined Titanium", bazaar_data)
+        self.assertNotIn("Refined Titanium (forge)", bazaar_data)
+        self.assertNotIn("Mithril Plate (forge)", bazaar_data)
 
 
 class PriceHistoryTests(unittest.TestCase):
