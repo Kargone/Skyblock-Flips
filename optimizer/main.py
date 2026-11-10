@@ -143,7 +143,7 @@ def clear_anomaly(key):
     _active_anomalies.discard(key)
 
 
-POLL_INTERVAL_SECONDS = 30
+POLL_INTERVAL_SECONDS = 15
 HOURS_PER_WEEK = 7 * 24
 
 # The smallest amount a bazaar order price can be beaten by.
