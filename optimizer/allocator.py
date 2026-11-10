@@ -38,6 +38,7 @@ import pulp
 import exit_drift
 import fill_model
 import price_history
+import whitelist
 
 # ---- Constants describing real Hypixel Bazaar constraints ----
 TOTAL_SLOTS = 28
@@ -220,8 +221,21 @@ def build_sell_inventory_candidates(product_name, info, prices, bazaar_fee, held
 
 
 def build_buy_candidates(product_name, info, prices, bazaar_fee, purse_remaining, held_qty, time_between_trades_hours):
+    api_name = info.get("api_name")
+    # Buys-only whitelist: when active, only its products are bought at all. The
+    # whitelist also sets the quantity to buy (max_buy), which replaces the fill-
+    # model sizing below for whitelisted products.
+    if whitelist.active() and not whitelist.allows(api_name):
+        return []
+
+    if prices["buy_price"] <= 0:
+        return []
     room_left = max_hold_per_item(info) - held_qty
-    if room_left <= 0 or prices["buy_price"] <= 0:
+    mb = whitelist.max_buy(api_name) if whitelist.active() else None
+    # A non-whitelisted (fallback) buy is still bounded by the inventory hold cap;
+    # a whitelisted buy uses its explicit max_buy instead (applied below), which
+    # the user chose deliberately, so the 35-slot relist heuristic doesn't gate it.
+    if mb is None and room_left <= 0:
         return []
 
     # Two-sided liquidity + spread sanity: skip thin/broken books where the flip
@@ -251,7 +265,11 @@ def build_buy_candidates(product_name, info, prices, bazaar_fee, purse_remaining
         return []
 
     affordable_qty = purse_remaining // prices["buy_price"]
-    cap_qty = min(room_left, affordable_qty)
+    # Order-size cap: a whitelisted product buys its configured max_buy (bounded only
+    # by what's affordable); otherwise it's bounded by the inventory hold cap.
+    cap_qty = min(mb, affordable_qty) if mb is not None else min(room_left, affordable_qty)
+    if cap_qty <= 0:
+        return []
     if fill_model.available():
         expected_fillable = fill_model.expected_fill(
             "buy", info["bought_volume_7_day"], cap_qty=cap_qty,
@@ -264,10 +282,10 @@ def build_buy_candidates(product_name, info, prices, bazaar_fee, purse_remaining
             time_between_trades_hours, cap_qty=cap_qty, haircut=EXPECTED_FILL_HAIRCUT,
         )
 
-    # List a buffer beyond the expected fill (capped by affordable/holdable) so a
-    # faster-than-expected fill captures the extra; profit stays ranked on the
-    # expected fill. Unstackable items also cap at 256 per buy order.
-    list_budget = min(cap_qty, math.floor(expected_fillable * BUY_OVERSHOOT_FACTOR))
+    # Whitelisted: list the full configured max_buy (profit is still scored on the
+    # expected fill). Otherwise list a buffer beyond the expected fill (overshoot),
+    # capped by affordable/holdable. Unstackable items also cap at 256 per buy order.
+    list_budget = cap_qty if mb is not None else min(cap_qty, math.floor(expected_fillable * BUY_OVERSHOOT_FACTOR))
     return _slot_candidates(product_name, "buy", list_budget=list_budget, fill_estimate=expected_fillable,
                             profit_per_unit=profit_per_unit, order_price=prices["buy_price"],
                             coin_cost_per_unit=prices["buy_price"], max_order_size=max_buy_order_size(info))

@@ -549,19 +549,9 @@ def get_configured_purse():
     return _manual_purse()
 
 
-# Sell-side selection (user's rule): only surface inventory sells worth bothering
-# with (order worth >= SELL_MIN_ORDER_WORTH) that aren't investment-sized holdings
-# (< SELL_MAX_ORDER_WORTH; long-term investments are already excluded upstream).
-SELL_MIN_ORDER_WORTH = 2_000_000
-SELL_MAX_ORDER_WORTH = 150_000_000
-# Rough "don't sell into an unusually high price" proxy: skip a sell when the ask
-# has run far above the bid. Placeholder until the price-history pipeline has
-# enough data for a real price-anomaly (z-score) signal; raise it to disable.
-SELL_SPIKE_SPREAD_RATIO = 1.5
-# The advisory returns a ranked menu to pick/discard from, not just the slot-optimal
-# set: at least MENU_MIN_ORDERS total, with >= MENU_MIN_PER_SIDE of each side shown.
+# The advisory is buys-only (the user manages sells); it returns a ranked menu of
+# at least MENU_MIN_ORDERS buy options to pick/discard from, not just the slot pick.
 MENU_MIN_ORDERS = 10
-MENU_MIN_PER_SIDE = 3
 
 
 def build_recommendation(bazaar_data, all_product_information, trader_data,
@@ -594,28 +584,16 @@ def build_recommendation(bazaar_data, all_product_information, trader_data,
         bazaar_fee, purse, time_between_trades_hours,
         open_buy_products=open_buy_products, open_sell_products=open_sell_products,
     )
-    # Qualifying sells (user's rule): worth bothering with and not an
-    # investment-sized holding, and not into an unusually high price.
-    def _qualifying_sell(c):
-        if not (SELL_MIN_ORDER_WORTH <= c.order_worth <= SELL_MAX_ORDER_WORTH):
-            return False
-        prices = bazaar_data.get(c.product_name) or {}
-        buy_price = prices.get("buy_price") or 0
-        if buy_price > 0 and prices.get("sell_price", 0) > SELL_SPIKE_SPREAD_RATIO * buy_price:
-            return False  # ask has run far above the bid -> treat as a spike, hold
-        return True
+    # Buys-only: the optimizer focuses on buy orders (the user manages sells
+    # separately); the whitelist restricts which products are bought and how much.
+    menu_candidates = [c for c in candidates if c.side == "buy"]
 
-    menu_candidates = [c for c in candidates if c.side != "sell_inventory" or _qualifying_sell(c)]
-
-    # Blended top-profit pick over the slots actually free (assume >=1 so we always
-    # surface something). These are the "place now" picks, flagged in_plan.
+    # Top-profit pick over the slots actually free (assume >=1 so we always surface
+    # something). These are the "place now" picks, flagged in_plan.
     chosen = solve(menu_candidates, max(available_slots, 1), purse, cap_remaining)
     in_plan = {id(c) for c in chosen}
 
-    # Return a ranked menu (>= MENU_MIN_ORDERS, both sides represented) so the user
-    # can eyeball and discard options (price bubbles etc.), not just the slot pick.
-    sells = sorted((c for c in menu_candidates if c.side == "sell_inventory"), key=lambda c: c.profit, reverse=True)
-    buys = sorted((c for c in menu_candidates if c.side == "buy"), key=lambda c: c.profit, reverse=True)
+    # Ranked menu (>= MENU_MIN_ORDERS) of buy options to pick/discard from.
     menu, seen = [], set()
 
     def _add(c):
@@ -624,10 +602,6 @@ def build_recommendation(bazaar_data, all_product_information, trader_data,
             menu.append(c)
 
     for c in chosen:
-        _add(c)
-    for c in sells[:MENU_MIN_PER_SIDE]:   # guarantee some sells are shown
-        _add(c)
-    for c in buys[:MENU_MIN_PER_SIDE]:    # and some buys
         _add(c)
     for c in sorted(menu_candidates, key=lambda c: c.profit, reverse=True):
         if len(menu) >= MENU_MIN_ORDERS:

@@ -25,6 +25,7 @@ import exit_drift
 import fill_model
 import price_history
 import stack_sizes
+import whitelist
 import allocator as A
 import main as M
 
@@ -128,14 +129,18 @@ class SizingTests(unittest.TestCase):
 
     def setUp(self):
         self._orig = (fill_model.available, fill_model.expected_fill,
-                      exit_drift.multiplier, price_history.baseline_ask)
+                      exit_drift.multiplier, price_history.baseline_ask,
+                      whitelist.active, whitelist.max_buy)
         fill_model.available = lambda: True
         exit_drift.multiplier = lambda default=1.0: 1.0  # no exit drift unless a test sets it
         price_history.baseline_ask = lambda api_name: None  # no spike filter unless a test sets it
+        whitelist.active = lambda: False                    # no whitelist unless a test sets it
+        whitelist.max_buy = lambda api_name: None
 
     def tearDown(self):
         (fill_model.available, fill_model.expected_fill,
-         exit_drift.multiplier, price_history.baseline_ask) = self._orig
+         exit_drift.multiplier, price_history.baseline_ask,
+         whitelist.active, whitelist.max_buy) = self._orig
 
     def _set_fill(self, value):
         fill_model.expected_fill = lambda side, vol, cap_qty, horizon_hours=None: min(cap_qty, value)
@@ -362,12 +367,17 @@ class SolveTests(unittest.TestCase):
 
 class StackSizeTests(unittest.TestCase):
     def setUp(self):
-        self._orig = (fill_model.available, fill_model.expected_fill, exit_drift.multiplier)
+        self._orig = (fill_model.available, fill_model.expected_fill, exit_drift.multiplier,
+                      price_history.baseline_ask, whitelist.active, whitelist.max_buy)
         fill_model.available = lambda: True
         exit_drift.multiplier = lambda default=1.0: 1.0
+        price_history.baseline_ask = lambda api_name: None
+        whitelist.active = lambda: False
+        whitelist.max_buy = lambda api_name: None
 
     def tearDown(self):
-        fill_model.available, fill_model.expected_fill, exit_drift.multiplier = self._orig
+        (fill_model.available, fill_model.expected_fill, exit_drift.multiplier,
+         price_history.baseline_ask, whitelist.active, whitelist.max_buy) = self._orig
 
     def test_hold_cap_by_stack(self):
         self.assertEqual(A.max_hold_per_item({"max_stack_size": 1}), 35)
@@ -419,19 +429,24 @@ class StackSizeModuleTests(unittest.TestCase):
 
 
 class MenuTests(unittest.TestCase):
-    """build_recommendation output: >=10 ranked orders, both sides, sell rule."""
+    """build_recommendation output: buys-only ranked menu of >=10 orders, in_plan flags."""
 
     def setUp(self):
-        self._orig = (fill_model.available, fill_model.expected_fill,
-                      exit_drift.multiplier, M.compute_daily_cap_used)
+        self._orig = (fill_model.available, fill_model.expected_fill, exit_drift.multiplier,
+                      price_history.baseline_ask, whitelist.active, whitelist.max_buy,
+                      M.compute_daily_cap_used)
         fill_model.available = lambda: True
         fill_model.expected_fill = lambda side, vol, cap_qty, horizon_hours=None: min(cap_qty, 500)
         exit_drift.multiplier = lambda default=1.0: 1.0
+        price_history.baseline_ask = lambda api_name: None
+        whitelist.active = lambda: False          # exercise the menu without the whitelist gate
+        whitelist.max_buy = lambda api_name: None
         M.compute_daily_cap_used = lambda reset_ms, path=None: 0
 
     def tearDown(self):
-        (fill_model.available, fill_model.expected_fill,
-         exit_drift.multiplier, M.compute_daily_cap_used) = self._orig
+        (fill_model.available, fill_model.expected_fill, exit_drift.multiplier,
+         price_history.baseline_ask, whitelist.active, whitelist.max_buy,
+         M.compute_daily_cap_used) = self._orig
 
     def _world(self, n=15):
         bazaar, info = {}, {}
@@ -444,18 +459,17 @@ class MenuTests(unittest.TestCase):
     def _trader(self, held):
         return {"short-term-investments": {"P0": {"sub-orders": [{"partial-amount": held, "price-bought": 50.0}]}}}
 
-    def test_menu_has_min_orders_both_sides_and_plan(self):
+    def test_menu_is_buys_only_with_plan(self):
         bazaar, info = self._world(15)
         rec = M.build_recommendation(bazaar, info, self._trader(50_000), 0.0, 10**12, 5, 8)
         o = rec["orders"]
         self.assertGreaterEqual(len(o), 10)
-        self.assertTrue(any(x["action"] == "buy" for x in o))
-        self.assertTrue(any(x["action"] == "sell" for x in o))   # qualifying sell surfaced
+        self.assertTrue(all(x["action"] == "buy" for x in o))   # buys only
         self.assertTrue(any(x["in_plan"] for x in o))
 
-    def test_small_sell_excluded(self):
+    def test_no_sells_even_with_holdings(self):
         bazaar, info = self._world(15)
-        rec = M.build_recommendation(bazaar, info, self._trader(100), 0.0, 10**12, 5, 8)  # 140*100 < 2M
+        rec = M.build_recommendation(bazaar, info, self._trader(50_000), 0.0, 10**12, 5, 8)
         self.assertFalse(any(x["action"] == "sell" for x in rec["orders"]))
 
     def test_assumes_at_least_one_slot(self):
@@ -558,6 +572,73 @@ class PriceHistoryTests(unittest.TestCase):
         price_history._sig = None
         self.assertIsNone(price_history.baseline_ask("FOO"))
         self.assertIsNone(price_history.baseline_ask(None))
+
+
+class WhitelistTests(unittest.TestCase):
+    """Buys-only whitelist: gates which products are bought and sizes to max_buy."""
+
+    def setUp(self):
+        self._stub = (fill_model.available, fill_model.expected_fill, exit_drift.multiplier,
+                      price_history.baseline_ask)
+        fill_model.available = lambda: True
+        fill_model.expected_fill = lambda side, vol, cap_qty, horizon_hours=None: min(cap_qty, 10**6)
+        exit_drift.multiplier = lambda default=1.0: 1.0
+        price_history.baseline_ask = lambda api_name: None
+        self._orig_path, self._orig_map, self._orig_mtime = (whitelist._PATH, whitelist._map, whitelist._mtime)
+        self._tmp = Path(tempfile.mkdtemp()) / "whitelist.json"
+        self._tmp.write_text(json.dumps({"buy_whitelist": {"FOO": {"max_buy": 5000}, "BAR": {"max_buy": 400}}}),
+                             encoding="utf-8")
+        whitelist._PATH = self._tmp
+        whitelist._map = None
+        whitelist._mtime = None
+
+    def tearDown(self):
+        (fill_model.available, fill_model.expected_fill, exit_drift.multiplier,
+         price_history.baseline_ask) = self._stub
+        whitelist._PATH, whitelist._map, whitelist._mtime = self._orig_path, self._orig_map, self._orig_mtime
+
+    def _info(self, api_name):
+        info = make_info()
+        info["api_name"] = api_name
+        return info
+
+    def test_active_and_allows(self):
+        self.assertTrue(whitelist.active())
+        self.assertTrue(whitelist.allows("FOO"))
+        self.assertFalse(whitelist.allows("ZZZ"))
+
+    def test_non_whitelisted_buy_skipped(self):
+        prices = {"sell_price": 1000.0, "buy_price": 600.0}
+        self.assertEqual(A.build_buy_candidates("P", self._info("ZZZ"), prices, 0.0,
+                         purse_remaining=10**12, held_qty=0, time_between_trades_hours=8), [])
+
+    def test_whitelisted_buy_sizes_to_max_buy_over_hold_cap(self):
+        # max_buy 5000 exceeds the 35x64=2240 hold cap; the explicit amount wins.
+        prices = {"sell_price": 1000.0, "buy_price": 600.0}   # ppu 400, clears MIN_PROFIT
+        cands = A.build_buy_candidates("P", self._info("FOO"), prices, 0.0,
+                                       purse_remaining=10**12, held_qty=0, time_between_trades_hours=8)
+        self.assertEqual(len(cands), 1)
+        self.assertEqual(cands[0].quantity, 5000)
+
+    def test_whitelisted_buy_bounded_by_affordability(self):
+        prices = {"sell_price": 1000.0, "buy_price": 600.0}
+        cands = A.build_buy_candidates("P", self._info("FOO"), prices, 0.0,
+                                       purse_remaining=600 * 1000, held_qty=0, time_between_trades_hours=8)  # afford 1000
+        self.assertEqual(cands[0].quantity, 1000)
+
+    def test_empty_whitelist_is_inactive(self):
+        self._tmp.write_text(json.dumps({"buy_whitelist": {}}), encoding="utf-8")
+        whitelist._map = None
+        whitelist._mtime = None
+        self.assertFalse(whitelist.active())
+        self.assertTrue(whitelist.allows("ANYTHING"))   # no restriction when empty
+
+    def test_committed_whitelist_well_formed(self):
+        whitelist._PATH, whitelist._map, whitelist._mtime = self._orig_path, None, None
+        self.assertTrue(whitelist.active())
+        self.assertEqual(whitelist.max_buy("WHALE_BAIT"), 7000)
+        self.assertEqual(whitelist.max_buy("POLISHED_PUMPKIN"), 2000)   # hand override
+        self.assertIsNone(whitelist.max_buy("SUMMONING_EYE"))           # dropped during triage
 
 
 class CommittedModelTests(unittest.TestCase):

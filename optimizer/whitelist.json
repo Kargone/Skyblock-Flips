@@ -1,0 +1,1216 @@
+{
+ "_comment": "Buys-only whitelist. The optimizer ONLY places buy orders for products listed here (keyed by api-name); everything else is skipped on the buy side. max_buy is the quantity to buy for that product (a hard order-size cap, bounded by affordability and the daily cap). buy_price/sell_price/volumes are a snapshot captured when the list was built, for reference only - they are NOT read at runtime and go stale. override=true marks a max_buy set by hand off the price-tier formula. Hot-reloaded on save.",
+ "formula": {
+  "<25k": 7000,
+  "25k-100k": 4000,
+  "100k-225k": 2000,
+  "225k-400k": 1000,
+  ">400k": 500
+ },
+ "buy_whitelist": {
+  "DUNGEON_DECOY": {
+   "name": "Decoy",
+   "buy_price": 220,
+   "sell_price": 9033,
+   "buy_vol_7d": 96206,
+   "sell_vol_7d": 218470,
+   "max_buy": 7000
+  },
+  "FINE_OPAL_GEM": {
+   "name": "Fine Opal Gemstone",
+   "buy_price": 286,
+   "sell_price": 26016,
+   "buy_vol_7d": 38347,
+   "sell_vol_7d": 87866,
+   "max_buy": 4000,
+   "override": true
+  },
+  "LONELILY": {
+   "name": "Lonelily",
+   "buy_price": 370,
+   "sell_price": 4999,
+   "buy_vol_7d": 92080,
+   "sell_vol_7d": 148131,
+   "max_buy": 7000
+  },
+  "WORM_BAIT": {
+   "name": "Worm Bait",
+   "buy_price": 3145,
+   "sell_price": 5291,
+   "buy_vol_7d": 821297,
+   "sell_vol_7d": 362281,
+   "max_buy": 7000
+  },
+  "GOBLIN_EGG_GREEN": {
+   "name": "Green Goblin Egg",
+   "buy_price": 3206,
+   "sell_price": 5955,
+   "buy_vol_7d": 444736,
+   "sell_vol_7d": 436378,
+   "max_buy": 7000
+  },
+  "FINE_FLOUR": {
+   "name": "Fine Flour",
+   "buy_price": 3438,
+   "sell_price": 8747,
+   "buy_vol_7d": 224833,
+   "sell_vol_7d": 191949,
+   "max_buy": 7000
+  },
+  "SHARD_STRONGARM": {
+   "name": "SHARD_STRONGARM",
+   "buy_price": 3591,
+   "sell_price": 5782,
+   "buy_vol_7d": 159098,
+   "sell_vol_7d": 104890,
+   "max_buy": 7000
+  },
+  "MAGMA_FISH_SILVER": {
+   "name": "Silver Magmafish",
+   "buy_price": 3982,
+   "sell_price": 5418,
+   "buy_vol_7d": 385058,
+   "sell_vol_7d": 2433219,
+   "max_buy": 7000
+  },
+  "EXPORTABLE_CARROTS": {
+   "name": "Exportable Carrots",
+   "buy_price": 4002,
+   "sell_price": 6308,
+   "buy_vol_7d": 188713,
+   "sell_vol_7d": 247699,
+   "max_buy": 7000
+  },
+  "AGARIMOO_TONGUE": {
+   "name": "Agarimoo Tongue",
+   "buy_price": 4667,
+   "sell_price": 5994,
+   "buy_vol_7d": 240488,
+   "sell_vol_7d": 612170,
+   "max_buy": 7000
+  },
+  "GREEN_GIFT": {
+   "name": "Green Gift",
+   "buy_price": 4778,
+   "sell_price": 6721,
+   "buy_vol_7d": 835647,
+   "sell_vol_7d": 1516916,
+   "max_buy": 7000
+  },
+  "SULPHURIC_COAL": {
+   "name": "Sulphuric Coal",
+   "buy_price": 5156,
+   "sell_price": 6282,
+   "buy_vol_7d": 832760,
+   "sell_vol_7d": 1017465,
+   "max_buy": 7000
+  },
+  "SHARD_MINER_ZOMBIE": {
+   "name": "SHARD_MINER_ZOMBIE",
+   "buy_price": 5289,
+   "sell_price": 7045,
+   "buy_vol_7d": 909134,
+   "sell_vol_7d": 312783,
+   "max_buy": 7000
+  },
+  "ENCHANTED_GUNPOWDER": {
+   "name": "Enchanted Gunpowder",
+   "buy_price": 5625,
+   "sell_price": 6452,
+   "buy_vol_7d": 1775286,
+   "sell_vol_7d": 1407005,
+   "max_buy": 7000
+  },
+  "SOULFLOW": {
+   "name": "Soulflow",
+   "buy_price": 6076,
+   "sell_price": 26160,
+   "buy_vol_7d": 1078176,
+   "sell_vol_7d": 811388,
+   "max_buy": 7000
+  },
+  "WHALE_BAIT": {
+   "name": "Whale Bait",
+   "buy_price": 6164,
+   "sell_price": 6898,
+   "buy_vol_7d": 4899081,
+   "sell_vol_7d": 1926767,
+   "max_buy": 7000
+  },
+  "YOUNG_FRAGMENT": {
+   "name": "Young Dragon Fragment",
+   "buy_price": 6223,
+   "sell_price": 7434,
+   "buy_vol_7d": 304130,
+   "sell_vol_7d": 753690,
+   "max_buy": 7000
+  },
+  "OLD_FRAGMENT": {
+   "name": "Old Dragon Fragment",
+   "buy_price": 6224,
+   "sell_price": 8459,
+   "buy_vol_7d": 73386,
+   "sell_vol_7d": 114158,
+   "max_buy": 7000
+  },
+  "ENCHANTED_RUBY_VEILSHROOM": {
+   "name": "Enchanted Ruby Veilshroom",
+   "buy_price": 6238,
+   "sell_price": 7452,
+   "buy_vol_7d": 54822,
+   "sell_vol_7d": 213947,
+   "max_buy": 7000
+  },
+  "PROTECTOR_FRAGMENT": {
+   "name": "Protector Dragon Fragment",
+   "buy_price": 6345,
+   "sell_price": 8647,
+   "buy_vol_7d": 62834,
+   "sell_vol_7d": 106326,
+   "max_buy": 7000
+  },
+  "UNSTABLE_FRAGMENT": {
+   "name": "Unstable Dragon Fragment",
+   "buy_price": 6387,
+   "sell_price": 8027,
+   "buy_vol_7d": 228351,
+   "sell_vol_7d": 643957,
+   "max_buy": 7000
+  },
+  "ENCHANTED_EYE_OF_ENDER": {
+   "name": "Enchanted Eye of Ender",
+   "buy_price": 6555,
+   "sell_price": 8625,
+   "buy_vol_7d": 490059,
+   "sell_vol_7d": 551188,
+   "max_buy": 7000
+  },
+  "ORB_OF_ENERGY": {
+   "name": "Orb of Energy",
+   "buy_price": 6600,
+   "sell_price": 8995,
+   "buy_vol_7d": 243912,
+   "sell_vol_7d": 415288,
+   "max_buy": 7000
+  },
+  "WARTY": {
+   "name": "Warty",
+   "buy_price": 7000,
+   "sell_price": 10698,
+   "buy_vol_7d": 101325,
+   "sell_vol_7d": 91128,
+   "max_buy": 7000
+  },
+  "KUUDRA_TEETH": {
+   "name": "Kuudra Teeth",
+   "buy_price": 7068,
+   "sell_price": 8098,
+   "buy_vol_7d": 261269,
+   "sell_vol_7d": 277319,
+   "max_buy": 7000
+  },
+  "HOLY_FRAGMENT": {
+   "name": "Holy Dragon Fragment",
+   "buy_price": 7106,
+   "sell_price": 9011,
+   "buy_vol_7d": 180119,
+   "sell_vol_7d": 839226,
+   "max_buy": 7000
+  },
+  "SHARD_MANTIS_SHRIMP": {
+   "name": "SHARD_MANTIS_SHRIMP",
+   "buy_price": 8001,
+   "sell_price": 11892,
+   "buy_vol_7d": 81131,
+   "sell_vol_7d": 78016,
+   "max_buy": 7000
+  },
+  "CAN_OF_WORMS": {
+   "name": "Can of Worms",
+   "buy_price": 8241,
+   "sell_price": 12012,
+   "buy_vol_7d": 144880,
+   "sell_vol_7d": 143182,
+   "max_buy": 7000
+  },
+  "WALNUT": {
+   "name": "Walnut",
+   "buy_price": 8444,
+   "sell_price": 19998,
+   "buy_vol_7d": 37950,
+   "sell_vol_7d": 43050,
+   "max_buy": 7000
+  },
+  "HOTSPOT_BAIT": {
+   "name": "Hotspot Bait",
+   "buy_price": 9702,
+   "sell_price": 12995,
+   "buy_vol_7d": 510093,
+   "sell_vol_7d": 180847,
+   "max_buy": 7000
+  },
+  "ENCHANTED_DANDELION": {
+   "name": "Enchanted Dandelion",
+   "buy_price": 9919,
+   "sell_price": 11529,
+   "buy_vol_7d": 182330,
+   "sell_vol_7d": 154726,
+   "max_buy": 7000
+  },
+  "SHARD_FLAMING_SPIDER": {
+   "name": "SHARD_FLAMING_SPIDER",
+   "buy_price": 10009,
+   "sell_price": 34521,
+   "buy_vol_7d": 153658,
+   "sell_vol_7d": 111025,
+   "max_buy": 7000
+  },
+  "CORRUPTED_NETHER_STAR": {
+   "name": "Nether Star",
+   "buy_price": 10103,
+   "sell_price": 11297,
+   "buy_vol_7d": 191954,
+   "sell_vol_7d": 244736,
+   "max_buy": 7000
+  },
+  "ENCHANTED_TUNGSTEN": {
+   "name": "Enchanted Tungsten",
+   "buy_price": 10921,
+   "sell_price": 12148,
+   "buy_vol_7d": 577894,
+   "sell_vol_7d": 4695166,
+   "max_buy": 7000
+  },
+  "SILVER_FANG": {
+   "name": "Silver Fang",
+   "buy_price": 11113,
+   "sell_price": 14518,
+   "buy_vol_7d": 374043,
+   "sell_vol_7d": 75528,
+   "max_buy": 7000
+  },
+  "LOCUST_LARVA": {
+   "name": "Locust Larva",
+   "buy_price": 11803,
+   "sell_price": 39656,
+   "buy_vol_7d": 76507,
+   "sell_vol_7d": 100144,
+   "max_buy": 7000
+  },
+  "ENCHANTED_PACKED_ICE": {
+   "name": "Enchanted Packed Ice",
+   "buy_price": 12312,
+   "sell_price": 13939,
+   "buy_vol_7d": 205878,
+   "sell_vol_7d": 270826,
+   "max_buy": 7000
+  },
+  "SHARD_SPECIAL_ZEALOT": {
+   "name": "SHARD_SPECIAL_ZEALOT",
+   "buy_price": 12973,
+   "sell_price": 16473,
+   "buy_vol_7d": 81860,
+   "sell_vol_7d": 69438,
+   "max_buy": 7000
+  },
+  "LOTUS_SILVER": {
+   "name": "Silver Lotus",
+   "buy_price": 13678,
+   "sell_price": 16749,
+   "buy_vol_7d": 72039,
+   "sell_vol_7d": 280178,
+   "max_buy": 7000
+  },
+  "BUSTED_BELT_BUCKLE": {
+   "name": "Busted Belt Buckle",
+   "buy_price": 13901,
+   "sell_price": 23452,
+   "buy_vol_7d": 56379,
+   "sell_vol_7d": 75862,
+   "max_buy": 7000
+  },
+  "KADA_LEAD": {
+   "name": "Kada Lead",
+   "buy_price": 14554,
+   "sell_price": 19541,
+   "buy_vol_7d": 190536,
+   "sell_vol_7d": 178943,
+   "max_buy": 7000
+  },
+  "CHORUS_FRUIT": {
+   "name": "Chorus Fruit",
+   "buy_price": 15000,
+   "sell_price": 34539,
+   "buy_vol_7d": 57483,
+   "sell_vol_7d": 46482,
+   "max_buy": 7000
+  },
+  "FUEL_GABAGOOL": {
+   "name": "Fuel Gabagool",
+   "buy_price": 15000,
+   "sell_price": 17788,
+   "buy_vol_7d": 61684,
+   "sell_vol_7d": 39318,
+   "max_buy": 7000
+  },
+  "SHARD_BLUEBIRD": {
+   "name": "SHARD_BLUEBIRD",
+   "buy_price": 15203,
+   "sell_price": 18303,
+   "buy_vol_7d": 148070,
+   "sell_vol_7d": 82319,
+   "max_buy": 7000
+  },
+  "MIRIA_COUPON": {
+   "name": "Miria's Coupon",
+   "buy_price": 16016,
+   "sell_price": 17440,
+   "buy_vol_7d": 689398,
+   "sell_vol_7d": 1405142,
+   "max_buy": 7000
+  },
+  "PLANT_MATTER": {
+   "name": "Plant Matter",
+   "buy_price": 16737,
+   "sell_price": 21006,
+   "buy_vol_7d": 654578,
+   "sell_vol_7d": 546016,
+   "max_buy": 7000
+  },
+  "ENCHANTED_TITANIUM": {
+   "name": "Enchanted Titanium",
+   "buy_price": 16889,
+   "sell_price": 18104,
+   "buy_vol_7d": 1287883,
+   "sell_vol_7d": 1414741,
+   "max_buy": 7000
+  },
+  "SHARD_GROVE": {
+   "name": "SHARD_GROVE",
+   "buy_price": 17108,
+   "sell_price": 34033,
+   "buy_vol_7d": 79539,
+   "sell_vol_7d": 23169,
+   "max_buy": 7000
+  },
+  "PURPLE_CANDY": {
+   "name": "Purple Candy",
+   "buy_price": 17124,
+   "sell_price": 17836,
+   "buy_vol_7d": 479437,
+   "sell_vol_7d": 1277563,
+   "max_buy": 7000
+  },
+  "JACOBS_TICKET": {
+   "name": "Jacob's Ticket",
+   "buy_price": 17324,
+   "sell_price": 18848,
+   "buy_vol_7d": 1213209,
+   "sell_vol_7d": 1193911,
+   "max_buy": 7000
+  },
+  "ABSOLUTE_ENDER_PEARL": {
+   "name": "Absolute Ender Pearl",
+   "buy_price": 19000,
+   "sell_price": 19499,
+   "buy_vol_7d": 272874,
+   "sell_vol_7d": 470480,
+   "max_buy": 7000
+  },
+  "HAMSTER_WHEEL": {
+   "name": "Hamster Wheel",
+   "buy_price": 19098,
+   "sell_price": 20098,
+   "buy_vol_7d": 126998,
+   "sell_vol_7d": 302074,
+   "max_buy": 7000
+  },
+  "ETHEREAL_VINE": {
+   "name": "Ethereal Vine",
+   "buy_price": 19136,
+   "sell_price": 20210,
+   "buy_vol_7d": 171111,
+   "sell_vol_7d": 524604,
+   "max_buy": 7000
+  },
+  "RED_GIFT": {
+   "name": "Red Gift",
+   "buy_price": 19200,
+   "sell_price": 20059,
+   "buy_vol_7d": 466895,
+   "sell_vol_7d": 887797,
+   "max_buy": 4000,
+   "override": true
+  },
+  "FINE_RUBY_GEM": {
+   "name": "Fine Ruby Gemstone",
+   "buy_price": 19260,
+   "sell_price": 23086,
+   "buy_vol_7d": 261593,
+   "sell_vol_7d": 493339,
+   "max_buy": 4000,
+   "override": true
+  },
+  "CRUDE_GABAGOOL_DISTILLATE": {
+   "name": "Gabagool Distillate",
+   "buy_price": 20043,
+   "sell_price": 23514,
+   "buy_vol_7d": 430942,
+   "sell_vol_7d": 760715,
+   "max_buy": 7000
+  },
+  "HEMOGLASS": {
+   "name": "Hemoglass",
+   "buy_price": 21000,
+   "sell_price": 25992,
+   "buy_vol_7d": 127640,
+   "sell_vol_7d": 379546,
+   "max_buy": 7000
+  },
+  "WISE_FRAGMENT": {
+   "name": "Wise Dragon Fragment",
+   "buy_price": 23200,
+   "sell_price": 36806,
+   "buy_vol_7d": 95626,
+   "sell_vol_7d": 114997,
+   "max_buy": 7000
+  },
+  "FOUL_FLESH": {
+   "name": "Foul Flesh",
+   "buy_price": 24007,
+   "sell_price": 25996,
+   "buy_vol_7d": 113716,
+   "sell_vol_7d": 263874,
+   "max_buy": 7000
+  },
+  "SHARD_CHUCKWALLA": {
+   "name": "SHARD_CHUCKWALLA",
+   "buy_price": 24098,
+   "sell_price": 37776,
+   "buy_vol_7d": 65836,
+   "sell_vol_7d": 36983,
+   "max_buy": 7000
+  },
+  "GOBLIN_EGG_RED": {
+   "name": "Red Goblin Egg",
+   "buy_price": 24152,
+   "sell_price": 27591,
+   "buy_vol_7d": 77079,
+   "sell_vol_7d": 180466,
+   "max_buy": 7000
+  },
+  "ENCHANTED_COAL_BLOCK": {
+   "name": "Enchanted Coal Block",
+   "buy_price": 24583,
+   "sell_price": 26477,
+   "buy_vol_7d": 84410,
+   "sell_vol_7d": 182660,
+   "max_buy": 7000
+  },
+  "SHARD_FLUFFLING": {
+   "name": "SHARD_FLUFFLING",
+   "buy_price": 24734,
+   "sell_price": 39176,
+   "buy_vol_7d": 58347,
+   "sell_vol_7d": 34451,
+   "max_buy": 7000
+  },
+  "ENCHANTED_REDSTONE_BLOCK": {
+   "name": "Enchanted Redstone Block",
+   "buy_price": 24970,
+   "sell_price": 25880,
+   "buy_vol_7d": 240482,
+   "sell_vol_7d": 806763,
+   "max_buy": 7000
+  },
+  "STRONG_FRAGMENT": {
+   "name": "Strong Dragon Fragment",
+   "buy_price": 25001,
+   "sell_price": 26524,
+   "buy_vol_7d": 84646,
+   "sell_vol_7d": 104253,
+   "max_buy": 4000
+  },
+  "RUSTY_COIN": {
+   "name": "Rusty Coin",
+   "buy_price": 25051,
+   "sell_price": 29897,
+   "buy_vol_7d": 394001,
+   "sell_vol_7d": 382757,
+   "max_buy": 4000
+  },
+  "FINE_AMETHYST_GEM": {
+   "name": "Fine Amethyst Gemstone",
+   "buy_price": 25731,
+   "sell_price": 29513,
+   "buy_vol_7d": 319112,
+   "sell_vol_7d": 411152,
+   "max_buy": 4000
+  },
+  "FINE_JADE_GEM": {
+   "name": "Fine Jade Gemstone",
+   "buy_price": 25954,
+   "sell_price": 27549,
+   "buy_vol_7d": 518896,
+   "sell_vol_7d": 873683,
+   "max_buy": 4000
+  },
+  "MAGIC_JELLYBEAN": {
+   "name": "Magic Jellybean",
+   "buy_price": 26096,
+   "sell_price": 37647,
+   "buy_vol_7d": 63681,
+   "sell_vol_7d": 25554,
+   "max_buy": 4000
+  },
+  "FINE_SAPPHIRE_GEM": {
+   "name": "Fine Sapphire Gemstone",
+   "buy_price": 26868,
+   "sell_price": 28297,
+   "buy_vol_7d": 410184,
+   "sell_vol_7d": 911680,
+   "max_buy": 4000
+  },
+  "FINE_AMBER_GEM": {
+   "name": "Fine Amber Gemstone",
+   "buy_price": 27551,
+   "sell_price": 30081,
+   "buy_vol_7d": 427197,
+   "sell_vol_7d": 1039569,
+   "max_buy": 4000
+  },
+  "SHARD_SNOOZLE": {
+   "name": "SHARD_SNOOZLE",
+   "buy_price": 27600,
+   "sell_price": 41509,
+   "buy_vol_7d": 71672,
+   "sell_vol_7d": 34161,
+   "max_buy": 4000
+  },
+  "SHARD_CORALOT": {
+   "name": "SHARD_CORALOT",
+   "buy_price": 27796,
+   "sell_price": 38544,
+   "buy_vol_7d": 26027,
+   "sell_vol_7d": 21763,
+   "max_buy": 4000
+  },
+  "SHARD_HIDEONLEAF": {
+   "name": "SHARD_HIDEONLEAF",
+   "buy_price": 28006,
+   "sell_price": 36645,
+   "buy_vol_7d": 345280,
+   "sell_vol_7d": 214177,
+   "max_buy": 4000
+  },
+  "SHARD_ALLIGATOR": {
+   "name": "SHARD_ALLIGATOR",
+   "buy_price": 29209,
+   "sell_price": 38643,
+   "buy_vol_7d": 71949,
+   "sell_vol_7d": 44452,
+   "max_buy": 4000
+  },
+  "FINE_TOPAZ_GEM": {
+   "name": "Fine Topaz Gemstone",
+   "buy_price": 29619,
+   "sell_price": 30640,
+   "buy_vol_7d": 263323,
+   "sell_vol_7d": 1041157,
+   "max_buy": 4000
+  },
+  "SHARD_SHELLWISE": {
+   "name": "SHARD_SHELLWISE",
+   "buy_price": 30004,
+   "sell_price": 36873,
+   "buy_vol_7d": 398373,
+   "sell_vol_7d": 156166,
+   "max_buy": 4000
+  },
+  "DARK_CANDY": {
+   "name": "Dark Candy",
+   "buy_price": 30252,
+   "sell_price": 32923,
+   "buy_vol_7d": 51179,
+   "sell_vol_7d": 164230,
+   "max_buy": 4000
+  },
+  "FINE_AQUAMARINE_GEM": {
+   "name": "Fine Aquamarine Gemstone",
+   "buy_price": 30492,
+   "sell_price": 37026,
+   "buy_vol_7d": 142379,
+   "sell_vol_7d": 679723,
+   "max_buy": 4000
+  },
+  "FINE_CITRINE_GEM": {
+   "name": "Fine Citrine Gemstone",
+   "buy_price": 30535,
+   "sell_price": 38667,
+   "buy_vol_7d": 273400,
+   "sell_vol_7d": 698408,
+   "max_buy": 4000
+  },
+  "FINE_ONYX_GEM": {
+   "name": "Fine Onyx Gemstone",
+   "buy_price": 30934,
+   "sell_price": 36704,
+   "buy_vol_7d": 126184,
+   "sell_vol_7d": 725538,
+   "max_buy": 4000
+  },
+  "ENCHANTED_ANCIENT_CLAW": {
+   "name": "Enchanted Ancient Claw",
+   "buy_price": 31161,
+   "sell_price": 34449,
+   "buy_vol_7d": 107944,
+   "sell_vol_7d": 98064,
+   "max_buy": 4000
+  },
+  "FINE_PERIDOT_GEM": {
+   "name": "Fine Peridot Gemstone",
+   "buy_price": 31716,
+   "sell_price": 37135,
+   "buy_vol_7d": 405505,
+   "sell_vol_7d": 1138376,
+   "max_buy": 4000
+  },
+  "SHARD_TROGLOBYTE": {
+   "name": "SHARD_TROGLOBYTE",
+   "buy_price": 32006,
+   "sell_price": 44047,
+   "buy_vol_7d": 117574,
+   "sell_vol_7d": 44649,
+   "max_buy": 4000
+  },
+  "SHARD_MOCHIBEAR": {
+   "name": "SHARD_MOCHIBEAR",
+   "buy_price": 34301,
+   "sell_price": 40000,
+   "buy_vol_7d": 80084,
+   "sell_vol_7d": 27345,
+   "max_buy": 4000
+  },
+  "SHARD_PHANFLARE": {
+   "name": "SHARD_PHANFLARE",
+   "buy_price": 38193,
+   "sell_price": 41834,
+   "buy_vol_7d": 40763,
+   "sell_vol_7d": 25953,
+   "max_buy": 4000
+  },
+  "FAKE_SHURIKEN": {
+   "name": "Extremely Real Shuriken",
+   "buy_price": 39823,
+   "sell_price": 44434,
+   "buy_vol_7d": 205938,
+   "sell_vol_7d": 98469,
+   "max_buy": 4000
+  },
+  "REVENANT_VISCERA": {
+   "name": "Revenant Viscera",
+   "buy_price": 41874,
+   "sell_price": 47667,
+   "buy_vol_7d": 422258,
+   "sell_vol_7d": 175389,
+   "max_buy": 4000
+  },
+  "WORM_MEMBRANE": {
+   "name": "Worm Membrane",
+   "buy_price": 44629,
+   "sell_price": 47470,
+   "buy_vol_7d": 840180,
+   "sell_vol_7d": 1352546,
+   "max_buy": 4000
+  },
+  "THUNDER_SHARDS": {
+   "name": "Thunder Fragment",
+   "buy_price": 46632,
+   "sell_price": 52329,
+   "buy_vol_7d": 27833,
+   "sell_vol_7d": 43579,
+   "max_buy": 4000
+  },
+  "SUPERIOR_FRAGMENT": {
+   "name": "Superior Dragon Fragment",
+   "buy_price": 48552,
+   "sell_price": 69342,
+   "buy_vol_7d": 60493,
+   "sell_vol_7d": 91719,
+   "max_buy": 4000
+  },
+  "SHARD_FLY": {
+   "name": "SHARD_FLY",
+   "buy_price": 49161,
+   "sell_price": 58884,
+   "buy_vol_7d": 88891,
+   "sell_vol_7d": 25576,
+   "max_buy": 4000
+  },
+  "FINE_JASPER_GEM": {
+   "name": "Fine Jasper Gemstone",
+   "buy_price": 49401,
+   "sell_price": 53306,
+   "buy_vol_7d": 213860,
+   "sell_vol_7d": 397854,
+   "max_buy": 4000
+  },
+  "ENCHANTED_IRON_BLOCK": {
+   "name": "Enchanted Iron Block",
+   "buy_price": 51727,
+   "sell_price": 54000,
+   "buy_vol_7d": 152474,
+   "sell_vol_7d": 188085,
+   "max_buy": 4000
+  },
+  "ENCHANTED_SEA_LUMIES": {
+   "name": "Enchanted Sea Lumies",
+   "buy_price": 55214,
+   "sell_price": 60568,
+   "buy_vol_7d": 197684,
+   "sell_vol_7d": 116571,
+   "max_buy": 4000
+  },
+  "INFERNO_FUEL_BLOCK": {
+   "name": "Inferno Fuel Block",
+   "buy_price": 65308,
+   "sell_price": 69998,
+   "buy_vol_7d": 127165,
+   "sell_vol_7d": 120878,
+   "max_buy": 4000
+  },
+  "VERY_CRUDE_GABAGOOL": {
+   "name": "Very Crude Gabagool",
+   "buy_price": 65728,
+   "sell_price": 68945,
+   "buy_vol_7d": 619364,
+   "sell_vol_7d": 695795,
+   "max_buy": 4000
+  },
+  "GLACITE_JEWEL": {
+   "name": "Glacite Jewel",
+   "buy_price": 68014,
+   "sell_price": 74597,
+   "buy_vol_7d": 242125,
+   "sell_vol_7d": 318040,
+   "max_buy": 4000
+  },
+  "GOLDEN_TOOTH": {
+   "name": "Golden Tooth",
+   "buy_price": 70361,
+   "sell_price": 97934,
+   "buy_vol_7d": 262828,
+   "sell_vol_7d": 76472,
+   "max_buy": 4000
+  },
+  "SQUASH": {
+   "name": "Squash",
+   "buy_price": 73519,
+   "sell_price": 75434,
+   "buy_vol_7d": 91676,
+   "sell_vol_7d": 265751,
+   "max_buy": 4000
+  },
+  "ENCHANTED_GLOWSTONE": {
+   "name": "Enchanted Glowstone",
+   "buy_price": 74125,
+   "sell_price": 98752,
+   "buy_vol_7d": 446533,
+   "sell_vol_7d": 285295,
+   "max_buy": 4000
+  },
+  "ENCHANTED_COOKIE": {
+   "name": "Enchanted Cookie",
+   "buy_price": 74904,
+   "sell_price": 76403,
+   "buy_vol_7d": 243140,
+   "sell_vol_7d": 229443,
+   "max_buy": 4000
+  },
+  "BOX_OF_SEEDS": {
+   "name": "Box of Seeds",
+   "buy_price": 74951,
+   "sell_price": 78000,
+   "buy_vol_7d": 274792,
+   "sell_vol_7d": 453785,
+   "max_buy": 4000
+  },
+  "AMALGAMATED_CRIMSONITE_NEW": {
+   "name": "Amalgamated Crimsonite",
+   "buy_price": 75000,
+   "sell_price": 105996,
+   "buy_vol_7d": 45319,
+   "sell_vol_7d": 43124,
+   "max_buy": 4000
+  },
+  "ENCHANTED_BAKED_POTATO": {
+   "name": "Enchanted Baked Potato",
+   "buy_price": 75101,
+   "sell_price": 76936,
+   "buy_vol_7d": 433442,
+   "sell_vol_7d": 810985,
+   "max_buy": 4000
+  },
+  "ENCHANTED_GOLD_BLOCK": {
+   "name": "Enchanted Gold Block",
+   "buy_price": 75850,
+   "sell_price": 77784,
+   "buy_vol_7d": 567896,
+   "sell_vol_7d": 471682,
+   "max_buy": 4000
+  },
+  "ENCHANTED_GOLDEN_CARROT": {
+   "name": "Enchanted Golden Carrot",
+   "buy_price": 76800,
+   "sell_price": 77943,
+   "buy_vol_7d": 491730,
+   "sell_vol_7d": 540256,
+   "max_buy": 4000
+  },
+  "GLACIAL_FRAGMENT": {
+   "name": "Glacial Fragment",
+   "buy_price": 77404,
+   "sell_price": 91998,
+   "buy_vol_7d": 28673,
+   "sell_vol_7d": 39361,
+   "max_buy": 4000
+  },
+  "ENCHANTED_WET_SPONGE": {
+   "name": "Enchanted Wet Sponge",
+   "buy_price": 77451,
+   "sell_price": 80200,
+   "buy_vol_7d": 20232,
+   "sell_vol_7d": 106782,
+   "max_buy": 4000
+  },
+  "ENCHANTED_FERMENTED_SPIDER_EYE": {
+   "name": "Enchanted Fermented Spider Eye",
+   "buy_price": 79618,
+   "sell_price": 87999,
+   "buy_vol_7d": 106933,
+   "sell_vol_7d": 21465,
+   "max_buy": 4000
+  },
+  "TREASURITE": {
+   "name": "Treasurite",
+   "buy_price": 87079,
+   "sell_price": 94998,
+   "buy_vol_7d": 168053,
+   "sell_vol_7d": 223361,
+   "max_buy": 4000
+  },
+  "FLEXBONE": {
+   "name": "Flexbone",
+   "buy_price": 90460,
+   "sell_price": 110631,
+   "buy_vol_7d": 67829,
+   "sell_vol_7d": 36473,
+   "max_buy": 4000
+  },
+  "LIVID_FRAGMENT": {
+   "name": "Livid Fragment",
+   "buy_price": 95089,
+   "sell_price": 113865,
+   "buy_vol_7d": 26658,
+   "sell_vol_7d": 31963,
+   "max_buy": 4000
+  },
+  "NULL_OVOID": {
+   "name": "Null Ovoid",
+   "buy_price": 95364,
+   "sell_price": 98918,
+   "buy_vol_7d": 358260,
+   "sell_vol_7d": 86306,
+   "max_buy": 4000
+  },
+  "TOOL_EXP_CAPSULE": {
+   "name": "Tool Exp Capsule",
+   "buy_price": 97952,
+   "sell_price": 101971,
+   "buy_vol_7d": 63012,
+   "sell_vol_7d": 386006,
+   "max_buy": 4000
+  },
+  "REFINED_MINERAL": {
+   "name": "Refined Mineral",
+   "buy_price": 98103,
+   "sell_price": 102906,
+   "buy_vol_7d": 167863,
+   "sell_vol_7d": 591398,
+   "max_buy": 4000
+  },
+  "COMPACTED_SUNFLOWER": {
+   "name": "Compacted Sunflower",
+   "buy_price": 99225,
+   "sell_price": 102716,
+   "buy_vol_7d": 226768,
+   "sell_vol_7d": 349403,
+   "max_buy": 4000
+  },
+  "MUTANT_NETHER_STALK": {
+   "name": "Mutant Nether Wart",
+   "buy_price": 99794,
+   "sell_price": 103004,
+   "buy_vol_7d": 340573,
+   "sell_vol_7d": 324999,
+   "max_buy": 4000
+  },
+  "COMPACTED_WILD_ROSE": {
+   "name": "Compacted Wild Rose",
+   "buy_price": 99986,
+   "sell_price": 102992,
+   "buy_vol_7d": 269208,
+   "sell_vol_7d": 416202,
+   "max_buy": 4000
+  },
+  "COMPACTED_MOONFLOWER": {
+   "name": "Compacted Moonflower",
+   "buy_price": 100003,
+   "sell_price": 102951,
+   "buy_vol_7d": 218511,
+   "sell_vol_7d": 365378,
+   "max_buy": 4000,
+   "override": true
+  },
+  "ENCHANTED_CACTUS": {
+   "name": "Enchanted Cactus",
+   "buy_price": 100218,
+   "sell_price": 102197,
+   "buy_vol_7d": 170773,
+   "sell_vol_7d": 285431,
+   "max_buy": 4000,
+   "override": true
+  },
+  "ENCHANTED_SUGAR_CANE": {
+   "name": "Enchanted Sugar Cane",
+   "buy_price": 100601,
+   "sell_price": 104930,
+   "buy_vol_7d": 449190,
+   "sell_vol_7d": 444605,
+   "max_buy": 4000,
+   "override": true
+  },
+  "ENCHANTED_QUARTZ_BLOCK": {
+   "name": "Enchanted Quartz Block",
+   "buy_price": 105001,
+   "sell_price": 131347,
+   "buy_vol_7d": 128116,
+   "sell_vol_7d": 396647,
+   "max_buy": 4000,
+   "override": true
+  },
+  "FRIED_FEATHER": {
+   "name": "Fried Feather",
+   "buy_price": 107502,
+   "sell_price": 130297,
+   "buy_vol_7d": 101078,
+   "sell_vol_7d": 85229,
+   "max_buy": 2000
+  },
+  "ENCHANTED_SLIME_BLOCK": {
+   "name": "Enchanted Slime Block",
+   "buy_price": 125362,
+   "sell_price": 126000,
+   "buy_vol_7d": 317021,
+   "sell_vol_7d": 1100805,
+   "max_buy": 2000
+  },
+  "CHILI_PEPPER": {
+   "name": "Chili Pepper",
+   "buy_price": 126741,
+   "sell_price": 132097,
+   "buy_vol_7d": 368562,
+   "sell_vol_7d": 359014,
+   "max_buy": 2000
+  },
+  "SUSPICIOUS_SCRAP": {
+   "name": "Suspicious Scrap",
+   "buy_price": 135770,
+   "sell_price": 144837,
+   "buy_vol_7d": 276428,
+   "sell_vol_7d": 333306,
+   "max_buy": 2000
+  },
+  "ENCHANTED_HAY_BALE": {
+   "name": "Enchanted Hay Bale",
+   "buy_price": 150001,
+   "sell_price": 153419,
+   "buy_vol_7d": 232506,
+   "sell_vol_7d": 536745,
+   "max_buy": 2000
+  },
+  "SHARD_KRAKEN": {
+   "name": "SHARD_KRAKEN",
+   "buy_price": 161394,
+   "sell_price": 172141,
+   "buy_vol_7d": 111998,
+   "sell_vol_7d": 64687,
+   "max_buy": 2000
+  },
+  "GRIFFIN_FEATHER": {
+   "name": "Griffin Feather",
+   "buy_price": 161791,
+   "sell_price": 163084,
+   "buy_vol_7d": 456462,
+   "sell_vol_7d": 174939,
+   "max_buy": 2000
+  },
+  "SORROW": {
+   "name": "Sorrow",
+   "buy_price": 179434,
+   "sell_price": 197143,
+   "buy_vol_7d": 65317,
+   "sell_vol_7d": 58579,
+   "max_buy": 2000
+  },
+  "TARANTULA_SILK": {
+   "name": "Tarantula Silk",
+   "buy_price": 197548,
+   "sell_price": 205803,
+   "buy_vol_7d": 408382,
+   "sell_vol_7d": 150749,
+   "max_buy": 1000,
+   "override": true
+  },
+  "HYPER_CATALYST": {
+   "name": "Hyper Catalyst",
+   "buy_price": 210061,
+   "sell_price": 236080,
+   "buy_vol_7d": 65207,
+   "sell_vol_7d": 29661,
+   "max_buy": 2000
+  },
+  "BLUE_ICE_HUNK": {
+   "name": "Hunk of Blue Ice",
+   "buy_price": 231000,
+   "sell_price": 248408,
+   "buy_vol_7d": 45989,
+   "sell_vol_7d": 83385,
+   "max_buy": 1000
+  },
+  "ENCHANTED_BLAZE_ROD": {
+   "name": "Enchanted Blaze Rod",
+   "buy_price": 246124,
+   "sell_price": 286115,
+   "buy_vol_7d": 51835,
+   "sell_vol_7d": 61265,
+   "max_buy": 1000
+  },
+  "FERMENTO": {
+   "name": "Fermento",
+   "buy_price": 250000,
+   "sell_price": 369277,
+   "buy_vol_7d": 65862,
+   "sell_vol_7d": 153943,
+   "max_buy": 2000,
+   "override": true
+  },
+  "ENCHANTED_HUGE_MUSHROOM_2": {
+   "name": "Enchanted Red Mushroom Block",
+   "buy_price": 251482,
+   "sell_price": 255776,
+   "buy_vol_7d": 85364,
+   "sell_vol_7d": 185508,
+   "max_buy": 2000,
+   "override": true
+  },
+  "ENCHANTED_HUGE_MUSHROOM_1": {
+   "name": "Enchanted Brown Mushroom Block",
+   "buy_price": 251739,
+   "sell_price": 255744,
+   "buy_vol_7d": 105554,
+   "sell_vol_7d": 167838,
+   "max_buy": 2000,
+   "override": true
+  },
+  "POLISHED_PUMPKIN": {
+   "name": "Polished Pumpkin",
+   "buy_price": 252492,
+   "sell_price": 256946,
+   "buy_vol_7d": 133939,
+   "sell_vol_7d": 272100,
+   "max_buy": 2000,
+   "override": true
+  },
+  "JUNGLE_KEY": {
+   "name": "Jungle Key",
+   "buy_price": 265290,
+   "sell_price": 275643,
+   "buy_vol_7d": 92648,
+   "sell_vol_7d": 48351,
+   "max_buy": 1000
+  },
+  "HELIANTHUS": {
+   "name": "Helianthus",
+   "buy_price": 276000,
+   "sell_price": 291324,
+   "buy_vol_7d": 33118,
+   "sell_vol_7d": 82557,
+   "max_buy": 1000
+  },
+  "HEAVY_PEARL": {
+   "name": "Heavy Pearl",
+   "buy_price": 280435,
+   "sell_price": 311561,
+   "buy_vol_7d": 95707,
+   "sell_vol_7d": 62000,
+   "max_buy": 1000
+  },
+  "FIGSTONE": {
+   "name": "Figstone",
+   "buy_price": 280570,
+   "sell_price": 305735,
+   "buy_vol_7d": 53003,
+   "sell_vol_7d": 31209,
+   "max_buy": 1000
+  },
+  "PLASMA": {
+   "name": "Plasma",
+   "buy_price": 286253,
+   "sell_price": 298502,
+   "buy_vol_7d": 62020,
+   "sell_vol_7d": 53390,
+   "max_buy": 1000
+  },
+  "MOLTEN_POWDER": {
+   "name": "Molten Powder",
+   "buy_price": 296179,
+   "sell_price": 309999,
+   "buy_vol_7d": 234524,
+   "sell_vol_7d": 28599,
+   "max_buy": 1000
+  },
+  "SHARD_POWER_DRAGON": {
+   "name": "SHARD_POWER_DRAGON",
+   "buy_price": 399212,
+   "sell_price": 442606,
+   "buy_vol_7d": 44634,
+   "sell_vol_7d": 41320,
+   "max_buy": 1000
+  },
+  "HELIXIS": {
+   "name": "Helixis",
+   "buy_price": 512454,
+   "sell_price": 539997,
+   "buy_vol_7d": 72696,
+   "sell_vol_7d": 32016,
+   "max_buy": 500
+  },
+  "REFINED_TITANIUM": {
+   "name": "Refined Titanium",
+   "buy_price": 758951,
+   "sell_price": 779746,
+   "buy_vol_7d": 92136,
+   "sell_vol_7d": 49506,
+   "max_buy": 500
+  },
+  "KISMET_FEATHER": {
+   "name": "Kismet Feather",
+   "buy_price": 1635847,
+   "sell_price": 1710953,
+   "buy_vol_7d": 143098,
+   "sell_vol_7d": 83102,
+   "max_buy": 500
+  }
+ }
+}
