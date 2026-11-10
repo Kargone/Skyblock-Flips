@@ -121,7 +121,7 @@ from zoneinfo import ZoneInfo, ZoneInfoNotFoundError
 import blacklist
 import stack_sizes
 from allocator import DAILY_ORDER_WORTH_CAP, build_all_candidates
-from api_client import get_market_data, get_mayor_data, get_product_list, get_purse_from_hypixel, get_trader_data
+from api_client import get_market_data, get_mayor_data, get_product_list, get_trader_data
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger("main")
@@ -503,63 +503,6 @@ def get_bazaar_fee():
     return BASE_BAZAAR_TAX * multiplier
 
 
-SECRETS_PATH = Path(__file__).parent / "secrets.json"
-PURSE_TTL_SECONDS = 120
-_purse_cache = {"value": None, "at": 0.0}
-
-
-def load_secrets():
-    """Hypixel credentials from the gitignored secrets.json (see
-    secrets.example.json). Never commit secrets.json. Matching env vars override
-    the file, so the tower can use either."""
-    data = {}
-    try:
-        data = json.loads(SECRETS_PATH.read_text(encoding="utf-8"))
-    except FileNotFoundError:
-        pass
-    except (OSError, json.JSONDecodeError):
-        log_once("bad-secrets", logging.ERROR, "couldn't read secrets.json; falling back to env/FLIP_PURSE", exc_info=True)
-    return {
-        "hypixel_api_key": os.environ.get("HYPIXEL_API_KEY") or data.get("hypixel_api_key"),
-        "profile_id": os.environ.get("HYPIXEL_PROFILE_ID") or data.get("profile_id"),
-        "player_uuid": os.environ.get("HYPIXEL_PLAYER_UUID") or data.get("player_uuid"),
-    }
-
-
-def _manual_purse():
-    raw = os.environ.get("FLIP_PURSE")
-    if not raw:
-        return 0
-    try:
-        return float(raw)
-    except ValueError:
-        log_once("bad-purse-env", logging.ERROR, "FLIP_PURSE is not a number: %r; treating purse as 0", raw)
-        return 0
-
-
-def get_configured_purse():
-    """Current coin purse. Prefers the live Hypixel profile endpoint when all
-    three credentials are configured (cached PURSE_TTL_SECONDS so the profile
-    API isn't hit every poll), reusing the last-known value on a transient
-    failure. Falls back to the FLIP_PURSE env var, then 0 (sells-only)."""
-    creds = load_secrets()
-    if creds["hypixel_api_key"] and creds["profile_id"] and creds["player_uuid"]:
-        now = time.time()
-        if _purse_cache["value"] is not None and now - _purse_cache["at"] < PURSE_TTL_SECONDS:
-            return _purse_cache["value"]
-        try:
-            purse = get_purse_from_hypixel(creds["hypixel_api_key"], creds["profile_id"], creds["player_uuid"])
-            clear_anomaly("fetch-purse-failed")
-            if purse is not None:
-                _purse_cache.update(value=float(purse), at=now)
-                return _purse_cache["value"]
-        except Exception:
-            log_once("fetch-purse-failed", logging.WARNING, "couldn't fetch purse from Hypixel; using last-known/fallback", exc_info=True)
-        if _purse_cache["value"] is not None:
-            return _purse_cache["value"]
-    return _manual_purse()
-
-
 # The advisory is buys-only (the user manages sells). Every whitelisted buy is
 # ranked within its order-size bucket: qualifying ones (pass margin + book-sanity)
 # first by margin, then the demoted/discarded ones. The mod shows the top 5 per
@@ -575,7 +518,7 @@ INVENTORY_CAP_SMALL_BUCKET = 500
 
 
 def build_recommendation(bazaar_data, all_product_information, trader_data,
-                         bazaar_fee, purse, available_slots, time_between_trades_hours):
+                         bazaar_fee, available_slots, time_between_trades_hours):
     short_term_investments = trader_data.get("short-term-investments", {})
     # Products with a live (unclaimed) order in-game, so we don't re-recommend
     # something already placed. Keyed by display name (matches product names).
@@ -601,7 +544,7 @@ def build_recommendation(bazaar_data, all_product_information, trader_data,
 
     candidates = build_all_candidates(
         bazaar_data, all_product_information, short_term_investments,
-        bazaar_fee, purse, time_between_trades_hours,
+        bazaar_fee, time_between_trades_hours,
         open_buy_products=open_buy_products, open_sell_products=open_sell_products,
     )
     # Buys-only: the optimizer focuses on buy orders (the user manages sells).
@@ -640,7 +583,6 @@ def build_recommendation(bazaar_data, all_product_information, trader_data,
         "available": True,
         "generated_at": int(time.time() * 1000),
         "bazaar_fee": bazaar_fee,
-        "purse": purse,
         "available_slots": available_slots,
         "daily_cap_used": cap_used,
         "daily_cap_remaining": cap_remaining,
@@ -683,7 +625,7 @@ if __name__ == "__main__":
     #   - BAZAAR: refresh the heavier, slowly-changing market data (Hypixel's
     #     bazaar only updates ~1/min) every BAZAAR_REFRESH_SECONDS, reusing the
     #     cached parse in between. The mayor tax rarely changes, so it rides the
-    #     bazaar beat too; the purse self-caches (PURSE_TTL_SECONDS).
+    #     bazaar beat too.
     bazaar_data = all_product_information = None
     bazaar_fee = BASE_BAZAAR_TAX
     last_bazaar_refresh = 0.0
@@ -730,7 +672,6 @@ if __name__ == "__main__":
             all_product_information,
             trader_data,
             bazaar_fee,
-            get_configured_purse(),
             available_slots,
             TIME_BETWEEN_TRADES_HOURS,
         )

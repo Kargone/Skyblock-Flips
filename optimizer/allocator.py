@@ -7,10 +7,11 @@ builds the candidate orders main.py ranks. The live policy is buys-only over a
 hand-curated whitelist: build_buy_candidates emits one soft-ranked buy per
 whitelisted product (_build_whitelisted_buy), and main.build_recommendation
 groups and sorts them into display buckets - there is no longer an ILP that
-picks a profit-maximizing subset. The real constraints (the current coin purse,
-the 15B/24h order-worth cap resetting 7:00 PM America/Chicago, the 71,680
-per-slot size cap, the per-item inventory-holding cap of 35 slots x max stack
-size) are applied as per-candidate sizing bounds rather than a joint solve.
+picks a profit-maximizing subset. Order size is the whitelist's configured
+max_buy per product; the 15B/24h order-worth cap (resetting 7:00 PM
+America/Chicago) and the 71,680 per-slot size cap still bound things downstream.
+Coin/affordability is no longer tracked - the user runs with plenty of coins and
+manages spend manually, so buys are not sized to a purse.
 
 A legacy fallback (slot-split, liquidity-filtered buys and inventory sells)
 still runs when the whitelist is inactive, e.g. if whitelist.json fails to load.
@@ -20,12 +21,11 @@ order outcomes): a (side, 7-day-volume) -> units/minute table applied over the
 ~8h cancel horizon. The old EMA-vs-current weight heuristic (estimate_fillable_qty)
 remains only as the fallback used when the model file is unavailable.
 
-The purse (main.py's get_configured_purse, from the Hypixel API via secrets.json)
-and the 15B/24h cap already used today (main.py's compute_daily_cap_used, derived
-from logged `placed` events) are now supplied by the caller. Still out of scope:
-the NPC sell channel as an alternative exit to a bazaar sell order - NPC prices
-feed the buy-side NPC-floor check (npc_sell_price in whitelist.json) but there is
-no NPC sell-order candidate.
+The 15B/24h cap already used today (main.py's compute_daily_cap_used, derived from
+logged `placed` events) is supplied by the caller. Still out of scope: the NPC sell
+channel as an alternative exit to a bazaar sell order - NPC prices feed the buy-side
+NPC-floor check (npc_sell_price in whitelist.json) but there is no NPC sell-order
+candidate.
 """
 
 import math
@@ -241,22 +241,20 @@ def build_sell_inventory_candidates(product_name, info, prices, bazaar_fee, held
                             profit_per_unit=profit_per_unit, order_price=prices["sell_price"], coin_cost_per_unit=0)
 
 
-def _build_whitelisted_buy(api_name, product_name, info, prices, bazaar_fee, purse_remaining, time_between_trades_hours):
+def _build_whitelisted_buy(api_name, product_name, info, prices, bazaar_fee, time_between_trades_hours):
     """One soft-ranked buy candidate per whitelisted product. Every whitelisted,
-    priced, affordable product is emitted - quality constraints only set the
-    `qualified` flag (so the menu can demote failures to the tail), they never drop
-    it. In our price mapping: prices["buy_price"] is the BID (where you place the
-    buy / what you pay), prices["sell_price"] is the ASK (where you later sell)."""
+    priced product is emitted at its configured max_buy - quality constraints only
+    set the `qualified` flag (so the menu can demote failures to the tail), they
+    never drop it. In our price mapping: prices["buy_price"] is the BID (where you
+    place the buy / what you pay), prices["sell_price"] is the ASK (where you later
+    sell)."""
     if not whitelist.allows(api_name):
         return []                                   # hard: not on the whitelist
     bid, ask = prices["buy_price"], prices["sell_price"]
     if bid <= 0 or ask <= 0:
         return []                                   # hard: no usable price
-    affordable = purse_remaining // bid
-    if affordable <= 0:
-        return []                                   # can't afford a single unit
     mb = whitelist.max_buy(api_name)
-    qty = int(min(mb, affordable))
+    qty = int(mb)
 
     # Projected per-unit margin (after exit drift + tax).
     exit_price = ask * exit_drift.multiplier()
@@ -291,28 +289,24 @@ def _build_whitelisted_buy(api_name, product_name, info, prices, bazaar_fee, pur
     )]
 
 
-def build_buy_candidates(product_name, info, prices, bazaar_fee, purse_remaining, held_qty, time_between_trades_hours):
+def build_buy_candidates(product_name, info, prices, bazaar_fee, held_qty, time_between_trades_hours):
     api_name = info.get("api_name")
     # Live policy: buys-only whitelist, soft-ranked single candidate per product.
     if whitelist.active():
-        return _build_whitelisted_buy(api_name, product_name, info, prices, bazaar_fee,
-                                      purse_remaining, time_between_trades_hours)
+        return _build_whitelisted_buy(api_name, product_name, info, prices, bazaar_fee, time_between_trades_hours)
 
     # ---- Fallback (no whitelist active): legacy hard-filtered, slot-split buys ----
+    # Bounded by the inventory hold cap (coin/affordability is no longer tracked;
+    # the user runs with plenty of coins and manages spend manually).
     if prices["buy_price"] <= 0:
         return []
     room_left = max_hold_per_item(info) - held_qty
-    mb = whitelist.max_buy(api_name) if whitelist.active() else None
-    # A non-whitelisted (fallback) buy is still bounded by the inventory hold cap;
-    # a whitelisted buy uses its explicit max_buy instead (applied below), which
-    # the user chose deliberately, so the 35-slot relist heuristic doesn't gate it.
-    if mb is None and room_left <= 0:
+    if room_left <= 0:
         return []
 
     # Two-sided liquidity + spread sanity: skip thin/broken books where the flip
     # isn't real (can't actually acquire or offload). See MAX_BUY_FLIP_SPREAD /
-    # MIN_FLIP_VOLUME_7D. This is what keeps the allocator from dumping coins into
-    # floor-priced, no-demand items when buys compete for slots.
+    # MIN_FLIP_VOLUME_7D.
     if prices["sell_price"] > MAX_BUY_FLIP_SPREAD * prices["buy_price"]:
         return []
     if info["bought_volume_7_day"] < MIN_FLIP_VOLUME_7D or info["sell_volume_7_day"] < MIN_FLIP_VOLUME_7D:
@@ -335,12 +329,7 @@ def build_buy_candidates(product_name, info, prices, bazaar_fee, purse_remaining
     if profit_per_unit <= 0:
         return []
 
-    affordable_qty = purse_remaining // prices["buy_price"]
-    # Order-size cap: a whitelisted product buys its configured max_buy (bounded only
-    # by what's affordable); otherwise it's bounded by the inventory hold cap.
-    cap_qty = min(mb, affordable_qty) if mb is not None else min(room_left, affordable_qty)
-    if cap_qty <= 0:
-        return []
+    cap_qty = room_left
     if fill_model.available():
         expected_fillable = fill_model.expected_fill(
             "buy", info["bought_volume_7_day"], cap_qty=cap_qty,
@@ -353,17 +342,16 @@ def build_buy_candidates(product_name, info, prices, bazaar_fee, purse_remaining
             time_between_trades_hours, cap_qty=cap_qty, haircut=EXPECTED_FILL_HAIRCUT,
         )
 
-    # Whitelisted: list the full configured max_buy (profit is still scored on the
-    # expected fill). Otherwise list a buffer beyond the expected fill (overshoot),
-    # capped by affordable/holdable. Unstackable items also cap at 256 per buy order.
-    list_budget = cap_qty if mb is not None else min(cap_qty, math.floor(expected_fillable * BUY_OVERSHOOT_FACTOR))
+    # List a buffer beyond the expected fill (overshoot), capped by what's holdable.
+    # Unstackable items also cap at 256 per buy order.
+    list_budget = min(cap_qty, math.floor(expected_fillable * BUY_OVERSHOOT_FACTOR))
     return _slot_candidates(product_name, "buy", list_budget=list_budget, fill_estimate=expected_fillable,
                             profit_per_unit=profit_per_unit, order_price=prices["buy_price"],
                             coin_cost_per_unit=prices["buy_price"], max_order_size=max_buy_order_size(info))
 
 
 def build_all_candidates(bazaar_data, all_product_information, short_term_investments, bazaar_fee,
-                         purse_remaining, time_between_trades_hours,
+                         time_between_trades_hours,
                          open_buy_products=frozenset(), open_sell_products=frozenset()):
     """open_buy_products / open_sell_products are product names that already have a
     live (unclaimed) order in-game on that side; they're skipped so the optimizer
@@ -392,6 +380,6 @@ def build_all_candidates(bazaar_data, all_product_information, short_term_invest
         # the user doesn't want it re-recommended as a buy in that case.
         if product_name not in open_buy_products and product_name not in open_sell_products:
             candidates += build_buy_candidates(
-                product_name, info, prices, bazaar_fee, purse_remaining, held_qty, time_between_trades_hours
+                product_name, info, prices, bazaar_fee, held_qty, time_between_trades_hours
             )
     return candidates
