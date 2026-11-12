@@ -388,6 +388,21 @@ class BlacklistIntegrationTests(unittest.TestCase):
         self.assertNotIn("Refined Titanium (forge)", bazaar_data)
         self.assertNotIn("Mithril Plate (forge)", bazaar_data)
 
+    def test_gemstone_question_row_dropped_clean_row_kept(self):
+        # A "? " -prefixed gemstone row reuses the clean row's api-name (the in-game
+        # gemstone symbol renders as "?"); it must be dropped so a whitelisted
+        # gemstone isn't bought twice, while the clean row still trades.
+        product_list = {
+            "Fine Ruby Gemstone": {"api-name": "FINE_RUBY_GEM", "type": "short-term-investment", "has-weights": True},
+            "? Fine Ruby Gemstone": {"api-name": "FINE_RUBY_GEM", "type": "short-term-investment", "has-weights": True},
+        }
+        bp = {"sell_summary": [{"pricePerUnit": 100}], "buy_summary": [{"pricePerUnit": 110}],
+              "quick_status": {"sellMovingWeek": 1, "buyMovingWeek": 1}}
+        bazaar_products = {"FINE_RUBY_GEM": bp}
+        bazaar_data, info = M.build_bazaar_data_and_product_info(bazaar_products, {}, product_list)
+        self.assertIn("Fine Ruby Gemstone", bazaar_data)
+        self.assertNotIn("? Fine Ruby Gemstone", bazaar_data)
+
 
 class PriceHistoryTests(unittest.TestCase):
     def setUp(self):

@@ -146,6 +146,15 @@ def build_bazaar_data_and_product_info(bazaar_products, volume_stats, product_li
         # Drop the forge-display row; the clean bazaar row (if any) still trades.
         if "(forge)" in product_name.lower() or product_meta.get("type") == "forge-product":
             continue
+        # Gemstone rows come in two forms: the clean name ("Fine Ruby Gemstone")
+        # and a "? "-prefixed twin ("? Fine Ruby Gemstone"), where the in-game
+        # gemstone symbol falls back to "?". Both reuse the same api-name, so - like
+        # the forge rows above - a whitelisted gemstone would be bought twice. Every
+        # "? " row has a clean twin with the same api-name (verified against
+        # product-list.json), so dropping the "? " display row loses nothing; the
+        # clean row still trades.
+        if product_name.startswith("? "):
+            continue
         api_name = product_meta.get("api-name")
         # Manual blacklist (blacklist.json): never flip these, either side. Drop
         # the product entirely so no buy/sell candidate is ever built for it.
