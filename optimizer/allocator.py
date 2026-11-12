@@ -56,6 +56,14 @@ def max_buy_order_size(info):
 MAX_BUY_FLIP_SPREAD = 2.0        # demote if sell_price > 2x buy_price
 MIN_FLIP_VOLUME_7D = 20_000      # both bought_volume_7_day and sell_volume_7_day must exceed this
 
+# HARD per-bucket 7-day-volume floor, as opposed to the soft MIN_FLIP_VOLUME_7D
+# demote above: a product in a floored bucket whose volume is under the floor on
+# EITHER side is dropped entirely, never recommended. The 7k bucket (bid <25k) is
+# bought in big 7,000-unit orders, so a thin book - low-volume shards and the like -
+# simply won't fill one, hence a drop rather than a tail demote. Pricier buckets
+# place much smaller orders and keep only the soft floor.
+HARD_VOLUME_FLOOR_BY_BUCKET = {7000: 60_000}
+
 # --- Buys-only whitelist policy (soft-ranked) -------------------------------
 # These thresholds are SOFT: a product that fails is demoted to the tail of its
 # bucket (so the user still sees it), never deleted. Calibrated against the user's
@@ -113,6 +121,13 @@ def build_buy_candidates(product_name, info, prices, bazaar_fee, time_between_tr
     bid, ask = prices["buy_price"], prices["sell_price"]
     if bid <= 0 or ask <= 0:
         return []                                   # no usable price
+    # Hard volume floor (e.g. the 7k bucket): a big buy order on a thin book won't
+    # fill, so drop - not just demote - any product in a floored bucket whose 7-day
+    # volume is under the floor on either the buy or sell side.
+    hard_floor = HARD_VOLUME_FLOOR_BY_BUCKET.get(mb)
+    if hard_floor is not None and (info["bought_volume_7_day"] < hard_floor
+                                   or info["sell_volume_7_day"] < hard_floor):
+        return []
     # Size to the configured amount, but never exceed the per-order item cap (256
     # for unstackable items, 71,680 for stackables).
     qty = int(min(mb, max_buy_order_size(info)))

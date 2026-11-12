@@ -238,7 +238,9 @@ class MenuTests(unittest.TestCase):
         bazaar, info = {}, {}
         for api, (mb, bid, ask) in self.WORLD.items():
             bazaar[api] = {"buy_price": float(bid), "sell_price": float(ask)}
-            i = make_info(); i["api_name"] = api
+            # Volume well above the 7k-bucket hard floor (60k) so these ranking
+            # tests exercise bucket/margin logic, not the volume drop.
+            i = make_info(sell_vol=100_000, buy_vol=100_000); i["api_name"] = api
             info[api] = i
         return bazaar, info
 
@@ -455,7 +457,8 @@ class WhitelistTests(unittest.TestCase):
         self._tmp = Path(tempfile.mkdtemp()) / "whitelist.json"
         self._tmp.write_text(json.dumps({"buy_whitelist": {
             "FOO": {"max_buy": 5000}, "BAR": {"max_buy": 400},
-            "NPC": {"max_buy": 2000, "npc_sell_price": 100000}, "BK": {"max_buy": 4000}}}),
+            "NPC": {"max_buy": 2000, "npc_sell_price": 100000}, "BK": {"max_buy": 4000},
+            "SEVENK": {"max_buy": 7000}}}),
             encoding="utf-8")
         whitelist._PATH = self._tmp
         whitelist._map = None
@@ -496,6 +499,38 @@ class WhitelistTests(unittest.TestCase):
         info["api_name"] = "FOO"
         cands = A.build_buy_candidates("P", info, prices, 0.0, time_between_trades_hours=8)
         self.assertEqual(cands[0].quantity, 256)
+
+    def test_7k_bucket_hard_dropped_below_volume_floor(self):
+        # 7k bucket, both volumes under 60k -> dropped entirely (not demoted).
+        prices = {"sell_price": 1000.0, "buy_price": 600.0}
+        info = make_info(sell_vol=50_000, buy_vol=50_000)
+        info["api_name"] = "SEVENK"
+        self.assertEqual(A.build_buy_candidates("P", info, prices, 0.0, time_between_trades_hours=8), [])
+
+    def test_7k_bucket_hard_dropped_if_one_side_below_floor(self):
+        # Either side under 60k drops it (both must clear the floor).
+        prices = {"sell_price": 1000.0, "buy_price": 600.0}
+        info = make_info(sell_vol=59_999, buy_vol=5_000_000)
+        info["api_name"] = "SEVENK"
+        self.assertEqual(A.build_buy_candidates("P", info, prices, 0.0, time_between_trades_hours=8), [])
+
+    def test_7k_bucket_kept_at_or_above_volume_floor(self):
+        # 7k bucket, both volumes >= 60k -> emitted as normal.
+        prices = {"sell_price": 1000.0, "buy_price": 600.0}
+        info = make_info(sell_vol=60_000, buy_vol=60_000)
+        info["api_name"] = "SEVENK"
+        cands = A.build_buy_candidates("P", info, prices, 0.0, time_between_trades_hours=8)
+        self.assertEqual(len(cands), 1)
+        self.assertEqual(cands[0].bucket, 7000)
+
+    def test_hard_volume_floor_only_applies_to_7k_bucket(self):
+        # A 5k-bucket product under 60k volume is NOT dropped (soft floor still
+        # demotes at 20k, but the item is emitted). Proves the hard floor is 7k-only.
+        prices = {"sell_price": 1000.0, "buy_price": 600.0}
+        info = make_info(sell_vol=25_000, buy_vol=25_000)
+        info["api_name"] = "FOO"
+        cands = A.build_buy_candidates("P", info, prices, 0.0, time_between_trades_hours=8)
+        self.assertEqual(len(cands), 1)   # emitted (not dropped) despite <60k volume
 
     def test_empty_whitelist_is_inactive(self):
         self._tmp.write_text(json.dumps({"buy_whitelist": {}}), encoding="utf-8")
