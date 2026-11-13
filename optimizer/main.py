@@ -1,5 +1,6 @@
 import json
 import logging
+import math
 import os
 import time
 from datetime import datetime, timedelta, timezone
@@ -464,15 +465,21 @@ def build_recommendation(bazaar_data, all_product_information, trader_data,
     buys = [c for c in buys if _held(c.product_name) <= _inventory_cap(c.bucket)]
 
     # Rank: group by display bucket (7k, 4k, 2k, 1k+500), and within each bucket put
-    # the qualifying products first (best margin first), then the demoted/discarded
-    # ones (also by margin, but they sort behind every qualified one). The mod shows
-    # the top 5 per bucket, so failing products fall off the visible list naturally
-    # without being thrown away.
+    # the qualifying products first, then the demoted/discarded ones (they sort
+    # behind every qualified one). Within a group, sort by a liquidity-weighted
+    # score, margin x log10(volume): per-unit margin stays the dominant lever, but a
+    # higher-volume (faster-filling) product is nudged up over a thinner one at
+    # similar margin. log10 compresses volume so a ~10x volume gap only shifts the
+    # multiplier by 1. The mod shows the top 5 per bucket, so failing products fall
+    # off the visible list naturally without being thrown away.
+    def _rank_score(c):
+        return c.margin * math.log10(max(c.volume, 1.0))
+
     def _rank_key(c):
         display = DISPLAY_BUCKET.get(c.bucket, "1k+500")
         return (DISPLAY_BUCKET_ORDER.index(display) if display in DISPLAY_BUCKET_ORDER else 99,
                 0 if c.qualified else 1,
-                -c.margin)
+                -_rank_score(c))
     buys.sort(key=_rank_key)
 
     n_qualified = sum(1 for c in buys if c.qualified)
@@ -494,6 +501,8 @@ def build_recommendation(bazaar_data, all_product_information, trader_data,
                 "buy_price": c.buy_price,
                 "sell_price": c.sell_price,
                 "margin": round(c.margin),
+                "volume": round(c.volume),
+                "rank_score": round(_rank_score(c)),
                 "expected_profit": round(c.profit),
                 "order_worth": c.order_worth,
                 "coin_cost": c.coin_cost,

@@ -315,6 +315,79 @@ class MenuTests(unittest.TestCase):
         self.assertIn("A1", [x["product_name"] for x in self._rec_trader(trader)["orders"]])
 
 
+class RankingTests(unittest.TestCase):
+    """Within-bucket ranking is liquidity-weighted: score = margin * log10(volume),
+    so margin dominates but higher volume breaks near-ties and a large volume gap
+    can outrank a modestly higher margin."""
+
+    # All 4k bucket (soft 20k floor only), so volume can vary freely above 20k.
+    WHITELIST = {"HV": 4000, "HM": 4000, "LV": 4000}
+
+    def setUp(self):
+        self._orig = (fill_model.available, fill_model.expected_fill, exit_drift.multiplier,
+                      price_history.baseline_ask, price_history.baseline_bid,
+                      M.compute_daily_cap_used, whitelist._PATH, whitelist._map, whitelist._mtime)
+        fill_model.available = lambda: True
+        fill_model.expected_fill = lambda side, vol, cap_qty, horizon_hours=None: min(cap_qty, 500)
+        exit_drift.multiplier = lambda default=1.0: 1.0
+        price_history.baseline_ask = lambda api_name: None
+        price_history.baseline_bid = lambda api_name: None
+        M.compute_daily_cap_used = lambda reset_ms, path=None: 0
+        tmp = Path(tempfile.mkdtemp()) / "whitelist.json"
+        tmp.write_text(json.dumps({"buy_whitelist": {k: {"max_buy": v} for k, v in self.WHITELIST.items()}}),
+                       encoding="utf-8")
+        whitelist._PATH = tmp
+        whitelist._map = None
+        whitelist._mtime = None
+
+    def tearDown(self):
+        (fill_model.available, fill_model.expected_fill, exit_drift.multiplier,
+         price_history.baseline_ask, price_history.baseline_bid,
+         M.compute_daily_cap_used, whitelist._PATH, whitelist._map, whitelist._mtime) = self._orig
+
+    def _order(self, world):
+        # world: {api: (bid, ask, buy_vol, sell_vol)} -> ranked list of product names.
+        bazaar, info = {}, {}
+        for api, (bid, ask, bv, sv) in world.items():
+            bazaar[api] = {"buy_price": float(bid), "sell_price": float(ask)}
+            i = make_info(sell_vol=sv, buy_vol=bv); i["api_name"] = api
+            info[api] = i
+        rec = M.build_recommendation(bazaar, info, {"short-term-investments": {}}, 0.0, 5, 8)
+        return [o["product_name"] for o in rec["orders"]], rec["orders"]
+
+    def test_equal_margin_higher_volume_ranks_first(self):
+        # Same margin (4000), differ only in volume -> higher volume wins the tie.
+        names, _ = self._order({
+            "HV": (50_000, 54_000, 5_000_000, 5_000_000),
+            "HM": (50_000, 54_000, 25_000, 25_000),
+        })
+        self.assertEqual(names, ["HV", "HM"])
+
+    def test_higher_margin_wins_at_similar_volume(self):
+        # Comparable volume -> margin is the lever: 4000 beats 3000.
+        names, _ = self._order({
+            "HM": (50_000, 54_000, 100_000, 100_000),   # margin 4000
+            "LV": (50_000, 53_000, 100_000, 100_000),   # margin 3000
+        })
+        self.assertEqual(names, ["HM", "LV"])
+
+    def test_large_volume_gap_outranks_modestly_higher_margin(self):
+        # margin 3000 * log10(1e7)=7 -> 21000 beats margin 4000 * log10(25k)=4.4 -> ~17.6k
+        names, orders = self._order({
+            "HM": (50_000, 54_000, 25_000, 25_000),        # margin 4000, low volume
+            "HV": (50_000, 53_000, 10_000_000, 10_000_000),# margin 3000, huge volume
+        })
+        self.assertEqual(names, ["HV", "HM"])
+        # both still qualified (margin >= 2500 floor, volume >= 20k soft floor)
+        self.assertTrue(all(o["qualified"] for o in orders))
+
+    def test_volume_and_rank_score_in_output(self):
+        _, orders = self._order({"HM": (50_000, 54_000, 100_000, 80_000)})
+        o = orders[0]
+        self.assertEqual(o["volume"], 80_000)            # binding side = min(100k, 80k)
+        self.assertIn("rank_score", o)
+
+
 class BlacklistTests(unittest.TestCase):
     def setUp(self):
         self._orig_path = blacklist._PATH

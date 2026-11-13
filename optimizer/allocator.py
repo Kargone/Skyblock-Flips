@@ -104,6 +104,7 @@ class Candidate:
     disqualify: tuple = ()   # reasons it was demoted, for display/debug
     buy_price: float = 0.0   # the bid you place the buy order at (per unit, what you pay)
     sell_price: float = 0.0  # the ask it is expected to sell at later (per unit, before drift and tax)
+    volume: float = 0.0      # binding 7-day volume (min of buy/sell side) - liquidity-weights the ranking
 
 
 def build_buy_candidates(product_name, info, prices, bazaar_fee, time_between_trades_hours):
@@ -158,11 +159,16 @@ def build_buy_candidates(product_name, info, prices, bazaar_fee, time_between_tr
     expected_fill = (fill_model.expected_fill("buy", info["bought_volume_7_day"], cap_qty=qty,
                      horizon_hours=time_between_trades_hours) if fill_model.available() else qty)
 
+    # Binding liquidity = the thinner of the two sides. A flip needs both to buy in
+    # and to offload, so the slower side is what actually governs fill speed. Used
+    # to liquidity-weight the ranking (main.build_recommendation).
+    volume = min(info["bought_volume_7_day"], info["sell_volume_7_day"])
+
     return [Candidate(
         product_name=product_name, quantity=qty, expected_fill=expected_fill,
         profit=margin * expected_fill, order_worth=bid * qty, coin_cost=bid * qty,
         qualified=not reasons, margin=margin, npc_floor=npc_floor, bucket=mb, disqualify=tuple(reasons),
-        buy_price=bid, sell_price=ask,
+        buy_price=bid, sell_price=ask, volume=volume,
     )]
 
 
