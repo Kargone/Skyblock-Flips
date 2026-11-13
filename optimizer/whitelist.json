@@ -17,16 +17,6 @@
    "max_buy": 7000,
    "npc_sell_price": 500
   },
-  "FINE_OPAL_GEM": {
-   "name": "Fine Opal Gemstone",
-   "buy_price": 286,
-   "sell_price": 26016,
-   "buy_vol_7d": 38347,
-   "sell_vol_7d": 87866,
-   "max_buy": 4000,
-   "override": true,
-   "npc_sell_price": 19200
-  },
   "LONELILY": {
    "name": "Lonelily",
    "buy_price": 370,
@@ -341,7 +331,7 @@
    "sell_price": 16473,
    "buy_vol_7d": 81860,
    "sell_vol_7d": 69438,
-   "max_buy": 7000
+   "max_buy": 4000
   },
   "LOTUS_SILVER": {
    "name": "Silver Lotus",
@@ -753,14 +743,6 @@
    "sell_vol_7d": 27345,
    "max_buy": 4000
   },
-  "SHARD_PHANFLARE": {
-   "name": "SHARD_PHANFLARE",
-   "buy_price": 38193,
-   "sell_price": 41834,
-   "buy_vol_7d": 40763,
-   "sell_vol_7d": 25953,
-   "max_buy": 4000
-  },
   "FAKE_SHURIKEN": {
    "name": "Extremely Real Shuriken",
    "buy_price": 39823,
@@ -804,14 +786,6 @@
    "sell_vol_7d": 91719,
    "max_buy": 4000,
    "npc_sell_price": 5000
-  },
-  "SHARD_FLY": {
-   "name": "SHARD_FLY",
-   "buy_price": 49161,
-   "sell_price": 58884,
-   "buy_vol_7d": 88891,
-   "sell_vol_7d": 25576,
-   "max_buy": 4000
   },
   "FINE_JASPER_GEM": {
    "name": "Fine Jasper Gemstone",
@@ -911,14 +885,6 @@
    "max_buy": 4000,
    "npc_sell_price": 76800
   },
-  "AMALGAMATED_CRIMSONITE_NEW": {
-   "name": "Amalgamated Crimsonite",
-   "buy_price": 75000,
-   "sell_price": 105996,
-   "buy_vol_7d": 45319,
-   "sell_vol_7d": 43124,
-   "max_buy": 4000
-  },
   "ENCHANTED_BAKED_POTATO": {
    "name": "Enchanted Baked Potato",
    "buy_price": 75101,
@@ -952,7 +918,7 @@
    "sell_price": 91998,
    "buy_vol_7d": 28673,
    "sell_vol_7d": 39361,
-   "max_buy": 4000,
+   "max_buy": 2000,
    "npc_sell_price": 200
   },
   "ENCHANTED_WET_SPONGE": {
@@ -989,15 +955,6 @@
    "buy_vol_7d": 67829,
    "sell_vol_7d": 36473,
    "max_buy": 4000
-  },
-  "LIVID_FRAGMENT": {
-   "name": "Livid Fragment",
-   "buy_price": 95089,
-   "sell_price": 113865,
-   "buy_vol_7d": 26658,
-   "sell_vol_7d": 31963,
-   "max_buy": 4000,
-   "npc_sell_price": 10000
   },
   "NULL_OVOID": {
    "name": "Null Ovoid",

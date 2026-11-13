@@ -100,7 +100,6 @@ const IGNORE_INSTA_SELL_BUY = [
     "Enchanted Brown Mushroom",
     "Titanic Experience Bottle",
     "Scorched Books",
-    
     "Fuming Potato Book",
     "Enchanted Cactus",
     "Enchanted Cookie",
@@ -177,7 +176,9 @@ const DUMMY_TRADE_MESSAGES = [
     '[Bazaar] You don\'t have the space required to claim that!',
     '[Bazaar] You have goods to claim on this order!',
     '[Bazaar] No items could be matched to buyers!',
-    '[Bazaar] Couldn\'t find'
+    '[Bazaar] Couldn\'t find',
+    '[Bazaar] There was an error claiming that order!',
+    '[Bazaar] Please try again later!'
 ];
 
 // Load trader_data manually so we can modify and write it back
@@ -767,7 +768,7 @@ class ProcesTrade {
         if (trader_data["all-products"][name] && trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"] === 0 &&
             trader_data["all-products"][name]["sell-order-stats"]["total-sell-orders-created"] === 0 &&
             !this.isItemInCraftingRecipe(name)) {
-            // consoleError('ERROR: Product is not in a crafting recipe and has no buy or sell orders: ' + name);
+            consoleError('ERROR: Product is not in a crafting recipe and has no buy or sell orders: ' + name);
             return false;
         }
 
