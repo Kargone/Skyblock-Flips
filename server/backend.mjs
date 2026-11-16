@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fetchHypixel, hypixelPaused } from './hypixel-api.mjs';
+import { IGNORE_INSTA_SELL_BUY, IGNORE_INSTA_BUY, IGNORE_INSTA_SELL, ALLOW_INSTA_SELL_BUY, DUMMY_TRADE_MESSAGES, TRADE_PATTERNS } from './consts.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
@@ -65,120 +66,6 @@ export const marketData = {
         'auctions': null
     }
 };
-
-const IGNORE_INSTA_SELL_BUY = [
-    "Salt Cube",
-    "Enchanted Cookie",
-    "Enchanted Sand",
-    "Necromancer's Brooch",
-    "Red Scarf",
-    "Coal",
-    "Enchanted Potato",
-    "Enchanted Baked Potato",
-    "Superior Dragon Fragment",
-    "Dwarven O's Ore Oats",
-    "Enchanted Pumpkin",
-    "Mana Vampire V",
-    "Spirit Leap",
-    "Soulflow",
-    "Super Compactor 3000",
-    "Strong Dragon Fragment",
-    "Enchanted Hay Bale",
-    "Unstable Dragon Fragment",
-    "Young Dragon Fragment",
-    "Rusty Coin",
-    "Ethereal Vine",
-    "Hot Potato Book",
-    "Iron Ingot",
-    "Red Mushroom",
-    "Brown Mushroom",
-    "Power VI",
-    "Enchanted Carrot",
-    "Enchanted Golden Carrot",
-    "Enchanted Pumpkin",
-    "Mutant Nether Wart",
-    "Enchanted Brown Mushroom",
-    "Titanic Experience Bottle",
-    "Scorched Books",
-    
-    "Fuming Potato Book",
-    "Enchanted Cactus",
-    "Enchanted Cookie",
-    "Enchanted Hay Bale",
-    "Cocoa Beans",
-    "Enchanted Melon",
-    "Enchanted Dandelion",
-    "Fermento",
-    "Enchanted Baked Potato",
-    "Enchatend Wild Rose",
-    "Wild Rose",
-    "? Fine Citrine Gemstone",
-    "Toxic Arrow Poison",
-    "Supreme Chocolate Bar",
-    "Sharpness VI",
-    "Coalroot",
-    "Crimson Essence",
-    "Enchanted Red Mushroom",
-    "Celestial Mason Jar",
-    "Mutated Blaze Ashes",
-    "Raw Cod",
-    "Superboom TNT",
-    "Sugar Cane",
-    "Sulphur",
-    "Gold Ingot",
-    "Dustgrain",
-    "Ashwreath",
-    "Enchanted Wild Rose",
-    "Enchanted Raw Rabbit",
-    "Enchanted Poppy",
-    "Enchanted Brown Mushroom Block",
-    "Tasty Cheese",
-    "Enchanted Sugar Cane",
-    "Enchanted Sugar",
-];
-
-const IGNORE_INSTA_BUY = [
-    "Polished Pumpkin",
-    "Plant Matter",
-];
-
-const IGNORE_INSTA_SELL = [
-    "Enchanted Rotten Flesh",
-    "Glacite Jewel",
-    "Poisonous Potato",
-];
-
-const ALLOW_INSTA_SELL_BUY = [];
-
-const DUMMY_TRADE_MESSAGES = [
-    'Claiming order...',
-    'Putting goods in escrow...',
-    'Submitting sell offer...',
-    'Cancelling order...',
-    'Executing instant sell...',
-    'Submitting buy order...',
-    'You cancelled the trade!',
-    'Executing instant buy...',
-    'BIN Auction started for',
-    'You canceled your auction for',
-    'You don\'t have anything to sell!',
-    'You claimed ',
-    'Cancelled parkour!',
-    '[Bazaar] Somehow, there was nothing to claim!',
-    '[Bazaar] You reached the daily limit of coins you may create orders for on the Bazaar!',
-    '[NPC] Jacob',
-    '[Bazaar] You reached your maximum of 28 Bazaar orders!',
-    "Couldn't parse that price!",
-    'is lower than the old price of',
-    'Escrow refunded',
-    'You are overbidding too much!',
-    'Allowd unit price: ',
-    'You don\'t have enough inventory space to fit all of those items!',
-    '[Bazaar] You don\'t have the space required to claim that!',
-    '[Bazaar] You have goods to claim on this order!',
-    '[Bazaar] No items could be matched to buyers!',
-    '[Bazaar] Couldn\'t find'
-];
 
 // Load trader_data manually so we can modify and write it back
 const traderDataPath = path.join(__dirname, '..', 'data', 'trader-data.json');
@@ -366,13 +253,6 @@ class Main extends EventEmitter {
     }
 }
 
-// finds the index of a substring in a string
-// then returns the end of the substring within the string
-// instead of the start of the substring
-function findEnd(string, substring) {
-    return string.indexOf(substring) + substring.length;
-}
-
 // copys a value to prevent linkage of objects
 function copy(value) {
     return JSON.parse(JSON.stringify(value));
@@ -483,6 +363,51 @@ class Sort {
     }
 }
 
+// "1,799" -> 1799 and "6,808.9" -> 6808.9, for the numbers the trade patterns capture
+function toInt(numberString) {
+    return parseInt(numberString.replaceAll(',', ''));
+}
+
+function toFloat(numberString) {
+    return parseFloat(numberString.replaceAll(',', ''));
+}
+
+// A sell order's chat total is what is left after bazaar tax, so undo the tax to
+// get the listed price per unit. Bazaar prices move in steps of 0.1.
+function listedSellPrice(coinsAfterTax, amount) {
+    return Math.round(coinsAfterTax / amount / (1 - getBazaarTaxRate()) * 10) / 10;
+}
+
+// What to do with each message type in TRADE_PATTERNS (consts.mjs).
+// Order prices always come from a total divided by an amount, never from the
+// "each" price in chat, which is rounded and loses the decimal on larger prices.
+// trade = the ProcesTrade being built, g = the pattern's named groups,
+// rarity = the detectedRarity the mod sent along with the message.
+const TRADE_HANDLERS = {
+    'insta-buy': (trade, g) => trade.instaBuy(toInt(g.amount), toFloat(g.coins) / toInt(g.amount), g.name, Date.now(), true),
+    'insta-sell': (trade, g) => trade.instaSell(toInt(g.amount), toFloat(g.coins) / toInt(g.amount), g.name, true, true),
+    'buy-order-setup': (trade, g) => trade.buyOrderSetup(toInt(g.amount), toFloat(g.coins) / toInt(g.amount), g.name),
+    'buy-order-fill': (trade, g) => trade.buyOrderFill(toInt(g.amount), g.name),
+    'buy-order-claim': (trade, g) => trade.buyOrderClaim(toInt(g.amount), toFloat(g.total_price) / toInt(g.amount), g.name),
+    'buy-order-cancel': (trade, g) => trade.buyOrderCancel(toInt(g.coins)),
+    'sell-order-setup': (trade, g) => trade.sellOrderSetup(toInt(g.amount), listedSellPrice(toFloat(g.coins), toInt(g.amount)), g.name),
+    'sell-order-fill': (trade, g) => trade.sellOrderFill(toInt(g.amount), g.name),
+    'sell-order-claim': (trade, g) => trade.sellOrderClaim(toInt(g.amount), listedSellPrice(toFloat(g.coins), toInt(g.amount)), g.name),
+    'sell-order-cancel': (trade, g) => trade.sellOrderCancel(toInt(g.amount), g.name),
+    'order-flipped': (trade, g) => trade.orderFlipped(toInt(g.amount), g.name, toFloat(g.profit)),
+    'npc-sell': (trade, g) => trade.npcSell(toInt(g.amount), toFloat(g.coins) / toInt(g.amount), g.name),
+    'npc-buy': (trade, g) => trade.npcBuyBack(toInt(g.amount), toFloat(g.coins) / toInt(g.amount), g.name),
+    'auction-creation': (trade, g, rarity) => trade.auctionCreation(toInt(g.price), g.name, rarity),
+    'auction-claim': (trade, g, rarity) => trade.auctionClaim(toInt(g.price), g.name, rarity),
+    'auction-cancel': (trade, g, rarity) => trade.auctionCancel(g.name, rarity),
+    'auction-sold': (trade, g, rarity) => trade.auctionSold(toInt(g.price), g.name, rarity),
+    'auction-bought': (trade, g, rarity) => trade.auctionBought(toInt(g.price), g.name, rarity),
+    'auction-expired': (trade, g, rarity) => trade.auctionExpired(g.name, rarity),
+    'supercraft': (trade, g, rarity) => trade.supercraft(g.name, rarity),
+    'item-removed': (trade, g, rarity) => trade.itemRemoved(g.name, toInt(g.amount), rarity),
+};
+
+
 class ProcesTrade {
     constructor(tradeJSON) {
         // convert tradeJSON from string to object
@@ -498,229 +423,26 @@ class ProcesTrade {
 
         let result = '';
 
-        // determine message type
+        // Guild chat can quote a trade message word for word, so rule it out first.
         if (this.message.includes('Guild >')) {
-            result = 'Nontrade message';
             return "Nontrade message: " + this.message;
-        } else if (this.message.includes('[Bazaar] Bought')) {
-            this.type = "insta-buy";
-            const amountStringStart = findEnd(this.message, 'Bought ');
-            const amountStringEnd = this.message.indexOf('x');
-            const priceStringStart = findEnd(this.message, 'for ');
-            const priceStringEnd = this.message.indexOf(' coins');
-            const nameStringStart = findEnd(this.message, 'x ');
-            const nameStringEnd = this.message.indexOf(' for');
-            const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
-            const pricePerUnit = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', '')) / amount;
-            const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            result = this.instaBuy(amount, pricePerUnit, nameString, Date.now(), true);
-        } else if (this.message.includes('[Bazaar] Sold')) {
-            this.type = "insta-sell";
-            const amountStringStart = findEnd(this.message, 'Sold ');
-            const amountStringEnd = this.message.indexOf('x');
-            const priceStringStart = findEnd(this.message, 'for ');
-            const priceStringEnd = this.message.indexOf(' coins');
-            const nameStringStart = findEnd(this.message, 'x ');
-            const nameStringEnd = this.message.indexOf(' for');
-            const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
-            const pricePerUnit = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', '')) / amount;
-            const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            result = this.instaSell(amount, pricePerUnit, nameString, true, true);
-        } else if (this.message.includes('[Bazaar] Buy Order Setup!')) {
-            this.type = "buy-order-setup";
-            const amountStringStart = findEnd(this.message, 'Setup! ');
-            const amountStringEnd = this.message.indexOf('x');
-            const priceStringStart = findEnd(this.message, 'for ');
-            const priceStringEnd = this.message.indexOf(' coins');
-            const nameStringStart = findEnd(this.message, 'x ');
-            const nameStringEnd = this.message.indexOf(' for');
-            const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
-            const totalPrice = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
-            const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            result = this.buyOrderSetup(amount, totalPrice / amount, nameString);
-        } else if (this.message.includes('[Bazaar] Your Buy Order for')) {
-            this.type = "buy-order-fill";
-            const amountStringStart = findEnd(this.message, 'for ');
-            const amountStringEnd = this.message.indexOf('x');
-            const nameStringStart = findEnd(this.message, 'x ');
-            const nameStringEnd = this.message.indexOf(' was');
-            const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
-            const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            result = this.buyOrderFill(amount, nameString);
-        } else if (this.message.includes('[Bazaar] Claimed') &&
-            this.message.includes('bought for')) {
-            this.type = "buy-order-claim";
-            const amountStringStart = findEnd(this.message, 'Claimed ');
-            const amountStringEnd = this.message.indexOf('x');
-            const priceStringStart = findEnd(this.message, 'bought for ');
-            const priceStringEnd = this.message.indexOf(' each!');
-            const nameStringStart = findEnd(this.message, 'x ');
-            const nameStringEnd = this.message.indexOf(' worth');
-            const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
-            const pricePerUnit = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
-            const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            result = this.buyOrderClaim(amount, pricePerUnit, nameString);
-        } else if (this.message.includes('[Bazaar] Cancelled!') &&
-            this.message.includes('Buy Order!')) {
-            this.type = "buy-order-cancel";
-            const amountStringStart = findEnd(this.message, 'Refunded ');
-            const amountStringEnd = this.message.indexOf(' coins');
-            const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
-            result = this.buyOrderCancel(amount);
-        } else if (this.message.includes('[Bazaar] Sell Offer Setup!')) {
-            this.type = "sell-order-setup";
-            const amountStringStart = findEnd(this.message, 'Setup! ');
-            const amountStringEnd = this.message.indexOf('x');
-            const priceStringStart = findEnd(this.message, 'for ');
-            const priceStringEnd = this.message.indexOf(' coins')
-            const nameStringStart = findEnd(this.message, 'x ');
-            const nameStringEnd = this.message.indexOf(' for');
-            const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
-            const totalPrice = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
-            const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            result = this.sellOrderSetup(amount, Math.round(totalPrice / amount / (1 - getBazaarTaxRate()) * 10) / 10, nameString);
-        } else if (this.message.includes('[Bazaar] Your Sell Offer for')) {
-            this.type = "sell-order-fill";
-            const amountStringStart = findEnd(this.message, 'for ');
-            const amountStringEnd = this.message.indexOf('x');
-            const nameStringStart = findEnd(this.message, 'x ');
-            const nameStringEnd = this.message.indexOf(' was');
-            const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
-            const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            result = this.sellOrderFill(amount, nameString);
-        } else if (this.message.includes('[Bazaar] Claimed') &&
-            this.message.includes('from selling')) {
-            this.type = "sell-order-claim";
-            const coinsEarnedStart = findEnd(this.message, 'Claimed ');
-            const coinsEarnedEnd = this.message.indexOf(' coins from selling');
-            const amountStringStart = findEnd(this.message, 'selling ');
-            const amountStringEnd = this.message.indexOf('x');
-            const priceStringStart = findEnd(this.message, ' at ');
-            const priceStringEnd = this.message.indexOf(' each!')
-            const nameStringStart = findEnd(this.message, 'x ');
-            const nameStringEnd = this.message.indexOf(' at ');
-            const coinsEarned = parseFloat(this.message.slice(coinsEarnedStart, coinsEarnedEnd).replaceAll(',', ''));
-            const hasDecimal = this.message.slice(priceStringStart, priceStringEnd).includes('.');
-            const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
-            const pricePerUnit = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
-            const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            result = this.sellOrderClaim(amount, pricePerUnit, nameString, coinsEarned, hasDecimal);
-        } else if (this.message.includes('[Bazaar] Cancelled!') &&
-            this.message.includes('Sell Offer!')) {
-            this.type = "sell-order-cancel";
-            const amountStringStart = findEnd(this.message, 'Refunded ');
-            const amountStringEnd = this.message.indexOf('x ');
-            const nameStringStart = findEnd(this.message, 'x ');
-            const nameStringEnd = this.message.indexOf(' from ');
-            const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
-            const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            result = this.sellOrderCancel(amount, nameString);
-        } else if (this.message.includes('[Bazaar] Order Flipped!')) {
-            this.type = "order-flipped";
-            const amountStringStart = findEnd(this.message, 'Flipped! ');
-            const amountStringEnd = this.message.indexOf('x ');
-            const profitStringStart = findEnd(this.message, 'for ');
-            const profitStringEnd = this.message.indexOf(' coins')
-            const nameStringStart = findEnd(this.message, 'x ');
-            const nameStringEnd = this.message.indexOf(' for ');
-            const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
-            const profitString = parseFloat(this.message.slice(profitStringStart, profitStringEnd).replaceAll(',', ''));
-            const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            result = this.orderFlipped(amount, nameString, profitString);
-        } else if (this.message.includes('You sold')) {
-            this.type = "npc-sell";
-            const amountStringStart = findEnd(this.message, ' x');
-            const amountStringEnd = this.message.indexOf(' for');
-            const priceStringStart = findEnd(this.message, ' for ');
-            const priceStringEnd = this.message.indexOf(' Coins!')
-            const nameStringStart = findEnd(this.message, 'sold ');
-            const nameStringEnd = this.message.indexOf(' x');
-            const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
-            const totalPrice = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
-            const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            result = this.npcSell(amount, totalPrice / amount, nameString);
-        } else if (this.message.includes('You bought back')) {
-            // You bought back Dirt x64 for 64 Coins!
-            this.type = "npc-buy";
-            const amountStringStart = findEnd(this.message, ' x');
-            const amountStringEnd = this.message.indexOf(' for');
-            const priceStringStart = findEnd(this.message, ' for ');
-            const priceStringEnd = this.message.indexOf(' Coins!')
-            const nameStringStart = findEnd(this.message, 'bought back ');
-            const nameStringEnd = this.message.indexOf(' x');
-            const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
-            const totalPrice = parseFloat(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
-            const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            result = this.npcBuyBack(amount, totalPrice / amount, nameString);
-        } else if (this.message.includes('created a BIN auction for')) {
-            this.type = "auction-creation";
-            // edge case: [MVP+] Kargone created a BIN auction for Bat Person Ring at 9,490,000 coins!
-            const priceStringStart = findEnd(this.message, ' at ');
-            const priceStringEnd = this.message.indexOf(' coins!')
-            const nameStringStart = findEnd(this.message, 'auction for ');
-            const nameStringEnd = this.message.indexOf(' at ');
-            const pricePerUnit = parseInt(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
-            const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            result = this.auctionCreation(pricePerUnit, nameString, detectedRarity);
-        } else if (this.message.includes('You collected') && !this.message.includes('[NPC] Jacob')) {
-            this.type = "auction-claim";
-            const priceStringStart = findEnd(this.message, 'collected ');
-            const priceStringEnd = this.message.indexOf(' coins ')
-            const nameStringStart = findEnd(this.message, 'selling ');
-            const nameStringEnd = this.message.indexOf(' to ');
-            const pricePerUnit = parseInt(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
-            const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            result = this.auctionClaim(pricePerUnit, nameString, detectedRarity);
-        } else if (this.message.includes('cancelled an auction for')) {
-            this.type = "auction-cancel";
-            const nameStringStart = findEnd(this.message, 'for ');
-            const nameStringEnd = this.message.indexOf('!');
-            const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            result = this.auctionCancel(nameString, detectedRarity);
-        } else if (this.message.includes('[Auction]')) {
-            this.type = "auction-sold";
-            const priceStringStart = findEnd(this.message, ' for ');
-            const priceStringEnd = this.message.indexOf(' coins ')
-            const nameStringStart = findEnd(this.message, ' bought ');
-            const nameStringEnd = this.message.indexOf(' for ');
-            const pricePerUnit = parseInt(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
-            const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            result = this.auctionSold(pricePerUnit, nameString, detectedRarity);
-        } else if (this.message.includes('You purchased')) {
-            this.type = "auction-bought";
-            const priceStringStart = findEnd(this.message, ' for ');
-            const priceStringEnd = this.message.indexOf('!')
-            const nameStringStart = findEnd(this.message, 'You purchased ');
-            const nameStringEnd = this.message.indexOf(' for ');
-            const pricePerUnit = parseInt(this.message.slice(priceStringStart, priceStringEnd).replaceAll(',', ''));
-            const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            result = this.auctionBought(pricePerUnit, nameString, detectedRarity);
-        } else if (this.message.includes('back from your expired auction!')) {
-            this.type = "auction-expired";
-            // Example: "You claimed Bait Ring back from your expired auction!"
-            const nameStringStart = findEnd(this.message, 'You claimed ');
-            const nameStringEnd = this.message.indexOf(' back from your expired auction!');
-            const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            result = this.auctionExpired(nameString, detectedRarity);
-        } else if (this.message.includes('You Supercrafted')) {
-            this.type = "supercraft";
-            // console.log("here");
-            const nameStringStart = findEnd(this.message, 'Supercrafted ');
-            const nameStringEnd = this.message.indexOf('!');
-            const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            result = this.supercraft(nameString, detectedRarity);
-        } else if (this.message.includes("xjk You removed")) {
-            // "xjk You removed 1x Enchanted Ancient Claw from your inventory!"
-            this.type = "item-removed";
-            const nameStringStart = findEnd(this.message, 'x ');
-            const nameStringEnd = this.message.indexOf(' from your inventory!');
-            const amountStringStart = findEnd(this.message, 'removed ');
-            const amountStringEnd = this.message.indexOf('x ');
-            const amount = parseInt(this.message.slice(amountStringStart, amountStringEnd).replaceAll(',', ''));
-            const nameString = this.message.slice(nameStringStart, nameStringEnd);
-            result = this.itemRemoved(nameString, amount, detectedRarity);
+        }
+
+        // determine message type: the first pattern in consts.mjs that matches wins
+        let match = null;
+        for (const pattern of TRADE_PATTERNS) {
+            if (!pattern.re) continue; // not written yet
+            const found = this.message.match(pattern.re);
+            if (found) {
+                match = { type: pattern.type, groups: found.groups };
+                break;
+            }
+        }
+
+        if (match) {
+            this.type = match.type;
+            result = TRADE_HANDLERS[match.type](this, match.groups, detectedRarity);
         } else if (DUMMY_TRADE_MESSAGES.some(dummyMessage => this.message.includes(dummyMessage))) {
-            result = 'Nontrade message';
             return "Nontrade message: " + this.message;
         } else {
             return consoleError('ERROR: Invalid trade message: ' + this.message);
@@ -1083,62 +805,71 @@ class ProcesTrade {
         // get the current buy orders
         const buyOrders = trader_data['buy-order-overview']['buy-orders'];
 
-        // find a current buy order that matches the name and buying price as an order already placed
-        for (let buyOrderIndex = 0; buyOrderIndex < buyOrders.length; buyOrderIndex++) {
-            const buyOrder = buyOrders[buyOrderIndex];
-            if (buyOrder["item-name"] === name && (Math.ceil(buyOrder["price-buying"]) === price || buyOrder["price-buying"] === price || Math.floor(buyOrder["price-buying"]) === price)) {
-                trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["has-been-claimed"] = true;
-                trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["total-amount-claimed"] =
-                    (buyOrder["total-amount-claimed"] || 0) + amount;
-
-                // add the products claimed to the investments
-                this.instaBuy(amount, price, name, buyOrder["buy-order-place-time"]);
-
-                // if the buy order was filled
-                if (buyOrder["buying-amount"] === amount) {
-                    // then remove it
-                    trader_data['buy-order-overview']['buy-orders'].splice(buyOrderIndex, 1);
-                } else {
-                    // alter the buying and bought amounts
-                    trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["bought-amount"] = 0;
-                    trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["buying-amount"] -= amount;
-                }
-
-                // add the buy order claim amounts
-                if (Object.keys(trader_data["all-products"]).indexOf(name) === -1) {
-                    trader_data["all-products"][name] = {
-                        "current-amount": 0, // will be added to in instaBuy
-                        "buy-order-stats": {
-                            "total-buy-orders-created": 1,
-                            "total-buy-amount-claimed": 0,
-                            "total-buy-amount-placed-for-buying": 0,
-                            "buy-average": 0
-                        },
-                        "sell-order-stats": {
-                            "total-sell-orders-created": 0,
-                            "total-sell-amount-claimed": 0,
-                            "total-sell-amount-placed-for-selling": 0,
-                            "sell-average": 0
-                        },
-                        "max-amount": 2000,
-                        "total-profit-made": 0,
-                        "total-sold": 0,
-                        "crafting-materials": "none"
-                    };
-                } else {
-                    if (amount != 2240) trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"] += 1;
-                    trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-claimed"] += amount;
-                    trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-placed-for-buying"] += buyOrder["buying-amount"] + amount;
-                    trader_data["all-products"][name]["buy-order-stats"]["buy-average"] =
-                        trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-claimed"] /
-                        trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"];
-                }
-
-                return 'Buy order claiming completed';
+        // Find the buy order being claimed: the open one for this item with the nearest
+        // price. price is the claim's total / amount, and the order's own price was
+        // worked out the same way at setup, so the two land within a coin of each
+        // other but are rarely exactly equal.
+        let buyOrderIndex = -1;
+        let smallestDifference = Infinity;
+        for (let index = 0; index < buyOrders.length; index++) {
+            if (buyOrders[index]["item-name"] !== name) continue;
+            const difference = Math.abs(buyOrders[index]["price-buying"] - price);
+            if (difference < smallestDifference) {
+                smallestDifference = difference;
+                buyOrderIndex = index;
             }
         }
+        if (buyOrderIndex === -1 || smallestDifference > 1) throw new Error('ERROR: Failed to claim a buy order');
 
-        throw new Error('ERROR: Failed to claim a buy order');
+        const buyOrder = buyOrders[buyOrderIndex];
+        trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["has-been-claimed"] = true;
+        trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["total-amount-claimed"] =
+            (buyOrder["total-amount-claimed"] || 0) + amount;
+
+        // add the products claimed to the investments
+        this.instaBuy(amount, price, name, buyOrder["buy-order-place-time"]);
+
+        // if the buy order was filled
+        if (buyOrder["buying-amount"] === amount) {
+            // then remove it
+            trader_data['buy-order-overview']['buy-orders'].splice(buyOrderIndex, 1);
+        } else {
+            // alter the buying and bought amounts
+            trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["bought-amount"] = 0;
+            trader_data['buy-order-overview']['buy-orders'][buyOrderIndex]["buying-amount"] -= amount;
+        }
+
+        // add the buy order claim amounts
+        if (Object.keys(trader_data["all-products"]).indexOf(name) === -1) {
+            trader_data["all-products"][name] = {
+                "current-amount": 0, // will be added to in instaBuy
+                "buy-order-stats": {
+                    "total-buy-orders-created": 1,
+                    "total-buy-amount-claimed": 0,
+                    "total-buy-amount-placed-for-buying": 0,
+                    "buy-average": 0
+                },
+                "sell-order-stats": {
+                    "total-sell-orders-created": 0,
+                    "total-sell-amount-claimed": 0,
+                    "total-sell-amount-placed-for-selling": 0,
+                    "sell-average": 0
+                },
+                "max-amount": 2000,
+                "total-profit-made": 0,
+                "total-sold": 0,
+                "crafting-materials": "none"
+            };
+        } else {
+            if (amount != 2240) trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"] += 1;
+            trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-claimed"] += amount;
+            trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-placed-for-buying"] += buyOrder["buying-amount"] + amount;
+            trader_data["all-products"][name]["buy-order-stats"]["buy-average"] =
+                trader_data["all-products"][name]["buy-order-stats"]["total-buy-amount-claimed"] /
+                trader_data["all-products"][name]["buy-order-stats"]["total-buy-orders-created"];
+        }
+
+        return 'Buy order claiming completed';
     }
     buyOrderCancel(dollars) {
         // this one's a little more sketchy bc it depends on the bought-amout being accurate
@@ -1407,17 +1138,17 @@ class ProcesTrade {
         consoleWarn('ERROR: Failed to fill a sell order');
         return 'ERROR: Failed to fill a sell order';
     }
-    sellOrderClaim(amount, price_sold, name, coins_earned, has_decimal) {
+    sellOrderClaim(amount, price_sold, name) {
         if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Product name not found in product list';
 
         // get the current sell orders
         const sellOrders = new Sort(trader_data["sell-order-overview"]["sell-orders"], false, "sell-order-place-time");
 
         // index that the sell order that was claimed will be at
-        let current_sell_order_index = this.determineNearestSellOrder(amount, price_sold, name, coins_earned, has_decimal);
+        let current_sell_order_index = this.determineNearestSellOrder(amount, price_sold, name);
 
         if (current_sell_order_index === -1 || sellOrders.length === 0) {
-            consoleWarn('ERROR: Failed to find a sell order to claim for name: ' + name + ', amount: ' + amount + ', price_sold: ' + price_sold + ', coins_earned: ' + coins_earned + ', has_decimal: ' + has_decimal);
+            consoleWarn('ERROR: Failed to find a sell order to claim for name: ' + name + ', amount: ' + amount + ', price_sold: ' + price_sold);
             return 'ERROR: Failed to find a sell order to claim';
         }
 
@@ -1520,8 +1251,8 @@ class ProcesTrade {
             }
         }
     }
-    determineNearestSellOrder(amount, price_sold, name, coins_earned, has_decimal) {
-        // console.log(`🔍 Searching for nearest sell order: Name=${name}, Amount=${amount}, Price Sold=${price_sold}, Coins Earned=${coins_earned}, Has Decimal=${has_decimal}`);
+    determineNearestSellOrder(amount, price_sold, name) {
+        // console.log(`🔍 Searching for nearest sell order: Name=${name}, Amount=${amount}, Price Sold=${price_sold}`);
 
         let sellOrders = new Sort(trader_data["sell-order-overview"]["sell-orders"], false, "sell-order-place-time");
 
@@ -1540,7 +1271,7 @@ class ProcesTrade {
             consoleWarn(`❌ Tracker mismatch: No database profiles fit the parsed pricing signature.`);
             return -1;
         } else {
-            bestOrder = findBestOrder(amount, price_sold, coins_earned, has_decimal, potentialMatches);
+            bestOrder = findBestOrder(price_sold, potentialMatches);
         }
         
 
@@ -1551,39 +1282,22 @@ class ProcesTrade {
             && order["total-selling-amount"] === bestOrder["total-selling-amount"]);
         return bestOrderIndex;
 
-        function findBestOrder(amount, price_sold, coins_earned, has_decimal, potentialMatches) {
-            // console.log(`Found ${potentialMatches} potential matches for sell order.`);
-            const EPSILON = 0.05; // Threshold to handle standard JS floating-point issues
-            let smallestScore = Infinity;
-            const actualPrice = (coins_earned / amount) / (1 - getBazaarTaxRate());
+        // price_sold is worked out from the coins claimed (see listedSellPrice), the same
+        // way each order's own "price-sold" was when it was set up, so the order with
+        // the nearest price is the one being claimed.
+        function findBestOrder(price_sold, potentialMatches) {
+            let nearestOrder;
+            let smallestDifference = Infinity;
 
             for (const order of potentialMatches) {
-                // console.log(`🔍 Evaluating sell order: Name=${order["item-name"]}, Amount=${order["total-selling-amount"]}, Price=${order["price-sold"]}`);
-                let currentScore;
-
-                if (has_decimal) {
-                    // Case A: Chat explicitly has a decimal. Use strict near-exact matching.
-                    const priceDifference = Math.abs(order["price-sold"] - price_sold);
-                    if (priceDifference <= 0.15) {
-                        currentScore = priceDifference < EPSILON ? 0 : priceDifference * 10000;
-                    }
-                } else {
-                    // Tie breaker: Calculate the difference between the underlying raw data fractions.
-                    // We extract the fractional part (e.g. 26122.1 -> 0.1) to favor an exact matchup.
-                    const decimalRemainder = Math.abs(order["price-sold"] - actualPrice);
-                    currentScore = decimalRemainder * 10000; // Scale to prioritize exact matches over rounded ones
-                }
-
-
-                // Total score: Lowest score represents the absolute best match
-                // console.log(`Evaluated Order: Name=${order["item-name"]}, Price=${order["price-sold"]}, Amount=${order["total-selling-amount"]}, Score=${currentScore.toFixed(4)}`);
-                if (currentScore < smallestScore) {
-                    smallestScore = currentScore;
-                    bestOrder = order;
+                const difference = Math.abs(order["price-sold"] - price_sold);
+                if (difference < smallestDifference) {
+                    smallestDifference = difference;
+                    nearestOrder = order;
                 }
             }
 
-            return bestOrder;
+            return nearestOrder;
         }
     }
     sellOrderCancel(amount, name) {
