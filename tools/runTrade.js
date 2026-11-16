@@ -11,7 +11,7 @@ async function runPrompt() {
     let tradeMessage = await rl.question('Trade message: ');
 
     // take out all of the "\" from the message and replace them with nothing
-    tradeMessage = "[" + tradeMessage.replace(/\\/g, '') + "]";
+    tradeMessage = tradeMessage.replace(/\\/g, '');
 
     // 3. Use the inputs
     console.log(`Processing trade message: ${tradeMessage}`);
