@@ -21,7 +21,7 @@ function getAuctionFeeRate(price) {
 // The Skyblock Flips server. It is looked for on whichever computer served this page,
 // so the dashboard keeps working when the server moves to another machine on the
 // network; opened straight from disk (file://), it falls back to this computer.
-const API_BASE = `http://${window.location.hostname || 'localhost'}:8000`;
+const API_BASE = `http://karsonserver:8000`;
 
 // Trader Data Dashboard
 class TraderDashboard {
