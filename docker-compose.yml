@@ -1,0 +1,14 @@
+services:
+  skyblock-flips:
+    image: node:lts
+    container_name: skyblock-flips
+    user: "1000:1000"
+    working_dir: /app
+    volumes:
+      - ./:/app
+    command: node server/http-server.js
+    ports:
+      - "8000:8000"
+    environment:
+      TZ: America/Denver
+    restart: unless-stopped
