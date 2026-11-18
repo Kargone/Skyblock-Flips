@@ -30,7 +30,7 @@ import os
 import time
 from pathlib import Path
 
-from api_client import get_market_data, get_product_list
+from api_client import get_market_data, get_product_list, retry_forever
 from main import build_bazaar_data_and_product_info
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
@@ -205,7 +205,7 @@ def finalize_row(row, prices, quick_status):
 
 
 def run():
-    product_list = get_product_list()
+    product_list = retry_forever(get_product_list, "fetching product list")
     pending, last_order_book, last_snapshot_time = load_checkpoint()
 
     # Discard rows whose horizon elapsed while the logger was down (see

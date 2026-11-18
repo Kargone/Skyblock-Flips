@@ -20,7 +20,6 @@ services:
     working_dir: /app
     volumes:
       - ./:/app
-    network_mode: "service:skyblock-flips"
     depends_on:
       - skyblock-flips
     command: sh -c "pip install --user -q -r optimizer/requirements.txt && python optimizer/main.py"
@@ -28,6 +27,7 @@ services:
       TZ: America/Denver
       HOME: /tmp              # lets pip install packages as your user
       PYTHONUNBUFFERED: "1"   # makes print() show up in the logs right away
+      API_BASE_URL: http://skyblock-flips:8000
     restart: unless-stopped
 
   labeled-logger:
@@ -37,7 +37,6 @@ services:
     working_dir: /app
     volumes:
       - ./:/app
-    network_mode: "service:skyblock-flips"
     depends_on:
       - skyblock-flips
     command: sh -c "pip install --user -q -r optimizer/requirements.txt && python optimizer/labeled_data_logger.py"
@@ -45,4 +44,5 @@ services:
       TZ: America/Denver
       HOME: /tmp
       PYTHONUNBUFFERED: "1"
+      API_BASE_URL: http://skyblock-flips:8000
     restart: unless-stopped

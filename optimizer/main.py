@@ -11,7 +11,7 @@ import blacklist
 import stack_sizes
 import whitelist
 from allocator import DAILY_ORDER_WORTH_CAP, build_all_candidates
-from api_client import get_market_data, get_mayor_data, get_product_list, get_trader_data
+from api_client import get_market_data, get_mayor_data, get_product_list, get_trader_data, retry_forever
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s [%(levelname)s] %(message)s")
 log = logging.getLogger("main")
@@ -524,7 +524,7 @@ def write_recommendation(recommendation):
 
 
 if __name__ == "__main__":
-    product_list = get_product_list()
+    product_list = retry_forever(get_product_list, "fetching product list")
 
     # Two decoupled beats so the recommendation reacts to inventory fast without
     # re-pulling (and re-parsing) the whole bazaar payload every tick:

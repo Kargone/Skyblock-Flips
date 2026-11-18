@@ -1,6 +1,25 @@
+import logging
+import os
+import time
+
 import requests
 
-BASE_URL = "http://localhost:8000"
+# In docker the server is a separate service reachable by name (see
+# docker-compose.yml); locally it's on localhost.
+BASE_URL = os.environ.get("API_BASE_URL", "http://localhost:8000")
+
+log = logging.getLogger(__name__)
+
+
+def retry_forever(fn, what, delay_seconds=30):
+    """Call fn() until it succeeds, sleeping between attempts. Used at startup so a
+    server that is down (e.g. restarting) doesn't crash the script."""
+    while True:
+        try:
+            return fn()
+        except Exception as exc:
+            log.warning("%s failed (%s); retrying in %ds", what, exc, delay_seconds)
+            time.sleep(delay_seconds)
 
 
 def get_trader_data():
