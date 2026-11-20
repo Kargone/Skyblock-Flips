@@ -10094,16 +10094,6 @@
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Personal Compactor 7000": {
-    "api-name": "PERSONAL_COMPACTOR_7000",
-    "type": "auction-product",
-    "has-weights": false,
-    "crafting-materials": {
-      "Super Compactor 3000": 1,
-      "Enchanted Redstone Dust": 448,
-      "Enchanted Redstone Block": 96
-    }
-  },
   "Agarimoo Artifact": {
     "api-name": "AGARIMOO_ARTIFACT",
     "type": "auction-product",
@@ -11273,31 +11263,6 @@
       "Mineral Talisman": 1
     }
   },
-  "Scavenger Talisman": {
-    "api-name": "SCAVENGER_TALISMAN",
-    "type": "crafting-material",
-    "has-weights": false
-  },
-  "Scavenger Ring": {
-    "api-name": "SCAVENGER_RING",
-    "type": "auction-product",
-    "has-weights": false,
-    "crafting-materials": {
-      "Blood-Stained Coins": 4,
-      "Freshly-Minted Coins": 8,
-      "Scavenger Talisman": 1
-    }
-  },
-  "Scavenger Artifact": {
-    "api-name": "SCAVENGER_ARTIFACT",
-    "type": "auction-product",
-    "has-weights": false,
-    "crafting-materials": {
-      "Blood-Soaked Coins": 4,
-      "Freshly-Minted Coins": 16,
-      "Scavenger Ring": 1
-    }
-  },
   "Talisman of Coins": {
     "api-name": "COIN_TALISMAN",
     "type": "crafting-material",
@@ -11438,17 +11403,6 @@
     "api-name": "EXCEEDINGLY_RARE_ENDER_ARTIFACT_UPGRADER",
     "type": "crafting-material",
     "has-weights": false
-  },
-  "Ender Relic": {
-    "api-name": "ENDER_RELIC",
-    "type": "auction-product",
-    "has-weights": false,
-    "crafting-materials": {
-      "Enchanted Obsidian": 128,
-      "Enchanted Eye of Ender": 96,
-      "Ender Artifact": 1,
-      "Exceedingly Rare Ender Artifact Upgrade": 1
-    }
   },
   "Scythe Blade": {
     "api-name": "SCYTHE_BLADE",
