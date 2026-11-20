@@ -12,6 +12,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
+import { toTradeMessage } from '../server/trade-format.mjs';
 
 const SERVER_URL = 'http://localhost:8000';
 const logsPath = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'data', 'pastTradesLogs.json');
@@ -37,18 +38,18 @@ async function main() {
     const lowerName = itemName.toLowerCase();
     const matches = [];
     for (let index = start; index <= Math.min(stop, logs.length - 1); index++) {
-        let plainText;
+        let text;
         try {
-            plainText = JSON.parse(logs[index]).plainText;
+            text = toTradeMessage(logs[index]).text;
         } catch {
             continue;
         }
-        if (plainText && plainText.toLowerCase().includes(lowerName)) {
-            matches.push({ index, trade: logs[index], plainText });
+        if (text && text.toLowerCase().includes(lowerName)) {
+            matches.push({ index, trade: logs[index], text });
         }
     }
 
-    for (const match of matches) console.log(`${match.index}: ${match.plainText}`);
+    for (const match of matches) console.log(`${match.index}: ${match.text}`);
     if (matches.length === 0) {
         console.log(`No trades mentioning "${itemName}" between ${start} and ${stop} (log has ${logs.length}).`);
         rl.close();

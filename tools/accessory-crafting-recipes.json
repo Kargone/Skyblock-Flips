@@ -316,53 +316,48 @@
     "type": "short-term-investment",
     "has-weights": true
   },
-  "Beastmaster Crest - EPIC": {
-    "api-name": "Beastmaster Crest",
-    "tier": "EPIC",
+  "Venerable Beastmaster Crest": {
+    "api-name": "BEASTMASTER_CREST_EPIC",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
-      "Beastmaster Crest - RARE": 1,
+      "Stalwart Beastmaster Crest": 1,
       "Enchanted Ancient Claw": 4,
       "Griffin Feather": 128
     }
   },
-  "Beastmaster Crest - LEGENDARY": {
-    "api-name": "Beastmaster Crest",
-    "tier": "LEGENDARY",
+  "Exalted Beastmaster Crest": {
+    "api-name": "BEASTMASTER_CREST_LEGENDARY",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
-      "Beastmaster Crest - EPIC": 1,
+      "Venerable Beastmaster Crest": 1,
       "Enchanted Ancient Claw": 32,
       "Griffin Feather": 256
     }
   },
-  "Beastmaster Crest - RARE": {
-    "api-name": "Beastmaster Crest",
-    "tier": "RARE",
+  "Stalwart Beastmaster Crest": {
+    "api-name": "BEASTMASTER_CREST_RARE",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
       "Ancient Claw": 256,
       "Griffin Feather": 32,
-      "Beastmaster Crest - UNCOMMON": 1
+      "Blessed Beastmaster Crest": 1
     }
   },
-  "Beastmaster Crest - UNCOMMON": {
-    "api-name": "Beastmaster Crest",
-    "tier": "UNCOMMON",
+  "Blessed Beastmaster Crest": {
+    "api-name": "BEASTMASTER_CREST_UNCOMMON",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {
       "Ancient Claw": 80,
       "Griffin Feather": 8,
-      "Beastmaster Crest - COMMON": 1
+      "Beastmaster Crest": 1
     }
   },
-  "Beastmaster Crest - COMMON": {
-    "api-name": "Beastmaster Crest",
-    "tier": "COMMON",
+  "Beastmaster Crest": {
+    "api-name": "BEASTMASTER_CREST_COMMON",
     "type": "auction-product",
     "has-weights": false,
     "crafting-materials": {

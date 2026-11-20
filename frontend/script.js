@@ -172,14 +172,12 @@ class TraderDashboard {
         }
     }
 
-    normalizeName(name, tier) {
-        // one error could be caused by names already including the rarity, so we should remove it if it exists
+    normalizeName(name) {
         return String(name || '')
             .replace(/§./g, '')
             .replace(/\s+/g, ' ')
             .trim()
-            .replace(/ - .+$/, '') // Remove existing rarity
-            .toLowerCase() + (tier ? ` - ${tier}` : '');
+            .toLowerCase();
     }
 
     escapeHtml(value) {
@@ -210,7 +208,7 @@ class TraderDashboard {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: `[{"plainText":"xjk You removed ${amount}x ${itemName} from your inventory!","fullJson":[],"detectedRarity":""}]`
+                body: JSON.stringify({ type: 'chat', text: `xjk You removed ${amount}x ${itemName} from your inventory!` })
             });
             const result = await response;
             console.log(result.statusText);
@@ -832,7 +830,7 @@ class TraderDashboard {
         });
 
         entries.forEach(([name, product], index) => {
-            const orderKey = `${sectionPrefix}-${this.normalizeName(name, product?.tier)}-${index}`;
+            const orderKey = `${sectionPrefix}-${this.normalizeName(name)}-${index}`;
             const isOpen = this.openSellOrders.has(orderKey);
             const costBreakdown = this.getCraftingCostBreakdown(name, inventorySnapshot);
             const craftTime = product['seconds-to-craft'];
@@ -923,7 +921,7 @@ class TraderDashboard {
             if (buyPrice) return buyPrice;
         }
 
-        return this.getLowestBin(name, entry?.tier) || 0;
+        return this.getLowestBin(name) || 0;
     }
 
     getCraftingCostBreakdown(name, inventorySnapshot = null) {
@@ -1298,8 +1296,8 @@ class TraderDashboard {
     // Lowest BIN for a product. The auction data is keyed by display name, never by
     // api name, and the "(forge)" the product list uses to tell recipes apart is not
     // part of an item's name.
-    getLowestBin(name, tier) {
-        return this.lowestBinPrices[this.normalizeName(String(name || '').replace(/ \(forge\)$/i, ''), tier)];
+    getLowestBin(name) {
+        return this.lowestBinPrices[this.normalizeName(String(name || '').replace(/ \(forge\)$/i, ''))];
     }
 
     isCraftableProduct(name) {
@@ -1396,7 +1394,7 @@ class TraderDashboard {
             return this.getProductUnitCost(name, mode, inventorySnapshot, path);
         }
 
-        const normalizedName = this.normalizeName(name, entry?.tier);
+        const normalizedName = this.normalizeName(name);
         if (path.has(normalizedName)) {
             return 0;
         }

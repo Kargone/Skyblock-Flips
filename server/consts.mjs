@@ -125,7 +125,7 @@ export const DUMMY_TRADE_MESSAGES = [
 // method, so the group names here have to stay in step with that table.
 //
 // The examples are real messages from data/pastTradesLogs.json, as they look
-// after formatTradeMessage has stripped the colour codes.
+// with the colour codes stripped (trade-format.mjs).
 //
 // An entry with `re: null` has not been written yet. ProcesTrade skips it, so
 // that message type is reported as an invalid trade message until it is filled in.

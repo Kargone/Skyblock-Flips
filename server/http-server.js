@@ -1,5 +1,6 @@
 import Main, { marketData, getVolumeStats, getTraderData, getBinLadders } from './backend.mjs';
 import { getMayorData } from './mayor.mjs';
+import { toTradeMessage } from './trade-format.mjs';
 import http from 'node:http';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -34,6 +35,7 @@ let server = http.createServer(function (request, response) {
         response.end(JSON.stringify({
             bazaarProducts: marketData.bazaarProducts || {},
             lowestBinPrices: marketData.lowestBinPrices || {},
+            staleBinPrices: marketData.staleBinPrices || {},
             binLadders: getBinLadders(),
             lastUpdated: marketData.lastUpdated || null,
             volumeStats: getVolumeStats()
@@ -109,15 +111,21 @@ let server = http.createServer(function (request, response) {
                 return;
             }
 
-            if (!Array.isArray(data)) {
-                main.submitTrade(JSON.stringify(data));
-                pastTradesLogs.push(JSON.stringify(data));
-            } else {
-                for (const value of data) {
-                    // console.log('Data value: ' + JSON.stringify(value));
-                    pastTradesLogs.push(JSON.stringify(value));
-                    main.submitTrade(JSON.stringify(value));
+            // One message or an array of them; see trade-format.mjs for the shape.
+            // A message with no time is stamped with when it arrived, so the log
+            // keeps it and a replay counts the trade on the right day.
+            const receivedAt = Date.now();
+            for (const value of Array.isArray(data) ? data : [data]) {
+                let message;
+                try {
+                    message = toTradeMessage(value);
+                } catch (error) {
+                    console.error(error.message);
+                    continue;
                 }
+                message.time ??= receivedAt;
+                pastTradesLogs.push(JSON.stringify(message));
+                main.submitTrade(message);
             }
 
             fs.writeFile(

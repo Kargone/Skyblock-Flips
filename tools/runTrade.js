@@ -1,56 +1,37 @@
-// create a file that sends a post request to the backend with the trade data and logs the response
-// import fetch from 'node:fetch';
+// Posts trade messages typed at the prompt to the backend, one at a time.
+//
+//   node runTrade.js
+//
+// Paste either a logged message from pastTradesLogs.json (old or new format) or
+// just the chat line, e.g.  [Bazaar] Bought 64x Wheat for 150 coins!
 import readline from 'node:readline/promises';
 import { stdin as input, stdout as output } from 'node:process';
 
 async function runPrompt() {
-    // 1. Create the interface linked to terminal input/output
     const rl = readline.createInterface({ input, output });
-
-    // 2. Ask the question and wait for the user to hit Enter
-    let tradeMessage = await rl.question('Trade message: ');
-
-    // take out all of the "\" from the message and replace them with nothing
-    tradeMessage = tradeMessage.replace(/\\/g, '');
-
-    // 3. Use the inputs
-    console.log(`Processing trade message: ${tradeMessage}`);
-
-    // 4. Always close the interface when done, or the program will hang
+    let tradeMessage = (await rl.question('Trade message: ')).trim();
     rl.close();
 
-    await runTrade(tradeMessage);
+    // A message copied out of the log comes with its quotes escaped.
+    tradeMessage = tradeMessage.replace(/\\/g, '');
+
+    // Anything that is not JSON is taken as the chat line itself.
+    const body = /^[[{]/.test(tradeMessage) ? tradeMessage : JSON.stringify({ type: 'chat', text: tradeMessage });
+
+    console.log(`Processing trade message: ${body}`);
+    await runTrade(body);
     runPrompt();
 }
 
-async function runTrade(tradeMessage) {
+async function runTrade(body) {
     const response = await fetch('http://localhost:8000/trades', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: tradeMessage
+        body
     });
-    const result = await response;
-    console.log(result.statusText);
+    console.log(response.statusText);
 }
 
 runPrompt();
-
-// async function runTrades(trades) {
-//     for (const trade of trades) {
-//         let tradeMessage = trade.replace(/\\/g, '');
-//         await runTrade(tradeMessage);
-//     }
-// }
-
-// import fs from 'node:fs';
-// import path from 'node:path';
-// import { fileURLToPath } from 'node:url';
-
-// try {
-//     const fileContent = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), 'pastTradesLogs.json'), 'utf8');
-//     runTrades(JSON.parse(fileContent).slice(6555));
-// } catch (error) {
-//     console.error('Error occurred while processing past trade logs.', error);
-// }

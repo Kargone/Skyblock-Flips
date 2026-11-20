@@ -10,6 +10,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { TRADE_PATTERNS } from '../server/consts.mjs';
+import { toTradeMessage } from '../server/trade-format.mjs';
 
 const logsPath = path.join(path.dirname(fileURLToPath(import.meta.url)), '..', 'data', 'pastTradesLogs.json');
 const MAX_EXAMPLES = 3;
@@ -43,11 +44,6 @@ const EXPECTED = [
 
 const NUMBER = /^-?\d[\d,]*(\.\d+)?$/;
 
-// same as formatTradeMessage in backend.mjs: drops each colour code (marker + one letter)
-function formatTradeMessage(message) {
-    return message.split('�').map((part, index) => index === 0 ? part : part.slice(1)).join('');
-}
-
 // returns what is wrong with the captured groups, or null if they look right
 function checkGroups(groups, wanted) {
     for (const name of wanted) {
@@ -63,10 +59,9 @@ function checkGroups(groups, wanted) {
 }
 
 const messages = JSON.parse(fs.readFileSync(logsPath, 'utf8'))
-    .map(entry => JSON.parse(entry))
-    .map(trade => trade[0]?.plainText || trade.plainText)
-    .filter(plainText => typeof plainText === 'string') // forge snapshots have no chat text
-    .map(formatTradeMessage)
+    .map(entry => toTradeMessage(entry))
+    .filter(message => message.type === 'chat') // forge snapshots have no chat text
+    .map(message => message.text)
     .filter(message => !message.includes('Guild >'));
 
 const stats = new Map(EXPECTED.map(e => [e.type, { seen: 0, matched: 0, sample: null, problems: [] }]));

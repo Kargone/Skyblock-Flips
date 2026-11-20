@@ -3,6 +3,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { fetchHypixel, hypixelPaused } from './hypixel-api.mjs';
+import { toTradeMessage } from './trade-format.mjs';
 import { IGNORE_INSTA_SELL_BUY, IGNORE_INSTA_BUY, IGNORE_INSTA_SELL, ALLOW_INSTA_SELL_BUY, DUMMY_TRADE_MESSAGES, TRADE_PATTERNS } from './consts.mjs';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -61,6 +62,9 @@ function calcAuctionFee(price_not_sold) {
 export const marketData = {
     bazaarProducts: {},
     lowestBinPrices: {},
+    // Normalised name -> when its price was last actually seen, for every price in
+    // lowestBinPrices that came from an earlier scan because the latest had no listing.
+    staleBinPrices: {},
     lastUpdated: {
         'bazaar': null,
         'auctions': null
@@ -225,9 +229,8 @@ class Main extends EventEmitter {
             const before = structuredClone(trader_data);
             try {
                 // The mod's forge snapshots are not chat messages; see processForgeSnapshot.
-                const parsed = JSON.parse(tradeMessage);
-                if (parsed?.type === 'forge-snapshot') {
-                    const result = processForgeSnapshot(parsed);
+                if (tradeMessage.type === 'forge-snapshot') {
+                    const result = processForgeSnapshot(tradeMessage);
                     if (result !== FORGE_SNAPSHOT_UNCHANGED) {
                         console.log(result);
                         saveTraderData();
@@ -235,8 +238,7 @@ class Main extends EventEmitter {
                     return;
                 }
 
-                const trade = new ProcesTrade(tradeMessage);
-                // console.log(`Successfully processed trade: ${tradeMessage}`);
+                new ProcesTrade(tradeMessage);
                 saveTraderData();
             } catch (error) {
                 trader_data = before;
@@ -245,10 +247,12 @@ class Main extends EventEmitter {
         });
         console.log('Trade listener initialized');
     }
-    // Public method for HTTP server or other sources to submit trade messages
-    submitTrade(tradeMessage) {
+    // Public method for HTTP server or other sources to submit trade messages.
+    // Takes a message in any shape toTradeMessage reads (trade-format.mjs).
+    submitTrade(message) {
+        const tradeMessage = toTradeMessage(message);
         // A forge snapshot is sent whenever the forge menu changes, which is not a trade.
-        if (!tradeMessage.includes('"forge-snapshot"')) this.lastTradeTime = Date.now();
+        if (tradeMessage.type === 'chat') this.lastTradeTime = Date.now();
         this.emit('tradeMessage', tradeMessage);
     }
 }
@@ -280,15 +284,6 @@ function getInvestmentType(product_list_type) {
 function morningTime(time_code) {
     const now = new Date(time_code);
     return new Date(now.getFullYear(), now.getMonth(), now.getDate()).getTime();
-}
-
-function formatTradeMessage(trade_message) {
-    trade_message = trade_message.split('�');
-    for (const stringIndex in trade_message) {
-        if (stringIndex == 0) continue;
-        trade_message[stringIndex] = trade_message[stringIndex].slice(1);
-    }
-    return trade_message.join('');
 }
 
 // create a function that uses math.round, but for the case of 0.5, it rounds down instead of up
@@ -381,10 +376,9 @@ function listedSellPrice(coinsAfterTax, amount) {
 // What to do with each message type in TRADE_PATTERNS (consts.mjs).
 // Order prices always come from a total divided by an amount, never from the
 // "each" price in chat, which is rounded and loses the decimal on larger prices.
-// trade = the ProcesTrade being built, g = the pattern's named groups,
-// rarity = the detectedRarity the mod sent along with the message.
+// trade = the ProcesTrade being built, g = the pattern's named groups.
 const TRADE_HANDLERS = {
-    'insta-buy': (trade, g) => trade.instaBuy(toInt(g.amount), toFloat(g.coins) / toInt(g.amount), g.name, Date.now(), true),
+    'insta-buy': (trade, g) => trade.instaBuy(toInt(g.amount), toFloat(g.coins) / toInt(g.amount), g.name, trade.time, true),
     'insta-sell': (trade, g) => trade.instaSell(toInt(g.amount), toFloat(g.coins) / toInt(g.amount), g.name, true, true),
     'buy-order-setup': (trade, g) => trade.buyOrderSetup(toInt(g.amount), toFloat(g.coins) / toInt(g.amount), g.name),
     'buy-order-fill': (trade, g) => trade.buyOrderFill(toInt(g.amount), g.name),
@@ -397,29 +391,25 @@ const TRADE_HANDLERS = {
     'order-flipped': (trade, g) => trade.orderFlipped(toInt(g.amount), g.name, toFloat(g.profit)),
     'npc-sell': (trade, g) => trade.npcSell(toInt(g.amount), toFloat(g.coins) / toInt(g.amount), g.name),
     'npc-buy': (trade, g) => trade.npcBuyBack(toInt(g.amount), toFloat(g.coins) / toInt(g.amount), g.name),
-    'auction-creation': (trade, g, rarity) => trade.auctionCreation(toInt(g.price), g.name, rarity),
-    'auction-claim': (trade, g, rarity) => trade.auctionClaim(toInt(g.price), g.name, rarity),
-    'auction-cancel': (trade, g, rarity) => trade.auctionCancel(g.name, rarity),
-    'auction-sold': (trade, g, rarity) => trade.auctionSold(toInt(g.price), g.name, rarity),
-    'auction-bought': (trade, g, rarity) => trade.auctionBought(toInt(g.price), g.name, rarity),
-    'auction-expired': (trade, g, rarity) => trade.auctionExpired(g.name, rarity),
-    'supercraft': (trade, g, rarity) => trade.supercraft(g.name, rarity),
-    'item-removed': (trade, g, rarity) => trade.itemRemoved(g.name, toInt(g.amount), rarity),
+    'auction-creation': (trade, g) => trade.auctionCreation(toInt(g.price), g.name),
+    'auction-claim': (trade, g) => trade.auctionClaim(toInt(g.price), g.name),
+    'auction-cancel': (trade, g) => trade.auctionCancel(g.name),
+    'auction-sold': (trade, g) => trade.auctionSold(toInt(g.price), g.name),
+    'auction-bought': (trade, g) => trade.auctionBought(toInt(g.price), g.name),
+    'auction-expired': (trade, g) => trade.auctionExpired(g.name),
+    'supercraft': (trade, g) => trade.supercraft(g.name),
+    'item-removed': (trade, g) => trade.itemRemoved(g.name, toInt(g.amount)),
 };
 
 
 class ProcesTrade {
-    constructor(tradeJSON) {
-        // convert tradeJSON from string to object
-        const tradeObject = JSON.parse(tradeJSON);
-        const trade_message = formatTradeMessage(tradeObject[0]?.plainText || tradeObject.plainText);
-        // console.log("Processing trade message: ", trade_message);
-
-        const detectedRarity = tradeObject.detectedRarity;
-
-        this.message = trade_message;
-        this.messageArray = this.message.split('');
-        // console.log("Processing trade message: ", this.message);
+    // chatMessage is a { type: "chat", time, text } message from trade-format.mjs.
+    // Everything the trade records (when an order was placed, when profit was made)
+    // uses the time the message showed up in game, so a replayed trade lands on
+    // the day it really happened. A message with no time counts as happening now.
+    constructor(chatMessage) {
+        this.message = chatMessage.text;
+        this.time = chatMessage.time ?? Date.now();
 
         let result = '';
 
@@ -441,7 +431,7 @@ class ProcesTrade {
 
         if (match) {
             this.type = match.type;
-            result = TRADE_HANDLERS[match.type](this, match.groups, detectedRarity);
+            result = TRADE_HANDLERS[match.type](this, match.groups);
         } else if (DUMMY_TRADE_MESSAGES.some(dummyMessage => this.message.includes(dummyMessage))) {
             return "Nontrade message: " + this.message;
         } else {
@@ -506,7 +496,7 @@ class ProcesTrade {
         }
         return false;
     }
-    instaBuy(amount, price, name, time_bought = Date.now(), ignoreListEnabled = false) {
+    instaBuy(amount, price, name, time_bought = this.time, ignoreListEnabled = false) {
         if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Product name not found in product list';
 
         if (ignoreListEnabled && this.trackProduct(name, 'buy') === false) return 'Rejected: Product not tracked for buy transactions.';
@@ -610,7 +600,7 @@ class ProcesTrade {
                     const date_bought = subOrder["time-bought"];
 
                     trader_data["all-products"][name]["current-amount"] -= amount;
-                    return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees, profitTypeOf(subOrder, 'bazaar')) + " & Insta sell completed";
+                    return this.addProfit(amount, name, subOrder["price-bought"], price, date_bought, this.time, doBazaarFees, profitTypeOf(subOrder, 'bazaar')) + " & Insta sell completed";
                 } else {
                     // determine if the last suborder is bought out
                     if (trader_data[invesmentType][name]["sub-orders"].length <= 1) {
@@ -625,7 +615,7 @@ class ProcesTrade {
                         const date_bought = subOrder["time-bought"];
 
                         trader_data["all-products"][name]["current-amount"] -= subOrder["partial-amount"];
-                        return this.addProfit(subOrder["partial-amount"], name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees, profitTypeOf(subOrder, 'bazaar')) + " & Insta sell completed";
+                        return this.addProfit(subOrder["partial-amount"], name, subOrder["price-bought"], price, date_bought, this.time, doBazaarFees, profitTypeOf(subOrder, 'bazaar')) + " & Insta sell completed";
                     } else {
                         amount -= subOrder["partial-amount"];
 
@@ -636,7 +626,7 @@ class ProcesTrade {
                         const date_bought = subOrder["time-bought"];
 
                         trader_data["all-products"][name]["current-amount"] -= subOrder["partial-amount"];
-                        this.addProfit(subOrder["partial-amount"], name, subOrder["price-bought"], price, date_bought, Date.now(), doBazaarFees, profitTypeOf(subOrder, 'bazaar'));
+                        this.addProfit(subOrder["partial-amount"], name, subOrder["price-bought"], price, date_bought, this.time, doBazaarFees, profitTypeOf(subOrder, 'bazaar'));
                     }
                 }
             }
@@ -738,7 +728,7 @@ class ProcesTrade {
         const apiName = product_list[name]["api-name"];
         const currentResellPrice = Math.round(bazaar_data[apiName]["quick_status"]["buyPrice"] * 10) / 10;
         const bazaarFees = currentResellPrice * getBazaarTaxRate() * amount;
-        const placeTime = Date.now();
+        const placeTime = this.time;
 
         // add the buy order
         trader_data['buy-order-overview']['buy-orders'].push({
@@ -974,7 +964,7 @@ class ProcesTrade {
 
         const resellPrice = price;
         const invesmentType = getInvestmentType(product_list[name]["type"]);
-        const sellOrderPlaceTime = Date.now();
+        const sellOrderPlaceTime = this.time;
         const currentHoldingAmountBeforeSell = trader_data["all-products"][name]?.["current-amount"];
         let earliest_time_bought = "10000000000000000000000000000";
         let total_selling_amount = 0;
@@ -1179,7 +1169,7 @@ class ProcesTrade {
 
                 addSellClaimToProducts(amount, name, subOrder["partial-selling-amount"], false);
 
-                return this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true, profitTypeOf(subOrder, 'bazaar')) + " & Sell order claim completed";
+                return this.addProfit(amount, name, subOrder["price-bought"], price_sold, date_bought, this.time, true, profitTypeOf(subOrder, 'bazaar')) + " & Sell order claim completed";
             } else {
                 // determine if the last suborder is bought out
                 if (trader_data["sell-order-overview"]["sell-orders"][current_sell_order_index]["sub-orders"].length <= 1) {
@@ -1194,7 +1184,7 @@ class ProcesTrade {
 
                     addSellClaimToProducts(subOrder["partial-selling-amount"], name, subOrder["partial-selling-amount"], true);
 
-                    return this.addProfit(subOrder["partial-selling-amount"], name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true, profitTypeOf(subOrder, 'bazaar')) + " & Sell order claim completed";
+                    return this.addProfit(subOrder["partial-selling-amount"], name, subOrder["price-bought"], price_sold, date_bought, this.time, true, profitTypeOf(subOrder, 'bazaar')) + " & Sell order claim completed";
                 } else {
                     amount -= subOrder["partial-selling-amount"];
 
@@ -1206,7 +1196,7 @@ class ProcesTrade {
 
                     addSellClaimToProducts(subOrder["partial-selling-amount"], name, subOrder["partial-selling-amount"], amount === 0);
 
-                    this.addProfit(subOrder["partial-selling-amount"], name, subOrder["price-bought"], price_sold, date_bought, Date.now(), true, profitTypeOf(subOrder, 'bazaar'));
+                    this.addProfit(subOrder["partial-selling-amount"], name, subOrder["price-bought"], price_sold, date_bought, this.time, true, profitTypeOf(subOrder, 'bazaar'));
                 }
             }
         }
@@ -1492,9 +1482,8 @@ class ProcesTrade {
 
         return 'NPC buyback completed';
     }
-    auctionCreation(price, name, detectedRarity) {
+    auctionCreation(price, name) {
         // console.log(`Creating auction for ${name} at price ${price}`);
-        name = this.fixRarity(name, detectedRarity);
 
         if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Auction item name not found in product list';
 
@@ -1503,7 +1492,7 @@ class ProcesTrade {
             console.log(`Product was not found already in investments to create an auction for. Creating product ${name} in long-term investments.`);
 
             // console.log(`Supercrafting ${name}`);
-            this.supercraft(name, detectedRarity);
+            this.supercraft(name);
         }
 
         // remove the product from the long term investments by highest cost
@@ -1532,7 +1521,7 @@ class ProcesTrade {
             "material-cost": removedInvestment["price-crafted"] + auctionFees,
             "price-selling": price,
             "sold": false,
-            "date-placed": Date.now(),
+            "date-placed": this.time,
             "time-crafted": removedInvestment["time-bought"],
             "source": removedInvestment["source"]
         });
@@ -1541,8 +1530,7 @@ class ProcesTrade {
 
         return 'Auction created';
     }
-    auctionClaim(price, name, detectedRarity) {
-        name = this.fixRarity(name, detectedRarity);
+    auctionClaim(price, name) {
         
         if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Auction item name not found in product list';
 
@@ -1570,12 +1558,11 @@ class ProcesTrade {
 
         // add auction fee to daily profit
         const auctionFees = priceSold * AUCTION_FEE_RATE_LOW * DERPY_TAX_MULTIPLIER;
-        this.addProfit(1, name, removedAuction["material-cost"] + auctionFees, priceSold, removedAuction["date-placed"], Date.now(), false, profitTypeOf(removedAuction, "auction-house"));
+        this.addProfit(1, name, removedAuction["material-cost"] + auctionFees, priceSold, removedAuction["date-placed"], this.time, false, profitTypeOf(removedAuction, "auction-house"));
 
         return 'Auction claimed';
     }
-    auctionCancel(name, detectedRarity) {
-        name = this.fixRarity(name, detectedRarity);
+    auctionCancel(name) {
 
         if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Auction item name not found in product list';
 
@@ -1633,15 +1620,7 @@ class ProcesTrade {
 
         return ('Auction cancelled');
     }
-    auctionSold(price, name, detectedRarity) {
-        name = this.fixRarity(name, detectedRarity);
-
-        // The "[Auction] X bought Y" message carries no rarity, so a tiered item like
-        // Beastmaster Crest arrives as just "Beastmaster Crest". Match on the name
-        // without its " - RARITY" instead, and let the price pick out the listing.
-        // An exact name match still wins when there is one.
-        const baseName = (itemName) => itemName.split(" - ")[0];
-
+    auctionSold(price, name) {
         // find the first occurance of the auction
         const auctions = trader_data["auction-house-overview"]["auctions"];
         let current_auction_index = -1;
@@ -1651,15 +1630,6 @@ class ProcesTrade {
             if (auction["item-name"] === name && auction["price-selling"] === price && !auction["sold"]) {
                 current_auction_index = auctionIndex;
                 break;
-            }
-        }
-        if (current_auction_index === -1) {
-            for (const auctionIndex in auctions) {
-                const auction = auctions[auctionIndex];
-                if (baseName(auction["item-name"]) === baseName(name) && auction["price-selling"] === price && !auction["sold"]) {
-                    current_auction_index = auctionIndex;
-                    break;
-                }
             }
         }
 
@@ -1672,8 +1642,7 @@ class ProcesTrade {
 
         return 'Auction successfully set sold';
     }
-    auctionBought(price, name, detectedRarity) {
-        name = this.fixRarity(name, detectedRarity);
+    auctionBought(price, name) {
 
         if (Object.keys(product_list).indexOf(name) === -1) return 'ERROR: Auction item name not found in product list';
 
@@ -1692,15 +1661,13 @@ class ProcesTrade {
 
         return 'Auction successfully bought';
     }
-    auctionExpired(name, detectedRarity) {
+    auctionExpired(name) {
         // console.log(`Auction expired for ${name}`);
-        const result = this.auctionCancel(name, detectedRarity);
+        const result = this.auctionCancel(name);
 
         return result === "ERROR: Auction item name not found in product list" ? "ERROR: Auction item name not found in product list" : 'Auction successfully expired';
     }
-    supercraft(name, detectedRarity) {
-        // different naming function for this one
-        name = this.fixRarity(name, detectedRarity);
+    supercraft(name) {
 
         // console.log(`Supercrafting ${name}`);
 
@@ -1717,7 +1684,7 @@ class ProcesTrade {
         // determine the crafting materials
         const craftingMaterials = product_list[name]["crafting-materials"];
 
-        const dateSupercrafted = Date.now();
+        const dateSupercrafted = this.time;
 
         let total_cost_of_product = 0;
 
@@ -1819,9 +1786,8 @@ class ProcesTrade {
             throw new Error('ERROR: Something wrong with suborders when removing crafting materials from investments');
         }
     }
-    itemRemoved(name, amount, detectedRarity) {
+    itemRemoved(name, amount) {
         // simply remove the item from the all-products list, and the short/term investments if it exists there
-        name = this.fixRarity(name, detectedRarity);
 
         if (Object.keys(trader_data["all-products"]).indexOf(name) === -1) return `ERROR: Product name not found in all-products list: ${name}`;
         
@@ -1870,11 +1836,6 @@ class ProcesTrade {
         }
 
         return 'Item removed successfully';
-    }
-    fixRarity(name, detectedRarity) {
-        if (name.includes(" - ")) return name; // already has a rarity
-        if (detectedRarity != "") name = `${name} - ${detectedRarity}`;
-        return name;
     }
     checkForForgeableItmes() {
 
@@ -2122,7 +2083,7 @@ function forgeMaterialPrice(name) {
     const product = apiName ? bazaar_data[apiName] : undefined;
     if (product) return product["sell_summary"]?.[0]?.["pricePerUnit"] ?? product["quick_status"]?.["sellPrice"] ?? 0;
 
-    return marketData.lowestBinPrices[normalizeName(name, product_list[name]?.["tier"])] ?? 0;
+    return marketData.lowestBinPrices[normalizeName(name)] ?? 0;
 }
 
 // Mirrors the dashboard's getCraftingMarketValue for a forge recipe: a "(forge)"
@@ -2142,7 +2103,7 @@ function forgeMarketValue(recipeName) {
 
     // Auction data is keyed by display name, never by api name.
     const displayName = recipeName.endsWith(FORGE_SUFFIX) ? recipeName.slice(0, -FORGE_SUFFIX.length) : recipeName;
-    return marketData.lowestBinPrices[normalizeName(displayName, entry?.["tier"])] ?? 0;
+    return marketData.lowestBinPrices[normalizeName(displayName)] ?? 0;
 }
 
 // Whether any of a product's stock came out of the forge.
@@ -2548,12 +2509,58 @@ async function updateAuctionData() {
 
         marketData.lastUpdated.auctions = firstPage.lastUpdated;
         auction_data = allAuctions;
-        marketData.lowestBinPrices = buildLowestBinPrices(allAuctions);
+        applyLowestBinPrices(buildLowestBinPrices(allAuctions), firstPage.lastUpdated || Date.now());
         binPriceLists = buildBinPriceLists(allAuctions);
     } catch (error) {
         console.error('Auction fetch failed:', formatFetchError(error));
     }
 }
+
+// The last lowest BIN seen for each product-list item, saved to disk so an item with
+// no listing right now (or every item, just after a restart) still has a price.
+// Only product-list items are kept; the full auction house has far too many names.
+// Normalised name -> { price, seenAt }.
+const lastKnownBinPath = path.join(__dirname, '..', 'data', 'last-known-bin-prices.json');
+let lastKnownBins = {};
+try {
+    lastKnownBins = JSON.parse(fs.readFileSync(lastKnownBinPath, 'utf8'));
+} catch (err) {
+    if (err.code !== 'ENOENT') console.error('Error reading last-known-bin-prices.json, starting empty:', err);
+}
+
+function trackedBinNames() {
+    return new Set(Object.keys(product_list).map(name => normalizeName(name.replace(/ \(forge\)$/i, ''))));
+}
+
+// Fresh prices win; a tracked item missing from this scan falls back to its last
+// known price and is listed in staleBinPrices with when that price was seen.
+function applyLowestBinPrices(fresh, scanTime) {
+    const tracked = trackedBinNames();
+    for (const name of tracked) {
+        if (fresh[name] != null) lastKnownBins[name] = { price: fresh[name], seenAt: scanTime };
+    }
+
+    const merged = { ...fresh };
+    const stale = {};
+    for (const [name, entry] of Object.entries(lastKnownBins)) {
+        if (merged[name] != null || !tracked.has(name)) continue;
+        merged[name] = entry.price;
+        stale[name] = entry.seenAt;
+    }
+    marketData.lowestBinPrices = merged;
+    marketData.staleBinPrices = stale;
+
+    const tempPath = lastKnownBinPath + '.tmp';
+    try {
+        fs.writeFileSync(tempPath, JSON.stringify(lastKnownBins));
+        fs.renameSync(tempPath, lastKnownBinPath);
+    } catch (err) {
+        console.error('Error saving last-known-bin-prices.json:', err);
+    }
+}
+
+// Before the first scan finishes, serve the saved prices (all of them stale).
+applyLowestBinPrices({}, Date.now());
 
 // Every BIN price per normalised name, cheapest first, so the mod can tell where
 // a listing sits among the others for the same item.
@@ -2567,7 +2574,7 @@ function buildBinPriceLists(auctions) {
     for (const auction of auctions) {
         if (!auction.bin || !auction.item_name) continue;
         if (auction.item_lore.includes('§k')) continue;
-        const normalizedName = normalizeName(auction.item_name, auction.item_name === 'Beastmaster Crest' ? auction.tier : null);
+        const normalizedName = normalizeName(auction.item_name);
         const price = auction.starting_bid || 0;
         if (!normalizedName || !price) continue;
         (lists[normalizedName] ??= []).push(price);
@@ -2582,10 +2589,7 @@ export function getBinLadders() {
     const ladders = {};
     for (const auction of trader_data["auction-house-overview"]?.["auctions"] ?? []) {
         if (auction["sold"]) continue;
-        const name = auction["item-name"] || '';
-        const baseName = name.replace(/ - .+$/, '');
-        const tier = baseName === 'Beastmaster Crest' ? name.match(/ - (.+)$/)?.[1] : null;
-        const key = normalizeName(baseName, tier);
+        const key = normalizeName(auction["item-name"]);
         const prices = binPriceLists[key];
         if (prices && !ladders[key]) ladders[key] = prices.slice(0, BIN_LADDER_LENGTH);
     }
@@ -2597,7 +2601,7 @@ function buildLowestBinPrices(auctions) {
     for (const auction of auctions) {
         if (!auction.bin || !auction.item_name) continue;
         if (auction.item_lore.includes('§k')) continue; // Skip items with obfuscated lore
-        const normalizedName = normalizeName(auction.item_name, auction.item_name === 'Beastmaster Crest' ? auction.tier : null);
+        const normalizedName = normalizeName(auction.item_name);
         const price = auction.starting_bid || 0;
         if (!normalizedName || !price) continue;
 
@@ -2609,13 +2613,12 @@ function buildLowestBinPrices(auctions) {
     return prices;
 }
 
-export function normalizeName(name, tier) {
+export function normalizeName(name) {
     return String(name || '')
         .replace(/§./g, '')
         .replace(/\s+/g, ' ')
         .trim()
-        .replace(/ - .+$/, '') // Remove existing rarity
-        .toLowerCase() + (tier ? ` - ${tier}` : '');
+        .toLowerCase();
 }
 
 // Export the Main class for use in other modules
